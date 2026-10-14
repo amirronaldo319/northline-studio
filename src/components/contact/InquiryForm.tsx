@@ -107,7 +107,7 @@ export function InquiryForm() {
   if (status === 'success') {
     const firstName = values.name.trim().split(/\s+/)[0]
     return (
-      <div ref={resultRef} tabIndex={-1} role="status" className="rounded-xl border border-success/25 bg-white p-6 focus:outline-none sm:p-8">
+      <div ref={resultRef} tabIndex={-1} role="status" className="fx-in rounded-xl border border-success/25 bg-white p-6 focus:outline-none sm:p-8">
         <CheckCircle2 aria-hidden="true" size={32} className="text-success" />
         <h3 className="mt-4 text-2xl font-semibold">Thanks, {firstName}. Your request was sent.</h3>
         <p className="mt-3 leading-relaxed text-ink-2">
@@ -176,9 +176,10 @@ export function InquiryForm() {
           <span className="text-sm font-normal text-ink-3">(optional)</span>
         </button>
 
-        <div id="inquiry-details" hidden={!isDetailsOpen}>
-          {isDetailsOpen && (
-            <div className="details-in mt-3 space-y-5">
+        <div id="inquiry-details" className="disclosure disclosure-pad" data-open={isDetailsOpen} inert={!isDetailsOpen}>
+          <div className="disclosure-inner">
+
+            <div className="mt-3 space-y-5">
               <div className="grid gap-5 sm:grid-cols-2">
                 <Field id="inquiry-business" label="Business name" isOptional>
                   <input {...fieldProps('business')} type="text" autoComplete="organization" className={inputClasses} />
@@ -234,7 +235,7 @@ export function InquiryForm() {
                 </div>
               </fieldset>
             </div>
-          )}
+                    </div>
         </div>
       </div>
 
@@ -245,14 +246,14 @@ export function InquiryForm() {
       </div>
 
       {hasAttempted && errorCount > 0 && (
-        <p role="alert" className="mt-5 flex items-center gap-2 rounded-lg bg-danger/8 px-4 py-3 text-sm font-medium text-danger">
+        <p role="alert" className="fx-in mt-5 flex items-center gap-2 rounded-lg bg-danger/8 px-4 py-3 text-sm font-medium text-danger">
           <AlertCircle aria-hidden="true" size={18} className="shrink-0" />
           Please check the {errorCount === 1 ? 'highlighted field' : `${errorCount} highlighted fields`}.
         </p>
       )}
 
       {status === 'error' && (
-        <div ref={resultRef} tabIndex={-1} role="alert" className="mt-5 rounded-lg border border-danger/25 bg-danger/5 p-4 text-[0.9375rem] focus:outline-none">
+        <div ref={resultRef} tabIndex={-1} role="alert" className="fx-in mt-5 rounded-lg border border-danger/25 bg-danger/5 p-4 text-[0.9375rem] focus:outline-none">
           <p className="font-semibold text-danger">Sorry, your request couldn’t be sent.</p>
           <p className="mt-1 text-ink-2">
             Your details are still here. Please try again, or email me at{' '}
@@ -265,7 +266,7 @@ export function InquiryForm() {
       )}
 
       {status === 'email-opened' && (
-        <div ref={resultRef} tabIndex={-1} role="status" className="mt-5 rounded-lg border border-cobalt/25 bg-cobalt-soft/60 p-4 text-[0.9375rem] focus:outline-none">
+        <div ref={resultRef} tabIndex={-1} role="status" className="fx-in mt-5 rounded-lg border border-cobalt/25 bg-cobalt-soft/60 p-4 text-[0.9375rem] focus:outline-none">
           <p className="font-semibold">Your email app should now be open with your details filled in.</p>
           <p className="mt-1 text-ink-2">
             Press send there to reach me. Nothing has been sent yet. If no email window opened, copy your details and send

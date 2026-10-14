@@ -90,7 +90,7 @@ export function Header() {
           <button
             ref={toggleRef}
             type="button"
-            className="grid size-11 place-items-center rounded-full border border-line-strong bg-card text-ink transition-colors hover:border-ink/40 min-[900px]:hidden"
+            className="grid size-11 place-items-center rounded-full border border-line-strong bg-card text-ink transition-[border-color,transform] duration-200 hover:border-ink/40 active:scale-[0.96] active:duration-100 min-[900px]:hidden"
             aria-expanded={isMenuOpen}
             aria-controls="mobile-menu"
             onClick={() => setIsMenuOpen((open) => !open)}
@@ -103,32 +103,30 @@ export function Header() {
 
       <div className="scroll-progress" aria-hidden="true" />
 
-      <nav
-        id="mobile-menu"
-        aria-label="Mobile"
-        hidden={!isMenuOpen}
-        className="border-t border-line bg-paper min-[900px]:hidden"
-      >
-        <ul className="container-page flex flex-col py-3">
-          {NAV_LINKS.map((link) => (
-            <li key={link.id}>
-              <a
-                href={`#${link.id}`}
-                onClick={closeMenu}
-                aria-current={active === link.id ? 'location' : undefined}
-                className="flex min-h-12 items-center border-b border-line/70 text-lg font-medium text-ink aria-[current=location]:text-cobalt"
-              >
-                {link.label}
+      {/* Always mounted so it can animate; `inert` removes it from tab order and the accessibility tree when closed. */}
+      <div id="mobile-menu" className="disclosure mobile-menu" data-open={isMenuOpen} inert={!isMenuOpen}>
+        <nav aria-label="Mobile" className="disclosure-inner bg-paper shadow-[inset_0_1px_0_var(--color-line)]">
+          <ul className="container-page flex flex-col py-3">
+            {NAV_LINKS.map((link, index) => (
+              <li key={link.id} className="menu-item" style={{ '--i': index } as React.CSSProperties}>
+                <a
+                  href={`#${link.id}`}
+                  onClick={closeMenu}
+                  aria-current={active === link.id ? 'location' : undefined}
+                  className="flex min-h-12 items-center border-b border-line/70 text-lg font-medium text-ink aria-[current=location]:text-cobalt"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+            <li className="menu-item pt-4 pb-2" style={{ '--i': NAV_LINKS.length } as React.CSSProperties}>
+              <a href={`#${CONTACT_SECTION_ID}`} onClick={closeMenu} className={buttonClasses('primary', 'lg', 'w-full')}>
+                {PRIMARY_CTA_LABEL}
               </a>
             </li>
-          ))}
-          <li className="pt-4 pb-2">
-            <a href={`#${CONTACT_SECTION_ID}`} onClick={closeMenu} className={buttonClasses('primary', 'lg', 'w-full')}>
-              {PRIMARY_CTA_LABEL}
-            </a>
-          </li>
-        </ul>
-      </nav>
+          </ul>
+        </nav>
+      </div>
     </header>
   )
 }

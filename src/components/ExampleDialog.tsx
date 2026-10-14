@@ -11,6 +11,8 @@ type Props = {
 }
 
 const NOTICE_TIMEOUT_MS = 5000
+/** Length of the exit animation. A plain timer drives the close, so a stalled animation can never trap the page. */
+const EXIT_MS = 170
 const PHONE_WIDTH_PX = 390
 
 type Device = 'desktop' | 'phone'
@@ -29,6 +31,7 @@ export function ExampleDialog({ example, onClose, onRequestQuote }: Props) {
   const dialogRef = useRef<HTMLDialogElement>(null)
   const returnFocusRef = useRef<HTMLElement | null>(null)
   const isRequestingQuoteRef = useRef(false)
+  const exitTimerRef = useRef<number | null>(null)
   const [notice, setNotice] = useState('')
   const [device, setDevice] = useState<Device>('desktop')
 
@@ -42,6 +45,8 @@ export function ExampleDialog({ example, onClose, onRequestQuote }: Props) {
     dialog.querySelector('.demo-scroll')?.scrollTo({ top: 0 })
 
     return () => {
+      if (exitTimerRef.current !== null) window.clearTimeout(exitTimerRef.current)
+      dialog.removeAttribute('data-closing')
       if (dialog.open) dialog.close()
     }
   }, [example])
@@ -52,7 +57,30 @@ export function ExampleDialog({ example, onClose, onRequestQuote }: Props) {
     return () => window.clearTimeout(timer)
   }, [notice])
 
+  /** Plays a short exit, then closes. Falls straight through for reduced motion or when already closing. */
+  const requestClose = () => {
+    const dialog = dialogRef.current
+    if (!dialog || !dialog.open || exitTimerRef.current !== null) return
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduceMotion) {
+      dialog.close()
+      return
+    }
+
+    dialog.setAttribute('data-closing', '')
+    exitTimerRef.current = window.setTimeout(() => {
+      exitTimerRef.current = null
+      dialog.close()
+    }, EXIT_MS)
+  }
+
   const handleClose = () => {
+    dialogRef.current?.removeAttribute('data-closing')
+    if (exitTimerRef.current !== null) {
+      window.clearTimeout(exitTimerRef.current)
+      exitTimerRef.current = null
+    }
     setNotice('')
     setDevice('desktop')
 
@@ -67,7 +95,7 @@ export function ExampleDialog({ example, onClose, onRequestQuote }: Props) {
 
   const requestQuote = () => {
     isRequestingQuoteRef.current = true
-    dialogRef.current?.close()
+    requestClose()
   }
 
   const Demo = example?.Demo
@@ -77,9 +105,14 @@ export function ExampleDialog({ example, onClose, onRequestQuote }: Props) {
       ref={dialogRef}
       aria-labelledby="example-dialog-title"
       onClose={handleClose}
+      onCancel={(event) => {
+        // Escape: keep the native behaviour (focus restoration, scroll lock) but play the exit first.
+        event.preventDefault()
+        requestClose()
+      }}
       onClick={(event) => {
         // A click on the backdrop lands on the <dialog> element itself.
-        if (event.target === event.currentTarget) dialogRef.current?.close()
+        if (event.target === event.currentTarget) requestClose()
       }}
       className="demo-dialog m-auto h-[calc(100dvh-1rem)] max-h-none w-[calc(100vw-1rem)] max-w-[75rem] overflow-hidden rounded-xl border border-line bg-paper p-0 text-ink shadow-lift sm:h-[calc(100dvh-3rem)] sm:w-[calc(100vw-3rem)]"
     >
@@ -115,7 +148,7 @@ export function ExampleDialog({ example, onClose, onRequestQuote }: Props) {
               <button
                 type="button"
                 data-autofocus
-                onClick={() => dialogRef.current?.close()}
+                onClick={requestClose}
                 className="grid size-11 shrink-0 place-items-center rounded-full border border-line-strong bg-paper text-ink transition-colors hover:border-ink/40"
               >
                 <X aria-hidden="true" size={20} />

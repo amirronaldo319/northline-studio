@@ -25,7 +25,7 @@ export function Field({ id, label, isOptional = false, error, hint, className = 
         </p>
       )}
       {error && (
-        <p id={`${id}-error`} className="mt-1.5 text-sm font-medium text-danger">
+        <p id={`${id}-error`} className="fx-in mt-1.5 text-sm font-medium text-danger">
           {error}
         </p>
       )}

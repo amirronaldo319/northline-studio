@@ -40,6 +40,28 @@
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/*
+ * Motion tokens. One small set of durations, distances, and curves used by every animation,
+ * so the whole site moves with the same rhythm. Change a value here to retune everything.
+ */
+:root {
+  --motion-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --motion-dur-press: 100ms;
+  --motion-dur-hover: 180ms;
+  --motion-dur-ui: 260ms;
+  --motion-dur-enter: 560ms;
+  --motion-dur-reveal: 640ms;
+  --motion-dur-mask: 900ms;
+
+  --motion-shift-sm: 8px;
+  --motion-shift-md: 14px;
+  --motion-shift-lg: 20px;
+
+  --motion-stagger: 70ms;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -140,38 +162,45 @@
 }
 
 /*
- * Reveal-on-scroll. Content is only hidden when JS is running AND the
- * visitor hasn't asked for reduced motion; otherwise it's always visible.
+ * Reveal-on-scroll. Content is only hidden when JS is running AND the visitor has not asked
+ * for reduced motion. If the observer never reports, useReveal shows everything.
  */
 @media (prefers-reduced-motion: no-preference) {
   .js .reveal:not(.is-visible) {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(var(--motion-shift-md));
   }
 
   .js .reveal {
     transition:
-      opacity 700ms var(--ease-out-soft),
-      transform 700ms var(--ease-out-soft);
-    transition-delay: var(--reveal-delay, 0ms);
+      opacity var(--motion-dur-reveal) var(--motion-ease-out),
+      transform var(--motion-dur-reveal) var(--motion-ease-out);
+    transition-delay: calc(var(--reveal-step, 0) * var(--motion-stagger));
   }
 }
 
 /*
- * Example dialog: animate in only. Closing is instant, so a stalled
- * exit transition can never leave a faded dialog over the page.
+ * Example dialog: a short entrance, and a short exit driven by `data-closing`.
+ * ExampleDialog closes with a timer, not an animation event, so a stalled animation can never trap the page.
  */
 dialog.demo-dialog[open] {
   transition:
-    opacity 220ms var(--ease-out-soft),
-    transform 260ms var(--ease-out-soft);
+    opacity var(--motion-dur-ui) var(--motion-ease-out),
+    transform var(--motion-dur-ui) var(--motion-ease-out);
 }
 
 @starting-style {
   dialog.demo-dialog[open] {
     opacity: 0;
-    transform: translateY(12px) scale(0.985);
+    transform: translateY(var(--motion-shift-md)) scale(0.985);
   }
+}
+
+dialog.demo-dialog[data-closing] {
+  opacity: 0;
+  transform: translateY(var(--motion-shift-sm)) scale(0.99);
+  transition-duration: 160ms;
+  transition-timing-function: ease-in;
 }
 
 dialog.demo-dialog::backdrop {
@@ -180,7 +209,7 @@ dialog.demo-dialog::backdrop {
 }
 
 dialog.demo-dialog[open]::backdrop {
-  transition: background 260ms ease;
+  transition: background var(--motion-dur-ui) ease;
 }
 
 @starting-style {
@@ -189,9 +218,16 @@ dialog.demo-dialog[open]::backdrop {
   }
 }
 
+dialog.demo-dialog[data-closing]::backdrop {
+  background: rgb(16 23 42 / 0);
+  transition: background 160ms ease;
+}
+
 @media (prefers-reduced-motion: reduce) {
   dialog.demo-dialog[open],
-  dialog.demo-dialog[open]::backdrop {
+  dialog.demo-dialog[data-closing],
+  dialog.demo-dialog[open]::backdrop,
+  dialog.demo-dialog[data-closing]::backdrop {
     transition: none;
   }
 }
@@ -215,8 +251,8 @@ details.faq-item[open] .faq-icon {
       height: 0;
       overflow: clip;
       transition:
-        height 280ms var(--ease-out-soft),
-        content-visibility 280ms allow-discrete;
+        height var(--motion-dur-ui) var(--motion-ease-out),
+        content-visibility var(--motion-dur-ui) allow-discrete;
     }
 
     details.faq-item[open]::details-content {
@@ -230,150 +266,119 @@ html:has(dialog[open]) {
   overflow: hidden;
 }
 
-/* Disclosure content eases in. Short and skipped for reduced motion. */
-@keyframes details-in {
-  from {
-    opacity: 0;
-    transform: translateY(-6px);
+/*
+ * Generic disclosure (mobile menu, optional form fields). The content is always mounted so it can animate
+ * and keep its values; `inert` plus `visibility` keep it out of the tab order and accessibility tree while closed.
+ */
+.disclosure {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+}
+
+.disclosure[data-open='true'] {
+  grid-template-rows: 1fr;
+  visibility: visible;
+}
+
+.disclosure > .disclosure-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Form fields: padding with a matching negative margin leaves room for focus rings that would be clipped. */
+.disclosure-pad > .disclosure-inner {
+  padding: 6px;
+  margin: -6px;
+}
+
+/* The mobile menu is replaced by the inline navigation on wide screens. (Unlayered, so it beats utilities.) */
+@media (min-width: 900px) {
+  .mobile-menu {
+    display: none;
   }
-  to {
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .disclosure {
+    transition:
+      grid-template-rows var(--motion-dur-ui) var(--motion-ease-in-out),
+      visibility 0s linear var(--motion-dur-ui);
+  }
+
+  .disclosure[data-open='true'] {
+    transition-delay: 0s;
+  }
+
+  .menu-item {
+    opacity: 0;
+    transform: translateY(calc(var(--motion-shift-sm) * -1));
+    transition:
+      opacity var(--motion-dur-hover) var(--motion-ease-out),
+      transform var(--motion-dur-hover) var(--motion-ease-out);
+  }
+
+  .disclosure[data-open='true'] .menu-item {
     opacity: 1;
     transform: none;
+    transition-delay: calc(var(--i, 0) * 35ms + 40ms);
+  }
+}
+
+/* Status and error messages arrive with a short fade. The text itself always carries the meaning. */
+@keyframes fx-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--motion-shift-sm));
   }
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .details-in {
-    animation: details-in 220ms var(--ease-out-soft) both;
+  .fx-in {
+    animation: fx-in var(--motion-dur-ui) var(--motion-ease-out) backwards;
   }
 }
 
-/* Arrows inside links nudge forward on hover/focus. */
-.nudge svg:last-child {
-  transition: transform 200ms var(--ease-out-soft);
+/* Arrows: a small directional nudge on hover (hover devices only) and on keyboard focus. */
+.nudge svg:last-child,
+.card-arrow {
+  transition: transform var(--motion-dur-hover) var(--motion-ease-out);
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .nudge:hover svg:last-child,
   .nudge:focus-visible svg:last-child {
     transform: translateX(3px);
   }
 }
 
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .nudge:hover svg:last-child {
+    transform: translateX(3px);
+  }
+}
+
 /*
- * Motion polish. Everything here is transform or opacity only, runs once or on interaction,
- * and is switched off for visitors who prefer reduced motion.
+ * Motion. Everything below is transform or opacity (plus one clip-path), runs once or on interaction,
+ * and sits inside prefers-reduced-motion: no-preference. No `will-change` is applied permanently.
  */
 @media (prefers-reduced-motion: no-preference) {
-  /* Headline: each word rises out of its own mask. Opacity is untouched so the text is never "missing". */
-  .js .word-mask {
-    display: inline-block;
-    overflow: hidden;
-    vertical-align: top;
-    padding-bottom: 0.1em;
-    margin-bottom: -0.1em;
+  /*
+   * Hero entrance: headline, copy, buttons, then the picture. `backwards` fill means that if the animation
+   * never runs, the element simply stays in its normal, visible state.
+   */
+  .js .enter {
+    animation: enter-up var(--motion-dur-enter) var(--motion-ease-out) backwards;
+    animation-delay: calc(var(--i, 0) * var(--motion-stagger));
   }
 
-  .js .word-mask > span {
-    display: inline-block;
-    animation: word-rise 900ms var(--ease-out-soft) backwards;
-    animation-delay: calc(var(--i, 0) * 65ms + 60ms);
-  }
-
-  @keyframes word-rise {
-    from {
-      transform: translateY(108%) rotate(2deg);
-    }
-  }
-
-  /* Supporting hero elements follow the headline. */
-  .js .hero-in {
-    animation: hero-in 700ms var(--ease-out-soft) backwards;
-    animation-delay: var(--d, 0ms);
-  }
-
-  @keyframes hero-in {
+  @keyframes enter-up {
     from {
       opacity: 0;
-      transform: translateY(14px);
+      transform: translateY(var(--motion-shift-lg));
     }
   }
 
-  /* The hero screenshot settles from slightly zoomed. Transform only, so it never delays first paint. */
-  .js .hero-settle {
-    animation: hero-settle 1400ms var(--ease-out-soft) backwards;
-  }
-
-  @keyframes hero-settle {
-    from {
-      transform: scale(1.06);
-    }
-  }
-
-  /* Project frames: tilt toward the pointer (set by TiltFrame) and zoom the picture a little on hover. */
-  .tilt {
-    perspective: 1100px;
-  }
-
-  .tilt-surface {
-    transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
-    transition:
-      transform 260ms var(--ease-out-soft),
-      box-shadow 300ms ease;
-    will-change: transform;
-  }
-
-  .tilt:hover .tilt-surface {
-    box-shadow: var(--shadow-lift);
-  }
-
-  .shot-img {
-    transition: transform 900ms var(--ease-out-soft);
-  }
-
-  .group:hover .shot-img {
-    transform: scale(1.035);
-  }
-
-  /* Section headings wipe in from beneath a clip. */
-  .js .reveal.is-visible .h-section {
-    animation: heading-wipe 900ms var(--ease-out-soft) backwards;
-  }
-
-  @keyframes heading-wipe {
-    from {
-      clip-path: inset(0 0 100% 0);
-      transform: translateY(0.35em);
-    }
-    to {
-      clip-path: inset(-0.1em -0.05em -0.25em -0.05em);
-    }
-  }
-
-  /* Eyebrow labels get a short rule that draws in. */
-  .eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.625rem;
-  }
-
-  .eyebrow::before {
-    content: '';
-    width: 1.5rem;
-    height: 1px;
-    background: currentColor;
-    transform-origin: left;
-  }
-
-  .js .reveal:not(.is-visible) .eyebrow::before {
-    transform: scaleX(0);
-  }
-
-  .js .reveal .eyebrow::before {
-    transition: transform 700ms var(--ease-out-soft) 150ms;
-  }
-
-  /* Hairlines above package groups and process steps draw across when revealed. */
+  /* Hairlines above package groups and process steps draw across with their reveal. */
   .draw-line {
     position: relative;
   }
@@ -385,8 +390,8 @@ html:has(dialog[open]) {
     height: 1px;
     background: var(--color-ink);
     transform-origin: left;
-    transition: transform 900ms var(--ease-out-soft);
-    transition-delay: calc(var(--line-i, 0) * 110ms + 200ms);
+    transition: transform var(--motion-dur-mask) var(--motion-ease-out);
+    transition-delay: calc(var(--line-i, 0) * var(--motion-stagger) + 200ms);
   }
 
   .js .reveal:not(.is-visible) .draw-line::before,
@@ -404,23 +409,25 @@ html:has(dialog[open]) {
     --line-i: 3;
   }
 
-  /* Primary buttons: a soft sheen sweeps across on hover and focus. */
-  .btn-primary::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: linear-gradient(105deg, transparent 30%, rgb(255 255 255 / 0.28) 50%, transparent 70%);
-    transform: translateX(-120%);
-    transition: transform 700ms var(--ease-out-soft);
+  /* Signature: the featured project is unveiled by a mask while its picture settles. */
+  .js .mask-reveal {
+    clip-path: inset(0 0 0 0 round 0.5rem);
+    transition: clip-path var(--motion-dur-mask) var(--motion-ease-in-out);
   }
 
-  .btn-primary:hover::after,
-  .btn-primary:focus-visible::after {
-    transform: translateX(120%);
+  .js .reveal:not(.is-visible) .mask-reveal {
+    clip-path: inset(0 0 100% 0 round 0.5rem);
   }
 
-  /* Reading progress: a thin line under the header, driven by the page scroll where supported. */
+  .js .mask-reveal > .shot {
+    transition: transform calc(var(--motion-dur-mask) + 300ms) var(--motion-ease-out);
+  }
+
+  .js .reveal:not(.is-visible) .mask-reveal > .shot {
+    transform: scale(1.08);
+  }
+
+  /* Reading progress: a thin line under the header, driven by page scroll where supported. */
   @supports (animation-timeline: scroll()) {
     .scroll-progress {
       position: absolute;
@@ -441,6 +448,42 @@ html:has(dialog[open]) {
   }
 }
 
+/* Project cards: a small lift, a slight zoom within the crop, and the action arrow moves with it. */
+.card-frame {
+  transition:
+    transform var(--motion-dur-ui) var(--motion-ease-out),
+    box-shadow var(--motion-dur-ui) var(--motion-ease-out),
+    border-color var(--motion-dur-ui) ease;
+}
+
+.shot-img {
+  transition: transform var(--motion-dur-ui) var(--motion-ease-out);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .project-card:hover .card-frame {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lift);
+    border-color: var(--color-line-strong);
+  }
+
+  .project-card:hover .shot-img {
+    transform: scale(1.03);
+  }
+
+  .project-card:hover .card-arrow,
+  .nudge-up:hover .card-arrow {
+    transform: translate(2px, -2px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .project-card:focus-within .card-arrow,
+  .nudge-up:focus-visible .card-arrow {
+    transform: translate(2px, -2px);
+  }
+}
+
 /*
  * Printing: scroll reveals only run on screen, so show everything when the page is printed
  * and keep the sticky header from repeating on every sheet.
@@ -457,24 +500,35 @@ html:has(dialog[open]) {
     position: static !important;
   }
 
-  .details-in,
-  details.faq-item,
-  .word-mask > span,
-  .hero-in,
-  .hero-settle,
-  .js .reveal.is-visible .h-section {
+  .enter,
+  .fx-in,
+  details.faq-item {
     animation: none !important;
     transform: none !important;
-    clip-path: none !important;
   }
 
-  .draw-line::before,
-  .eyebrow::before {
+  .mask-reveal,
+  .mask-reveal > .shot {
+    clip-path: none !important;
+    transform: none !important;
+  }
+
+  .draw-line::before {
     transform: none !important;
     transition: none !important;
   }
 
   .scroll-progress {
     display: none !important;
+  }
+
+  .disclosure {
+    grid-template-rows: 1fr !important;
+    visibility: visible !important;
+  }
+
+  .menu-item {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

@@ -1,10 +1,13 @@
 import { useEffect } from 'react'
 
-const SAFETY_TIMEOUT_MS = 2500
+/** If the observer has not reported anything by now, assume it is not working and show everything. */
+const OBSERVER_LIVENESS_MS = 1500
+/** Anything already above the fold when the page loads should never wait. */
+const ABOVE_FOLD_SAFETY_MS = 2500
 
 /**
  * Adds `is-visible` to `.reveal` elements as they enter the viewport.
- * If IntersectionObserver is missing or something stalls, everything is revealed.
+ * Content must never stay hidden: without IntersectionObserver, or if it never reports, everything is revealed.
  */
 export function useReveal(): void {
   useEffect(() => {
@@ -16,8 +19,10 @@ export function useReveal(): void {
       return
     }
 
+    let hasReported = false
     const observer = new IntersectionObserver(
       (entries) => {
+        hasReported = true
         for (const entry of entries) {
           if (!entry.isIntersecting) continue
           entry.target.classList.add('is-visible')
@@ -29,16 +34,20 @@ export function useReveal(): void {
 
     elements.forEach((el) => observer.observe(el))
 
-    // Anything already above the fold when the page loads should never wait.
-    const timer = window.setTimeout(() => {
+    const livenessTimer = window.setTimeout(() => {
+      if (!hasReported) revealAll()
+    }, OBSERVER_LIVENESS_MS)
+
+    const safetyTimer = window.setTimeout(() => {
       elements.forEach((el) => {
         if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('is-visible')
       })
-    }, SAFETY_TIMEOUT_MS)
+    }, ABOVE_FOLD_SAFETY_MS)
 
     return () => {
       observer.disconnect()
-      window.clearTimeout(timer)
+      window.clearTimeout(livenessTimer)
+      window.clearTimeout(safetyTimer)
     }
   }, [])
 }

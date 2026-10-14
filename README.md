@@ -101,11 +101,19 @@ use commercially. No stock photography is bundled.
   generic agency phrase appears in the source.
 - **Security headers:** `public/_headers` sets a strict Content-Security-Policy and related headers on Cloudflare
   Pages and Netlify. Other hosts ignore this file; set equivalent headers in their settings.
-- **Motion:** CSS only, transform and opacity, no libraries. Every animation sits inside
-  `prefers-reduced-motion: no-preference` (enforced by `tests/motion.test.ts`) and is neutralised when printing. The
-  hero headline rises word by word (`SplitWords`), project frames tilt toward a fine pointer (`TiltFrame`), headings
-  wipe in, package and process hairlines draw across, primary buttons carry a sheen, and a thin progress line tracks
-  scroll where `animation-timeline` is supported. To tone it down, edit the "Motion polish" block in `src/index.css`.
+- **Motion:** CSS only, no libraries. All timings, distances, and curves are tokens at the top of `src/index.css`
+  (`--motion-*`); change one there to retune the whole site. Everything sits inside
+  `prefers-reduced-motion: no-preference` (enforced by `tests/motion.test.ts`), hover effects only run on devices
+  that can hover, and everything is neutralised when printing.
+  - Hero: headline, copy, buttons, then the project picture enter in sequence (`.enter`, `enterStep`), about 0.7 s.
+  - Sections: groups fade up once as they enter view (`.reveal`); if the observer never reports, `useReveal` shows
+    everything, and hash links reveal their destination immediately (`useHashScroll`).
+  - Projects: cards lift 3 px, the picture zooms to 1.03 within its crop, and the action arrow moves with it. The
+    featured project is unveiled by a mask (`.mask-reveal`).
+  - Mobile menu and optional form fields share one disclosure pattern (`.disclosure`): always mounted, `inert`
+    when closed, so they animate smoothly, keep entered values, and stay out of the tab order.
+  - Dialog: a short entrance and exit; closing is timer-driven so a stalled animation can never leave an overlay.
+  - Form: errors and status messages fade in, with text carrying the meaning.
 - **Performance:** the three demo sites are code-split and mounted only as they approach the viewport.
 
 ## Deploy

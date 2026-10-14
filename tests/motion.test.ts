@@ -2,7 +2,9 @@ import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import { describe, expect, test } from 'vitest'
 
-const css = readFileSync(path.resolve(import.meta.dirname, '../src/index.css'), 'utf8')
+const root = path.resolve(import.meta.dirname, '..')
+const css = readFileSync(path.join(root, 'src/index.css'), 'utf8')
+const read = (file: string) => readFileSync(path.join(root, file), 'utf8')
 
 /** Removes every at-rule block that starts with `header`, matching braces so nested rules go too. */
 function stripBlocks(source: string, header: RegExp): string {
@@ -28,9 +30,10 @@ function stripBlocks(source: string, header: RegExp): string {
   return out
 }
 
-describe('motion', () => {
+describe('motion system', () => {
   const outsideSafeBlocks = [
     /@media\s*\(prefers-reduced-motion:\s*no-preference\)\s*{/,
+    /@media\s*\(hover:\s*hover\)\s*and\s*\(prefers-reduced-motion:\s*no-preference\)\s*{/,
     /@media\s*\(prefers-reduced-motion:\s*reduce\)\s*{/,
     /@media\s+print\s*{/,
     /@keyframes[^{]*{/,
@@ -41,16 +44,56 @@ describe('motion', () => {
     expect(offenders).toEqual([])
   })
 
-  test('the new motion exists and is gated', () => {
-    for (const selector of ['.word-mask', '.hero-settle', '.draw-line', '.scroll-progress', '.btn-primary::after']) {
-      expect(css, selector).toContain(selector)
+  test('hover-only effects are limited to devices that can hover', () => {
+    const hoverRules = outsideSafeBlocks.match(/[^{}]*:hover[^{}]*{[^}]*(transform|box-shadow)[^}]*}/g) ?? []
+    // Plain colour/underline hovers are fine; movement and elevation must be inside a (hover: hover) block.
+    expect(hoverRules).toEqual([])
+  })
+
+  test('shared motion tokens are defined', () => {
+    for (const token of [
+      '--motion-ease-out',
+      '--motion-ease-in-out',
+      '--motion-dur-press',
+      '--motion-dur-hover',
+      '--motion-dur-ui',
+      '--motion-dur-enter',
+      '--motion-dur-reveal',
+      '--motion-dur-mask',
+      '--motion-shift-sm',
+      '--motion-shift-md',
+      '--motion-shift-lg',
+      '--motion-stagger',
+    ]) {
+      expect(css, token).toMatch(new RegExp(`${token}\\s*:`))
     }
   })
 
-  test('motion is neutralised when printing', () => {
-    const printBlock = css.slice(css.lastIndexOf('@media print'))
-    for (const selector of ['.word-mask > span', '.hero-in', '.hero-settle', '.draw-line::before', '.scroll-progress']) {
-      expect(printBlock, selector).toContain(selector)
-    }
+  test('uses the standard entrance curve', () => {
+    expect(css).toContain('cubic-bezier(0.22, 1, 0.36, 1)')
   })
+
+  test('never animates everything or leaves will-change applied', () => {
+    expect(css).not.toMatch(/transition\s*:\s*all/)
+    expect(css).not.toMatch(/^\s*will-change\s*:/m)
+  })
+
+  test('removed pointer-following effects stay removed', () => {
+    for (const file of ['src/components/Hero.tsx', 'src/components/sections/Hero.tsx', 'src/components/sections/Work.tsx']) {
+      try {
+        expect(read(file)).not.toMatch(/TiltFrame|pointermove|onPointerMove/i)
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error
+      }
+    }
+    expect(css).not.toMatch(/perspective\s*:/)
+  })
+})
+
+describe('motion is neutralised when printing', () => {
+  const printBlock = css.slice(css.lastIndexOf('@media print'))
+
+  for (const selector of ['.enter', '.fx-in', '.mask-reveal', '.draw-line::before', '.scroll-progress', '.disclosure', '.menu-item']) {
+    test(selector, () => expect(printBlock).toContain(selector))
+  }
 })
