@@ -105,6 +105,10 @@ use commercially. No stock photography is bundled.
 - **Site check:** a band above the contact form (`SiteCheck`) prepares the inquiry for a website review: it sets
   "An update to my current website", adds a starter message without overwriting anything typed, and focuses the
   website field. `#site-check` in the URL does the same, so the link can be shared.
+- **Security policy:** `vite-security-plugin.ts` builds one Content-Security-Policy and writes it two ways: a meta
+  tag in `index.html` (GitHub Pages cannot send headers) and a generated `dist/_headers` for Netlify and Cloudflare.
+  Only the page's own files load; the one inline script is allowed by hash, and `VITE_FORM_ENDPOINT`'s origin is added
+  to `connect-src` automatically. Anything new that loads from another origin must be added there.
 - **Prerendering:** `npm run build` renders the page to static HTML (`scripts/prerender.mjs`, `src/entry-server.tsx`)
   and the browser hydrates it. Crawlers, link unfurlers, and visitors without JavaScript get the real content, and
   the headline paints before any script runs. `src/entry-server.test.tsx` guards the output. Anything that reads

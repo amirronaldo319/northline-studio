@@ -1,8 +1,9 @@
-import { lazy, type ComponentType } from 'react'
+import type { ComponentType } from 'react'
+import { CleaningDemo } from '@/components/demos/CleaningDemo'
 import type { DemoProps } from '@/components/demos/types'
 
-// Each demo is its own chunk, fetched only when an example scrolls near or is opened.
-const CleaningDemo = lazy(() => import('@/components/demos/CleaningDemo').then((m) => ({ default: m.CleaningDemo })))
+// The demo is imported directly (not lazily): it is the hero picture, and a lazy boundary would make React
+// add inline scripts to the prerendered HTML, which the page's Content-Security-Policy does not allow.
 
 export interface ExampleSite {
   id: string

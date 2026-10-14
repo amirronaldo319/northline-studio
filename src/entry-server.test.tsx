@@ -30,4 +30,8 @@ describe('server render', async () => {
   test('does not render the phone quote bar as visible', () => {
     expect(html).toMatch(/<div data-visible="false"[^>]*class="quote-bar/)
   })
+
+  test('contains no inline scripts, which the Content-Security-Policy would block', () => {
+    expect(html).not.toMatch(/<script[\s>]/)
+  })
 })
