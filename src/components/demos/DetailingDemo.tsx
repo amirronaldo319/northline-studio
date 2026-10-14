@@ -1,5 +1,6 @@
 import { ArrowRight, Droplets, Gem, ShieldCheck, Wind } from 'lucide-react'
 import { CarArt } from './art'
+import { DemoImage } from './DemoImage'
 import type { DemoProps } from './types'
 
 const BLACK = '#0c0d10'
@@ -59,7 +60,11 @@ export function DetailingDemo({ onDemoAction }: DemoProps) {
             </button>
           </div>
           <div className="relative">
-            <CarArt className="aspect-[5/3] w-full rounded-2xl" />
+            <DemoImage
+              id="detailing-hero"
+              className="aspect-[5/3] w-full rounded-2xl"
+              fallback={<CarArt className="aspect-[5/3] w-full rounded-2xl" />}
+            />
             <div className="absolute right-3 bottom-3 rounded-full px-3 py-1 text-xs font-semibold backdrop-blur" style={{ background: 'rgb(12 13 16 / 0.6)' }}>
               Full detail · Sedan
             </div>
@@ -94,7 +99,11 @@ export function DetailingDemo({ onDemoAction }: DemoProps) {
       </section>
 
       <section className="grid gap-4 px-5 py-10 @3xl:grid-cols-[1.2fr_1fr] @3xl:items-center @3xl:px-12 @3xl:py-14">
-        <CarArt angle={1} className="aspect-[5/3] w-full rounded-2xl" />
+        <DemoImage
+          id="detailing-booking"
+          className="aspect-[5/3] w-full rounded-2xl"
+          fallback={<CarArt angle={1} className="aspect-[5/3] w-full rounded-2xl" />}
+        />
         <div>
           <h4 className="font-display text-2xl font-extrabold tracking-tight @3xl:text-3xl">Book a detail</h4>
           <p className="mt-2 text-sm leading-relaxed" style={{ color: MIST }}>

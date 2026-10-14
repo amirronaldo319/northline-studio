@@ -26,7 +26,10 @@ export interface ExampleSite {
   Demo: ComponentType<DemoProps>
 }
 
-/** Concept demos for fictional businesses. The first is featured. Always labelled as concepts on the page. */
+/** Id of the example shown in the hero. The examples section leads with the others so visitors see range sooner. */
+export const HERO_EXAMPLE_ID = 'landscaping'
+
+/** Concept demos for fictional businesses. Always labelled as concepts on the page. */
 export const EXAMPLES: readonly ExampleSite[] = [
   {
     id: 'landscaping',
@@ -36,7 +39,7 @@ export const EXAMPLES: readonly ExampleSite[] = [
     approach:
       'A full-width hero sets the tone, services are listed in plain language, and a recent-work gallery lets finished projects carry the page.',
     action: 'Request an estimate',
-    previewHeight: { wide: 563, narrow: 446 },
+    previewHeight: { wide: 563, narrow: 420 },
     Demo: LandscapeDemo,
   },
   {
@@ -60,3 +63,8 @@ export const EXAMPLES: readonly ExampleSite[] = [
     Demo: DetailingDemo,
   },
 ]
+
+export const HERO_EXAMPLE: ExampleSite = EXAMPLES.find((example) => example.id === HERO_EXAMPLE_ID) ?? EXAMPLES[0]
+
+/** Examples shown first in the portfolio, so the hero example is not repeated at full size. */
+export const LEAD_EXAMPLES: readonly ExampleSite[] = EXAMPLES.filter((example) => example.id !== HERO_EXAMPLE.id)

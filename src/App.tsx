@@ -8,10 +8,12 @@ import { Faq } from './components/sections/Faq'
 import { Hero } from './components/sections/Hero'
 import { Package } from './components/sections/Package'
 import { Process } from './components/sections/Process'
+import { useHashScroll } from './hooks/useHashScroll'
 import { useReveal } from './hooks/useReveal'
 
 export default function App() {
   useReveal()
+  useHashScroll()
 
   return (
     <ExampleDialogProvider>

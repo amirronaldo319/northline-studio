@@ -1,11 +1,11 @@
 import { ArrowRight, Maximize2 } from 'lucide-react'
-import { EXAMPLES } from '@/content/examples'
+import { HERO_EXAMPLE } from '@/content/examples'
 import { CONTACT_SECTION_ID, EXAMPLES_CTA_LABEL, PRIMARY_CTA_LABEL } from '@/content/navigation'
 import { DemoPreview } from '../DemoPreview'
 import { useExampleDialog } from '../exampleDialogContext'
 import { buttonClasses } from '../ui/button'
 
-const featured = EXAMPLES[0]
+const featured = HERO_EXAMPLE
 
 export function Hero() {
   const { open } = useExampleDialog()

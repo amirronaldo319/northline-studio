@@ -5,7 +5,7 @@ import { FAQ } from '@/content/faq'
 
 export function Faq() {
   return (
-    <section id="faq" aria-labelledby="faq-title" className="py-16 sm:py-20 lg:py-24">
+    <section id="faq" aria-labelledby="faq-title" className="py-12 sm:py-20 lg:py-24">
       <div className="container-page grid gap-10 lg:grid-cols-12 lg:gap-14">
         <div className="reveal lg:col-span-4">
           <p className="eyebrow">FAQ</p>

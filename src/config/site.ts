@@ -34,65 +34,29 @@ export const site = {
   },
 
   /**
-   * What the one-page package includes, grouped by what it does for the customer.
+   * What the one-page package includes, as four short groups.
    * Only confirmed scope belongs here. Unconfirmed terms stay in `pendingTerms`.
    */
   packageGroups: [
     {
       id: 'design',
       title: 'Design',
-      items: [
-        {
-          title: 'Custom one-page layout',
-          value: 'Built around your business and how your customers decide, not dropped into a template.',
-        },
-        {
-          title: 'Phone and desktop layouts',
-          value: 'Reads and works well on a small screen, where most people will find you.',
-        },
-      ],
+      text: 'A custom one-page layout built around your business, for phones and desktops.',
     },
     {
       id: 'content',
-      title: 'Your content',
-      items: [
-        {
-          title: 'Services information',
-          value: 'Clear sections that explain what you offer and who it’s for.',
-        },
-        {
-          title: 'Your business photos',
-          value: 'Real examples of your work, using photos you supply.',
-        },
-        {
-          title: 'Contact details',
-          value: 'Your phone, email, and service area, where customers expect to find them.',
-        },
-      ],
+      title: 'Content',
+      text: 'Your services, your own photos, and your contact details, laid out clearly.',
     },
     {
       id: 'inquiries',
-      title: 'Getting in touch',
-      items: [
-        {
-          title: 'Quote-request form',
-          value: 'A simple place for customers to tell you what they need.',
-        },
-        {
-          title: 'Clear contact buttons',
-          value: 'Call, email, or request a quote in one tap.',
-        },
-      ],
+      title: 'Inquiries',
+      text: 'A quote-request form and clear contact buttons, so customers know how to reach you.',
     },
     {
-      id: 'sharing',
-      title: 'Search and sharing',
-      items: [
-        {
-          title: 'Basic search and sharing details',
-          value: 'A page title, description, and headings, plus how your link looks when it’s shared.',
-        },
-      ],
+      id: 'launch',
+      title: 'Launch basics',
+      text: 'A page title, description, and headings, plus how your link looks when it’s shared.',
     },
   ],
 

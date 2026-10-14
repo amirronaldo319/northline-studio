@@ -39,6 +39,9 @@ Hero → Examples → Your website package → Process → About → FAQ → Req
 | Navigation and the primary button label | `src/content/navigation.ts` |
 | Unconfirmed commercial terms (kept off the page) | `pendingTerms` in `src/config/site.ts` |
 
+**Old links keep working.** The package section keeps the anchors `#pricing` and `#included` from earlier versions of
+the page, so previously shared links land on it.
+
 **No price is shown on the site.** To publish one, add it to `site.package`, render it in `Package.tsx`, update the
 meta description, and adjust the price rule in `tests/content-rules.test.ts`.
 
@@ -54,6 +57,8 @@ VITE_SITE_URL=https://your-domain.ca                     # no trailing slash
 - **Required:** name, email, and a message. Business name, business type, phone, existing website, and the kind of
   help needed sit behind an "Add more details" disclosure and are optional end to end (validation, payload, email
   text, and messages).
+- **Setting the endpoint on GitHub Pages:** add a repository variable named `VITE_FORM_ENDPOINT` (Settings → Secrets
+  and variables → Actions → Variables). The deploy workflow passes it to the build, so no code change is needed.
 - **With `VITE_FORM_ENDPOINT` set:** the form posts JSON to it and shows success only after a 2xx response. On
   failure, the visitor's entries are kept and an email fallback is shown. A hidden honeypot field (`_gotcha`) is
   sent for spam filtering; Formspree discards those submissions.
@@ -70,15 +75,21 @@ The three examples are concept designs for fictional businesses and are labelled
 opens in an accessible dialog (Escape, focus containment, focus restoration, desktop/phone toggle). A separate,
 clearly labelled button in the dialog takes the visitor to the real inquiry form.
 
-The imagery in the demos is original SVG artwork in `src/components/demos/art.tsx`. **No stock photography is
-bundled**, because licensing and attribution couldn't be verified for specific files. To use real photos:
+**Photography slots.** The demos currently use original SVG artwork. Real photos can replace it one slot at a time
+with no code changes: add a file named after a slot to `src/assets/photos/` (`.jpg`, `.jpeg`, `.webp`, or `.avif`).
 
-1. Choose photos you have the right to use. Unsplash and Pexels licences allow commercial use; keep a note of the
-   photographer and URL.
-2. Export at 2× the largest displayed size (about 1600px wide for hero images) as AVIF or WebP, with a JPEG
-   fallback if needed, and place them in `src/assets/`.
-3. Replace the artwork component in the demo with an `<img>` that has explicit `width`/`height`, meaningful `alt`
-   text, and `loading="lazy"` below the fold. Credit the source in this README.
+| Slot (file name without extension) | Where it appears |
+| --- | --- |
+| `landscaping-hero` | Full-bleed hero of the landscaping demo (also the page hero) |
+| `landscaping-project-1`, `-2`, `-3` | Recent-work gallery in the landscaping demo |
+| `cleaning-hero` | Hero image of the cleaning demo |
+| `detailing-hero`, `detailing-booking` | Hero and booking images of the detailing demo |
+
+Guidance: export at about 2× the displayed size (1600px wide for hero images), keep each file under roughly 250 KB,
+and make the subject sit comfortably under white text on the left (landscaping hero) or fill a 4:3 / 5:3 frame
+(others). Update the matching `alt` text in `src/content/photos.ts`, and record the photographer, URL, and licence in
+`src/assets/photos/CREDITS.md`. Only add images you have the right to use commercially. No stock photography is
+bundled, because licensing could not be verified for specific files.
 
 ## Quality
 

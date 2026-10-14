@@ -21,7 +21,7 @@ const STEPS = [
 
 export function Process() {
   return (
-    <section id="process" aria-labelledby="process-title" className="py-16 sm:py-20 lg:py-24">
+    <section id="process" aria-labelledby="process-title" className="py-12 sm:py-20 lg:py-24">
       <div className="container-page">
         <div className="reveal max-w-2xl">
           <p className="eyebrow">Process</p>

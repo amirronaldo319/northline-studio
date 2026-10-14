@@ -2,7 +2,7 @@ import { site } from '@/config/site'
 
 export function About() {
   return (
-    <section id="about" aria-labelledby="about-title" className="border-t border-line bg-paper-2 py-16 sm:py-20 lg:py-24">
+    <section id="about" aria-labelledby="about-title" className="border-t border-line bg-paper-2 py-12 sm:py-20 lg:py-24">
       <div className="container-page grid gap-10 lg:grid-cols-12 lg:items-start lg:gap-14">
         {/* Typographic composition in place of a portrait */}
         <div className="reveal lg:col-span-4">
@@ -31,10 +31,9 @@ export function About() {
               the person doing the work.
             </p>
             <p>
-              I focus on practical sites for local service businesses in {site.serviceArea.label}: clear services, real
-              photos of your work, and an easy way to ask for a quote.
+              I focus on practical sites for local service businesses in {site.serviceArea.label}, and I keep the scope
+              simple and the language plain, so you know what you’re getting and what comes next.
             </p>
-            <p>I keep the scope simple and explain things in plain language, so you know what you’re getting and what comes next.</p>
           </div>
         </div>
       </div>

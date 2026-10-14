@@ -1,5 +1,6 @@
 import { ArrowUpRight, Leaf, Mountain, Shovel, Sprout } from 'lucide-react'
 import { GardenArt } from './art'
+import { DemoImage } from './DemoImage'
 import type { DemoProps } from './types'
 
 const FOREST = '#22301f'
@@ -14,17 +15,22 @@ const SERVICES = [
 ]
 
 const PROJECTS = [
-  { title: 'Terraced back garden', place: 'North Vancouver', variant: 0 as const },
-  { title: 'Front yard refresh', place: 'Vancouver', variant: 1 as const },
-  { title: 'Stone path and planting', place: 'North Vancouver', variant: 2 as const },
+  { title: 'Terraced back garden', place: 'North Vancouver', variant: 0 as const, photo: 'landscaping-project-1' as const },
+  { title: 'Front yard refresh', place: 'Vancouver', variant: 1 as const, photo: 'landscaping-project-2' as const },
+  { title: 'Stone path and planting', place: 'North Vancouver', variant: 2 as const, photo: 'landscaping-project-3' as const },
 ]
 
 export function LandscapeDemo({ onDemoAction }: DemoProps) {
   return (
     <div className="@container font-sans" style={{ background: STONE, color: FOREST }}>
       <section className="relative overflow-hidden">
-        <GardenArt className="absolute inset-0 h-full w-full" />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgb(20 28 18 / 0.15), rgb(20 28 18 / 0.72))' }} />
+        <DemoImage
+          id="landscaping-hero"
+          isEager
+          className="absolute inset-0 h-full w-full"
+          fallback={<GardenArt className="absolute inset-0 h-full w-full" />}
+        />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgb(20 28 18 / 0.34), rgb(20 28 18 / 0.78))' }} />
         <div className="relative">
           <header className="flex items-center justify-between px-5 py-4 text-white @3xl:px-12 @3xl:py-6">
             <span className="font-display text-lg font-bold tracking-[0.18em] uppercase">Rootline</span>
@@ -37,12 +43,14 @@ export function LandscapeDemo({ onDemoAction }: DemoProps) {
               Get an estimate
             </button>
           </header>
-          <div className="px-5 pt-16 pb-10 text-white @3xl:px-12 @3xl:pt-28 @3xl:pb-16">
-            <p className="text-xs font-bold tracking-[0.2em] uppercase opacity-85">Landscaping · Vancouver and the North Shore</p>
+          <div className="px-5 pt-9 pb-8 text-white @3xl:px-12 @3xl:pt-28 @3xl:pb-16">
+            <p className="text-[0.8125rem] font-bold tracking-[0.14em] uppercase [text-shadow:0_1px_3px_rgb(0_0_0/0.5)] @3xl:text-sm">
+              Landscaping · Vancouver and the North Shore
+            </p>
             <h3 className="mt-3 max-w-2xl font-display text-[2.1rem] leading-[1] font-extrabold tracking-tight uppercase @3xl:text-[4rem]">
               Outdoor spaces built to last.
             </h3>
-            <p className="mt-4 max-w-lg text-base opacity-90 @3xl:text-lg">
+            <p className="mt-4 max-w-lg text-base [text-shadow:0_1px_3px_rgb(0_0_0/0.4)] @3xl:text-lg">
               Design, hardscaping, and planting for homeowners who want a yard they’ll use, done properly from the ground up.
             </p>
             <button
@@ -85,7 +93,11 @@ export function LandscapeDemo({ onDemoAction }: DemoProps) {
         <div className="mt-5 grid gap-4 @2xl:grid-cols-3">
           {PROJECTS.map((project) => (
             <figure key={project.title}>
-              <GardenArt variant={project.variant} className="aspect-[4/3] w-full rounded-lg" />
+              <DemoImage
+                id={project.photo}
+                className="aspect-[4/3] w-full rounded-lg"
+                fallback={<GardenArt variant={project.variant} className="aspect-[4/3] w-full rounded-lg" />}
+              />
               <figcaption className="mt-2 flex items-baseline justify-between gap-2 text-sm">
                 <span className="font-bold">{project.title}</span>
                 <span className="opacity-65">{project.place}</span>

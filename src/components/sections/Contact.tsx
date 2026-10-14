@@ -4,15 +4,9 @@ import { mailtoHref, site } from '@/config/site'
 import { CONTACT_SECTION_ID } from '@/content/navigation'
 import { InquiryForm } from '../contact/InquiryForm'
 
-const NEXT_STEPS = [
-  'I read your message and reply by email.',
-  'We talk through what you need.',
-  'I send a written quote. Nothing starts until you approve it.',
-]
-
 export function Contact() {
   return (
-    <section id={CONTACT_SECTION_ID} aria-labelledby="contact-title" className="border-t border-line bg-paper-2 py-16 sm:py-20 lg:py-24">
+    <section id={CONTACT_SECTION_ID} aria-labelledby="contact-title" className="border-t border-line bg-paper-2 py-12 sm:py-20 lg:py-24">
       <div className="container-page grid gap-10 lg:grid-cols-12 lg:gap-14">
         <div className="reveal lg:col-span-5">
           <p className="eyebrow">Get started</p>
@@ -23,17 +17,10 @@ export function Contact() {
             Tell me about your business and what you need. I’ll reply to talk through the scope and next steps.
           </p>
 
-          <h3 className="mt-8 text-sm font-semibold tracking-[0.08em] text-ink-3 uppercase">What happens next</h3>
-          <ol className="mt-3 space-y-3">
-            {NEXT_STEPS.map((step, index) => (
-              <li key={step} className="flex gap-3 text-[0.9375rem] text-ink-2">
-                <span className="grid size-6 shrink-0 place-items-center rounded-full bg-ink text-xs font-semibold text-white">
-                  {index + 1}
-                </span>
-                {step}
-              </li>
-            ))}
-          </ol>
+          <p className="mt-6 text-[0.9375rem] leading-relaxed text-ink-2">
+            <strong className="font-semibold text-ink">What happens next:</strong> I read your message and reply by email.
+            If it’s a fit, I send a written quote. Nothing starts until you approve it.
+          </p>
 
           <p className="mt-8 text-sm text-ink-3">Prefer email?</p>
           <a

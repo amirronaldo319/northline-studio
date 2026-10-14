@@ -1,5 +1,6 @@
 import { ArrowRight, Building2, CalendarCheck, Home, Phone, Sparkles, Truck } from 'lucide-react'
 import { CleanArt } from './art'
+import { DemoImage } from './DemoImage'
 import type { DemoProps } from './types'
 
 const TEAL = '#0e7c78'
@@ -72,7 +73,11 @@ export function CleaningDemo({ onDemoAction }: DemoProps) {
             </div>
           </div>
           <div className="relative">
-            <CleanArt className="aspect-[4/3] w-full rounded-[1.75rem]" />
+            <DemoImage
+              id="cleaning-hero"
+              className="aspect-[4/3] w-full rounded-[1.75rem]"
+              fallback={<CleanArt className="aspect-[4/3] w-full rounded-[1.75rem]" />}
+            />
             <div className="absolute -bottom-4 left-4 flex items-center gap-2 rounded-2xl bg-white px-4 py-3 text-sm font-semibold shadow-lg">
               <CalendarCheck size={18} style={{ color: TEAL }} /> Weekday and weekend visits
             </div>
