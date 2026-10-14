@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { CONCEPT_PROJECT, FEATURED_PROJECT, HERO_PROJECT, PROJECTS, STATUS_LABEL } from './projects'
+import { CONCEPT_PROJECT, FEATURED_PROJECT, SECONDARY_PROJECT, PROJECTS, STATUS_LABEL } from './projects'
 
 describe('portfolio projects', () => {
   test('every project is labelled as a live website or a concept project', () => {
@@ -33,10 +33,10 @@ describe('portfolio projects', () => {
   })
 
   test('the hero and the featured work are live websites, and the concept project is labelled as a concept', () => {
-    expect(HERO_PROJECT.status).toBe('live')
+    expect(SECONDARY_PROJECT.status).toBe('live')
     expect(FEATURED_PROJECT.status).toBe('live')
     expect(CONCEPT_PROJECT.status).toBe('concept')
-    expect(new Set([HERO_PROJECT.id, FEATURED_PROJECT.id, CONCEPT_PROJECT.id]).size).toBe(3)
+    expect(new Set([SECONDARY_PROJECT.id, FEATURED_PROJECT.id, CONCEPT_PROJECT.id]).size).toBe(3)
   })
 
   test('captions read as a sentence fragment after the project name', () => {

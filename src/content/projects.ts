@@ -109,7 +109,7 @@ function requireProject(id: string): Project {
 }
 
 /** The live website shown in the hero: a one-page local service site, which is the core offer. */
-export const HERO_PROJECT: Project = requireProject('farsh-aquatics')
+export const SECONDARY_PROJECT: Project = requireProject('farsh-aquatics')
 
 /** The live website shown large at the top of the portfolio, in a different style from the hero. */
 export const FEATURED_PROJECT: Project = requireProject('604kars')

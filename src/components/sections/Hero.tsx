@@ -1,11 +1,14 @@
 import { ArrowRight, ArrowUpRight } from 'lucide-react'
-import { HERO_PROJECT, STATUS_LABEL } from '@/content/projects'
+import { HERO_EXAMPLE } from '@/content/examples'
 import { CONTACT_SECTION_ID, PRIMARY_CTA_LABEL, WORK_CTA_LABEL } from '@/content/navigation'
 import { enterStep } from '@/lib/reveal'
-import { ProjectTrigger } from '../ProjectTrigger'
+import { DemoPreview } from '../DemoPreview'
+import { useExampleDialog } from '../exampleDialogContext'
 import { buttonClasses } from '../ui/button'
 
 export function Hero() {
+  const { open } = useExampleDialog()
+
   return (
     <section aria-labelledby="hero-title" className="relative isolate pt-8 pb-12 sm:pt-12 lg:pt-16 lg:pb-24">
       <div className="hero-atmosphere" aria-hidden="true">
@@ -43,23 +46,32 @@ export function Hero() {
         </div>
 
         <figure className="enter" style={enterStep(3)}>
-          <div className="hero-figure overflow-hidden rounded-lg border border-line-strong/60 bg-white shadow-device">
-            <ProjectTrigger project={HERO_PROJECT} isEager />
+          <div className="relative">
+            <div className="hero-figure overflow-hidden rounded-lg border border-line-strong/60 bg-white shadow-device">
+              <DemoPreview example={HERO_EXAMPLE} isEager />
+            </div>
+            {/* Mouse-only convenience; the labelled button in the caption is the accessible control. */}
+            <button
+              type="button"
+              tabIndex={-1}
+              aria-hidden="true"
+              onClick={() => open(HERO_EXAMPLE)}
+              className="absolute inset-0 cursor-pointer rounded-lg"
+            />
           </div>
           <figcaption className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-sm text-ink-3">
             <span>
-              {STATUS_LABEL[HERO_PROJECT.status]}: {HERO_PROJECT.name}, {HERO_PROJECT.caption}.
+              Concept demo: {HERO_EXAMPLE.name}, a design for a fictional {HERO_EXAMPLE.businessType.toLowerCase()} business.
             </span>
-            <a
-              href={HERO_PROJECT.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              type="button"
+              onClick={() => open(HERO_EXAMPLE)}
               className="nudge-up inline-flex min-h-10 items-center gap-1.5 font-semibold text-cobalt underline-offset-4 hover:underline"
             >
-              Visit live site
+              View example
               <ArrowUpRight aria-hidden="true" size={15} className="card-arrow" />
-              <span className="sr-only">: {HERO_PROJECT.name} (opens in a new tab)</span>
-            </a>
+              <span className="sr-only">: {HERO_EXAMPLE.name}</span>
+            </button>
           </figcaption>
         </figure>
       </div>

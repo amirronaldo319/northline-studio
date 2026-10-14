@@ -76,7 +76,7 @@ Three kinds of work appear, each labelled for what it is:
 
 - **Live websites** (Farsh Aquatics, 604 Kars): real public sites. Screenshots are captures, not mock-ups.
 - **Concept project** (Ganjineh Ofogh): a self-initiated design, shown with its live preview.
-- **Concept demo** (Tidewell Cleaning): a design for a fictional business, opened in an accessible preview dialog
+- **Concept demo** (Tidewell Cleaning, shown in the hero): a design for a fictional business, opened in an accessible preview dialog
   (Escape, focus containment, focus restoration, desktop/phone toggle) with a separate button to the real inquiry form.
 
 **Add or refresh a real project**

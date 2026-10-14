@@ -37,3 +37,6 @@ export const EXAMPLES: readonly ExampleSite[] = [
     Demo: CleaningDemo,
   },
 ]
+
+/** The concept demo shown in the hero. */
+export const HERO_EXAMPLE: ExampleSite = EXAMPLES.find((example) => example.id === 'cleaning') ?? EXAMPLES[0]
