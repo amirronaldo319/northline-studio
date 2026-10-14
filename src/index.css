@@ -259,3 +259,25 @@ html:has(dialog[open]) {
     transform: translateX(3px);
   }
 }
+
+/*
+ * Printing: scroll reveals only run on screen, so show everything when the page is printed
+ * and keep the sticky header from repeating on every sheet.
+ */
+@media print {
+  .js .reveal,
+  .js .reveal:not(.is-visible) {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  header {
+    position: static !important;
+  }
+
+  .details-in,
+  details.faq-item {
+    animation: none !important;
+  }
+}
