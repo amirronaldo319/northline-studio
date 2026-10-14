@@ -1,0 +1,222 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens — change the brand palette and type here.
+ * Every component uses these names (bg-paper, text-ink, bg-cobalt, …).
+ */
+@theme {
+  --color-paper: #f7f4ee;
+  --color-paper-2: #efeae0;
+  --color-card: #fffdf9;
+  --color-line: #e3dccf;
+  --color-line-strong: #cfc6b6;
+
+  --color-ink: #131a2b;
+  --color-ink-2: #3f4658;
+  --color-ink-3: #5f6576;
+
+  --color-cobalt: #2347d6;
+  --color-cobalt-deep: #1a37ad;
+  --color-cobalt-soft: #e5eafb;
+
+  --color-night: #10172a;
+  --color-night-2: #1a2238;
+  --color-night-line: #2c3654;
+
+  --color-sand: #d9ccb4;
+  --color-moss: #5d6b4f;
+
+  --color-danger: #b42318;
+  --color-success: #20683f;
+
+  --font-display: 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+
+  --shadow-soft: 0 1px 2px rgb(19 26 43 / 0.04), 0 8px 24px -12px rgb(19 26 43 / 0.12);
+  --shadow-lift: 0 2px 4px rgb(19 26 43 / 0.05), 0 24px 48px -24px rgb(19 26 43 / 0.28);
+  --shadow-device: 0 1px 1px rgb(19 26 43 / 0.06), 0 30px 60px -30px rgb(19 26 43 / 0.4),
+    0 12px 24px -16px rgb(19 26 43 / 0.18);
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Sections land below the sticky header when reached by anchor links. */
+  section[id],
+  [id].anchor-target {
+    scroll-margin-top: 5rem;
+  }
+
+  :focus-visible {
+    outline: 2.5px solid var(--color-cobalt);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  ::selection {
+    background: var(--color-cobalt-soft);
+    color: var(--color-ink);
+  }
+}
+
+@layer components {
+  .container-page {
+    width: 100%;
+    max-width: 76rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .container-page {
+      padding-inline: 2rem;
+    }
+  }
+
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-cobalt);
+  }
+
+  .h-section {
+    font-size: clamp(1.875rem, 1.35rem + 2.2vw, 3rem);
+    font-weight: 650;
+  }
+
+  .lede {
+    font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
+    color: var(--color-ink-2);
+    line-height: 1.6;
+  }
+}
+
+/*
+ * Reveal-on-scroll. Content is only hidden when JS is running AND the
+ * visitor hasn't asked for reduced motion; otherwise it's always visible.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .js .reveal:not(.is-visible) {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  .js .reveal {
+    transition:
+      opacity 700ms var(--ease-out-soft),
+      transform 700ms var(--ease-out-soft);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+}
+
+/*
+ * Example dialog: animate in only. Closing is instant, so a stalled
+ * exit transition can never leave a faded dialog over the page.
+ */
+dialog.demo-dialog[open] {
+  transition:
+    opacity 220ms var(--ease-out-soft),
+    transform 260ms var(--ease-out-soft);
+}
+
+@starting-style {
+  dialog.demo-dialog[open] {
+    opacity: 0;
+    transform: translateY(12px) scale(0.985);
+  }
+}
+
+dialog.demo-dialog::backdrop {
+  background: rgb(16 23 42 / 0.55);
+  backdrop-filter: blur(3px);
+}
+
+dialog.demo-dialog[open]::backdrop {
+  transition: background 260ms ease;
+}
+
+@starting-style {
+  dialog.demo-dialog[open]::backdrop {
+    background: rgb(16 23 42 / 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  dialog.demo-dialog[open],
+  dialog.demo-dialog[open]::backdrop {
+    transition: none;
+  }
+}
+
+/* FAQ disclosure: rotate the indicator; animate height where supported. */
+details.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+details.faq-item[open] .faq-icon {
+  transform: rotate(45deg);
+}
+
+@supports (interpolate-size: allow-keywords) {
+  @media (prefers-reduced-motion: no-preference) {
+    details.faq-item {
+      interpolate-size: allow-keywords;
+    }
+
+    details.faq-item::details-content {
+      height: 0;
+      overflow: clip;
+      transition:
+        height 280ms var(--ease-out-soft),
+        content-visibility 280ms allow-discrete;
+    }
+
+    details.faq-item[open]::details-content {
+      height: auto;
+    }
+  }
+}
+
+/* Stop the page behind an open example dialog from scrolling. */
+html:has(dialog[open]) {
+  overflow: hidden;
+}
