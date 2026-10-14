@@ -60,7 +60,6 @@
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
-    overflow-x: clip;
   }
 
   h1,
@@ -231,11 +230,11 @@ html:has(dialog[open]) {
   overflow: hidden;
 }
 
-/* Hero entrance: a short staggered rise. Content is visible if animation is off or unsupported. */
-@keyframes rise-in {
+/* Disclosure content eases in. Short and skipped for reduced motion. */
+@keyframes details-in {
   from {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(-6px);
   }
   to {
     opacity: 1;
@@ -244,9 +243,8 @@ html:has(dialog[open]) {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .rise {
-    animation: rise-in 550ms var(--ease-out-soft) both;
-    animation-delay: var(--rise-delay, 0ms);
+  .details-in {
+    animation: details-in 220ms var(--ease-out-soft) both;
   }
 }
 

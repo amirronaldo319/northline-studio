@@ -5,15 +5,15 @@ import { FAQ } from '@/content/faq'
 
 export function Faq() {
   return (
-    <section id="faq" aria-labelledby="faq-title" className="py-16 sm:py-20 lg:py-28">
-      <div className="container-page grid gap-10 lg:grid-cols-12 lg:gap-12">
+    <section id="faq" aria-labelledby="faq-title" className="py-16 sm:py-20 lg:py-24">
+      <div className="container-page grid gap-10 lg:grid-cols-12 lg:gap-14">
         <div className="reveal lg:col-span-4">
           <p className="eyebrow">FAQ</p>
           <h2 id="faq-title" className="h-section mt-3">
-            Questions, answered.
+            Before you get in touch.
           </h2>
-          <p className="lede mt-4">
-            Something not covered here?{' '}
+          <p className="mt-4 text-ink-2">
+            Something else?{' '}
             <a href={`#${CONTACT_SECTION_ID}`} className="font-medium text-cobalt underline underline-offset-4">
               Ask in the form
             </a>{' '}

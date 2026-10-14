@@ -2,50 +2,61 @@ import { lazy, type ComponentType } from 'react'
 import type { DemoProps } from '@/components/demos/types'
 
 // Each demo is its own chunk, fetched only when an example scrolls near or is opened.
-const CleaningDemo = lazy(() => import('@/components/demos/CleaningDemo').then((m) => ({ default: m.CleaningDemo })))
 const LandscapeDemo = lazy(() => import('@/components/demos/LandscapeDemo').then((m) => ({ default: m.LandscapeDemo })))
+const CleaningDemo = lazy(() => import('@/components/demos/CleaningDemo').then((m) => ({ default: m.CleaningDemo })))
 const DetailingDemo = lazy(() => import('@/components/demos/DetailingDemo').then((m) => ({ default: m.DetailingDemo })))
 
 export interface ExampleSite {
   id: string
+  /** Fictional business name. */
   name: string
-  industry: string
-  style: string
+  /** Short business type, shown beside the "Concept demo" label. */
+  businessType: string
+  /** One sentence on the customer need the design serves. Describes intent, never a result. */
+  intent: string
+  /** How the design approaches that need. */
   approach: string
-  swatches: readonly string[]
+  /** The action the design makes easy, as it appears on the demo's own button. */
+  action: string
+  /**
+   * Preview crop in design pixels (widths are fixed in DemoPreview): where the picture ends, so it
+   * stops at the end of the demo's hero instead of slicing through the next section.
+   */
+  previewHeight: { wide: number; narrow: number }
   Demo: ComponentType<DemoProps>
 }
 
-/** Concept demos — fictional businesses, always labelled as such on the page. */
+/** Concept demos for fictional businesses. The first is featured. Always labelled as concepts on the page. */
 export const EXAMPLES: readonly ExampleSite[] = [
-  {
-    id: 'cleaning',
-    name: 'Tidewell Cleaning',
-    industry: 'Home cleaning',
-    style: 'Bright, clear, approachable',
-    approach:
-      'Fresh teal and a warm yellow keep things friendly. Services are listed plainly, and the quote button sits in the header, the hero, and beside a short form.',
-    swatches: ['#0e7c78', '#f4c552', '#e3f3f1'],
-    Demo: CleaningDemo,
-  },
   {
     id: 'landscaping',
     name: 'Rootline Landscapes',
-    industry: 'Landscaping',
-    style: 'Confident, grounded, practical',
+    businessType: 'Landscaping',
+    intent: 'Designed to help homeowners compare services and request a landscaping estimate.',
     approach:
-      'Earthy greens, clay, and strong uppercase headings. A full-width hero, a services grid, and a project gallery let finished work do the selling.',
-    swatches: ['#22301f', '#c27c2c', '#ece6d8'],
+      'A full-width hero sets the tone, services are listed in plain language, and a recent-work gallery lets finished projects carry the page.',
+    action: 'Request an estimate',
+    previewHeight: { wide: 563, narrow: 446 },
     Demo: LandscapeDemo,
+  },
+  {
+    id: 'cleaning',
+    name: 'Tidewell Cleaning',
+    businessType: 'Home cleaning',
+    intent: 'Designed to help busy households see what’s covered and ask for a cleaning quote.',
+    approach: 'Bright and friendly, with services laid out as a short list and a quote form that stays within reach.',
+    action: 'Request a quote',
+    previewHeight: { wide: 623, narrow: 520 },
+    Demo: CleaningDemo,
   },
   {
     id: 'detailing',
     name: 'Northgloss Detailing',
-    industry: 'Auto detailing',
-    style: 'Refined, bold, visually strong',
-    approach:
-      'A dark, high-contrast layout with one sharp accent colour. Packages are easy to compare, and every section ends with a clear way to request a booking.',
-    swatches: ['#0c0d10', '#ff5a36', '#a9aeb8'],
+    businessType: 'Auto detailing',
+    intent: 'Designed to help car owners compare packages and request a booking.',
+    approach: 'A dark, high-contrast layout with one sharp accent colour and packages that are easy to compare.',
+    action: 'Request a booking',
+    previewHeight: { wide: 623, narrow: 520 },
     Demo: DetailingDemo,
   },
 ]

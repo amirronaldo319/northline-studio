@@ -3,7 +3,7 @@
  * that don't run JavaScript — update both together.
  */
 export const seo = {
-  title: 'Northline Studio | Websites for local businesses in Vancouver',
+  title: 'Northline Studio | Custom websites for local businesses in Vancouver',
   description:
-    'Modern, mobile-friendly websites for local businesses in Vancouver and North Vancouver. Professional one-page websites with a quote-request form.',
+    'Custom one-page websites for local service businesses in Vancouver and North Vancouver. See website examples and request a quote.',
 } as const

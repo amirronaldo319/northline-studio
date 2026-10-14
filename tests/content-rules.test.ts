@@ -27,6 +27,7 @@ const FORBIDDEN: ReadonlyArray<[string, RegExp]> = [
   ['a guarantee', /\bguarantee[sd]?\b/i],
   ['a ranking claim', /\b(rank(s|ing)?\b.*\b(google|first|#1)|first page of google|top of google)\b/i],
   ['the retired brand name', /Amir Web Design/],
+  ['generic agency filler', /elevate your|unlock your|cutting[- ]edge|seamless|digital presence|revolutioni[sz]e/i],
 ]
 
 describe('public copy rules', () => {
@@ -37,6 +38,16 @@ describe('public copy rules', () => {
   test.each(FORBIDDEN)('contains no %s', (_label, pattern) => {
     const hits = sources.filter(({ text }) => pattern.test(text)).map(({ file }) => file)
     expect(hits).toEqual([])
+  })
+
+  test('does not repeat the "modern, mobile-friendly" tagline', () => {
+    const count = sources.reduce((sum, { text }) => sum + (text.match(/modern, mobile-friendly/gi)?.length ?? 0), 0)
+    expect(count).toBeLessThanOrEqual(0)
+  })
+
+  test('uses "Request a quote" as the primary call to action', () => {
+    const nav = sources.find(({ file }) => file.endsWith('content/navigation.ts'))
+    expect(nav?.text).toContain("PRIMARY_CTA_LABEL = 'Request a quote'")
   })
 
   test('uses the configured contact email consistently', () => {

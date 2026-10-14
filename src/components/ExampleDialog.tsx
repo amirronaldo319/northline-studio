@@ -1,10 +1,13 @@
 import { Suspense, useEffect, useRef, useState } from 'react'
 import { Info, Monitor, Smartphone, X } from 'lucide-react'
 import type { ExampleSite } from '@/content/examples'
+import { buttonClasses } from './ui/button'
 
 type Props = {
   example: ExampleSite | null
   onClose: () => void
+  /** Called after the dialog closes when the visitor chooses to request a quote for their own business. */
+  onRequestQuote: () => void
 }
 
 const NOTICE_TIMEOUT_MS = 5000
@@ -20,11 +23,12 @@ const DEVICES: ReadonlyArray<{ id: Device; label: string; icon: typeof Monitor }
 /**
  * Full-size preview of a concept demo in a native modal <dialog>.
  * The browser handles Escape, focus containment, and making the page behind inert.
- * Focus returns to whichever control opened it.
+ * Focus returns to whichever control opened it, unless the visitor goes on to the real inquiry form.
  */
-export function ExampleDialog({ example, onClose }: Props) {
+export function ExampleDialog({ example, onClose, onRequestQuote }: Props) {
   const dialogRef = useRef<HTMLDialogElement>(null)
   const returnFocusRef = useRef<HTMLElement | null>(null)
+  const isRequestingQuoteRef = useRef(false)
   const [notice, setNotice] = useState('')
   const [device, setDevice] = useState<Device>('desktop')
 
@@ -34,6 +38,7 @@ export function ExampleDialog({ example, onClose }: Props) {
 
     returnFocusRef.current = document.activeElement as HTMLElement | null
     if (!dialog.open) dialog.showModal()
+    dialog.querySelector<HTMLElement>('[data-autofocus]')?.focus()
     dialog.querySelector('.demo-scroll')?.scrollTo({ top: 0 })
 
     return () => {
@@ -50,8 +55,19 @@ export function ExampleDialog({ example, onClose }: Props) {
   const handleClose = () => {
     setNotice('')
     setDevice('desktop')
+
+    if (isRequestingQuoteRef.current) {
+      isRequestingQuoteRef.current = false
+      onRequestQuote()
+      return
+    }
     onClose()
     returnFocusRef.current?.focus()
+  }
+
+  const requestQuote = () => {
+    isRequestingQuoteRef.current = true
+    dialogRef.current?.close()
   }
 
   const Demo = example?.Demo
@@ -65,20 +81,18 @@ export function ExampleDialog({ example, onClose }: Props) {
         // A click on the backdrop lands on the <dialog> element itself.
         if (event.target === event.currentTarget) dialogRef.current?.close()
       }}
-      className="demo-dialog m-auto h-[calc(100dvh-1rem)] max-h-none w-[calc(100vw-1rem)] max-w-[75rem] overflow-hidden rounded-2xl border border-line bg-paper p-0 text-ink shadow-lift sm:h-[calc(100dvh-3rem)] sm:w-[calc(100vw-3rem)]"
+      className="demo-dialog m-auto h-[calc(100dvh-1rem)] max-h-none w-[calc(100vw-1rem)] max-w-[75rem] overflow-hidden rounded-xl border border-line bg-paper p-0 text-ink shadow-lift sm:h-[calc(100dvh-3rem)] sm:w-[calc(100vw-3rem)]"
     >
       {example && Demo && (
         <div className="flex h-full flex-col">
           <div className="flex items-start justify-between gap-4 border-b border-line bg-card px-4 py-3 sm:items-center sm:px-6">
             <div className="min-w-0">
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                <span className="rounded-full bg-cobalt-soft px-2.5 py-0.5 text-xs font-semibold text-cobalt">Concept demo</span>
-                <h2 id="example-dialog-title" className="text-lg font-semibold sm:text-xl">
-                  {example.name}
-                </h2>
-              </div>
-              <p className="mt-1 text-sm text-ink-3">
-                {example.industry} · A fictional business. Buttons and forms in this demo don’t send anything.
+              <p className="text-xs font-semibold tracking-[0.08em] text-cobalt uppercase">Concept demo</p>
+              <h2 id="example-dialog-title" className="mt-0.5 text-lg font-semibold sm:text-xl">
+                {example.name}
+              </h2>
+              <p className="mt-0.5 text-sm text-ink-3">
+                A fictional {example.businessType.toLowerCase()} business. Buttons in this demo don’t send anything.
               </p>
             </div>
             <div className="flex shrink-0 items-center gap-2">
@@ -98,15 +112,15 @@ export function ExampleDialog({ example, onClose }: Props) {
                   </button>
                 ))}
               </div>
-            <button
-              type="button"
-              autoFocus
-              onClick={() => dialogRef.current?.close()}
-              className="grid size-11 shrink-0 place-items-center rounded-full border border-line-strong bg-paper text-ink transition-colors hover:border-ink/40"
-            >
-              <X aria-hidden="true" size={20} />
-              <span className="sr-only">Close example</span>
-            </button>
+              <button
+                type="button"
+                data-autofocus
+                onClick={() => dialogRef.current?.close()}
+                className="grid size-11 shrink-0 place-items-center rounded-full border border-line-strong bg-paper text-ink transition-colors hover:border-ink/40"
+              >
+                <X aria-hidden="true" size={20} />
+                <span className="sr-only">Close example</span>
+              </button>
             </div>
           </div>
 
@@ -140,6 +154,15 @@ export function ExampleDialog({ example, onClose }: Props) {
                 />
               </Suspense>
             </div>
+          </div>
+
+          <div className="flex flex-col gap-3 border-t border-line bg-card px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+            <p className="text-sm text-ink-2">
+              Want a site like this for your own business? This button goes to my real inquiry form.
+            </p>
+            <button type="button" onClick={requestQuote} className={buttonClasses('primary', 'md', 'shrink-0')}>
+              Request a quote for my business
+            </button>
           </div>
         </div>
       )}

@@ -1,50 +1,41 @@
 import { site } from '@/config/site'
 
-const PRINCIPLES = [
-  { title: 'Clear communication', text: 'Plain answers, and you’ll know what’s happening at each step.' },
-  { title: 'Straightforward scope', text: 'What’s included is agreed in writing before work begins.' },
-  { title: 'Attention to design', text: 'Spacing, type, and photos handled with care, on every screen size.' },
-  { title: 'Easy for your customers', text: 'Every decision aims to help people find information and get in touch.' },
-]
-
 export function About() {
   return (
-    <section id="about" aria-labelledby="about-title" className="border-y border-line bg-paper-2 py-16 sm:py-20 lg:py-28">
-      <div className="container-page grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-14">
-        {/* Typographic portrait in place of a photo */}
-        <div className="reveal lg:col-span-5">
-          <div className="relative overflow-hidden rounded-[1.5rem] bg-cobalt p-8 text-white sm:p-10">
-            <div aria-hidden="true" className="absolute -right-10 -bottom-16 font-display text-[16rem] leading-none font-bold text-white/10 select-none">
+    <section id="about" aria-labelledby="about-title" className="border-t border-line bg-paper-2 py-16 sm:py-20 lg:py-24">
+      <div className="container-page grid gap-10 lg:grid-cols-12 lg:items-start lg:gap-14">
+        {/* Typographic composition in place of a portrait */}
+        <div className="reveal lg:col-span-4">
+          <div className="relative overflow-hidden rounded-xl bg-cobalt px-7 py-9 text-white sm:px-8 sm:py-10">
+            <span
+              aria-hidden="true"
+              className="absolute -right-6 -bottom-14 font-display text-[14rem] leading-none font-bold text-white/10 select-none"
+            >
               {site.brand.monogram}
-            </div>
-            <p className="relative font-display text-[clamp(2.75rem,2rem+3vw,4rem)] leading-none font-bold tracking-[-0.03em]">
-              Hi, I’m {site.brand.owner}.
+            </span>
+            <p className="relative font-display text-[clamp(2.5rem,2rem+2.2vw,3.5rem)] leading-none font-bold tracking-[-0.03em]">
+              {site.brand.owner}
             </p>
-            <p className="relative mt-5 max-w-xs text-white/85">Independent web designer for local businesses.</p>
-            <p className="relative mt-10 inline-flex rounded-full border border-white/30 px-3 py-1 text-sm font-medium">
-              {site.serviceArea.label}, BC
-            </p>
+            <p className="relative mt-3 text-white/85">Web designer and developer, Northline Studio</p>
           </div>
         </div>
 
-        <div className="reveal lg:col-span-7">
+        <div className="reveal lg:col-span-8 lg:pl-6">
           <p className="eyebrow">About</p>
           <h2 id="about-title" className="h-section mt-3">
-            One person, from first message to launch.
+            You work with me directly.
           </h2>
-          <p className="lede mt-4">
-            I create practical, modern websites for local businesses in {site.serviceArea.label}. When you work with me,
-            you deal directly with the person designing and building your site.
-          </p>
-
-          <dl className="mt-8 grid gap-x-8 gap-y-6 sm:grid-cols-2">
-            {PRINCIPLES.map((item) => (
-              <div key={item.title} className="border-l-2 border-cobalt pl-4">
-                <dt className="font-semibold">{item.title}</dt>
-                <dd className="mt-1 text-[0.9375rem] leading-relaxed text-ink-2">{item.text}</dd>
-              </div>
-            ))}
-          </dl>
+          <div className="mt-5 max-w-[38rem] space-y-4 text-[1.0625rem] leading-relaxed text-ink-2">
+            <p>
+              I’m {site.brand.owner}. I design and build every website myself, so when you send a message you’re talking to
+              the person doing the work.
+            </p>
+            <p>
+              I focus on practical sites for local service businesses in {site.serviceArea.label}: clear services, real
+              photos of your work, and an easy way to ask for a quote.
+            </p>
+            <p>I keep the scope simple and explain things in plain language, so you know what you’re getting and what comes next.</p>
+          </div>
         </div>
       </div>
     </section>

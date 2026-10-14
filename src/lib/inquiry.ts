@@ -2,13 +2,14 @@
 
 export interface Inquiry {
   name: string
-  business: string
   email: string
+  message: string
+  /** Optional details start here. */
+  business: string
   phone: string
   businessType: string
   website: string
   need: string
-  message: string
 }
 
 export type InquiryField = keyof Inquiry
@@ -16,13 +17,23 @@ export type InquiryErrors = Partial<Record<InquiryField, string>>
 
 export const emptyInquiry: Inquiry = {
   name: '',
-  business: '',
   email: '',
+  message: '',
+  business: '',
   phone: '',
   businessType: '',
   website: '',
   need: '',
-  message: '',
+}
+
+/** Fields shown by default and required. */
+export const REQUIRED_FIELDS = ['name', 'email', 'message'] as const satisfies readonly InquiryField[]
+
+/** Fields behind the "Add more details" disclosure. All optional. */
+export const OPTIONAL_FIELDS = ['business', 'businessType', 'phone', 'website', 'need'] as const satisfies readonly InquiryField[]
+
+export function isOptionalField(field: InquiryField): boolean {
+  return (OPTIONAL_FIELDS as readonly InquiryField[]).includes(field)
 }
 
 export const BUSINESS_TYPES = [
@@ -53,7 +64,6 @@ export function validateInquiry(inquiry: Inquiry): InquiryErrors {
   const value = (field: InquiryField) => inquiry[field].trim()
 
   if (!value('name')) errors.name = 'Please enter your name.'
-  if (!value('business')) errors.business = 'Please enter your business name.'
 
   if (!value('email')) {
     errors.email = 'Please enter your email so I can reply.'
@@ -71,7 +81,7 @@ export function validateInquiry(inquiry: Inquiry): InquiryErrors {
   }
 
   if (!value('message')) {
-    errors.message = 'Please tell me a little about what you need.'
+    errors.message = 'Please tell me a little about your business and what you need.'
   } else if (value('message').length < MIN_MESSAGE_LENGTH) {
     errors.message = 'Please add a little more detail so I can reply usefully.'
   }
@@ -85,14 +95,14 @@ function summaryLines(inquiry: Inquiry): string[] {
 
   return [
     `Name: ${inquiry.name.trim()}`,
-    `Business: ${inquiry.business.trim()}`,
     `Email: ${inquiry.email.trim()}`,
+    ...optional('Business', 'business'),
     ...optional('Phone', 'phone'),
     ...optional('Business type', 'businessType'),
     ...optional('Existing website', 'website'),
     ...optional('Looking for', 'need'),
     '',
-    'What I need:',
+    'About my business and what I need:',
     inquiry.message.trim(),
   ]
 }
@@ -101,8 +111,13 @@ export function formatInquiryText(inquiry: Inquiry): string {
   return summaryLines(inquiry).join('\n')
 }
 
+/** Subject line that names the business when given, and the person otherwise. */
+export function inquirySubject(inquiry: Inquiry): string {
+  return `Website inquiry from ${inquiry.business.trim() || inquiry.name.trim()}`
+}
+
 export function buildMailtoUrl(to: string, inquiry: Inquiry): string {
-  const subject = `Website inquiry from ${inquiry.business.trim() || inquiry.name.trim()}`
+  const subject = inquirySubject(inquiry)
   return `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(formatInquiryText(inquiry))}`
 }
 
@@ -126,7 +141,7 @@ export async function submitInquiry(
     headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
     body: JSON.stringify({
       ...trimmed,
-      _subject: `Website inquiry from ${inquiry.business.trim()}`,
+      _subject: inquirySubject(inquiry),
       _replyto: inquiry.email.trim(),
       _gotcha: honeypot,
     }),

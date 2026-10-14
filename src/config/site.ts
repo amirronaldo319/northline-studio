@@ -28,58 +28,71 @@ export const site = {
     label: 'Vancouver and North Vancouver',
   },
 
-  /**
-   * No price is published on the site. Fees are given in each written quote.
-   * To show a price later, add it here and render it in sections/Pricing.tsx.
-   */
-  pricing: {
-    packageName: 'One-page website',
+  /** The single core offer. No price is published; each written quote states the fee. */
+  package: {
+    name: 'One-page website',
   },
 
   /**
-   * Package features confirmed for the one-page website.
-   * `title` is the feature; `value` explains why it matters to the customer.
+   * What the one-page package includes, grouped by what it does for the customer.
+   * Only confirmed scope belongs here. Unconfirmed terms stay in `pendingTerms`.
    */
-  packageFeatures: [
+  packageGroups: [
     {
-      id: 'layout',
-      title: 'Custom layout',
-      value: 'Designed around your business and the way your customers decide, not a generic template.',
+      id: 'design',
+      title: 'Design',
+      items: [
+        {
+          title: 'Custom one-page layout',
+          value: 'Built around your business and how your customers decide, not dropped into a template.',
+        },
+        {
+          title: 'Phone and desktop layouts',
+          value: 'Reads and works well on a small screen, where most people will find you.',
+        },
+      ],
     },
     {
-      id: 'responsive',
-      title: 'Mobile and desktop design',
-      value: 'Most people will find you on their phone. The site is built to read and work well on any screen.',
+      id: 'content',
+      title: 'Your content',
+      items: [
+        {
+          title: 'Services information',
+          value: 'Clear sections that explain what you offer and who it’s for.',
+        },
+        {
+          title: 'Your business photos',
+          value: 'Real examples of your work, using photos you supply.',
+        },
+        {
+          title: 'Contact details',
+          value: 'Your phone, email, and service area, where customers expect to find them.',
+        },
+      ],
     },
     {
-      id: 'services',
-      title: 'Services information',
-      value: 'Clear sections that explain what you offer, so customers know they have the right business.',
+      id: 'inquiries',
+      title: 'Getting in touch',
+      items: [
+        {
+          title: 'Quote-request form',
+          value: 'A simple place for customers to tell you what they need.',
+        },
+        {
+          title: 'Clear contact buttons',
+          value: 'Call, email, or request a quote in one tap.',
+        },
+      ],
     },
     {
-      id: 'photos',
-      title: 'Your business photos',
-      value: 'Show real examples of your work using photos you supply.',
-    },
-    {
-      id: 'contact',
-      title: 'Contact details',
-      value: 'Your phone, email, and service area, placed where customers expect to find them.',
-    },
-    {
-      id: 'quote-form',
-      title: 'Quote-request form',
-      value: 'Give customers a simple place to tell you what they need.',
-    },
-    {
-      id: 'buttons',
-      title: 'Clear contact buttons',
-      value: 'Call, email, or request a quote in one tap, without hunting through the page.',
-    },
-    {
-      id: 'basics',
-      title: 'Page titles, descriptions, and headings',
-      value: 'The basic structure search engines and link previews read, set up properly from the start.',
+      id: 'sharing',
+      title: 'Search and sharing',
+      items: [
+        {
+          title: 'Basic search and sharing details',
+          value: 'A page title, description, and headings, plus how your link looks when it’s shared.',
+        },
+      ],
     },
   ],
 
