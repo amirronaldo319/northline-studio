@@ -33,7 +33,7 @@ function stripBlocks(source: string, header: RegExp): string {
 describe('motion system', () => {
   const outsideSafeBlocks = [
     /@media\s*\(prefers-reduced-motion:\s*no-preference\)\s*{/,
-    /@media\s*\(hover:\s*hover\)\s*and\s*\(prefers-reduced-motion:\s*no-preference\)\s*{/,
+    /@media[^{]*\(hover:\s*hover\)[^{]*{/,
     /@media\s*\(prefers-reduced-motion:\s*reduce\)\s*{/,
     /@media\s+print\s*{/,
     /@keyframes[^{]*{/,
@@ -50,6 +50,12 @@ describe('motion system', () => {
     expect(hoverRules).toEqual([])
   })
 
+  test('every hover media query also requires a fine pointer', () => {
+    const queries = css.match(/@media[^{]*\(hover:\s*hover\)[^{]*/g) ?? []
+    expect(queries.length).toBeGreaterThan(0)
+    for (const query of queries) expect(query, query).toMatch(/\(pointer:\s*fine\)/)
+  })
+
   test('shared motion tokens are defined', () => {
     for (const token of [
       '--motion-ease-out',
@@ -60,6 +66,9 @@ describe('motion system', () => {
       '--motion-dur-enter',
       '--motion-dur-reveal',
       '--motion-dur-mask',
+      '--motion-dur-nav',
+      '--motion-dur-expand',
+      '--motion-dur-presentation',
       '--motion-shift-sm',
       '--motion-shift-md',
       '--motion-shift-lg',

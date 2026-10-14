@@ -1,12 +1,100 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { CONTACT_SECTION_ID, NAV_LINKS, PRIMARY_CTA_LABEL } from '@/content/navigation'
 import { useActiveSection } from '@/hooks/useActiveSection'
+import { underlineFor, underlineTarget, type Underline } from '@/lib/navUnderline'
 import { BrandMark } from './BrandMark'
 import { buttonClasses } from './ui/button'
 
 const DESKTOP_QUERY = '(min-width: 900px)'
 const sectionIds = NAV_LINKS.map((link) => link.id)
+/** Horizontal padding of each desktop link (px-3.5); the underline spans the text inside it. */
+const LINK_PADDING_PX = 14
+
+/**
+ * Desktop navigation with one underline that slides between links. It follows the active section,
+ * is borrowed by hover and keyboard focus, and returns to the active section afterwards.
+ * The underline is a separate element, so link hit areas never move.
+ */
+function DesktopNav({ active }: { active: string | null }) {
+  const listRef = useRef<HTMLUListElement>(null)
+  const linkRefs = useRef<Array<HTMLAnchorElement | null>>([])
+  const [hovered, setHovered] = useState<number | null>(null)
+  const [focused, setFocused] = useState<number | null>(null)
+  const [underline, setUnderline] = useState<Underline | null>(null)
+  const [isReady, setIsReady] = useState(false)
+
+  const activeIndex = NAV_LINKS.findIndex((link) => link.id === active)
+  const target = underlineTarget({ hovered, focused, active: activeIndex >= 0 ? activeIndex : null })
+
+  const measure = useCallback(() => {
+    const link = target === null ? null : linkRefs.current[target]
+    if (!link) {
+      setUnderline(null)
+      return
+    }
+    setUnderline(underlineFor({ left: link.offsetLeft, width: link.offsetWidth }, LINK_PADDING_PX))
+  }, [target])
+
+  useLayoutEffect(() => {
+    measure()
+  }, [measure])
+
+  // Re-measure when the list changes size (window resize) and when web fonts finish loading.
+  useEffect(() => {
+    const list = listRef.current
+    if (!list) return
+    const observer = new ResizeObserver(measure)
+    observer.observe(list)
+    void document.fonts?.ready.then(measure)
+    return () => observer.disconnect()
+  }, [measure])
+
+  // Enable the slide only after the first position is placed, so the line never flies in from the left.
+  useEffect(() => {
+    if (!underline || isReady) return
+    const frame = requestAnimationFrame(() => setIsReady(true))
+    return () => cancelAnimationFrame(frame)
+  }, [underline, isReady])
+
+  return (
+    <nav aria-label="Main" className="hidden min-[900px]:block">
+      <ul ref={listRef} className="relative flex items-center gap-1" onPointerLeave={() => setHovered(null)}>
+        {NAV_LINKS.map((link, index) => {
+          const isActive = active === link.id
+          return (
+            <li key={link.id}>
+              <a
+                ref={(el) => {
+                  linkRefs.current[index] = el
+                }}
+                href={`#${link.id}`}
+                aria-current={isActive ? 'location' : undefined}
+                onPointerEnter={(event) => event.pointerType === 'mouse' && setHovered(index)}
+                onFocus={() => setFocused(index)}
+                onBlur={() => setFocused(null)}
+                className={`block rounded-full px-3.5 py-2 text-[0.9375rem] font-medium transition-colors duration-150 ${
+                  isActive ? 'text-ink' : 'text-ink-2 hover:text-ink'
+                }`}
+              >
+                {link.label}
+              </a>
+            </li>
+          )
+        })}
+        <span
+          aria-hidden="true"
+          className="nav-underline"
+          data-ready={isReady}
+          style={{
+            opacity: underline ? 1 : 0,
+            transform: underline ? `translateX(${underline.x}px) scaleX(${underline.width})` : 'translateX(0) scaleX(0)',
+          }}
+        />
+      </ul>
+    </nav>
+  )
+}
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -54,32 +142,7 @@ export function Header() {
           <BrandMark />
         </a>
 
-        <nav aria-label="Main" className="hidden min-[900px]:block">
-          <ul className="flex items-center gap-1">
-            {NAV_LINKS.map((link) => {
-              const isActive = active === link.id
-              return (
-                <li key={link.id}>
-                  <a
-                    href={`#${link.id}`}
-                    aria-current={isActive ? 'location' : undefined}
-                    className={`relative rounded-full px-3.5 py-2 text-[0.9375rem] font-medium transition-colors ${
-                      isActive ? 'text-ink' : 'text-ink-2 hover:text-ink'
-                    }`}
-                  >
-                    {link.label}
-                    <span
-                      aria-hidden="true"
-                      className={`absolute inset-x-3.5 -bottom-0.5 h-0.5 origin-left rounded-full bg-cobalt transition-transform duration-300 ${
-                        isActive ? 'scale-x-100' : 'scale-x-0'
-                      }`}
-                    />
-                  </a>
-                </li>
-              )
-            })}
-          </ul>
-        </nav>
+        <DesktopNav active={active} />
 
         <div className="flex items-center gap-2">
           <div className="hidden min-[560px]:block">

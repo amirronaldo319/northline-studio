@@ -2,7 +2,7 @@ import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { HERO_PROJECT, STATUS_LABEL } from '@/content/projects'
 import { CONTACT_SECTION_ID, PRIMARY_CTA_LABEL, WORK_CTA_LABEL } from '@/content/navigation'
 import { enterStep } from '@/lib/reveal'
-import { ProjectShot } from '../ProjectShot'
+import { ProjectTrigger } from '../ProjectTrigger'
 import { buttonClasses } from '../ui/button'
 
 export function Hero() {
@@ -39,7 +39,7 @@ export function Hero() {
 
         <figure className="enter" style={enterStep(3)}>
           <div className="overflow-hidden rounded-lg border border-line-strong/60 bg-white shadow-device">
-            <ProjectShot project={HERO_PROJECT} isEager />
+            <ProjectTrigger project={HERO_PROJECT} isEager />
           </div>
           <figcaption className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-sm text-ink-3">
             <span>

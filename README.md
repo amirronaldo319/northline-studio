@@ -110,6 +110,18 @@ use commercially. No stock photography is bundled.
     everything, and hash links reveal their destination immediately (`useHashScroll`).
   - Projects: cards lift 3 px, the picture zooms to 1.03 within its crop, and the action arrow moves with it. The
     featured project is unveiled by a mask (`.mask-reveal`).
+  - Project viewer: every real project screenshot is a button that opens a larger preview
+    (`ProjectViewerProvider`). The picture grows from its thumbnail in about 300 ms (a shared-element transition
+    using the Web Animations API, so it does not depend on view-transition support) and returns to wherever it
+    came from. It falls back to a 240 ms fade and scale when the thumbnail is cropped differently (phones) or
+    off screen, and to an instant change for reduced motion. Closing is timer-driven, so an interrupted animation
+    can never leave an overlay. Escape, focus containment, focus return, and scroll lock come from the native
+    `<dialog>`. "Visit live site" is a separate action, and the project label is always shown.
+  - Featured project: the real desktop capture is the anchor and the real phone capture arrives beside it once
+    (450 ms, 24 px, only when it enters view). Its column is reserved up front, the text never moves, and small
+    screens show the single phone capture instead of two tiny ones.
+  - Navigation: one underline slides between desktop links (transform only, 180 ms). Hover and keyboard focus borrow
+    it and the active section is restored afterwards; it re-measures on resize and when fonts load.
   - Mobile menu and optional form fields share one disclosure pattern (`.disclosure`): always mounted, `inert`
     when closed, so they animate smoothly, keep entered values, and stay out of the tab order.
   - Dialog: a short entrance and exit; closing is timer-driven so a stalled animation can never leave an overlay.

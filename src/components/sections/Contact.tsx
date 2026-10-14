@@ -2,6 +2,7 @@ import { Mail } from 'lucide-react'
 import { formEndpoint } from '@/config/env'
 import { mailtoHref, site } from '@/config/site'
 import { CONTACT_SECTION_ID } from '@/content/navigation'
+import { CopyEmailButton } from '../CopyEmailButton'
 import { InquiryForm } from '../contact/InquiryForm'
 
 export function Contact() {
@@ -30,6 +31,9 @@ export function Contact() {
             <Mail aria-hidden="true" size={18} className="shrink-0 text-cobalt" />
             {site.contact.email}
           </a>
+          <div className="mt-3">
+            <CopyEmailButton />
+          </div>
 
           <div id="privacy" className="anchor-target mt-8 border-t border-line-strong pt-5">
             <h3 className="text-sm font-semibold">How your details are used</h3>

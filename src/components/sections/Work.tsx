@@ -1,11 +1,12 @@
 import { ArrowUpRight } from 'lucide-react'
 import { EXAMPLES, type ExampleSite } from '@/content/examples'
 import { CONCEPT_PROJECT, FEATURED_PROJECT, HERO_PROJECT, STATUS_LABEL, type Project } from '@/content/projects'
+import { useInViewOnce } from '@/hooks/useInViewOnce'
 import { revealDelay } from '@/lib/reveal'
 import { DemoPreview } from '../DemoPreview'
 import { useExampleDialog } from '../exampleDialogContext'
 import { LegacyAnchors } from '../LegacyAnchors'
-import { ProjectShot } from '../ProjectShot'
+import { ProjectTrigger } from '../ProjectTrigger'
 import { buttonClasses } from '../ui/button'
 
 const frameClasses = 'card-frame overflow-hidden rounded-lg border border-line-strong/60 bg-white shadow-soft'
@@ -51,15 +52,27 @@ function ProjectText({ project, titleId }: { project: Project; titleId: string }
   )
 }
 
-/** The featured live project: a large screenshot with its description beside it. */
+/**
+ * The featured live project: the real desktop screenshot is the anchor, with the real phone screenshot
+ * arriving beside it once. Only the media moves; the text and buttons stay put. On small screens the
+ * single phone capture is shown instead of two unreadably small pictures.
+ */
 function FeaturedProject({ project }: { project: Project }) {
   const titleId = `project-${project.id}-title`
+  const { ref, hasEntered } = useInViewOnce<HTMLDivElement>(0.3)
 
   return (
-    <article aria-labelledby={titleId} className="project-card reveal grid gap-6 lg:grid-cols-12 lg:items-center lg:gap-10">
-      <div className="lg:col-span-8">
+    <article aria-labelledby={titleId} className="project-card grid gap-6 lg:grid-cols-12 lg:items-center lg:gap-10">
+      {/* The phone sits beside the desktop picture with only a hairline of overlap, so it never covers content.
+          Its column is reserved up front (the right padding), so nothing shifts when it arrives. */}
+      <div ref={ref} className="reveal relative sm:pr-[15%] lg:col-span-8">
         <div className={`mask-reveal ${frameClasses}`}>
-          <ProjectShot project={project} />
+          <ProjectTrigger project={project} />
+        </div>
+        <div className="phone-pop absolute right-0 bottom-0 hidden w-[17%] sm:block" data-in={hasEntered}>
+          <div className="phone-device">
+            <ProjectTrigger project={project} view="phone" className="phone-trigger" />
+          </div>
         </div>
       </div>
       <div className="lg:col-span-4">
@@ -76,7 +89,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
   return (
     <article aria-labelledby={titleId} className="project-card reveal" style={revealDelay(index)}>
       <div className={frameClasses}>
-        <ProjectShot project={project} />
+        <ProjectTrigger project={project} />
       </div>
       <div className="mt-5">
         <ProjectText project={project} titleId={titleId} />
@@ -97,7 +110,7 @@ function HeroProjectRow({ project }: { project: Project }) {
       </div>
       <div className="hidden md:col-span-5 md:block">
         <div className={frameClasses}>
-          <ProjectShot project={project} />
+          <ProjectTrigger project={project} />
         </div>
       </div>
     </article>

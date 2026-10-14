@@ -1,4 +1,5 @@
 import { ExampleDialogProvider } from './components/ExampleDialogProvider'
+import { ProjectViewerProvider } from './components/ProjectViewerProvider'
 import { Footer } from './components/Footer'
 import { Header } from './components/Header'
 import { About } from './components/sections/About'
@@ -17,6 +18,7 @@ export default function App() {
 
   return (
     <ExampleDialogProvider>
+      <ProjectViewerProvider>
       <a
         href="#main"
         className="sr-only z-50 rounded-full bg-ink px-4 py-2 font-semibold text-white focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
@@ -35,6 +37,7 @@ export default function App() {
         <Contact />
       </main>
       <Footer />
+      </ProjectViewerProvider>
     </ExampleDialogProvider>
   )
 }
