@@ -4,6 +4,7 @@ import { mailtoHref, site } from '@/config/site'
 import { CONTACT_SECTION_ID } from '@/content/navigation'
 import { CopyEmailButton } from '../CopyEmailButton'
 import { InquiryForm } from '../contact/InquiryForm'
+import { Words } from '../Words'
 
 export function Contact() {
   return (
@@ -11,8 +12,8 @@ export function Contact() {
       <div className="container-page grid gap-10 lg:grid-cols-12 lg:gap-14">
         <div className="reveal lg:col-span-5">
           <p className="eyebrow">Get started</p>
-          <h2 id="contact-title" className="h-section mt-3">
-            Request a quote.
+          <h2 id="contact-title" className="h-section word-reveal mt-3">
+            <Words text="Request a quote." />
           </h2>
           <p className="lede mt-4">
             Tell me about your business and what you need. I’ll reply to talk through the scope and next steps.

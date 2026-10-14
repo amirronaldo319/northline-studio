@@ -112,6 +112,10 @@ use commercially. No stock photography is bundled.
     picture and grid drift a little with page scroll where `animation-timeline` is supported. Pointer-following
     tilt and spotlight effects were deliberately removed earlier and are guarded by a test.
   - Primary buttons: a single light sweep on hover (`.shine`). Section labels draw a short rule as they appear.
+  - Words: the hero headline arrives word by word and draws an underline under "Vancouver’s"; section headings
+    do the same as they scroll in (`Words`, `.word`). Header links arrive in turn on load.
+  - Process numbers fill in and package icons pop as their group is revealed; the featured project's phone drifts
+    against the desktop picture while scrolling; the "request sent" check draws itself.
   - Phones: a "Request a quote" bar slides up after the first screen and leaves at the form (`StickyQuoteBar`,
     rule in `src/lib/quoteBar.ts`).
   - Sections: groups fade up once as they enter view (`.reveal`); if the observer never reports, `useReveal` shows

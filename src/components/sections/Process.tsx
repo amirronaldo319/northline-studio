@@ -1,4 +1,5 @@
 import { revealDelay } from '@/lib/reveal'
+import { Words } from '../Words'
 
 const STEPS = [
   {
@@ -25,15 +26,17 @@ export function Process() {
       <div className="container-page">
         <div className="reveal max-w-2xl">
           <p className="eyebrow">Process</p>
-          <h2 id="process-title" className="h-section mt-3">
-            How we’ll work together.
+          <h2 id="process-title" className="h-section word-reveal mt-3">
+            <Words text="How we’ll work together." />
           </h2>
         </div>
 
         <ol className="mt-10 grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:mt-12 lg:grid-cols-4">
           {STEPS.map((step, index) => (
             <li key={step.title} className="reveal draw-line pt-4" style={revealDelay(index)}>
-              <span className="font-display text-sm font-semibold text-ink-3 tabular-nums">0{index + 1}</span>
+              <span className="step-num grid size-9 place-items-center rounded-full bg-cobalt font-display text-sm font-semibold text-white tabular-nums">
+                {index + 1}
+              </span>
               <h3 className="mt-2 text-[1.1875rem] font-semibold">{step.title}</h3>
               <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-2">{step.text}</p>
             </li>

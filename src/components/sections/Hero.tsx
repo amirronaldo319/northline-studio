@@ -3,6 +3,7 @@ import { HERO_EXAMPLE } from '@/content/examples'
 import { CONTACT_SECTION_ID, PRIMARY_CTA_LABEL, WORK_CTA_LABEL } from '@/content/navigation'
 import { enterStep } from '@/lib/reveal'
 import { DemoPreview } from '../DemoPreview'
+import { Words } from '../Words'
 import { useExampleDialog } from '../exampleDialogContext'
 import { buttonClasses } from '../ui/button'
 
@@ -21,16 +22,15 @@ export function Hero() {
           {/* Entrance sequence: headline, copy, buttons, note, then the project picture (see `.enter`). */}
           <h1
             id="hero-title"
-            className="enter text-[clamp(2.15rem,1.55rem+2.7vw,3.5rem)] font-[680] leading-[1.05] tracking-[-0.03em]"
-            style={enterStep(0)}
+            className="word-enter text-[clamp(2.15rem,1.55rem+2.7vw,3.5rem)] font-[680] leading-[1.05] tracking-[-0.03em]"
           >
-            Custom websites for Vancouver’s local service businesses.
+            <Words text="Custom websites for Vancouver’s local service businesses." marked={[3]} />
           </h1>
-          <p className="lede enter mt-5 max-w-[30rem]" style={enterStep(1)}>
+          <p className="lede enter mt-5 max-w-[30rem]" style={enterStep(2)}>
             Show your work, explain your services, and make requesting a quote easy.
           </p>
 
-          <div className="enter mt-7 flex flex-col gap-3 min-[420px]:flex-row" style={enterStep(2)}>
+          <div className="enter mt-7 flex flex-col gap-3 min-[420px]:flex-row" style={enterStep(3)}>
             <a href={`#${CONTACT_SECTION_ID}`} className={buttonClasses('primary', 'lg', 'nudge')}>
               {PRIMARY_CTA_LABEL}
               <ArrowRight aria-hidden="true" size={18} />
@@ -40,12 +40,12 @@ export function Hero() {
             </a>
           </div>
 
-          <p className="enter mt-5 text-sm text-ink-3" style={enterStep(3)}>
+          <p className="enter mt-5 text-sm text-ink-3" style={enterStep(4)}>
             Serving Vancouver and North Vancouver.
           </p>
         </div>
 
-        <figure className="enter" style={enterStep(3)}>
+        <figure className="enter" style={enterStep(4)}>
           <div className="relative">
             <div className="hero-figure overflow-hidden rounded-lg border border-line-strong/60 bg-white shadow-device">
               <DemoPreview example={HERO_EXAMPLE} isEager />

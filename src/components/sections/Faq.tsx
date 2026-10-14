@@ -2,6 +2,7 @@ import { Plus } from 'lucide-react'
 import { mailtoHref, site } from '@/config/site'
 import { CONTACT_SECTION_ID } from '@/content/navigation'
 import { FAQ } from '@/content/faq'
+import { Words } from '../Words'
 
 export function Faq() {
   return (
@@ -9,8 +10,8 @@ export function Faq() {
       <div className="container-page grid gap-10 lg:grid-cols-12 lg:gap-14">
         <div className="reveal lg:col-span-4">
           <p className="eyebrow">FAQ</p>
-          <h2 id="faq-title" className="h-section mt-3">
-            Before you get in touch.
+          <h2 id="faq-title" className="h-section word-reveal mt-3">
+            <Words text="Before you get in touch." />
           </h2>
           <p className="mt-4 text-ink-2">
             Something else?{' '}

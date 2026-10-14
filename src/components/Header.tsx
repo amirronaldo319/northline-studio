@@ -63,7 +63,7 @@ function DesktopNav({ active }: { active: string | null }) {
         {NAV_LINKS.map((link, index) => {
           const isActive = active === link.id
           return (
-            <li key={link.id}>
+            <li key={link.id} className="nav-enter" style={{ '--i': index } as React.CSSProperties}>
               <a
                 ref={(el) => {
                   linkRefs.current[index] = el

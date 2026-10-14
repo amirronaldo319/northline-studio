@@ -1,6 +1,7 @@
 import { ArrowUp } from 'lucide-react'
 import { mailtoHref, site } from '@/config/site'
 import { NAV_LINKS } from '@/content/navigation'
+import { revealDelay } from '@/lib/reveal'
 import { BrandMark } from './BrandMark'
 
 const CURRENT_YEAR = new Date().getFullYear()
@@ -10,7 +11,7 @@ export function Footer() {
     <footer className="on-dark relative isolate bg-night text-white">
       <div className="footer-glow" aria-hidden="true" />
       <div className="container-page flex flex-col gap-8 py-12 md:flex-row md:items-start md:justify-between">
-        <div>
+        <div className="reveal">
           <BrandMark tone="dark" />
           <p className="mt-4 max-w-sm text-[0.9375rem] leading-relaxed text-white/70">
             Custom one-page websites for local service businesses in {site.serviceArea.label}.
@@ -20,7 +21,7 @@ export function Footer() {
           </a>
         </div>
 
-        <nav aria-label="Footer">
+        <nav aria-label="Footer" className="reveal" style={revealDelay(1)}>
           <ul className="grid grid-cols-2 gap-x-10 gap-y-1 md:grid-cols-1">
             {NAV_LINKS.map((link) => (
               <li key={link.id}>

@@ -1,11 +1,19 @@
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, FileText, LayoutTemplate, MessageSquareText, Rocket, type LucideIcon } from 'lucide-react'
 import { site } from '@/config/site'
 import { CONTACT_SECTION_ID, PRIMARY_CTA_LABEL } from '@/content/navigation'
 import { LegacyAnchors } from '../LegacyAnchors'
 import { buttonClasses } from '../ui/button'
+import { Words } from '../Words'
 
 /** Section ids from earlier versions of the page. Links shared with these still land on this section. */
 const LEGACY_IDS = ['pricing', 'included'] as const
+
+const GROUP_ICONS: Record<string, LucideIcon> = {
+  design: LayoutTemplate,
+  content: FileText,
+  inquiries: MessageSquareText,
+  launch: Rocket,
+}
 
 export function Package() {
   return (
@@ -16,9 +24,9 @@ export function Package() {
         <div className="reveal flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
             <p className="eyebrow">Your website package</p>
-            <h2 id="package-title" className="h-section mt-3">
-              One focused page, built around your business.
-            </h2>
+            <h2 id="package-title" className="h-section word-reveal mt-3">
+            <Words text="One focused page, built around your business." />
+          </h2>
             <p className="lede mt-4">
               It answers the questions customers ask before they call: what you do, what your work looks like, and how to
               reach you.
@@ -31,12 +39,20 @@ export function Package() {
         </div>
 
         <ul className="reveal mt-10 grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:mt-12 lg:grid-cols-4">
-          {site.packageGroups.map((group) => (
+          {site.packageGroups.map((group) => {
+            const Icon = GROUP_ICONS[group.id]
+            return (
             <li key={group.id} className="draw-line pt-4">
+              {Icon && (
+                <span aria-hidden="true" className="pkg-icon mb-3 grid size-10 place-items-center rounded-xl bg-cobalt-soft text-cobalt">
+                  <Icon size={20} />
+                </span>
+              )}
               <h3 className="text-[1.1875rem] font-semibold">{group.title}</h3>
               <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-2">{group.text}</p>
             </li>
-          ))}
+            )
+          })}
         </ul>
 
         <div className="on-dark panel-glow reveal mt-10 rounded-xl bg-night p-5 text-white sm:p-7 lg:mt-12">

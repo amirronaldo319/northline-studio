@@ -5,6 +5,7 @@ import { revealDelay } from '@/lib/reveal'
 import { LegacyAnchors } from '../LegacyAnchors'
 import { ProjectTrigger } from '../ProjectTrigger'
 import { buttonClasses } from '../ui/button'
+import { Words } from '../Words'
 
 const frameClasses = 'card-frame overflow-hidden rounded-lg border border-line-strong/60 bg-white shadow-soft'
 
@@ -103,8 +104,8 @@ export function Work() {
       <div className="container-page">
         <div className="reveal max-w-2xl">
           <p className="eyebrow">Selected work</p>
-          <h2 id="work-title" className="h-section mt-3">
-            What I’ve built, and how I design.
+          <h2 id="work-title" className="h-section word-reveal mt-3">
+            <Words text="What I’ve built, and how I design." />
           </h2>
           <p className="lede mt-4">
             Two live websites and a concept project, each labelled for what it is.

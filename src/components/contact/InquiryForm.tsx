@@ -1,5 +1,5 @@
 import { useRef, useState, type ChangeEvent, type FormEvent } from 'react'
-import { AlertCircle, CheckCircle2, ChevronDown, Copy, Loader2, Mail, Send } from 'lucide-react'
+import { AlertCircle, ChevronDown, Copy, Loader2, Mail, Send } from 'lucide-react'
 import { formEndpoint } from '@/config/env'
 import { mailtoHref, site } from '@/config/site'
 import {
@@ -18,6 +18,7 @@ import {
 import { buttonClasses } from '../ui/button'
 import { Field } from './fields'
 import { describedBy, inputClasses } from './fieldStyles'
+import { SuccessCheck } from '../ui/SuccessCheck'
 
 type Status = 'idle' | 'submitting' | 'success' | 'error' | 'email-opened'
 
@@ -108,7 +109,7 @@ export function InquiryForm() {
     const firstName = values.name.trim().split(/\s+/)[0]
     return (
       <div ref={resultRef} tabIndex={-1} role="status" className="fx-in rounded-xl border border-success/25 bg-white p-6 focus:outline-none sm:p-8">
-        <CheckCircle2 aria-hidden="true" size={32} className="text-success" />
+        <SuccessCheck />
         <h3 className="mt-4 text-2xl font-semibold">Thanks, {firstName}. Your request was sent.</h3>
         <p className="mt-3 leading-relaxed text-ink-2">
           I’ll read it and reply to {values.email.trim()} to talk through what you need and the next steps.

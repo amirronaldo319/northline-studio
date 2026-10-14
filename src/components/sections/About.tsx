@@ -1,4 +1,5 @@
 import { site } from '@/config/site'
+import { Words } from '../Words'
 
 export function About() {
   return (
@@ -6,8 +7,8 @@ export function About() {
       <div className="container-page grid gap-8 lg:grid-cols-12 lg:gap-14">
         <div className="reveal lg:col-span-5">
           <p className="eyebrow">About</p>
-          <h2 id="about-title" className="h-section mt-3">
-            You work with me directly.
+          <h2 id="about-title" className="h-section word-reveal mt-3">
+            <Words text="You work with me directly." />
           </h2>
         </div>
 
