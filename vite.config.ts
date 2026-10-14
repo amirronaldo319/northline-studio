@@ -12,6 +12,8 @@ export default defineConfig(({ mode }) => {
   const siteUrl = (env.VITE_SITE_URL ?? '').trim().replace(/\/+$/, '')
 
   return {
+    // Set VITE_BASE (e.g. /northline-studio/) when hosting under a sub-path such as GitHub Pages.
+    base: env.VITE_BASE || '/',
     plugins: [
       react(),
       tailwindcss(),
