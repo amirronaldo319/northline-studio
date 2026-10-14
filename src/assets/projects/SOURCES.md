@@ -14,7 +14,13 @@ Notes
 - No account, customer, or private information appears in any capture.
 - 604 Kars shows an illustrative earnings estimator. Its figures come from assumptions the site states beneath it
   and must not be presented as results.
-- The Ganjineh Ofogh renders are labelled illustrative on the site itself. Confirm you hold the rights to show them.
-- Farsh Aquatics is a real person's business. The capture shows the business phone number and email button exactly as
-  they appear on the public site. Confirm the owner is happy to be shown, and re-capture further down the page if she
-  would rather the number not appear. Her portrait is not used anywhere.
+- Farsh Aquatics shows the business phone number and email button exactly as they appear on the public site. The
+  owner's portrait and the business-card images are not used.
+
+## Confirmations from the site owner (2026-10-14)
+
+- Farsh Aquatics is cleared to be featured, including the public contact details visible in the capture.
+- The owner designed and built both Farsh Aquatics and 604 Kars; neither was a collaboration or supplied design.
+- The owner holds the rights to the Ganjineh Ofogh renders shown in its capture.
+
+Re-confirm with any third party before adding another project that is not entirely your own work.
