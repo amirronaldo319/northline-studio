@@ -5,13 +5,8 @@
 
 export const site = {
   brand: {
+    /** Also the logo's alt text. The logo itself lives in `src/assets/brand`. */
     name: 'Northline Studio',
-    /** Shown beside the mark in the header and footer. */
-    shortName: 'Northline',
-    /** Word shown after the short name in the logo lockup. */
-    descriptor: 'Studio',
-    /** Single letter used in the logo tile and favicon. */
-    monogram: 'N',
     owner: 'Amir',
     tagline: 'Websites for local businesses in Vancouver and North Vancouver.',
   },

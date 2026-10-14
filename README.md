@@ -32,7 +32,8 @@ Hero → Work → Your website package → Process → About → FAQ → Request
 
 | What | Where |
 | --- | --- |
-| Business name, logo letter, contact email, service area | `src/config/site.ts` |
+| Business name, contact email, service area | `src/config/site.ts` |
+| Logo (ink and reversed versions) | `src/assets/brand/`, used by `BrandMark.tsx`; favicon in `public/favicon.svg` |
 | Package contents (grouped) | `site.packageGroups` in `src/config/site.ts` |
 | Page title and description | `src/config/seo.ts` **and** the matching tags in `index.html` |
 | Colours, fonts, shadows | `@theme` block at the top of `src/index.css` |
