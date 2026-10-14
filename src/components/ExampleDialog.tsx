@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
-import { Info, X } from 'lucide-react'
+import { Suspense, useEffect, useRef, useState } from 'react'
+import { Info, Monitor, Smartphone, X } from 'lucide-react'
 import type { ExampleSite } from '@/content/examples'
 
 type Props = {
@@ -8,6 +8,14 @@ type Props = {
 }
 
 const NOTICE_TIMEOUT_MS = 5000
+const PHONE_WIDTH_PX = 390
+
+type Device = 'desktop' | 'phone'
+
+const DEVICES: ReadonlyArray<{ id: Device; label: string; icon: typeof Monitor }> = [
+  { id: 'desktop', label: 'Desktop', icon: Monitor },
+  { id: 'phone', label: 'Phone', icon: Smartphone },
+]
 
 /**
  * Full-size preview of a concept demo in a native modal <dialog>.
@@ -18,6 +26,7 @@ export function ExampleDialog({ example, onClose }: Props) {
   const dialogRef = useRef<HTMLDialogElement>(null)
   const returnFocusRef = useRef<HTMLElement | null>(null)
   const [notice, setNotice] = useState('')
+  const [device, setDevice] = useState<Device>('desktop')
 
   useEffect(() => {
     const dialog = dialogRef.current
@@ -40,6 +49,7 @@ export function ExampleDialog({ example, onClose }: Props) {
 
   const handleClose = () => {
     setNotice('')
+    setDevice('desktop')
     onClose()
     returnFocusRef.current?.focus()
   }
@@ -71,6 +81,23 @@ export function ExampleDialog({ example, onClose }: Props) {
                 {example.industry} · A fictional business. Buttons and forms in this demo don’t send anything.
               </p>
             </div>
+            <div className="flex shrink-0 items-center gap-2">
+              <div role="group" aria-label="Preview size" className="hidden rounded-full border border-line-strong bg-paper p-1 sm:flex">
+                {DEVICES.map(({ id, label, icon: Icon }) => (
+                  <button
+                    key={id}
+                    type="button"
+                    aria-pressed={device === id}
+                    onClick={() => setDevice(id)}
+                    className={`inline-flex min-h-9 items-center gap-1.5 rounded-full px-3.5 text-sm font-semibold transition-colors ${
+                      device === id ? 'bg-ink text-white' : 'text-ink-2 hover:text-ink'
+                    }`}
+                  >
+                    <Icon aria-hidden="true" size={15} />
+                    {label}
+                  </button>
+                ))}
+              </div>
             <button
               type="button"
               autoFocus
@@ -80,6 +107,7 @@ export function ExampleDialog({ example, onClose }: Props) {
               <X aria-hidden="true" size={20} />
               <span className="sr-only">Close example</span>
             </button>
+            </div>
           </div>
 
           <div role="status" aria-live="polite" className="empty:hidden">
@@ -91,12 +119,27 @@ export function ExampleDialog({ example, onClose }: Props) {
             )}
           </div>
 
-          <div className="demo-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain">
-            <Demo
-              onDemoAction={() =>
-                setNotice('This is a concept demo, so nothing was sent. On a real site, this would reach the business.')
+          <div
+            className={`demo-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain ${
+              device === 'phone' ? 'bg-paper-2 px-4 py-6' : ''
+            }`}
+          >
+            <div
+              className={
+                device === 'phone'
+                  ? 'mx-auto overflow-hidden rounded-[2rem] border-[10px] border-[#16181d] bg-white shadow-device'
+                  : ''
               }
-            />
+              style={device === 'phone' ? { width: PHONE_WIDTH_PX, maxWidth: '100%' } : undefined}
+            >
+              <Suspense fallback={<div className="grid h-64 place-items-center text-sm text-ink-3">Loading example…</div>}>
+                <Demo
+                  onDemoAction={() =>
+                    setNotice('This is a concept demo, so nothing was sent. On a real site, this would reach the business.')
+                  }
+                />
+              </Suspense>
+            </div>
           </div>
         </div>
       )}

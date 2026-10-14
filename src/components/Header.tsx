@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 import { Menu, X } from 'lucide-react'
-import { site } from '@/config/site'
 import { CONTACT_SECTION_ID, NAV_LINKS, PRIMARY_CTA_LABEL } from '@/content/navigation'
 import { useActiveSection } from '@/hooks/useActiveSection'
 import { BrandMark } from './BrandMark'
@@ -51,7 +50,7 @@ export function Header() {
       }`}
     >
       <div className="container-page flex h-16 items-center justify-between gap-6">
-        <a href="#top" className="-m-1 rounded-lg p-1" aria-label={`${site.brand.name} — back to top`}>
+        <a href="#top" className="-m-1 rounded-lg p-1">
           <BrandMark />
         </a>
 

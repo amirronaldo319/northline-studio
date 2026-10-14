@@ -89,6 +89,16 @@
     border-radius: 6px;
   }
 
+  /* Dark sections need a light ring; cobalt is too dim against navy. */
+  .on-dark :focus-visible {
+    outline-color: #ffffff;
+  }
+
+  /* Light surfaces nested inside a dark section switch back to the brand ring. */
+  .on-light :focus-visible {
+    outline-color: var(--color-cobalt);
+  }
+
   ::selection {
     background: var(--color-cobalt-soft);
     color: var(--color-ink);
@@ -219,4 +229,35 @@ details.faq-item[open] .faq-icon {
 /* Stop the page behind an open example dialog from scrolling. */
 html:has(dialog[open]) {
   overflow: hidden;
+}
+
+/* Hero entrance: a short staggered rise. Content is visible if animation is off or unsupported. */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .rise {
+    animation: rise-in 550ms var(--ease-out-soft) both;
+    animation-delay: var(--rise-delay, 0ms);
+  }
+}
+
+/* Arrows inside links nudge forward on hover/focus. */
+.nudge svg:last-child {
+  transition: transform 200ms var(--ease-out-soft);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .nudge:hover svg:last-child,
+  .nudge:focus-visible svg:last-child {
+    transform: translateX(3px);
+  }
 }

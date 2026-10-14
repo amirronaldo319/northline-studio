@@ -4,6 +4,7 @@ import { About } from './components/sections/About'
 import { Contact } from './components/sections/Contact'
 import { Examples } from './components/sections/Examples'
 import { Faq } from './components/sections/Faq'
+import { Assurances } from './components/sections/Assurances'
 import { Hero } from './components/sections/Hero'
 import { Included } from './components/sections/Included'
 import { Pricing } from './components/sections/Pricing'
@@ -26,6 +27,7 @@ export default function App() {
       <Header />
       <main id="main" tabIndex={-1} className="focus:outline-none">
         <Hero />
+        <Assurances />
         <Value />
         <Examples />
         <Included />

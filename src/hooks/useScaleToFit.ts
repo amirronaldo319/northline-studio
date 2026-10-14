@@ -12,10 +12,11 @@ export function useScaleToFit<T extends HTMLElement>(designWidth: number) {
     const el = ref.current
     if (!el) return
 
-    const update = () => setScale(el.clientWidth / designWidth)
-    update()
-
-    const observer = new ResizeObserver(update)
+    // The observer reports the initial size too, so no synchronous layout read is needed.
+    const observer = new ResizeObserver((entries) => {
+      const width = entries[0]?.contentRect.width ?? 0
+      setScale(width / designWidth)
+    })
     observer.observe(el)
     return () => observer.disconnect()
   }, [designWidth])

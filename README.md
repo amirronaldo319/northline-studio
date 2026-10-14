@@ -10,7 +10,7 @@ npm install
 npm run dev        # http://localhost:5173
 npm run typecheck  # TypeScript
 npm run lint       # oxlint
-npm test           # unit tests (form validation and delivery)
+npm test           # unit tests (form logic) and public-copy rules (no price, no unverifiable claims)
 npm run build      # production build into dist/
 npm run preview    # serve dist/ locally
 npm run og-image   # re-render public/og-image.png (needs Google Chrome)
@@ -57,6 +57,17 @@ VITE_SITE_URL=https://your-domain.ca                     # no trailing slash
 - **Cloudflare Pages / Netlify / Vercel:** connect the repo, build command `npm run build`, output `dist`. Add
   `VITE_FORM_ENDPOINT` and `VITE_SITE_URL` as environment variables in the host's settings.
 - **Anywhere else:** run the build locally with `.env` filled in and upload the contents of `dist/`.
+
+## Quality
+
+- **CI:** `.github/workflows/ci.yml` runs typecheck, lint, tests, and build on every push and pull request.
+- **Copy rules:** `tests/content-rules.test.ts` fails the build if a price, testimonial, guarantee, or ranking claim
+  appears in the source. Remove the relevant pattern there if you decide to publish a price.
+- **Security headers:** `public/_headers` sets a strict Content-Security-Policy and related headers on Cloudflare
+  Pages and Netlify. Other hosts ignore this file; set equivalent headers in their settings.
+- **Lighthouse (mobile emulation, local production build):** Performance 95, Accessibility 100, Best Practices 100,
+  SEO 100. Re-run with `npx lighthouse http://localhost:4173 --view` after `npm run build && npm run preview`.
+- Example demos are code-split and only mounted as they approach the viewport.
 
 ## Before public launch
 

@@ -20,7 +20,7 @@ const QUOTE_CONFIRMS = [
 
 export function Pricing() {
   return (
-    <section id="pricing" aria-labelledby="pricing-title" className="bg-night py-16 text-white sm:py-20 lg:py-28">
+    <section id="pricing" aria-labelledby="pricing-title" className="on-dark bg-night py-16 text-white sm:py-20 lg:py-28">
       <div className="container-page">
         <div className="reveal max-w-2xl">
           <p className="eyebrow !text-[#9fb2ff]">Pricing</p>
@@ -30,7 +30,7 @@ export function Pricing() {
         </div>
 
         <div className="mt-10 grid gap-6 lg:mt-14 lg:grid-cols-12 lg:gap-8">
-          <div className="reveal relative overflow-hidden rounded-[1.5rem] bg-white p-6 text-ink sm:p-8 lg:col-span-7 lg:p-10">
+          <div className="on-light reveal relative overflow-hidden rounded-[1.5rem] bg-white p-6 text-ink sm:p-8 lg:col-span-7 lg:p-10">
             <div aria-hidden="true" className="absolute -top-24 -right-24 size-64 rounded-full bg-cobalt-soft" />
             <div className="relative">
               <p className="text-sm font-semibold tracking-wide text-ink-3 uppercase">The package</p>
@@ -51,7 +51,7 @@ export function Pricing() {
               </ul>
 
               <div className="mt-9 flex flex-col gap-4 sm:flex-row sm:items-center">
-                <a href={`#${CONTACT_SECTION_ID}`} className={buttonClasses('primary', 'lg')}>
+                <a href={`#${CONTACT_SECTION_ID}`} className={buttonClasses('primary', 'lg', 'nudge')}>
                   {PRIMARY_CTA_LABEL}
                   <ArrowRight aria-hidden="true" size={18} />
                 </a>

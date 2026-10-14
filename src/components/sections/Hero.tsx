@@ -2,6 +2,7 @@ import { ArrowRight, MapPin } from 'lucide-react'
 import { site } from '@/config/site'
 import { CONTACT_SECTION_ID, PRIMARY_CTA_LABEL } from '@/content/navigation'
 import { HeroMockup } from '../HeroMockup'
+import { riseDelay } from '@/lib/reveal'
 import { buttonClasses } from '../ui/button'
 
 const HIGHLIGHTS = ['Mobile-friendly design', 'Service sections', 'Quote-request form']
@@ -24,7 +25,7 @@ export function Hero() {
 
       <div className="container-page relative grid items-center gap-12 pt-8 pb-16 sm:pt-12 lg:grid-cols-12 lg:gap-10 lg:pt-16 lg:pb-24">
         <div className="lg:col-span-5">
-          <p className="mb-5 inline-flex items-center gap-1.5 rounded-full border border-line bg-card px-3 py-1 text-[0.8125rem] font-medium text-ink-2">
+          <p className="rise mb-5 inline-flex items-center gap-1.5 rounded-full border border-line bg-card px-3 py-1 text-[0.8125rem] font-medium text-ink-2">
             <MapPin aria-hidden="true" size={14} className="text-cobalt" />
             Web design for {site.serviceArea.label}
           </p>
@@ -41,8 +42,8 @@ export function Hero() {
             one-page sites that explain what you do, show your work, and make it easy to request a quote.
           </p>
 
-          <div className="mt-8 flex flex-col gap-3 min-[420px]:flex-row">
-            <a href={`#${CONTACT_SECTION_ID}`} className={buttonClasses('primary', 'lg')}>
+          <div className="rise mt-8 flex flex-col gap-3 min-[420px]:flex-row" style={riseDelay(60)}>
+            <a href={`#${CONTACT_SECTION_ID}`} className={buttonClasses('primary', 'lg', 'nudge')}>
               {PRIMARY_CTA_LABEL}
               <ArrowRight aria-hidden="true" size={18} />
             </a>
@@ -51,7 +52,7 @@ export function Hero() {
             </a>
           </div>
 
-          <ul className="mt-7 flex flex-wrap gap-x-4 gap-y-2 text-sm text-ink-2" aria-label="Included in every website">
+          <ul className="rise mt-7 flex flex-wrap gap-x-4 gap-y-2 text-sm text-ink-2" style={riseDelay(140)} aria-label="Included in every website">
             {HIGHLIGHTS.map((item) => (
               <li key={item} className="flex items-center gap-2">
                 <span aria-hidden="true" className="size-1.5 rounded-full bg-cobalt" />
@@ -61,7 +62,7 @@ export function Hero() {
           </ul>
         </div>
 
-        <div className="lg:col-span-7 lg:pl-4">
+        <div className="rise lg:col-span-7 lg:pl-4" style={riseDelay(100)}>
           <HeroMockup />
         </div>
       </div>

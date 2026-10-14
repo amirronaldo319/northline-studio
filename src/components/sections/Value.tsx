@@ -1,4 +1,4 @@
-import { Camera, ClipboardList, MessageSquareText, PhoneCall } from 'lucide-react'
+import { Briefcase, Camera, Car, ClipboardList, Hammer, MessageSquareText, PhoneCall, Scissors, Sparkles, Sprout, Store } from 'lucide-react'
 import { revealDelay } from '@/lib/reveal'
 
 const BENEFITS = [
@@ -22,6 +22,16 @@ const BENEFITS = [
     title: 'Requesting a quote is simple',
     text: 'A short form lets customers tell you what they need, so you can reply when it suits you.',
   },
+]
+
+const AUDIENCE = [
+  { icon: Sparkles, label: 'Cleaning companies' },
+  { icon: Hammer, label: 'Contractors and renovators' },
+  { icon: Sprout, label: 'Landscapers' },
+  { icon: Car, label: 'Auto detailers and automotive services' },
+  { icon: Scissors, label: 'Barbers and salons' },
+  { icon: Briefcase, label: 'Independent service providers' },
+  { icon: Store, label: 'Other local small businesses' },
 ]
 
 export function Value() {
@@ -61,6 +71,21 @@ export function Value() {
             </li>
           ))}
         </ol>
+
+        <div className="reveal border-t border-line pt-8 lg:col-span-12">
+          <p className="text-sm font-semibold text-ink-2">Made for local businesses like</p>
+          <ul className="mt-4 flex flex-wrap gap-2.5">
+            {AUDIENCE.map(({ icon: Icon, label }) => (
+              <li
+                key={label}
+                className="inline-flex items-center gap-2 rounded-full border border-line-strong bg-paper px-3.5 py-2 text-[0.9375rem] font-medium text-ink"
+              >
+                <Icon aria-hidden="true" size={16} className="text-cobalt" />
+                {label}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
   )

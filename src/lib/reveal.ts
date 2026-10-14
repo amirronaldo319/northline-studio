@@ -6,3 +6,8 @@ const STAGGER_MS = 70
 export function revealDelay(index: number): CSSProperties {
   return { '--reveal-delay': `${index * STAGGER_MS}ms` } as CSSProperties
 }
+
+/** Inline style that delays a hero `.rise` entrance by the given milliseconds. */
+export function riseDelay(ms: number): CSSProperties {
+  return { '--rise-delay': `${ms}ms` } as CSSProperties
+}

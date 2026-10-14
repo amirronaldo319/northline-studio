@@ -1,3 +1,4 @@
+import { ArrowUp } from 'lucide-react'
 import { formEndpoint } from '@/config/env'
 import { mailtoHref, site } from '@/config/site'
 import { CONTACT_SECTION_ID, NAV_LINKS } from '@/content/navigation'
@@ -7,7 +8,7 @@ const CURRENT_YEAR = new Date().getFullYear()
 
 export function Footer() {
   return (
-    <footer className="bg-night text-white">
+    <footer className="on-dark bg-night text-white">
       <div className="container-page grid gap-10 py-14 md:grid-cols-12">
         <div className="md:col-span-5">
           <BrandMark tone="dark" />
@@ -50,9 +51,15 @@ export function Footer() {
         </div>
       </div>
       <div className="border-t border-night-line">
-        <p className="container-page py-6 text-sm text-white/55">
-          © {CURRENT_YEAR} {site.brand.name}. Concept demos on this site show fictional businesses.
-        </p>
+        <div className="container-page flex flex-col gap-3 py-6 text-sm text-white/60 sm:flex-row sm:items-center sm:justify-between">
+          <p>
+            © {CURRENT_YEAR} {site.brand.name}. Concept demos on this site show fictional businesses.
+          </p>
+          <a href="#top" className="inline-flex min-h-10 items-center gap-1.5 font-medium text-white/85 hover:text-white">
+            <ArrowUp aria-hidden="true" size={15} />
+            Back to top
+          </a>
+        </div>
       </div>
     </footer>
   )

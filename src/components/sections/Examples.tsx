@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import { EXAMPLES, type ExampleSite } from '@/content/examples'
 import { revealDelay } from '@/lib/reveal'
 import { ExampleDialog } from '../ExampleDialog'
+import { LazyMount } from '../LazyMount'
 import { ScaledFrame } from '../ui/ScaledFrame'
 import { buttonClasses } from '../ui/button'
 
@@ -19,7 +20,11 @@ function ExamplePreview({ example }: { example: ExampleSite }) {
         <span className="size-2 rounded-full bg-[#ddd3c2]" />
       </div>
       <ScaledFrame designWidth={PREVIEW_WIDTH} designHeight={PREVIEW_HEIGHT}>
-        <Demo />
+        <LazyMount className="h-full w-full" fallback={<div className="h-full w-full bg-paper-2" />}>
+          <Suspense fallback={<div className="h-full w-full bg-paper-2" />}>
+            <Demo />
+          </Suspense>
+        </LazyMount>
       </ScaledFrame>
     </div>
   )

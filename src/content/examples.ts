@@ -1,8 +1,10 @@
-import type { ComponentType } from 'react'
-import { CleaningDemo } from '@/components/demos/CleaningDemo'
-import { DetailingDemo } from '@/components/demos/DetailingDemo'
-import { LandscapeDemo } from '@/components/demos/LandscapeDemo'
+import { lazy, type ComponentType } from 'react'
 import type { DemoProps } from '@/components/demos/types'
+
+// Each demo is its own chunk, fetched only when an example scrolls near or is opened.
+const CleaningDemo = lazy(() => import('@/components/demos/CleaningDemo').then((m) => ({ default: m.CleaningDemo })))
+const LandscapeDemo = lazy(() => import('@/components/demos/LandscapeDemo').then((m) => ({ default: m.LandscapeDemo })))
+const DetailingDemo = lazy(() => import('@/components/demos/DetailingDemo').then((m) => ({ default: m.DetailingDemo })))
 
 export interface ExampleSite {
   id: string
