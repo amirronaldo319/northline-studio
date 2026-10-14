@@ -35,7 +35,7 @@ export function Contact() {
             <h3 className="text-sm font-semibold">How your details are used</h3>
             <p className="mt-1.5 text-sm leading-relaxed text-ink-3">
               {formEndpoint
-                ? 'What you send goes to me through a form service and is used only to reply about your website.'
+                ? 'What you send goes to me through a third-party form service and is used only to reply about your website.'
                 : 'The form opens your own email app, and nothing is stored on this site. What you send is used only to reply about your website.'}{' '}
               To have your details deleted, email me.
             </p>

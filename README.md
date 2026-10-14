@@ -18,12 +18,12 @@ npm run og-image   # re-render public/og-image.png (needs Google Chrome)
 
 ## Page structure
 
-Hero → Examples → Your website package → Process → About → FAQ → Request a quote → Footer.
+Hero → Work → Your website package → Process → About → FAQ → Request a quote → Footer.
 
 | Section | File |
 | --- | --- |
 | Hero (headline, CTAs, featured preview) | `src/components/sections/Hero.tsx` |
-| Examples (one featured, two secondary) | `src/components/sections/Examples.tsx`, data in `src/content/examples.ts` |
+| Work (live sites, concept project, concept demo) | `src/components/sections/Work.tsx`; real projects in `src/content/projects.ts`, concept demos in `src/content/examples.ts` |
 | Package (deliverables and written-quote note) | `src/components/sections/Package.tsx`, items in `src/config/site.ts` |
 | Process, About, FAQ | `Process.tsx`, `About.tsx`, `Faq.tsx`; FAQ text in `src/content/faq.ts` |
 | Inquiry form | `src/components/sections/Contact.tsx`, `src/components/contact/InquiryForm.tsx`, logic in `src/lib/inquiry.ts` |
@@ -39,8 +39,8 @@ Hero → Examples → Your website package → Process → About → FAQ → Req
 | Navigation and the primary button label | `src/content/navigation.ts` |
 | Unconfirmed commercial terms (kept off the page) | `pendingTerms` in `src/config/site.ts` |
 
-**Old links keep working.** The package section keeps the anchors `#pricing` and `#included` from earlier versions of
-the page, so previously shared links land on it.
+**Old links keep working.** `#pricing` and `#included` land on the package section, and `#examples` lands on the work
+section. See `LegacyAnchors` and `tests/anchors.test.ts`.
 
 **No price is shown on the site.** To publish one, add it to `site.package`, render it in `Package.tsx`, update the
 meta description, and adjust the price rule in `tests/content-rules.test.ts`.
@@ -69,27 +69,30 @@ VITE_SITE_URL=https://your-domain.ca                     # no trailing slash
 `VITE_SITE_URL` enables the canonical URL, `og:url`, the absolute `og:image`, `sitemap.xml`, and the sitemap line in
 `robots.txt`. Without it these are omitted rather than guessed.
 
-## Example previews and imagery
+## Portfolio and imagery
 
-The three examples are concept designs for fictional businesses and are labelled as such everywhere they appear. Each
-opens in an accessible dialog (Escape, focus containment, focus restoration, desktop/phone toggle). A separate,
-clearly labelled button in the dialog takes the visitor to the real inquiry form.
+Three kinds of work appear, each labelled for what it is:
 
-**Photography slots.** The demos currently use original SVG artwork. Real photos can replace it one slot at a time
-with no code changes: add a file named after a slot to `src/assets/photos/` (`.jpg`, `.jpeg`, `.webp`, or `.avif`).
+- **Live websites** (Farsh Aquatics, 604 Kars): real public sites. Screenshots are captures, not mock-ups.
+- **Concept project** (Ganjineh Ofogh): a self-initiated design, shown with its live preview.
+- **Concept demo** (Tidewell Cleaning): a design for a fictional business, opened in an accessible preview dialog
+  (Escape, focus containment, focus restoration, desktop/phone toggle) with a separate button to the real inquiry form.
 
-| Slot (file name without extension) | Where it appears |
-| --- | --- |
-| `landscaping-hero` | Full-bleed hero of the landscaping demo (also the page hero) |
-| `landscaping-project-1`, `-2`, `-3` | Recent-work gallery in the landscaping demo |
-| `cleaning-hero` | Hero image of the cleaning demo |
-| `detailing-hero`, `detailing-booking` | Hero and booking images of the detailing demo |
+**Add or refresh a real project**
 
-Guidance: export at about 2× the displayed size (1600px wide for hero images), keep each file under roughly 250 KB,
-and make the subject sit comfortably under white text on the left (landscaping hero) or fill a 4:3 / 5:3 frame
-(others). Update the matching `alt` text in `src/content/photos.ts`, and record the photographer, URL, and licence in
-`src/assets/photos/CREDITS.md`. Only add images you have the right to use commercially. No stock photography is
-bundled, because licensing could not be verified for specific files.
+1. Add it to `src/content/projects.ts`. Only state what you can trace to the project itself: no outcomes, no metrics,
+   no client claims.
+2. Add a target to `scripts/capture-project-screenshots.mjs` and run
+   `node scripts/capture-project-screenshots.mjs <id>`. It writes optimised WebP desktop and phone captures to
+   `src/assets/projects/`. Needs Google Chrome.
+3. Record the source and capture date in `src/assets/projects/SOURCES.md`.
+
+Only feature public work you built, and confirm the owner of any business shown is happy to be featured.
+
+**Photography slots.** The concept demo uses original SVG artwork. A licensed photo can replace it with no code
+changes: add `cleaning-hero.jpg` (or `.webp` / `.avif`) to `src/assets/photos/`. Update the `alt` text in
+`src/content/photos.ts` and record the source in `src/assets/photos/CREDITS.md`. Only add images you have the right to
+use commercially. No stock photography is bundled.
 
 ## Quality
 

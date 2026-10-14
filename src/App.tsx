@@ -3,11 +3,11 @@ import { Footer } from './components/Footer'
 import { Header } from './components/Header'
 import { About } from './components/sections/About'
 import { Contact } from './components/sections/Contact'
-import { Examples } from './components/sections/Examples'
 import { Faq } from './components/sections/Faq'
 import { Hero } from './components/sections/Hero'
 import { Package } from './components/sections/Package'
 import { Process } from './components/sections/Process'
+import { Work } from './components/sections/Work'
 import { useHashScroll } from './hooks/useHashScroll'
 import { useReveal } from './hooks/useReveal'
 
@@ -27,7 +27,7 @@ export default function App() {
       <Header />
       <main id="main" tabIndex={-1} className="focus:outline-none">
         <Hero />
-        <Examples />
+        <Work />
         <Package />
         <Process />
         <About />

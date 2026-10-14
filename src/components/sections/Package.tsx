@@ -1,20 +1,16 @@
 import { ArrowRight } from 'lucide-react'
 import { site } from '@/config/site'
 import { CONTACT_SECTION_ID, PRIMARY_CTA_LABEL } from '@/content/navigation'
+import { LegacyAnchors } from '../LegacyAnchors'
 import { buttonClasses } from '../ui/button'
 
-/**
- * Section ids from earlier versions of the page. They stay as anchors so links shared before
- * the sections were merged (for example "#pricing" and "#included") still land here.
- */
-const LEGACY_ANCHORS = ['pricing', 'included'] as const
+/** Section ids from earlier versions of the page. Links shared with these still land on this section. */
+const LEGACY_IDS = ['pricing', 'included'] as const
 
 export function Package() {
   return (
     <section id="package" aria-labelledby="package-title" className="relative border-t border-line bg-card py-12 sm:py-20 lg:py-24">
-      {LEGACY_ANCHORS.map((id) => (
-        <span key={id} id={id} className="anchor-target absolute inset-x-0 top-0 h-0" aria-hidden="true" />
-      ))}
+      <LegacyAnchors ids={LEGACY_IDS} />
 
       <div className="container-page">
         <div className="reveal flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
