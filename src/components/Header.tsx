@@ -101,6 +101,8 @@ export function Header() {
         </div>
       </div>
 
+      <div className="scroll-progress" aria-hidden="true" />
+
       <nav
         id="mobile-menu"
         aria-label="Mobile"

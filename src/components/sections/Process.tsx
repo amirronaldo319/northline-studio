@@ -32,7 +32,7 @@ export function Process() {
 
         <ol className="mt-10 grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:mt-12 lg:grid-cols-4">
           {STEPS.map((step, index) => (
-            <li key={step.title} className="reveal border-t border-ink pt-4" style={revealDelay(index)}>
+            <li key={step.title} className="reveal draw-line pt-4" style={revealDelay(index)}>
               <span className="font-display text-sm font-semibold text-ink-3 tabular-nums">0{index + 1}</span>
               <h3 className="mt-2 text-[1.1875rem] font-semibold">{step.title}</h3>
               <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-2">{step.text}</p>

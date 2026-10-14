@@ -7,6 +7,7 @@ import { useExampleDialog } from '../exampleDialogContext'
 import { LegacyAnchors } from '../LegacyAnchors'
 import { ProjectShot } from '../ProjectShot'
 import { buttonClasses } from '../ui/button'
+import { TiltFrame } from '../ui/TiltFrame'
 
 const frameClasses = 'overflow-hidden rounded-lg border border-line-strong/60 bg-white shadow-soft'
 const hoverFrameClasses = `${frameClasses} transition-[transform,box-shadow] duration-300 ease-[var(--ease-out-soft)] group-hover:-translate-y-0.5 group-hover:shadow-lift motion-reduce:transition-none`
@@ -59,9 +60,11 @@ function FeaturedProject({ project }: { project: Project }) {
   return (
     <article aria-labelledby={titleId} className="reveal grid gap-6 lg:grid-cols-12 lg:items-center lg:gap-10">
       <div className="lg:col-span-8">
-        <div className={frameClasses}>
-          <ProjectShot project={project} />
-        </div>
+        <TiltFrame>
+          <div className={`tilt-surface ${frameClasses}`}>
+            <ProjectShot project={project} />
+          </div>
+        </TiltFrame>
       </div>
       <div className="lg:col-span-4">
         <ProjectText project={project} titleId={titleId} />
@@ -76,9 +79,11 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
   return (
     <article aria-labelledby={titleId} className="reveal" style={revealDelay(index)}>
-      <div className={frameClasses}>
-        <ProjectShot project={project} />
-      </div>
+      <TiltFrame>
+        <div className={`tilt-surface ${frameClasses}`}>
+          <ProjectShot project={project} />
+        </div>
+      </TiltFrame>
       <div className="mt-5">
         <ProjectText project={project} titleId={titleId} />
       </div>
@@ -97,9 +102,11 @@ function HeroProjectRow({ project }: { project: Project }) {
         <ProjectText project={project} titleId={titleId} />
       </div>
       <div className="hidden md:col-span-5 md:block">
-        <div className={frameClasses}>
-          <ProjectShot project={project} />
-        </div>
+        <TiltFrame>
+          <div className={`tilt-surface ${frameClasses}`}>
+            <ProjectShot project={project} />
+          </div>
+        </TiltFrame>
       </div>
     </article>
   )
@@ -112,10 +119,12 @@ function ConceptCard({ example, index }: { example: ExampleSite; index: number }
 
   return (
     <article aria-labelledby={titleId} className="reveal" style={revealDelay(index)}>
-      <div className="group relative">
-        <div className={hoverFrameClasses}>
-          <DemoPreview example={example} />
-        </div>
+      <div className="relative">
+        <TiltFrame>
+          <div className={`tilt-surface ${hoverFrameClasses}`}>
+            <DemoPreview example={example} />
+          </div>
+        </TiltFrame>
         {/* Mouse-only convenience; the labelled button below is the accessible control. */}
         <button
           type="button"

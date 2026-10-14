@@ -4,13 +4,15 @@ type Props = {
   project: Project
   /** Load immediately and at high priority. Use for the hero image only. */
   isEager?: boolean
+  /** Settle the image into place on first paint. */
+  isHero?: boolean
 }
 
 /**
  * A real screenshot of a project. Phones get the phone capture, larger screens the desktop capture.
  * The frame reserves its space from the aspect ratio, so nothing shifts as the image loads.
  */
-export function ProjectShot({ project, isEager = false }: Props) {
+export function ProjectShot({ project, isEager = false, isHero = false }: Props) {
   const { desktop, mobile, alt } = project
 
   return (
@@ -25,7 +27,7 @@ export function ProjectShot({ project, isEager = false }: Props) {
           loading={isEager ? 'eager' : 'lazy'}
           fetchPriority={isEager ? 'high' : 'auto'}
           decoding="async"
-          className="h-full w-full object-cover object-top"
+          className={`shot-img h-full w-full object-cover object-top ${isHero ? 'hero-settle' : ''}`}
         />
       </picture>
     </div>

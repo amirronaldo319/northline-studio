@@ -261,6 +261,187 @@ html:has(dialog[open]) {
 }
 
 /*
+ * Motion polish. Everything here is transform or opacity only, runs once or on interaction,
+ * and is switched off for visitors who prefer reduced motion.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  /* Headline: each word rises out of its own mask. Opacity is untouched so the text is never "missing". */
+  .js .word-mask {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+    padding-bottom: 0.1em;
+    margin-bottom: -0.1em;
+  }
+
+  .js .word-mask > span {
+    display: inline-block;
+    animation: word-rise 900ms var(--ease-out-soft) backwards;
+    animation-delay: calc(var(--i, 0) * 65ms + 60ms);
+  }
+
+  @keyframes word-rise {
+    from {
+      transform: translateY(108%) rotate(2deg);
+    }
+  }
+
+  /* Supporting hero elements follow the headline. */
+  .js .hero-in {
+    animation: hero-in 700ms var(--ease-out-soft) backwards;
+    animation-delay: var(--d, 0ms);
+  }
+
+  @keyframes hero-in {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+  }
+
+  /* The hero screenshot settles from slightly zoomed. Transform only, so it never delays first paint. */
+  .js .hero-settle {
+    animation: hero-settle 1400ms var(--ease-out-soft) backwards;
+  }
+
+  @keyframes hero-settle {
+    from {
+      transform: scale(1.06);
+    }
+  }
+
+  /* Project frames: tilt toward the pointer (set by TiltFrame) and zoom the picture a little on hover. */
+  .tilt {
+    perspective: 1100px;
+  }
+
+  .tilt-surface {
+    transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    transition:
+      transform 260ms var(--ease-out-soft),
+      box-shadow 300ms ease;
+    will-change: transform;
+  }
+
+  .tilt:hover .tilt-surface {
+    box-shadow: var(--shadow-lift);
+  }
+
+  .shot-img {
+    transition: transform 900ms var(--ease-out-soft);
+  }
+
+  .group:hover .shot-img {
+    transform: scale(1.035);
+  }
+
+  /* Section headings wipe in from beneath a clip. */
+  .js .reveal.is-visible .h-section {
+    animation: heading-wipe 900ms var(--ease-out-soft) backwards;
+  }
+
+  @keyframes heading-wipe {
+    from {
+      clip-path: inset(0 0 100% 0);
+      transform: translateY(0.35em);
+    }
+    to {
+      clip-path: inset(-0.1em -0.05em -0.25em -0.05em);
+    }
+  }
+
+  /* Eyebrow labels get a short rule that draws in. */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+  }
+
+  .eyebrow::before {
+    content: '';
+    width: 1.5rem;
+    height: 1px;
+    background: currentColor;
+    transform-origin: left;
+  }
+
+  .js .reveal:not(.is-visible) .eyebrow::before {
+    transform: scaleX(0);
+  }
+
+  .js .reveal .eyebrow::before {
+    transition: transform 700ms var(--ease-out-soft) 150ms;
+  }
+
+  /* Hairlines above package groups and process steps draw across when revealed. */
+  .draw-line {
+    position: relative;
+  }
+
+  .draw-line::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 1px;
+    background: var(--color-ink);
+    transform-origin: left;
+    transition: transform 900ms var(--ease-out-soft);
+    transition-delay: calc(var(--line-i, 0) * 110ms + 200ms);
+  }
+
+  .js .reveal:not(.is-visible) .draw-line::before,
+  .js .reveal.draw-line:not(.is-visible)::before {
+    transform: scaleX(0);
+  }
+
+  .draw-line:nth-child(2) {
+    --line-i: 1;
+  }
+  .draw-line:nth-child(3) {
+    --line-i: 2;
+  }
+  .draw-line:nth-child(4) {
+    --line-i: 3;
+  }
+
+  /* Primary buttons: a soft sheen sweeps across on hover and focus. */
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(105deg, transparent 30%, rgb(255 255 255 / 0.28) 50%, transparent 70%);
+    transform: translateX(-120%);
+    transition: transform 700ms var(--ease-out-soft);
+  }
+
+  .btn-primary:hover::after,
+  .btn-primary:focus-visible::after {
+    transform: translateX(120%);
+  }
+
+  /* Reading progress: a thin line under the header, driven by the page scroll where supported. */
+  @supports (animation-timeline: scroll()) {
+    .scroll-progress {
+      position: absolute;
+      inset: auto 0 -1px 0;
+      height: 2px;
+      background: var(--color-cobalt);
+      transform-origin: left;
+      transform: scaleX(0);
+      animation: progress-grow linear both;
+      animation-timeline: scroll(root block);
+    }
+
+    @keyframes progress-grow {
+      to {
+        transform: scaleX(1);
+      }
+    }
+  }
+}
+
+/*
  * Printing: scroll reveals only run on screen, so show everything when the page is printed
  * and keep the sticky header from repeating on every sheet.
  */
@@ -277,7 +458,23 @@ html:has(dialog[open]) {
   }
 
   .details-in,
-  details.faq-item {
+  details.faq-item,
+  .word-mask > span,
+  .hero-in,
+  .hero-settle,
+  .js .reveal.is-visible .h-section {
     animation: none !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+
+  .draw-line::before,
+  .eyebrow::before {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .scroll-progress {
+    display: none !important;
   }
 }

@@ -4,11 +4,11 @@ export type ButtonSize = 'md' | 'lg'
 const base =
   'inline-flex items-center justify-center gap-2 rounded-full font-semibold whitespace-nowrap select-none ' +
   'transition-[background-color,color,border-color,box-shadow,transform] duration-200 ease-out ' +
-  'active:translate-y-px disabled:cursor-not-allowed disabled:opacity-70'
+  'active:translate-y-px active:scale-[0.985] disabled:cursor-not-allowed disabled:opacity-70'
 
 const variants: Record<ButtonVariant, string> = {
   primary:
-    'bg-cobalt text-white shadow-[0_1px_0_rgb(255_255_255/0.2)_inset,0_6px_16px_-6px_rgb(35_71_214/0.6)] ' +
+    'btn-primary relative overflow-hidden isolate bg-cobalt text-white shadow-[0_1px_0_rgb(255_255_255/0.2)_inset,0_6px_16px_-6px_rgb(35_71_214/0.6)] ' +
     'hover:bg-cobalt-deep hover:shadow-[0_1px_0_rgb(255_255_255/0.2)_inset,0_10px_22px_-8px_rgb(35_71_214/0.7)]',
   secondary: 'border border-line-strong bg-card text-ink hover:border-ink/40 hover:bg-white',
   inverse: 'bg-white text-night hover:bg-cobalt-soft',

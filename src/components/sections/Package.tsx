@@ -32,7 +32,7 @@ export function Package() {
 
         <ul className="reveal mt-10 grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:mt-12 lg:grid-cols-4">
           {site.packageGroups.map((group) => (
-            <li key={group.id} className="border-t border-ink pt-4">
+            <li key={group.id} className="draw-line pt-4">
               <h3 className="text-[1.1875rem] font-semibold">{group.title}</h3>
               <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-2">{group.text}</p>
             </li>

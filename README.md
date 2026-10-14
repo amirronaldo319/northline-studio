@@ -101,6 +101,11 @@ use commercially. No stock photography is bundled.
   generic agency phrase appears in the source.
 - **Security headers:** `public/_headers` sets a strict Content-Security-Policy and related headers on Cloudflare
   Pages and Netlify. Other hosts ignore this file; set equivalent headers in their settings.
+- **Motion:** CSS only, transform and opacity, no libraries. Every animation sits inside
+  `prefers-reduced-motion: no-preference` (enforced by `tests/motion.test.ts`) and is neutralised when printing. The
+  hero headline rises word by word (`SplitWords`), project frames tilt toward a fine pointer (`TiltFrame`), headings
+  wipe in, package and process hairlines draw across, primary buttons carry a sheen, and a thin progress line tracks
+  scroll where `animation-timeline` is supported. To tone it down, edit the "Motion polish" block in `src/index.css`.
 - **Performance:** the three demo sites are code-split and mounted only as they approach the viewport.
 
 ## Deploy
