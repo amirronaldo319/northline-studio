@@ -11,6 +11,7 @@ import { Process } from './components/sections/Process'
 import { Work } from './components/sections/Work'
 import { useHashScroll } from './hooks/useHashScroll'
 import { useReveal } from './hooks/useReveal'
+import { StickyQuoteBar } from './components/StickyQuoteBar'
 
 export default function App() {
   useReveal()
@@ -37,6 +38,7 @@ export default function App() {
         <Contact />
       </main>
       <Footer />
+      <StickyQuoteBar />
       </ProjectViewerProvider>
     </ExampleDialogProvider>
   )

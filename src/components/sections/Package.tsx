@@ -39,7 +39,7 @@ export function Package() {
           ))}
         </ul>
 
-        <div className="on-dark reveal mt-10 rounded-xl bg-night p-5 text-white sm:p-7 lg:mt-12">
+        <div className="on-dark panel-glow reveal mt-10 rounded-xl bg-night p-5 text-white sm:p-7 lg:mt-12">
           <p className="max-w-3xl text-[1rem] leading-relaxed">
             <strong className="font-semibold">A written quote comes first.</strong>{' '}
             <span className="text-white/80">

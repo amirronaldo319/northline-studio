@@ -139,7 +139,7 @@ export function Header() {
     >
       <div className="container-page flex h-16 items-center justify-between gap-6">
         <a href="#top" className="-m-1 rounded-lg p-1">
-          <BrandMark />
+          <BrandMark intro />
         </a>
 
         <DesktopNav active={active} />

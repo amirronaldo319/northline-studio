@@ -7,7 +7,8 @@ const CURRENT_YEAR = new Date().getFullYear()
 
 export function Footer() {
   return (
-    <footer className="on-dark bg-night text-white">
+    <footer className="on-dark relative isolate bg-night text-white">
+      <div className="footer-glow" aria-hidden="true" />
       <div className="container-page flex flex-col gap-8 py-12 md:flex-row md:items-start md:justify-between">
         <div>
           <BrandMark tone="dark" />

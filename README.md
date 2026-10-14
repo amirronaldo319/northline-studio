@@ -33,7 +33,7 @@ Hero → Work → Your website package → Process → About → FAQ → Request
 | What | Where |
 | --- | --- |
 | Business name, contact email, service area | `src/config/site.ts` |
-| Logo (ink and reversed versions) | `src/assets/brand/`, used by `BrandMark.tsx`; favicon in `public/favicon.svg` |
+| Logo | Outlines in `src/assets/brand/logoPaths.ts` (inline SVG in `BrandMark.tsx`; the wordmark follows the text colour, so one logo serves light and dark). `northline-logo.svg` is the same artwork as a file, used for the social image. Favicon: `public/favicon.svg` |
 | Package contents (grouped) | `site.packageGroups` in `src/config/site.ts` |
 | Page title and description | `src/config/seo.ts` **and** the matching tags in `index.html` |
 | Colours, fonts, shadows | `@theme` block at the top of `src/index.css` |
@@ -107,6 +107,13 @@ use commercially. No stock photography is bundled.
   `prefers-reduced-motion: no-preference` (enforced by `tests/motion.test.ts`), hover effects only run on devices
   that can hover, and everything is neutralised when printing.
   - Hero: headline, copy, buttons, then the project picture enter in sequence (`.enter`, `enterStep`), about 0.7 s.
+  - Logo: the mark rises and the wordmark slides in once on load (header only, `.brand-logo[data-intro]`).
+  - Hero atmosphere: a faint grid and two slow colour fields behind the first screen (`.hero-atmosphere`); the
+    picture and grid drift a little with page scroll where `animation-timeline` is supported. Pointer-following
+    tilt and spotlight effects were deliberately removed earlier and are guarded by a test.
+  - Primary buttons: a single light sweep on hover (`.shine`). Section labels draw a short rule as they appear.
+  - Phones: a "Request a quote" bar slides up after the first screen and leaves at the form (`StickyQuoteBar`,
+    rule in `src/lib/quoteBar.ts`).
   - Sections: groups fade up once as they enter view (`.reveal`); if the observer never reports, `useReveal` shows
     everything, and hash links reveal their destination immediately (`useHashScroll`).
   - Projects: cards lift 3 px, the picture zooms to 1.03 within its crop, and the action arrow moves with it. The

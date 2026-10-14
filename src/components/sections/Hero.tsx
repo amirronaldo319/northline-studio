@@ -7,7 +7,12 @@ import { buttonClasses } from '../ui/button'
 
 export function Hero() {
   return (
-    <section aria-labelledby="hero-title" className="pt-8 pb-12 sm:pt-12 lg:pt-16 lg:pb-24">
+    <section aria-labelledby="hero-title" className="relative isolate pt-8 pb-12 sm:pt-12 lg:pt-16 lg:pb-24">
+      <div className="hero-atmosphere" aria-hidden="true">
+        <div className="hero-grid" />
+        <div className="hero-orb hero-orb-blue" />
+        <div className="hero-orb hero-orb-sand" />
+      </div>
       <div className="container-page grid items-center gap-9 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-14">
         <div>
           {/* Entrance sequence: headline, copy, buttons, note, then the project picture (see `.enter`). */}
@@ -38,7 +43,7 @@ export function Hero() {
         </div>
 
         <figure className="enter" style={enterStep(3)}>
-          <div className="overflow-hidden rounded-lg border border-line-strong/60 bg-white shadow-device">
+          <div className="hero-figure overflow-hidden rounded-lg border border-line-strong/60 bg-white shadow-device">
             <ProjectTrigger project={HERO_PROJECT} isEager />
           </div>
           <figcaption className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-sm text-ink-3">

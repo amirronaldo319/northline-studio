@@ -15,8 +15,8 @@
   --color-ink-2: #3f4658;
   --color-ink-3: #5f6576;
 
-  --color-cobalt: #2347d6;
-  --color-cobalt-deep: #1a37ad;
+  --color-cobalt: #173fd0;
+  --color-cobalt-deep: #112f9e;
   --color-cobalt-soft: #e5eafb;
 
   --color-night: #10172a;
@@ -152,6 +152,19 @@
     color: var(--color-cobalt);
   }
 
+  /* A short rule before each section label. It draws in with the section (see the reveal rules). */
+  .eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 1.5rem;
+    height: 2px;
+    margin-right: 0.6rem;
+    vertical-align: middle;
+    border-radius: 9999px;
+    background: currentColor;
+    transform-origin: left;
+  }
+
   .h-section {
     font-size: clamp(1.875rem, 1.35rem + 2.2vw, 3rem);
     font-weight: 650;
@@ -179,6 +192,14 @@
       opacity var(--motion-dur-reveal) var(--motion-ease-out),
       transform var(--motion-dur-reveal) var(--motion-ease-out);
     transition-delay: calc(var(--reveal-step, 0) * var(--motion-stagger));
+  }
+
+  .js .reveal .eyebrow::before {
+    transition: transform var(--motion-dur-mask) var(--motion-ease-out) 120ms;
+  }
+
+  .js .reveal:not(.is-visible) .eyebrow::before {
+    transform: scaleX(0);
   }
 }
 
@@ -657,6 +678,223 @@ dialog.viewer[data-closing]::backdrop {
 }
 
 /*
+ * Logo. The mark rises and the wordmark follows once on load (header only). On hover the mark lifts a touch.
+ * `transform-box` keeps the transform origin on each part rather than on the whole canvas.
+ */
+.logo-mark,
+.logo-word {
+  transform-box: fill-box;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .js .brand-logo[data-intro] .logo-mark {
+    animation: logo-mark-in var(--motion-dur-enter) var(--motion-ease-out) backwards;
+  }
+
+  .js .brand-logo[data-intro] .logo-word {
+    animation: logo-word-in var(--motion-dur-enter) var(--motion-ease-out) 120ms backwards;
+  }
+
+  @keyframes logo-mark-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+
+  @keyframes logo-word-in {
+    from {
+      opacity: 0;
+      transform: translateX(-12px);
+    }
+  }
+
+  .logo-mark {
+    transition: transform var(--motion-dur-ui) var(--motion-ease-out);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  a:hover > .brand-logo .logo-mark {
+    transform: translateY(-2px);
+  }
+}
+
+/*
+ * Hero atmosphere: a faint grid and two soft colour fields behind the first screen. The fields drift very
+ * slowly (transform only). The whole layer fades out before the section edge so nothing ends in a hard line.
+ */
+.hero-atmosphere {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: clip;
+  pointer-events: none;
+  mask-image: linear-gradient(to bottom, #000 55%, transparent);
+}
+
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--color-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
+  background-size: 56px 56px;
+  opacity: 0.55;
+  mask-image: radial-gradient(ellipse at 78% 38%, #000 6%, transparent 68%);
+}
+
+.hero-orb {
+  position: absolute;
+  border-radius: 9999px;
+}
+
+.hero-orb-blue {
+  width: 46rem;
+  height: 46rem;
+  right: -14rem;
+  top: -16rem;
+  background: radial-gradient(closest-side, rgb(23 63 208 / 0.15), transparent);
+}
+
+.hero-orb-sand {
+  width: 38rem;
+  height: 38rem;
+  left: -15rem;
+  bottom: -14rem;
+  background: radial-gradient(closest-side, rgb(217 204 180 / 0.65), transparent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-orb-blue {
+    animation: orb-drift-a 26s ease-in-out infinite alternate;
+  }
+
+  .hero-orb-sand {
+    animation: orb-drift-b 32s ease-in-out infinite alternate;
+  }
+
+  @keyframes orb-drift-a {
+    to {
+      transform: translate3d(-4rem, 3rem, 0) scale(1.08);
+    }
+  }
+
+  @keyframes orb-drift-b {
+    to {
+      transform: translate3d(5rem, -2.5rem, 0) scale(1.1);
+    }
+  }
+}
+
+/*
+ * Primary buttons get a single light sweep on hover (mouse users only). It runs when the pointer arrives
+ * and is a decoration; the button's state changes (colour, shadow) carry the feedback.
+ */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .shine {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .shine::after {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 55%;
+    pointer-events: none;
+    background: linear-gradient(105deg, transparent, rgb(255 255 255 / 0.3), transparent);
+    transform: translateX(-140%) skewX(-18deg);
+  }
+
+  .shine:hover::after {
+    transform: translateX(300%) skewX(-18deg);
+    transition: transform 720ms var(--motion-ease-out);
+  }
+}
+
+/*
+ * Scroll-linked depth, where the browser supports it: the hero picture drifts up and settles back a little
+ * as the page leaves the first screen, so it reads as sitting in front of the background. Transform only.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    .hero-figure {
+      animation: hero-depth linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 70vh;
+    }
+
+    @keyframes hero-depth {
+      to {
+        transform: translateY(-28px) scale(0.985);
+      }
+    }
+
+    .hero-atmosphere .hero-grid {
+      animation: grid-drift linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 100vh;
+    }
+
+    @keyframes grid-drift {
+      to {
+        transform: translateY(40px);
+      }
+    }
+  }
+}
+
+/* A dark panel with a soft light in one corner, so it has depth without moving. */
+.panel-glow {
+  background-image: radial-gradient(30rem 14rem at 100% 0%, rgb(74 108 242 / 0.28), transparent 70%);
+}
+
+/* Phone quote bar: slides up after the first screen and out of the way at the form. */
+.quote-bar {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(120%);
+}
+
+.quote-bar[data-visible='true'] {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .quote-bar {
+    transition:
+      transform var(--motion-dur-ui) var(--motion-ease-out),
+      opacity var(--motion-dur-ui) var(--motion-ease-out),
+      visibility 0s linear var(--motion-dur-ui);
+  }
+
+  .quote-bar[data-visible='true'] {
+    transition-delay: 0s;
+  }
+}
+
+/* The bar covers the bottom edge on phones, so anchors and focused fields stop short of it. */
+@media (max-width: 559.98px) {
+  html {
+    scroll-padding-bottom: 5rem;
+  }
+}
+
+/* Footer: a quiet glow in the corner, so the navy has some depth. */
+.footer-glow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: clip;
+  pointer-events: none;
+  background: radial-gradient(38rem 20rem at 100% 0%, rgb(23 63 208 / 0.28), transparent 70%);
+}
+
+/*
  * Printing: scroll reveals only run on screen, so show everything when the page is printed
  * and keep the sticky header from repeating on every sheet.
  */
@@ -690,8 +928,23 @@ dialog.viewer[data-closing]::backdrop {
     transition: none !important;
   }
 
-  .scroll-progress {
+  .scroll-progress,
+  .hero-atmosphere,
+  .footer-glow,
+  .quote-bar {
     display: none !important;
+  }
+
+  .hero-figure,
+  .hero-grid {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .logo-mark,
+  .logo-word {
+    animation: none !important;
+    transform: none !important;
   }
 
   .disclosure {
