@@ -677,6 +677,17 @@ dialog.viewer[data-closing]::backdrop {
   }
 }
 
+/* Concept-demo preview: the frame is phone-shaped below 640px and desktop-shaped from there (see DemoPreview). */
+.demo-frame {
+  --demo-ar: var(--demo-ar-narrow);
+}
+
+@media (min-width: 640px) {
+  .demo-frame {
+    --demo-ar: var(--demo-ar-wide);
+  }
+}
+
 /*
  * Logo. The mark rises and the wordmark follows once on load (header only). On hover the mark lifts a touch.
  * `transform-box` keeps the transform origin on each part rather than on the whole canvas.

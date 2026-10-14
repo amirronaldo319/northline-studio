@@ -105,6 +105,11 @@ use commercially. No stock photography is bundled.
 - **Site check:** a band above the contact form (`SiteCheck`) prepares the inquiry for a website review: it sets
   "An update to my current website", adds a starter message without overwriting anything typed, and focuses the
   website field. `#site-check` in the URL does the same, so the link can be shared.
+- **Prerendering:** `npm run build` renders the page to static HTML (`scripts/prerender.mjs`, `src/entry-server.tsx`)
+  and the browser hydrates it. Crawlers, link unfurlers, and visitors without JavaScript get the real content, and
+  the headline paints before any script runs. `src/entry-server.test.tsx` guards the output. Anything that reads
+  `window` during render must go through `useSyncExternalStore` (see `useMediaQuery`) so the server and the
+  browser agree on the first render.
 - **Search and sharing:** the build adds FAQPage structured data from `src/content/faq.ts`, preloads the two Latin
   fonts, and ships a branded `404.html`. Canonical, `og:url`, absolute social image, sitemap and `robots.txt`
   Sitemap line still switch on with `VITE_SITE_URL` (see the deploy section).

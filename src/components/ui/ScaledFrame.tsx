@@ -6,6 +6,8 @@ type Props = {
   designHeight: number
   children: ReactNode
   className?: string
+  /** CSS aspect-ratio value. Defaults to the design size; pass a `var(...)` to switch it with a media query. */
+  aspectRatio?: string
 }
 
 /**
@@ -13,14 +15,14 @@ type Props = {
  * container's width. Aspect ratio reserves space before measuring, so nothing shifts.
  * Content is inert and hidden from assistive tech — it's a picture of a page.
  */
-export function ScaledFrame({ designWidth, designHeight, children, className = '' }: Props) {
+export function ScaledFrame({ designWidth, designHeight, children, className = '', aspectRatio }: Props) {
   const { ref, scale } = useScaleToFit<HTMLDivElement>(designWidth)
 
   return (
     <div
       ref={ref}
       className={`relative overflow-hidden ${className}`}
-      style={{ aspectRatio: `${designWidth} / ${designHeight}` }}
+      style={{ aspectRatio: aspectRatio ?? `${designWidth} / ${designHeight}` }}
       aria-hidden="true"
       inert
     >

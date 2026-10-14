@@ -12,11 +12,17 @@ type Props = {
 /** Mounts children the first time the wrapper nears the viewport. Keeps below-the-fold DOM out of the initial render. */
 export function LazyMount({ children, fallback = null, rootMargin = '400px 0px', className }: Props) {
   const ref = useRef<HTMLDivElement>(null)
-  const [isNear, setIsNear] = useState(() => typeof IntersectionObserver === 'undefined')
+  const [isNear, setIsNear] = useState(false)
 
   useEffect(() => {
     const el = ref.current
     if (isNear || !el) return
+
+    // Without IntersectionObserver there is nothing to wait for, so mount straight away.
+    if (typeof IntersectionObserver === 'undefined') {
+      const timer = window.setTimeout(() => setIsNear(true), 0)
+      return () => window.clearTimeout(timer)
+    }
 
     const observer = new IntersectionObserver(
       (entries) => {

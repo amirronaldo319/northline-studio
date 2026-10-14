@@ -1,5 +1,5 @@
 import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { createRoot, hydrateRoot } from 'react-dom/client'
 import '@fontsource-variable/inter/wght.css'
 import '@fontsource-variable/bricolage-grotesque/wght.css'
 import './index.css'
@@ -11,8 +11,12 @@ document.documentElement.classList.add('js')
 const root = document.getElementById('root')
 if (!root) throw new Error('Root element #root not found')
 
-createRoot(root).render(
+const app = (
   <StrictMode>
     <App />
-  </StrictMode>,
+  </StrictMode>
 )
+
+// The production build ships the page already rendered; attach to it. In development the root is empty.
+if (root.hasChildNodes()) hydrateRoot(root, app)
+else createRoot(root).render(app)

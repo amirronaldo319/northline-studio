@@ -1,4 +1,4 @@
-import { Suspense } from 'react'
+import { Suspense, type CSSProperties } from 'react'
 import type { ExampleSite } from '@/content/examples'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { LazyMount } from './LazyMount'
@@ -32,8 +32,16 @@ export function DemoPreview({ example, isEager = false }: Props) {
     </Suspense>
   )
 
+  // The frame's shape comes from CSS (see `.demo-frame`), so the page reserves the right space before any
+  // script has run, on phones and on desktops alike.
+  const shape = {
+    '--demo-ar-narrow': `${NARROW_WIDTH} / ${example.previewHeight.narrow}`,
+    '--demo-ar-wide': `${WIDE_WIDTH} / ${example.previewHeight.wide}`,
+  } as CSSProperties
+
   return (
-    <ScaledFrame designWidth={width} designHeight={height}>
+    <div className="demo-frame" style={shape}>
+    <ScaledFrame designWidth={width} designHeight={height} aspectRatio="var(--demo-ar)">
       {isEager ? (
         content
       ) : (
@@ -42,5 +50,6 @@ export function DemoPreview({ example, isEager = false }: Props) {
         </LazyMount>
       )}
     </ScaledFrame>
+    </div>
   )
 }

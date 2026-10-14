@@ -9,12 +9,17 @@ const FAILSAFE_MS = 2500
  */
 export function useInViewOnce<T extends Element>(threshold = 0.25) {
   const ref = useRef<T>(null)
-  // Without IntersectionObserver there is nothing to wait for, so start in the final state.
-  const [hasEntered, setHasEntered] = useState(() => typeof IntersectionObserver === 'undefined')
+  const [hasEntered, setHasEntered] = useState(false)
 
   useEffect(() => {
     const el = ref.current
     if (!el || hasEntered) return
+
+    // Without IntersectionObserver there is nothing to wait for, so go straight to the final state.
+    if (typeof IntersectionObserver === 'undefined') {
+      const timer = window.setTimeout(() => setHasEntered(true), 0)
+      return () => window.clearTimeout(timer)
+    }
 
     const observer = new IntersectionObserver(
       (entries) => {
