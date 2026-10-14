@@ -6,6 +6,12 @@ import { CopyEmailButton } from '../CopyEmailButton'
 import { InquiryForm } from '../contact/InquiryForm'
 import { Words } from '../Words'
 
+const NEXT_STEPS = [
+  'You send a message, with as much or as little as you like.',
+  'I read it and reply by email to talk through what you need.',
+  'If it’s a fit, I send a written quote. Nothing starts until you approve it.',
+] as const
+
 export function Contact() {
   return (
     <section id={CONTACT_SECTION_ID} aria-labelledby="contact-title" className="border-t border-line bg-paper-2 py-12 sm:py-20 lg:py-24">
@@ -19,10 +25,20 @@ export function Contact() {
             Tell me about your business and what you need. I’ll reply to talk through the scope and next steps.
           </p>
 
-          <p className="mt-6 text-[0.9375rem] leading-relaxed text-ink-2">
-            <strong className="font-semibold text-ink">What happens next:</strong> I read your message and reply by email.
-            If it’s a fit, I send a written quote. Nothing starts until you approve it.
-          </p>
+          <h3 className="mt-6 text-sm font-semibold">What happens next</h3>
+          <ol className="mt-2 space-y-2 text-[0.9375rem] leading-relaxed text-ink-2">
+            {NEXT_STEPS.map((step, index) => (
+              <li key={step} className="flex gap-3">
+                <span
+                  aria-hidden="true"
+                  className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-cobalt text-xs font-semibold text-white"
+                >
+                  {index + 1}
+                </span>
+                {step}
+              </li>
+            ))}
+          </ol>
 
           <p className="mt-8 text-sm text-ink-3">Prefer email?</p>
           <a

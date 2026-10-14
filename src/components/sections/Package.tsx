@@ -8,6 +8,13 @@ import { Words } from '../Words'
 /** Section ids from earlier versions of the page. Links shared with these still land on this section. */
 const LEGACY_IDS = ['pricing', 'included'] as const
 
+const QUOTE_FACTORS = [
+  { title: 'What’s ready', text: 'Your services, photos, and contact details.' },
+  { title: 'Beyond one page', text: 'Extra pages or features, quoted as separate lines.' },
+  { title: 'Hosting and domain', text: 'What you already have, and what you’d like arranged.' },
+  { title: 'Timing', text: 'When your details are ready and when you’d like it live.' },
+] as const
+
 const GROUP_ICONS: Record<string, LucideIcon> = {
   design: LayoutTemplate,
   content: FileText,
@@ -63,6 +70,15 @@ export function Package() {
               costs. Anything beyond the single page, such as extra pages or features, is quoted separately.
             </span>
           </p>
+
+          <dl className="mt-6 grid gap-x-8 gap-y-4 border-t border-night-line pt-5 sm:grid-cols-2 lg:grid-cols-4">
+            {QUOTE_FACTORS.map((factor) => (
+              <div key={factor.title}>
+                <dt className="text-sm font-semibold">{factor.title}</dt>
+                <dd className="mt-1 text-sm leading-relaxed text-white/75">{factor.text}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </div>
     </section>

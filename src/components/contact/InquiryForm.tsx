@@ -1,4 +1,4 @@
-import { useRef, useState, type ChangeEvent, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react'
 import { AlertCircle, ChevronDown, Copy, Loader2, Mail, Send } from 'lucide-react'
 import { formEndpoint } from '@/config/env'
 import { mailtoHref, site } from '@/config/site'
@@ -15,6 +15,7 @@ import {
   type InquiryErrors,
   type InquiryField,
 } from '@/lib/inquiry'
+import { SITE_CHECK_EVENT, siteCheckPreset } from '@/lib/siteCheck'
 import { buttonClasses } from '../ui/button'
 import { Field } from './fields'
 import { describedBy, inputClasses } from './fieldStyles'
@@ -37,6 +38,21 @@ export function InquiryForm() {
   const isSubmittingRef = useRef(false)
   const formRef = useRef<HTMLFormElement>(null)
   const resultRef = useRef<HTMLDivElement>(null)
+
+  // The site-check band (or a #site-check link) asks for the form to be ready for a website review.
+  useEffect(() => {
+    const prepare = () => {
+      setValues((current) => siteCheckPreset(current))
+      setErrors({})
+      setHasAttempted(false)
+      setIsDetailsOpen(true)
+      setStatus('idle')
+      window.setTimeout(() => formRef.current?.querySelector<HTMLElement>('[name="website"]')?.focus({ preventScroll: true }), 80)
+    }
+    window.addEventListener(SITE_CHECK_EVENT, prepare)
+    if (window.location.hash === '#site-check') prepare()
+    return () => window.removeEventListener(SITE_CHECK_EVENT, prepare)
+  }, [])
 
   const update = (field: InquiryField) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const next = { ...values, [field]: event.target.value }

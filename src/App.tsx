@@ -8,6 +8,7 @@ import { Faq } from './components/sections/Faq'
 import { Hero } from './components/sections/Hero'
 import { Package } from './components/sections/Package'
 import { Process } from './components/sections/Process'
+import { SiteCheck } from './components/sections/SiteCheck'
 import { Work } from './components/sections/Work'
 import { useHashScroll } from './hooks/useHashScroll'
 import { useReveal } from './hooks/useReveal'
@@ -35,6 +36,7 @@ export default function App() {
         <Process />
         <About />
         <Faq />
+        <SiteCheck />
         <Contact />
       </main>
       <Footer />

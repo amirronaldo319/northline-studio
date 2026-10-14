@@ -102,6 +102,9 @@ use commercially. No stock photography is bundled.
   generic agency phrase appears in the source.
 - **Security headers:** `public/_headers` sets a strict Content-Security-Policy and related headers on Cloudflare
   Pages and Netlify. Other hosts ignore this file; set equivalent headers in their settings.
+- **Site check:** a band above the contact form (`SiteCheck`) prepares the inquiry for a website review: it sets
+  "An update to my current website", adds a starter message without overwriting anything typed, and focuses the
+  website field. `#site-check` in the URL does the same, so the link can be shared.
 - **Search and sharing:** the build adds FAQPage structured data from `src/content/faq.ts`, preloads the two Latin
   fonts, and ships a branded `404.html`. Canonical, `og:url`, absolute social image, sitemap and `robots.txt`
   Sitemap line still switch on with `VITE_SITE_URL` (see the deploy section).
