@@ -1,6 +1,13 @@
 import { site } from '@/config/site'
 import { Words } from '../Words'
 
+const GLANCE = [
+  { label: 'Based in', value: `${site.serviceArea.label}, ${site.serviceArea.region}` },
+  { label: 'Who builds it', value: 'Me, directly. No hand-offs.' },
+  { label: 'Before work starts', value: 'A written quote you approve' },
+  { label: 'How we talk', value: 'By email, in plain language' },
+] as const
+
 export function About() {
   return (
     <section id="about" aria-labelledby="about-title" className="border-t border-line bg-paper-2 py-12 sm:py-20 lg:py-24">
@@ -10,6 +17,15 @@ export function About() {
           <h2 id="about-title" className="h-section word-reveal mt-3">
             <Words text="You work with me directly." />
           </h2>
+
+          <dl className="mt-8 divide-y divide-line-strong/60 rounded-xl border border-line-strong/60 bg-card text-[0.9375rem]">
+            {GLANCE.map((row) => (
+              <div key={row.label} className="flex flex-col gap-0.5 px-4 py-3 sm:flex-row sm:gap-4">
+                <dt className="shrink-0 text-ink-3 sm:w-36">{row.label}</dt>
+                <dd className="font-medium text-ink">{row.value}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
 
         <div className="reveal space-y-4 text-[1.0625rem] leading-relaxed text-ink-2 lg:col-span-7">

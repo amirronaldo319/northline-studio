@@ -919,9 +919,10 @@ dialog.viewer[data-closing]::backdrop {
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  /* Shorter and tighter than the other entrances: the headline is the first thing a visitor waits for. */
   .js .word-enter .word {
-    animation: word-in var(--motion-dur-enter) var(--motion-ease-out) backwards;
-    animation-delay: calc(var(--w, 0) * 45ms);
+    animation: word-in 420ms var(--motion-ease-out) backwards;
+    animation-delay: calc(var(--w, 0) * 32ms);
   }
 
   .js .word-enter .word-marked::after {

@@ -2,9 +2,10 @@ import path from 'node:path'
 import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-import { seoPlugin } from './vite-seo-plugin.ts'
+import { fontPreloadPlugin, seoPlugin } from './vite-seo-plugin.ts'
 import { site } from './src/config/site.ts'
 import { seo } from './src/config/seo.ts'
+import { FAQ } from './src/content/faq.ts'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
@@ -24,7 +25,9 @@ export default defineConfig(({ mode }) => {
         description: seo.description,
         areaServed: site.serviceArea.primary,
         ogImagePath: '/og-image.png',
+        faq: FAQ,
       }),
+      fontPreloadPlugin(),
     ],
     resolve: {
       alias: {

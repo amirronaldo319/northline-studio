@@ -1,4 +1,4 @@
-import { ArrowRight, ArrowUpRight } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, Check } from 'lucide-react'
 import { HERO_EXAMPLE } from '@/content/examples'
 import { CONTACT_SECTION_ID, PRIMARY_CTA_LABEL, WORK_CTA_LABEL } from '@/content/navigation'
 import { enterStep } from '@/lib/reveal'
@@ -6,6 +6,9 @@ import { DemoPreview } from '../DemoPreview'
 import { Words } from '../Words'
 import { useExampleDialog } from '../exampleDialogContext'
 import { buttonClasses } from '../ui/button'
+
+/** Plain statements the page already makes elsewhere (quote process, About, service area). */
+const HERO_FACTS = ['Written quote before any work', 'Designed and built by me', 'Vancouver and North Vancouver'] as const
 
 export function Hero() {
   const { open } = useExampleDialog()
@@ -40,9 +43,14 @@ export function Hero() {
             </a>
           </div>
 
-          <p className="enter mt-5 text-sm text-ink-3" style={enterStep(4)}>
-            Serving Vancouver and North Vancouver.
-          </p>
+          <ul className="enter mt-6 flex flex-col gap-2 text-sm text-ink-2" style={enterStep(4)}>
+            {HERO_FACTS.map((fact) => (
+              <li key={fact} className="inline-flex items-center gap-2">
+                <Check aria-hidden="true" size={15} className="shrink-0 text-cobalt" />
+                {fact}
+              </li>
+            ))}
+          </ul>
         </div>
 
         <figure className="enter" style={enterStep(4)}>

@@ -1,5 +1,10 @@
 import type { HtmlTagDescriptor, Plugin } from 'vite'
 
+interface FaqEntry {
+  question: string
+  answer: string
+}
+
 interface SeoOptions {
   siteUrl: string
   businessName: string
@@ -7,6 +12,8 @@ interface SeoOptions {
   description: string
   areaServed: readonly string[]
   ogImagePath: string
+  /** Published as FAQPage structured data, so the answers can appear in search results. */
+  faq?: readonly FaqEntry[]
 }
 
 /**
@@ -48,6 +55,23 @@ export function seoPlugin(options: SeoOptions): Plugin {
         injectTo: 'head',
       })
 
+      if (options.faq && options.faq.length > 0) {
+        tags.push({
+          tag: 'script',
+          attrs: { type: 'application/ld+json' },
+          children: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: options.faq.map((item) => ({
+              '@type': 'Question',
+              name: item.question,
+              acceptedAnswer: { '@type': 'Answer', text: item.answer },
+            })),
+          }),
+          injectTo: 'head',
+        })
+      }
+
       return tags
     },
     generateBundle() {
@@ -65,6 +89,33 @@ export function seoPlugin(options: SeoOptions): Plugin {
         ].join('\n')
         this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: sitemap })
       }
+    },
+  }
+}
+
+/**
+ * Preloads the two Latin variable fonts the first screen needs, so text does not wait for the stylesheet to
+ * discover them. Only runs in a build (in dev the font URLs are not hashed files).
+ */
+export function fontPreloadPlugin(): Plugin {
+  let base = '/'
+  return {
+    name: 'amir-font-preload',
+    configResolved(config) {
+      base = config.base
+    },
+    transformIndexHtml: {
+      order: 'post',
+      handler(_html, ctx) {
+        if (!ctx.bundle) return []
+        return Object.keys(ctx.bundle)
+          .filter((file) => /(inter|bricolage-grotesque)-latin-wght-normal-[\w-]+\.woff2$/.test(file))
+          .map<HtmlTagDescriptor>((file) => ({
+            tag: 'link',
+            attrs: { rel: 'preload', as: 'font', type: 'font/woff2', crossorigin: '', href: `${base}${file}` },
+            injectTo: 'head',
+          }))
+      },
     },
   }
 }
