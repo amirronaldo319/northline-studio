@@ -111,12 +111,20 @@ use commercially. No stock photography is bundled.
   with the screenshots wired in `projects.ts`). To add a trade or guide, add an entry; the page, its title and
   description, its FAQ data, and its sitemap line follow. Keep copy free of results, rankings, and prices (the
   copy-rules test checks this).
-- **Translated pages and language buttons:** `src/content/languages.ts` holds drafts for Persian (`/fa/`, right to
-  left), Simplified Chinese (`/zh/`) and Traditional Chinese (`/zh-hant/`). Each is built only when its switch in
-  `site.features.languages` (`src/config/site.ts`) is `true`; a page that is off is not built, linked, or listed in the
-  sitemap. When at least one is on, `LanguageSwitcher` shows a button for each language (header from 1100px up, the
-  mobile menu, the footer, and the translated pages), and every version links to the others with `hreflang` once
-  `VITE_SITE_URL` is set. **The wording is a draft: have a native speaker review a language before switching it on.**
+- **Languages (every page, in every language):** each language is a full twin of the English site: the home page, the
+  five trade pages, the three case studies, and the two guides, at the same paths under `fa/`, `zh/`, and
+  `zh-hant/`. Words live in per-language dictionaries (`src/i18n/en.ts`, `fa.ts`, `zhHans.ts`, `zhHant.ts`, all typed
+  against `src/i18n/types.ts`, so a missing key is a build error). Components read text with `useCopy()`; nothing
+  on a page is hard-coded English. `zhHant.ts` is generated from `zhHans.ts`
+  (`node scripts/generate-traditional-chinese.mjs`, needs `npm i --no-save opencc-js`).
+  The switch works like the Ganjineh Ofogh site's: a button per language goes to the **same page** in that language,
+  keeps the section in the address (`#faq`), and remembers the choice (`northline-lang`); a visitor who chose another
+  language and lands on the English page is sent to it (a link opened directly in another language is never
+  overridden). Languages are right-to-left aware (Persian) and use system fonts that cover their script.
+  **A language is built only when its switch in `site.features.languages` (`src/config/site.ts`) is `true`.**
+  All three are off: the wording is a draft that a native speaker must review before its switch is turned on. While
+  off, no translated page is built, linked, or listed in the sitemap, and the language buttons do not appear.
+  Once any is on, `hreflang` links tie each page to its twins (needs `VITE_SITE_URL`).
 - **Analytics (optional):** set `VITE_CF_ANALYTICS_TOKEN` (a Cloudflare Web Analytics token) and the build adds the
   beacon and allows its two origins in the security policy. Empty means no analytics and no extra requests.
 - **Security policy:** `vite-security-plugin.ts` builds one Content-Security-Policy and writes it two ways: a meta

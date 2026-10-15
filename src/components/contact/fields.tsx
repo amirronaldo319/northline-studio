@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { useCopy } from '@/i18n/context'
 
 type FieldProps = {
   id: string
@@ -12,11 +13,13 @@ type FieldProps = {
 
 /** Visible label + control + hint/error, with ids wired for aria-describedby. */
 export function Field({ id, label, isOptional = false, error, hint, className = '', children }: FieldProps) {
+  const t = useCopy()
+
   return (
     <div className={className}>
       <label htmlFor={id} className="mb-1.5 flex items-baseline gap-1.5 text-[0.9375rem] font-semibold text-ink">
         {label}
-        {isOptional && <span className="text-sm font-normal text-ink-3">(optional)</span>}
+        {isOptional && <span className="text-sm font-normal text-ink-3">{t.form.optional}</span>}
       </label>
       {children}
       {hint && !error && (

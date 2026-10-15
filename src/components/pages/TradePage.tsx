@@ -1,7 +1,7 @@
 import { ArrowUpRight, Check } from 'lucide-react'
 import { PROJECT_DATA } from '@/content/projectsData'
 import type { Trade } from '@/content/trades'
-import { pageHref } from '@/lib/paths'
+import { useCopy, useLocalHref } from '@/i18n/context'
 import { revealDelay } from '@/lib/reveal'
 import { Contact } from '../sections/Contact'
 import { Faq } from '../sections/Faq'
@@ -13,12 +13,14 @@ import { useHomeAnchor } from '../pageContext'
 /** A landing page for one kind of business: what its customers look for, and what a page for it would hold. */
 export function TradePage({ trade }: { trade: Trade }) {
   const homeAnchor = useHomeAnchor()
+  const localHref = useLocalHref()
+  const t = useCopy()
 
   return (
     <>
       <PageHero
-        crumbs={[{ label: 'Home', href: homeAnchor('top') }, { label: `Websites for ${trade.name}` }]}
-        eyebrow={`Websites for ${trade.name}`}
+        crumbs={[{ label: t.common.home, href: homeAnchor('top') }, { label: t.tradePage.crumb(trade.name) }]}
+        eyebrow={t.tradePage.eyebrow(trade.name)}
         headline={trade.headline}
         intro={trade.intro}
       />
@@ -26,9 +28,9 @@ export function TradePage({ trade }: { trade: Trade }) {
       <section aria-labelledby="checks-title" className="border-t border-line bg-card py-12 sm:py-20">
         <div className="container-page">
           <div className="reveal max-w-2xl">
-            <p className="eyebrow">What customers look for</p>
+            <p className="eyebrow">{t.tradePage.customersEyebrow}</p>
             <h2 id="checks-title" className="h-section word-reveal mt-3">
-              <Words text={`What people check before they contact a ${trade.noun}.`} />
+              <Words text={t.tradePage.checksHeading(trade.noun)} />
             </h2>
           </div>
           <ul className="reveal mt-10 grid gap-x-8 gap-y-8 sm:grid-cols-2">
@@ -45,13 +47,11 @@ export function TradePage({ trade }: { trade: Trade }) {
       <section aria-labelledby="includes-title" className="py-12 sm:py-20">
         <div className="container-page grid gap-10 lg:grid-cols-12 lg:gap-14">
           <div className="reveal lg:col-span-5">
-            <p className="eyebrow">What your page includes</p>
+            <p className="eyebrow">{t.tradePage.includesEyebrow}</p>
             <h2 id="includes-title" className="h-section word-reveal mt-3">
-              <Words text="One focused page, built around your business." />
+              <Words text={t.tradePage.includesHeading} />
             </h2>
-            <p className="lede mt-4">
-              A written quote comes first, so you know the scope and the cost before any work begins.
-            </p>
+            <p className="lede mt-4">{t.tradePage.includesLede}</p>
           </div>
           <ul className="reveal space-y-3 lg:col-span-7" style={revealDelay(1)}>
             {trade.includes.map((item) => (
@@ -67,27 +67,27 @@ export function TradePage({ trade }: { trade: Trade }) {
       <section aria-labelledby="proof-title" className="border-t border-line bg-paper-2 py-12 sm:py-20">
         <div className="container-page">
           <div className="reveal max-w-2xl">
-            <p className="eyebrow">Recent work</p>
+            <p className="eyebrow">{t.tradePage.recentEyebrow}</p>
             <h2 id="proof-title" className="h-section word-reveal mt-3">
-              <Words text="Websites I’ve designed and built." />
+              <Words text={t.tradePage.recentHeading} />
             </h2>
-            <p className="lede mt-4">Real projects, each labelled for what it is. Open one to see how it came together.</p>
+            <p className="lede mt-4">{t.tradePage.recentLede}</p>
           </div>
           <ul className="reveal mt-8 grid gap-4 md:grid-cols-3">
             {PROJECT_DATA.map((project) => (
               <li key={project.id}>
                 <a
-                  href={pageHref(`work/${project.id}/`)}
+                  href={localHref(`work/${project.id}/`)}
                   className="group block h-full rounded-xl border border-line-strong/60 bg-card p-5 transition-colors hover:border-cobalt"
                 >
                   <p className="text-xs font-semibold tracking-[0.08em] text-cobalt uppercase">
-                    {project.status === 'live' ? 'Live website' : 'Concept project'}
+                    {project.status === 'live' ? t.work.statusLive : t.work.statusConcept}
                   </p>
                   <h3 className="mt-2 flex items-center gap-1.5 text-[1.125rem] font-semibold">
-                    {project.name}
+                    <bdi>{project.name}</bdi>
                     <ArrowUpRight aria-hidden="true" size={16} className="card-arrow shrink-0" />
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-ink-2">{project.type}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-ink-2">{t.projects[project.id].type}</p>
                 </a>
               </li>
             ))}
@@ -97,8 +97,8 @@ export function TradePage({ trade }: { trade: Trade }) {
 
       <Faq
         items={trade.faq}
-        heading={`Questions from ${trade.name}.`}
-        label="Questions"
+        heading={t.tradePage.faqHeading(trade.name)}
+        label={t.tradePage.faqLabel}
       />
       <SiteCheck />
       <Contact />

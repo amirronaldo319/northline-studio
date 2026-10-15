@@ -17,7 +17,7 @@ const TEMPLATE = `<!doctype html><html lang="en-CA"><head><title>Home title</tit
 </head><body><div id="root"></div></body></html>`.replace('<meta\n  name="description"\n  content="Home description"\n/>', '<meta name="description" content="Home description" />')
 
 describe('applyPageHead', () => {
-  const meta = pageMeta({ kind: 'trade', slug: TRADES[0].slug })
+  const meta = pageMeta({ kind: 'trade', locale: 'en', slug: TRADES[0].slug })
   const out = applyPageHead(TEMPLATE, meta, { siteUrl: 'https://example.ca' })
 
   test('sets the title, description, and social tags for the page', () => {
@@ -38,7 +38,7 @@ describe('applyPageHead', () => {
   })
 
   test('drops FAQ data for pages with no questions', () => {
-    const guide = pageMeta({ kind: 'guide', slug: 'what-a-local-business-website-needs' })
+    const guide = pageMeta({ kind: 'guide', locale: 'en', slug: 'what-a-local-business-website-needs' })
     expect(applyPageHead(TEMPLATE, guide, { siteUrl: '' })).not.toContain('FAQPage')
   })
 
@@ -48,12 +48,12 @@ describe('applyPageHead', () => {
   })
 
   test('marks right-to-left pages', () => {
-    const rtl = { ...meta, lang: 'fa', dir: 'rtl' as const }
+    const rtl = { ...meta, lang: 'fa', dir: 'rtl' as const, locale: 'fa' as const }
     expect(applyPageHead(TEMPLATE, rtl, { siteUrl: '' })).toContain('<html lang="fa" dir="rtl">')
   })
 
   test('adds language alternates when there are several versions, and none otherwise', () => {
-    const home = pageMeta({ kind: 'home' })
+    const home = pageMeta({ kind: 'home', locale: 'en' })
     const withAlternates = applyPageHead(TEMPLATE, home, {
       siteUrl: 'https://example.ca',
       alternates: [

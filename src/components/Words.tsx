@@ -15,8 +15,9 @@ type Props = {
  * The words stay in normal reading order and are separated by real spaces, so the heading reads as one sentence.
  */
 export function Words({ text, marked = [] }: Props) {
+  // <bdi> keeps a heading that starts with a Latin name or a number ("604 Kars") in its own order inside right-to-left text.
   return (
-    <>
+    <bdi>
       {splitWords(text).map((word, index) => (
         <Fragment key={`${word}-${index}`}>
           {index > 0 && ' '}
@@ -28,6 +29,6 @@ export function Words({ text, marked = [] }: Props) {
           </span>
         </Fragment>
       ))}
-    </>
+    </bdi>
   )
 }

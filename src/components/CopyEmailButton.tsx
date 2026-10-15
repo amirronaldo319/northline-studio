@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Check, Copy } from 'lucide-react'
 import { site } from '@/config/site'
+import { useCopy } from '@/i18n/context'
 import { copyText } from '@/lib/clipboard'
 
 const RESTORE_AFTER_MS = 2000
@@ -12,6 +13,7 @@ type State = 'idle' | 'copied' | 'failed'
  * and a failure says so plainly. The label restores itself after two seconds.
  */
 export function CopyEmailButton() {
+  const t = useCopy()
   const [state, setState] = useState<State>('idle')
   const timer = useRef<number | null>(null)
 
@@ -41,11 +43,11 @@ export function CopyEmailButton() {
         ) : (
           <Copy aria-hidden="true" size={15} />
         )}
-        {state === 'copied' ? 'Copied' : 'Copy email address'}
+        {state === 'copied' ? t.contact.copied : t.contact.copyEmail}
       </button>
       <span role="status" aria-live="polite" className="text-sm text-ink-3">
-        {state === 'copied' ? `${site.contact.email} is on your clipboard.` : null}
-        {state === 'failed' ? 'Couldn’t copy. Please select the address and copy it manually.' : null}
+        {state === 'copied' ? t.contact.copiedNote(site.contact.email) : null}
+        {state === 'failed' ? t.contact.copyFailed : null}
       </span>
     </span>
   )

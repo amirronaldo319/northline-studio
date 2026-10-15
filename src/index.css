@@ -158,7 +158,7 @@
     display: inline-block;
     width: 1.5rem;
     height: 2px;
-    margin-right: 0.6rem;
+    margin-inline-end: 0.6rem;
     vertical-align: middle;
     border-radius: 9999px;
     background: currentColor;
@@ -1043,6 +1043,84 @@ dialog.viewer[data-closing]::backdrop {
 .check-draw circle,
 .check-draw path {
   stroke-dasharray: 1;
+}
+
+/*
+ * Languages. The page's language and direction are set on <html> (see index.html and the prerender step).
+ * Scripts that are not Latin get system fonts that cover them, with no downloads, and lose the tight letter
+ * spacing the Latin type relies on: negative tracking breaks Arabic-script joining and crowds Chinese characters.
+ */
+:root:lang(fa) {
+  --font-display: Tahoma, 'Segoe UI', 'Geeza Pro', system-ui, sans-serif;
+  --font-sans: Tahoma, 'Segoe UI', 'Geeza Pro', system-ui, sans-serif;
+}
+
+:root:lang(zh-Hans) {
+  --font-display: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', 'Noto Sans CJK SC', system-ui, sans-serif;
+  --font-sans: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', 'Noto Sans CJK SC', system-ui, sans-serif;
+}
+
+:root:lang(zh-Hant) {
+  --font-display: 'PingFang TC', 'Microsoft JhengHei', 'Noto Sans TC', 'Noto Sans CJK TC', system-ui, sans-serif;
+  --font-sans: 'PingFang TC', 'Microsoft JhengHei', 'Noto Sans TC', 'Noto Sans CJK TC', system-ui, sans-serif;
+}
+
+:root:lang(fa) *,
+:root:lang(zh-Hans) *,
+:root:lang(zh-Hant) * {
+  letter-spacing: 0 !important;
+}
+
+/* Persian and Chinese headings are set a little smaller: their glyphs are visually heavier than the Latin type. */
+:root:lang(fa) h1 {
+  font-size: clamp(1.85rem, 1.35rem + 2.2vw, 2.9rem);
+}
+
+:root:lang(zh-Hans) h1,
+:root:lang(zh-Hant) h1 {
+  font-size: clamp(1.9rem, 1.4rem + 2.3vw, 3.1rem);
+}
+
+:root:lang(fa) .h-section {
+  font-size: clamp(1.55rem, 1.2rem + 1.6vw, 2.3rem);
+}
+
+:root:lang(zh-Hans) .h-section,
+:root:lang(zh-Hant) .h-section {
+  font-size: clamp(1.6rem, 1.25rem + 1.8vw, 2.5rem);
+}
+
+/* Headings and body copy read better with a little more air in these scripts. */
+:root:lang(fa) body,
+:root:lang(zh-Hans) body,
+:root:lang(zh-Hant) body {
+  line-height: 1.8;
+}
+
+:root:lang(fa) :is(h1, h2, h3, h4),
+:root:lang(zh-Hans) :is(h1, h2, h3, h4),
+:root:lang(zh-Hant) :is(h1, h2, h3, h4) {
+  line-height: 1.35;
+}
+
+/* Right to left: things that grow or slide from the start edge start from the right. */
+:root[dir='rtl'] .eyebrow::before,
+:root[dir='rtl'] .draw-line::before,
+:root[dir='rtl'] .scroll-progress,
+:root[dir='rtl'] .word-marked::after {
+  transform-origin: right;
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  :root[dir='rtl'] .nudge:hover svg:last-child {
+    transform: translateX(-3px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :root[dir='rtl'] .nudge:focus-visible svg:last-child {
+    transform: translateX(-3px);
+  }
 }
 
 /*

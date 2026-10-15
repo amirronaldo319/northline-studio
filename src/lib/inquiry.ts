@@ -59,31 +59,52 @@ const MAX_PHONE_DIGITS = 15
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 const WEBSITE_PATTERN = /^(https?:\/\/)?([a-z0-9-]+\.)+[a-z]{2,}(\/\S*)?$/i
 
-export function validateInquiry(inquiry: Inquiry): InquiryErrors {
+/** Messages shown beside invalid fields. The page passes its own language's; these are the English defaults. */
+export interface InquiryMessages {
+  nameRequired: string
+  emailRequired: string
+  emailInvalid: string
+  phoneInvalid: string
+  websiteInvalid: string
+  messageRequired: string
+  messageShort: string
+}
+
+export const ENGLISH_MESSAGES: InquiryMessages = {
+  nameRequired: 'Please enter your name.',
+  emailRequired: 'Please enter your email so I can reply.',
+  emailInvalid: 'Please enter a valid email address, like name@example.com.',
+  phoneInvalid: 'Please check the phone number, or leave it blank.',
+  websiteInvalid: 'Please enter a web address like yourbusiness.ca, or leave it blank.',
+  messageRequired: 'Please tell me a little about your business and what you need.',
+  messageShort: 'Please add a little more detail so I can reply usefully.',
+}
+
+export function validateInquiry(inquiry: Inquiry, messages: InquiryMessages = ENGLISH_MESSAGES): InquiryErrors {
   const errors: InquiryErrors = {}
   const value = (field: InquiryField) => inquiry[field].trim()
 
-  if (!value('name')) errors.name = 'Please enter your name.'
+  if (!value('name')) errors.name = messages.nameRequired
 
   if (!value('email')) {
-    errors.email = 'Please enter your email so I can reply.'
+    errors.email = messages.emailRequired
   } else if (!EMAIL_PATTERN.test(value('email'))) {
-    errors.email = 'Please enter a valid email address, like name@example.com.'
+    errors.email = messages.emailInvalid
   }
 
   const phoneDigits = value('phone').replace(/\D/g, '')
   if (value('phone') && (phoneDigits.length < MIN_PHONE_DIGITS || phoneDigits.length > MAX_PHONE_DIGITS)) {
-    errors.phone = 'Please check the phone number, or leave it blank.'
+    errors.phone = messages.phoneInvalid
   }
 
   if (value('website') && !WEBSITE_PATTERN.test(value('website'))) {
-    errors.website = 'Please enter a web address like yourbusiness.ca, or leave it blank.'
+    errors.website = messages.websiteInvalid
   }
 
   if (!value('message')) {
-    errors.message = 'Please tell me a little about your business and what you need.'
+    errors.message = messages.messageRequired
   } else if (value('message').length < MIN_MESSAGE_LENGTH) {
-    errors.message = 'Please add a little more detail so I can reply usefully.'
+    errors.message = messages.messageShort
   }
 
   return errors

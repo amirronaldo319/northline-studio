@@ -25,6 +25,8 @@ export function ScaledFrame({ designWidth, designHeight, children, className = '
       style={{ aspectRatio: aspectRatio ?? `${designWidth} / ${designHeight}` }}
       aria-hidden="true"
       inert
+      dir="ltr"
+      lang="en"
     >
       <div
         className="absolute top-0 left-0 origin-top-left"

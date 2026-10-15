@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { ArrowRight } from 'lucide-react'
-import { CONTACT_SECTION_ID, PRIMARY_CTA_LABEL, WORK_CTA_LABEL } from '@/content/navigation'
+import { CONTACT_SECTION_ID } from '@/content/navigation'
+import { useCopy } from '@/i18n/context'
 import { enterStep } from '@/lib/reveal'
 import { Breadcrumb, type Crumb } from '../Breadcrumb'
 import { useHomeAnchor } from '../pageContext'
@@ -21,6 +22,7 @@ type Props = {
 /** The top of every landing page: breadcrumb, label, headline, intro, and the two standard actions. */
 export function PageHero({ crumbs, eyebrow, headline, intro, secondary, showWorkLink = true }: Props) {
   const homeAnchor = useHomeAnchor()
+  const t = useCopy()
 
   return (
     <section aria-labelledby="page-title" className="relative isolate pt-8 pb-12 sm:pt-12 lg:pt-14 lg:pb-16">
@@ -45,13 +47,13 @@ export function PageHero({ crumbs, eyebrow, headline, intro, secondary, showWork
         </p>
         <div className="enter mt-7 flex flex-col gap-3 min-[420px]:flex-row" style={enterStep(3)}>
           <a href={`#${CONTACT_SECTION_ID}`} className={buttonClasses('primary', 'lg', 'nudge')}>
-            {PRIMARY_CTA_LABEL}
-            <ArrowRight aria-hidden="true" size={18} />
+            {t.common.requestQuote}
+            <ArrowRight aria-hidden="true" size={18} className="rtl:-scale-x-100" />
           </a>
           {secondary ??
             (showWorkLink && (
               <a href={homeAnchor('work')} className={buttonClasses('secondary', 'lg')}>
-                {WORK_CTA_LABEL}
+                {t.common.seeMyWork}
               </a>
             ))}
         </div>

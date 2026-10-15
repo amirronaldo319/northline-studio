@@ -1,5 +1,5 @@
-import { GUIDES, type Guide } from '@/content/guides'
-import { pageHref } from '@/lib/paths'
+import type { Guide } from '@/content/guides'
+import { useCopy, useLocalHref } from '@/i18n/context'
 import { Contact } from '../sections/Contact'
 import { Words } from '../Words'
 import { useHomeAnchor } from '../pageContext'
@@ -8,13 +8,19 @@ import { PageHero } from './PageHero'
 /** A short practical guide. Plain advice, with the contact form at the end. */
 export function GuidePage({ guide }: { guide: Guide }) {
   const homeAnchor = useHomeAnchor()
-  const next = GUIDES.find((candidate) => candidate.slug !== guide.slug)
+  const localHref = useLocalHref()
+  const t = useCopy()
+  const next = t.guides.find((candidate) => candidate.slug !== guide.slug)
 
   return (
     <>
       <PageHero
-        crumbs={[{ label: 'Home', href: homeAnchor('top') }, { label: 'Guides' }, { label: guide.headline.replace(/\.$/, '') }]}
-        eyebrow="Guide"
+        crumbs={[
+          { label: t.common.home, href: homeAnchor('top') },
+          { label: t.common.guides },
+          { label: guide.headline.replace(/[.。]$/, '') },
+        ]}
+        eyebrow={t.guidePage.eyebrow}
         headline={guide.headline}
         intro={guide.intro}
         showWorkLink={false}
@@ -23,9 +29,9 @@ export function GuidePage({ guide }: { guide: Guide }) {
       <article className="border-t border-line bg-card py-12 sm:py-20">
         <div className="container-page">
           <div className="max-w-2xl space-y-10">
-            {guide.sections.map((section) => (
-              <section key={section.heading} className="reveal" aria-labelledby={`g-${slug(section.heading)}`}>
-                <h2 id={`g-${slug(section.heading)}`} className="text-[1.5rem] font-semibold">
+            {guide.sections.map((section, sectionIndex) => (
+              <section key={section.heading} className="reveal" aria-labelledby={`g-${sectionIndex}`}>
+                <h2 id={`g-${sectionIndex}`} className="text-[1.5rem] font-semibold">
                   <Words text={section.heading} />
                 </h2>
                 {section.paragraphs?.map((paragraph) => (
@@ -49,9 +55,9 @@ export function GuidePage({ guide }: { guide: Guide }) {
 
           {next && (
             <p className="mt-12 max-w-2xl border-t border-line pt-6 text-[1rem] text-ink-2">
-              Next guide:{' '}
-              <a href={pageHref(`guides/${next.slug}/`)} className="font-semibold text-cobalt underline underline-offset-4">
-                {next.headline.replace(/\.$/, '')}
+              {t.guidePage.next}{' '}
+              <a href={localHref(`guides/${next.slug}/`)} className="font-semibold text-cobalt underline underline-offset-4">
+                {next.headline.replace(/[.。]$/, '')}
               </a>
             </p>
           )}
@@ -61,11 +67,4 @@ export function GuidePage({ guide }: { guide: Guide }) {
       <Contact />
     </>
   )
-}
-
-function slug(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '')
 }

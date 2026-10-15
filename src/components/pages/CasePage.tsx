@@ -1,6 +1,6 @@
 import { ArrowUpRight } from 'lucide-react'
-import { PROJECTS, STATUS_LABEL, type Project } from '@/content/projects'
-import { pageHref } from '@/lib/paths'
+import { PROJECTS, type Project } from '@/content/projects'
+import { useCopy, useLocalHref } from '@/i18n/context'
 import { Contact } from '../sections/Contact'
 import { SiteCheck } from '../sections/SiteCheck'
 import { ProjectTrigger } from '../ProjectTrigger'
@@ -12,6 +12,9 @@ import { PageHero } from './PageHero'
 /** A closer look at one project: what it is, what I did, and the decisions behind it. */
 export function CasePage({ project }: { project: Project }) {
   const homeAnchor = useHomeAnchor()
+  const localHref = useLocalHref()
+  const t = useCopy()
+  const text = t.projects[project.id]
   const others = PROJECTS.filter((candidate) => candidate.id !== project.id)
   const live = project.status === 'live'
 
@@ -19,23 +22,23 @@ export function CasePage({ project }: { project: Project }) {
     <>
       <PageHero
         crumbs={[
-          { label: 'Home', href: homeAnchor('top') },
-          { label: 'Work', href: homeAnchor('work') },
+          { label: t.common.home, href: homeAnchor('top') },
+          { label: t.common.work, href: homeAnchor('work') },
           { label: project.name },
         ]}
-        eyebrow={`${STATUS_LABEL[project.status]} · ${project.type}`}
+        eyebrow={`${live ? t.work.statusLive : t.work.statusConcept} · ${text.type}`}
         headline={project.name}
-        intro={project.summary}
+        intro={text.summary}
         secondary={
           <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className={buttonClasses('secondary', 'lg')}>
-            {live ? 'Visit live site' : 'Open live preview'}
-            <span className="sr-only">: {project.name} (opens in a new tab)</span>
+            {live ? t.work.visitLive : t.work.openLivePreview}
+            <span className="sr-only">{t.common.opensNewTab(project.name)}</span>
             <ArrowUpRight aria-hidden="true" size={17} className="card-arrow" />
           </a>
         }
       />
 
-      <section aria-label={`${project.name} screenshots`} className="border-t border-line bg-card py-10 sm:py-16">
+      <section aria-label={t.casePage.screenshots(project.name)} className="border-t border-line bg-card py-10 sm:py-16">
         <div className="container-page grid items-start gap-6 lg:grid-cols-12 lg:gap-10">
           <div className="reveal overflow-hidden rounded-lg border border-line-strong/60 bg-white shadow-device lg:col-span-9">
             <ProjectTrigger project={project} isEager />
@@ -51,25 +54,25 @@ export function CasePage({ project }: { project: Project }) {
       <section aria-labelledby="case-did" className="py-12 sm:py-20">
         <div className="container-page grid gap-10 lg:grid-cols-12 lg:gap-14">
           <div className="reveal lg:col-span-5">
-            <p className="eyebrow">What I did</p>
+            <p className="eyebrow">{t.casePage.whatIDid}</p>
             <h2 id="case-did" className="h-section word-reveal mt-3">
-              <Words text="My part in it." />
+              <Words text={t.casePage.myPart} />
             </h2>
-            <p className="mt-4 text-[1.0625rem] leading-relaxed text-ink-2">{project.contribution}</p>
+            <p className="mt-4 text-[1.0625rem] leading-relaxed text-ink-2">{text.contribution}</p>
           </div>
           <div className="reveal lg:col-span-7">
-            <h3 className="text-[1.1875rem] font-semibold">Decisions worth noting</h3>
+            <h3 className="text-[1.1875rem] font-semibold">{t.casePage.decisions}</h3>
             <ul className="mt-4 space-y-3">
-              {project.decisions.map((decision) => (
+              {text.decisions.map((decision) => (
                 <li key={decision} className="flex gap-3 text-[1rem] leading-relaxed text-ink-2">
                   <span aria-hidden="true" className="mt-2.5 size-1.5 shrink-0 rounded-full bg-cobalt" />
                   {decision}
                 </li>
               ))}
             </ul>
-            {project.note && (
+            {text.note && (
               <p className="mt-6 rounded-xl border border-line-strong/60 bg-paper-2 px-4 py-3 text-sm leading-relaxed text-ink-2">
-                <strong className="font-semibold text-ink">Worth knowing:</strong> {project.note}
+                <strong className="font-semibold text-ink">{t.casePage.worthKnowing}</strong> {text.note}
               </p>
             )}
           </div>
@@ -79,18 +82,20 @@ export function CasePage({ project }: { project: Project }) {
       <section aria-labelledby="case-more" className="border-t border-line bg-paper-2 py-12 sm:py-16">
         <div className="container-page">
           <h2 id="case-more" className="text-[1.375rem] font-semibold">
-            More of my work
+            {t.casePage.more}
           </h2>
           <ul className="mt-5 grid gap-4 md:grid-cols-2">
             {others.map((other) => (
               <li key={other.id}>
                 <a
-                  href={pageHref(`work/${other.id}/`)}
+                  href={localHref(`work/${other.id}/`)}
                   className="group block rounded-xl border border-line-strong/60 bg-card p-5 transition-colors hover:border-cobalt"
                 >
-                  <p className="text-xs font-semibold tracking-[0.08em] text-cobalt uppercase">{STATUS_LABEL[other.status]}</p>
-                  <p className="mt-2 text-[1.125rem] font-semibold">{other.name}</p>
-                  <p className="mt-1 text-sm text-ink-2">{other.type}</p>
+                  <p className="text-xs font-semibold tracking-[0.08em] text-cobalt uppercase">{other.status === 'live' ? t.work.statusLive : t.work.statusConcept}</p>
+                  <p className="mt-2 text-[1.125rem] font-semibold">
+                    <bdi>{other.name}</bdi>
+                  </p>
+                  <p className="mt-1 text-sm text-ink-2">{t.projects[other.id].type}</p>
                 </a>
               </li>
             ))}

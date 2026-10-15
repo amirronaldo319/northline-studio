@@ -6,7 +6,7 @@ import { render } from './entry-server'
  * and the browser can paint the headline before any script has run.
  */
 describe('server render', async () => {
-  const html = await render()
+  const html = await render({ kind: 'home', locale: 'en' })
   /** React separates adjacent text nodes with comments; compare as a reader would see it. */
   const text = html.replace(/<!-- -->/g, '')
 

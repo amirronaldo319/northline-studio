@@ -1,4 +1,5 @@
 import type { Project } from '@/content/projects'
+import { useCopy } from '@/i18n/context'
 
 type Props = {
   project: Project
@@ -16,7 +17,8 @@ type Props = {
  * shifts as the image loads. Safe to place inside a button: it contains only phrasing content.
  */
 export function ProjectShot({ project, isEager = false, variant = 'responsive' }: Props) {
-  const { desktop, mobile, alt } = project
+  const { desktop, mobile } = project
+  const alt = useCopy().projects[project.id].alt
   const loading = isEager ? 'eager' : 'lazy'
   const fetchPriority = isEager ? 'high' : 'auto'
 

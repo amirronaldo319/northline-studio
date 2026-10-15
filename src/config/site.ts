@@ -29,35 +29,8 @@ export const site = {
   },
 
   /**
-   * What the one-page package includes, as four short groups.
-   * Only confirmed scope belongs here. Unconfirmed terms stay in `pendingTerms`.
-   */
-  packageGroups: [
-    {
-      id: 'design',
-      title: 'Design',
-      text: 'A custom one-page layout built around your business, for phones and desktops.',
-    },
-    {
-      id: 'content',
-      title: 'Content',
-      text: 'Your services, your own photos, and your contact details, laid out clearly.',
-    },
-    {
-      id: 'inquiries',
-      title: 'Inquiries',
-      text: 'A quote-request form and clear contact buttons, so customers know how to reach you.',
-    },
-    {
-      id: 'launch',
-      title: 'Launch basics',
-      text: 'A page title, description, and headings, plus how your link looks when it’s shared.',
-    },
-  ],
-
-  /**
    * Switches for work that is built but not yet public.
-   * `languages`: translated pages (see src/content/languages.ts). Turn one on only after a native speaker has
+   * `languages`: translated pages (the dictionaries in src/i18n). Turn one on only after a native speaker has
    * reviewed its wording. A page that is off is not built, linked, or listed in the sitemap.
    */
   features: {

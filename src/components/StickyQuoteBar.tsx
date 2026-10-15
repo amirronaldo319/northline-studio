@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import { ArrowRight } from 'lucide-react'
-import { CONTACT_SECTION_ID, PRIMARY_CTA_LABEL } from '@/content/navigation'
+import { CONTACT_SECTION_ID } from '@/content/navigation'
+import { useCopy } from '@/i18n/context'
 import { shouldShowQuoteBar } from '@/lib/quoteBar'
 import { buttonClasses } from './ui/button'
 
 /** Phones hide the header button to save space, so a quote link follows the visitor once they are past the first screen. */
 export function StickyQuoteBar() {
+  const t = useCopy()
   const [scrolledPast, setScrolledPast] = useState(false)
   const [atEnd, setAtEnd] = useState(false)
 
@@ -45,8 +47,8 @@ export function StickyQuoteBar() {
         href={`#${CONTACT_SECTION_ID}`}
         className={buttonClasses('primary', 'lg', 'pointer-events-auto w-full max-w-sm shadow-lift')}
       >
-        {PRIMARY_CTA_LABEL}
-        <ArrowRight aria-hidden="true" size={18} />
+        {t.common.requestQuote}
+        <ArrowRight aria-hidden="true" size={18} className="rtl:-scale-x-100" />
       </a>
     </div>
   )

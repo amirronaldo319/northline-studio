@@ -1,4 +1,5 @@
 import type { PageMeta } from '../content/pages.ts'
+import { LOCALES } from '../i18n/locales.ts'
 
 function escapeHtml(value: string): string {
   return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
@@ -32,6 +33,7 @@ export function applyPageHead(
   out = setMeta(out, 'name', 'description', meta.description)
   out = setMeta(out, 'property', 'og:title', meta.title)
   out = setMeta(out, 'property', 'og:description', meta.description)
+  out = setMeta(out, 'property', 'og:locale', LOCALES[meta.locale].ogLocale)
 
   if (options.siteUrl) {
     const url = `${options.siteUrl}/${meta.path}`

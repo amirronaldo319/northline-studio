@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { ArrowUpRight, Monitor, Smartphone, X } from 'lucide-react'
-import { STATUS_LABEL, type Project } from '@/content/projects'
+import type { Project } from '@/content/projects'
+import { useCopy } from '@/i18n/context'
 import { canShareElement, flipCss, flipTransform, isInViewport } from '@/lib/flip'
 import {
   ProjectViewerContext,
@@ -22,10 +23,7 @@ type Phase = 'closed' | 'opening' | 'open' | 'closing'
 
 const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-const DEVICES: ReadonlyArray<{ id: ViewerView; label: string; icon: typeof Monitor }> = [
-  { id: 'desktop', label: 'Desktop', icon: Monitor },
-  { id: 'phone', label: 'Phone', icon: Smartphone },
-]
+const DEVICE_ICONS = { desktop: Monitor, phone: Smartphone } as const
 
 /**
  * Hosts the single project viewer. A project screenshot grows from its thumbnail into a larger preview
@@ -36,6 +34,7 @@ const DEVICES: ReadonlyArray<{ id: ViewerView; label: string; icon: typeof Monit
  * animation can never leave an overlay behind.
  */
 export function ProjectViewerProvider({ children }: { children: ReactNode }) {
+  const t = useCopy()
   const [project, setProject] = useState<Project | null>(null)
   const [view, setView] = useState<ViewerView>('desktop')
   const [openToken, setOpenToken] = useState(0)
@@ -242,10 +241,11 @@ export function ProjectViewerProvider({ children }: { children: ReactNode }) {
               <div className="mb-3 flex items-start justify-between gap-4 text-white">
                 <div className="min-w-0">
                   <p className="text-xs font-semibold tracking-[0.08em] text-white/75 uppercase">
-                    {STATUS_LABEL[project.status]} <span aria-hidden="true">·</span> {project.type}
+                    {project.status === 'live' ? t.work.statusLive : t.work.statusConcept} <span aria-hidden="true">·</span>{' '}
+                    {t.projects[project.id].type}
                   </p>
                   <h2 id="project-viewer-title" className="mt-1 text-xl font-semibold sm:text-2xl">
-                    {project.name}
+                    <bdi>{project.name}</bdi>
                   </h2>
                 </div>
                 <button
@@ -255,7 +255,7 @@ export function ProjectViewerProvider({ children }: { children: ReactNode }) {
                   className="grid size-11 shrink-0 place-items-center rounded-full bg-white/15 text-white transition-[background-color,transform] duration-150 hover:bg-white/25 active:scale-[0.96] active:duration-100"
                 >
                   <X aria-hidden="true" size={20} />
-                  <span className="sr-only">Close preview</span>
+                  <span className="sr-only">{t.dialogs.closePreview}</span>
                 </button>
               </div>
 
@@ -274,7 +274,7 @@ export function ProjectViewerProvider({ children }: { children: ReactNode }) {
                     src={isPhone ? project.mobile.src : project.desktop.src}
                     width={isPhone ? 390 : project.desktop.width}
                     height={isPhone ? 760 : project.desktop.height}
-                    alt={project.alt}
+                    alt={t.projects[project.id].alt}
                     decoding="async"
                     className="view-in block h-auto w-full"
                   />
@@ -282,7 +282,7 @@ export function ProjectViewerProvider({ children }: { children: ReactNode }) {
               </div>
 
               <div ref={panelRef} className="mt-3 rounded-xl bg-card p-4 text-ink sm:p-5">
-                <p className="max-w-[46rem] text-[0.9375rem] leading-relaxed text-ink-2">{project.summary}</p>
+                <p className="max-w-[46rem] text-[0.9375rem] leading-relaxed text-ink-2">{t.projects[project.id].summary}</p>
                 <div className="mt-4 flex flex-wrap items-center gap-3">
                   <a
                     href={project.liveUrl}
@@ -290,13 +290,15 @@ export function ProjectViewerProvider({ children }: { children: ReactNode }) {
                     rel="noopener noreferrer"
                     className={buttonClasses('primary', 'md')}
                   >
-                    {project.status === 'live' ? 'Visit live site' : 'Open live preview'}
-                    <span className="sr-only">: {project.name} (opens in a new tab)</span>
+                    {project.status === 'live' ? t.work.visitLive : t.work.openLivePreview}
+                    <span className="sr-only">{t.common.opensNewTab(project.name)}</span>
                     <ArrowUpRight aria-hidden="true" size={17} className="card-arrow" />
                   </a>
 
-                  <div role="group" aria-label="Preview size" className="flex rounded-full border border-line-strong bg-paper p-1">
-                    {DEVICES.map(({ id, label, icon: Icon }) => (
+                  <div role="group" aria-label={t.dialogs.previewSize} className="flex rounded-full border border-line-strong bg-paper p-1">
+                    {(['desktop', 'phone'] as const).map((id) => {
+                      const Icon = DEVICE_ICONS[id]
+                      return (
                       <button
                         key={id}
                         type="button"
@@ -307,9 +309,10 @@ export function ProjectViewerProvider({ children }: { children: ReactNode }) {
                         }`}
                       >
                         <Icon aria-hidden="true" size={15} />
-                        {label}
+                        {id === 'desktop' ? t.dialogs.desktop : t.dialogs.phone}
                       </button>
-                    ))}
+                      )
+                    })}
                   </div>
                 </div>
               </div>

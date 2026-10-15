@@ -1,6 +1,7 @@
 import { Suspense, useEffect, useRef, useState } from 'react'
 import { Info, Monitor, Smartphone, X } from 'lucide-react'
 import type { ExampleSite } from '@/content/examples'
+import { useCopy } from '@/i18n/context'
 import { buttonClasses } from './ui/button'
 
 type Props = {
@@ -17,10 +18,7 @@ const PHONE_WIDTH_PX = 390
 
 type Device = 'desktop' | 'phone'
 
-const DEVICES: ReadonlyArray<{ id: Device; label: string; icon: typeof Monitor }> = [
-  { id: 'desktop', label: 'Desktop', icon: Monitor },
-  { id: 'phone', label: 'Phone', icon: Smartphone },
-]
+const DEVICE_ICONS = { desktop: Monitor, phone: Smartphone } as const
 
 /**
  * Full-size preview of a concept demo in a native modal <dialog>.
@@ -28,6 +26,7 @@ const DEVICES: ReadonlyArray<{ id: Device; label: string; icon: typeof Monitor }
  * Focus returns to whichever control opened it, unless the visitor goes on to the real inquiry form.
  */
 export function ExampleDialog({ example, onClose, onRequestQuote }: Props) {
+  const t = useCopy()
   const dialogRef = useRef<HTMLDialogElement>(null)
   const returnFocusRef = useRef<HTMLElement | null>(null)
   const isRequestingQuoteRef = useRef(false)
@@ -120,17 +119,19 @@ export function ExampleDialog({ example, onClose, onRequestQuote }: Props) {
         <div className="flex h-full flex-col">
           <div className="flex items-start justify-between gap-4 border-b border-line bg-card px-4 py-3 sm:items-center sm:px-6">
             <div className="min-w-0">
-              <p className="text-xs font-semibold tracking-[0.08em] text-cobalt uppercase">Concept demo</p>
+              <p className="text-xs font-semibold tracking-[0.08em] text-cobalt uppercase">{t.dialogs.conceptDemo}</p>
               <h2 id="example-dialog-title" className="mt-0.5 text-lg font-semibold sm:text-xl">
                 {example.name}
               </h2>
               <p className="mt-0.5 text-sm text-ink-3">
-                A fictional {example.businessType.toLowerCase()} business. Buttons in this demo don’t send anything.
+                {t.dialogs.fictional(t.examples[example.id].businessType)}
               </p>
             </div>
             <div className="flex shrink-0 items-center gap-2">
-              <div role="group" aria-label="Preview size" className="hidden rounded-full border border-line-strong bg-paper p-1 sm:flex">
-                {DEVICES.map(({ id, label, icon: Icon }) => (
+              <div role="group" aria-label={t.dialogs.previewSize} className="hidden rounded-full border border-line-strong bg-paper p-1 sm:flex">
+                {(['desktop', 'phone'] as const).map((id) => {
+                  const Icon = DEVICE_ICONS[id]
+                  return (
                   <button
                     key={id}
                     type="button"
@@ -141,9 +142,10 @@ export function ExampleDialog({ example, onClose, onRequestQuote }: Props) {
                     }`}
                   >
                     <Icon aria-hidden="true" size={15} />
-                    {label}
+                    {id === 'desktop' ? t.dialogs.desktop : t.dialogs.phone}
                   </button>
-                ))}
+                  )
+                })}
               </div>
               <button
                 type="button"
@@ -152,7 +154,7 @@ export function ExampleDialog({ example, onClose, onRequestQuote }: Props) {
                 className="grid size-11 shrink-0 place-items-center rounded-full border border-line-strong bg-paper text-ink transition-colors hover:border-ink/40"
               >
                 <X aria-hidden="true" size={20} />
-                <span className="sr-only">Close example</span>
+                <span className="sr-only">{t.dialogs.closeExample}</span>
               </button>
             </div>
           </div>
@@ -179,10 +181,10 @@ export function ExampleDialog({ example, onClose, onRequestQuote }: Props) {
               }
               style={device === 'phone' ? { width: PHONE_WIDTH_PX, maxWidth: '100%' } : undefined}
             >
-              <Suspense fallback={<div className="grid h-64 place-items-center text-sm text-ink-3">Loading example…</div>}>
+              <Suspense fallback={<div className="grid h-64 place-items-center text-sm text-ink-3">{t.dialogs.loading}</div>}>
                 <Demo
                   onDemoAction={() =>
-                    setNotice('This is a concept demo, so nothing was sent. On a real site, this would reach the business.')
+                    setNotice(t.dialogs.demoNotice)
                   }
                 />
               </Suspense>
@@ -191,10 +193,10 @@ export function ExampleDialog({ example, onClose, onRequestQuote }: Props) {
 
           <div className="flex flex-col gap-3 border-t border-line bg-card px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
             <p className="text-sm text-ink-2">
-              Want a site like this for your own business? This button goes to my real inquiry form.
+              {t.dialogs.wantSite}
             </p>
             <button type="button" onClick={requestQuote} className={buttonClasses('primary', 'md', 'shrink-0')}>
-              Request a quote for my business
+              {t.dialogs.requestForMyBusiness}
             </button>
           </div>
         </div>

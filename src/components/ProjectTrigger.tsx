@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { Maximize2 } from 'lucide-react'
 import type { Project } from '@/content/projects'
+import { useCopy } from '@/i18n/context'
 import { ProjectShot } from './ProjectShot'
 import { useProjectViewer, type ViewerView } from './projectViewerContext'
 
@@ -18,6 +19,7 @@ type Props = {
 export function ProjectTrigger({ project, view = 'desktop', isEager = false, className = '' }: Props) {
   const ref = useRef<HTMLButtonElement>(null)
   const { open } = useProjectViewer()
+  const copy = useCopy()
 
   // On small screens the thumbnail is the phone capture, so the larger preview should be the phone view too.
   const openView = (): ViewerView =>
@@ -28,8 +30,8 @@ export function ProjectTrigger({ project, view = 'desktop', isEager = false, cla
       ref={ref}
       type="button"
       onClick={() => open(project, { origin: ref.current, view: openView() })}
-      aria-label={`${view === 'phone' ? 'Open phone preview' : 'Open larger preview'}: ${project.name}`}
-      className={`expand-trigger relative block w-full text-left ${className}`}
+      aria-label={view === 'phone' ? copy.work.openPhone(project.name) : copy.work.openLarger(project.name)}
+      className={`expand-trigger relative block w-full text-start ${className}`}
     >
       <ProjectShot project={project} isEager={isEager} variant={view === 'phone' ? 'phone' : 'responsive'} />
       <span className="expand-chip" aria-hidden="true">

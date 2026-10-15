@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Menu, X } from 'lucide-react'
-import { CONTACT_SECTION_ID, NAV_LINKS, PRIMARY_CTA_LABEL } from '@/content/navigation'
+import { CONTACT_SECTION_ID, NAV_LINKS } from '@/content/navigation'
+import { useCopy } from '@/i18n/context'
 import { useActiveSection } from '@/hooks/useActiveSection'
 import { underlineFor, underlineTarget, type Underline } from '@/lib/navUnderline'
 import { BrandMark } from './BrandMark'
@@ -21,6 +22,7 @@ const LINK_PADDING_PX = 14
 function DesktopNav({ active }: { active: string | null }) {
   const listRef = useRef<HTMLUListElement>(null)
   const homeAnchor = useHomeAnchor()
+  const t = useCopy()
   const linkRefs = useRef<Array<HTMLAnchorElement | null>>([])
   const [hovered, setHovered] = useState<number | null>(null)
   const [focused, setFocused] = useState<number | null>(null)
@@ -61,7 +63,7 @@ function DesktopNav({ active }: { active: string | null }) {
   }, [underline, isReady])
 
   return (
-    <nav aria-label="Main" className="hidden min-[900px]:block">
+    <nav aria-label={t.common.mainNav} className="hidden min-[900px]:block">
       <ul ref={listRef} className="relative flex items-center gap-1" onPointerLeave={() => setHovered(null)}>
         {NAV_LINKS.map((link, index) => {
           const isActive = active === link.id
@@ -80,7 +82,7 @@ function DesktopNav({ active }: { active: string | null }) {
                   isActive ? 'text-ink' : 'text-ink-2 hover:text-ink'
                 }`}
               >
-                {link.label}
+                {t.nav[link.id]}
               </a>
             </li>
           )
@@ -106,6 +108,7 @@ export function Header() {
   const active = useActiveSection(sectionIds)
   const homeAnchor = useHomeAnchor()
   const homeTop = useHomeTop()
+  const t = useCopy()
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 8)
@@ -150,10 +153,10 @@ export function Header() {
         <DesktopNav active={active} />
 
         <div className="flex items-center gap-3">
-          <LanguageSwitcher current="en" label="Language, header" className="hidden min-[1100px]:block" />
+          <LanguageSwitcher className="hidden min-[1100px]:block" />
           <div className="hidden min-[560px]:block">
             <a href={`#${CONTACT_SECTION_ID}`} className={buttonClasses('primary', 'md')}>
-              {PRIMARY_CTA_LABEL}
+              {t.common.requestQuote}
             </a>
           </div>
           <button
@@ -164,7 +167,7 @@ export function Header() {
             aria-controls="mobile-menu"
             onClick={() => setIsMenuOpen((open) => !open)}
           >
-            <span className="sr-only">{isMenuOpen ? 'Close menu' : 'Open menu'}</span>
+            <span className="sr-only">{isMenuOpen ? t.common.closeMenu : t.common.openMenu}</span>
             {isMenuOpen ? <X aria-hidden="true" size={20} /> : <Menu aria-hidden="true" size={20} />}
           </button>
         </div>
@@ -174,7 +177,7 @@ export function Header() {
 
       {/* Always mounted so it can animate; `inert` removes it from tab order and the accessibility tree when closed. */}
       <div id="mobile-menu" className="disclosure mobile-menu" data-open={isMenuOpen} inert={!isMenuOpen}>
-        <nav aria-label="Mobile" className="disclosure-inner bg-paper shadow-[inset_0_1px_0_var(--color-line)]">
+        <nav aria-label={t.common.mobileNav} className="disclosure-inner bg-paper shadow-[inset_0_1px_0_var(--color-line)]">
           <ul className="container-page flex flex-col py-3">
             {NAV_LINKS.map((link, index) => (
               <li key={link.id} className="menu-item" style={{ '--i': index } as React.CSSProperties}>
@@ -184,16 +187,16 @@ export function Header() {
                   aria-current={active === link.id ? 'location' : undefined}
                   className="flex min-h-12 items-center border-b border-line/70 text-lg font-medium text-ink aria-[current=location]:text-cobalt"
                 >
-                  {link.label}
+                  {t.nav[link.id]}
                 </a>
               </li>
             ))}
             <li className="menu-item pt-4" style={{ '--i': NAV_LINKS.length } as React.CSSProperties}>
-              <LanguageSwitcher current="en" label="Language, menu" />
+              <LanguageSwitcher />
             </li>
             <li className="menu-item pt-4 pb-2" style={{ '--i': NAV_LINKS.length + 1 } as React.CSSProperties}>
               <a href={`#${CONTACT_SECTION_ID}`} onClick={closeMenu} className={buttonClasses('primary', 'lg', 'w-full')}>
-                {PRIMARY_CTA_LABEL}
+                {t.common.requestQuote}
               </a>
             </li>
           </ul>
