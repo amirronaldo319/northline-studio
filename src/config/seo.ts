@@ -5,5 +5,5 @@
 export const seo = {
   title: 'SitePilot | Custom websites for Vancouver businesses',
   description:
-    'Custom one-page websites for local service businesses in Vancouver and North Vancouver. See website examples and request a quote.',
+    'One-page websites from CA$299 for Vancouver and North Vancouver businesses. Compare Starter and CA$599 Standard packages. Optional care from CA$29/month.',
 } as const

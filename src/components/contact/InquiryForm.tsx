@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react'
 import { AlertCircle, ChevronDown, Copy, Loader2, Mail, Send } from 'lucide-react'
+import { PACKAGE_EVENT } from '@/content/offers'
 import { formEndpoint } from '@/config/env'
 import { mailtoHref, site } from '@/config/site'
 import {
@@ -53,6 +54,18 @@ export function InquiryForm() {
     if (window.location.hash === '#site-check') prepare()
     return () => window.removeEventListener(SITE_CHECK_EVENT, prepare)
   }, [t.siteCheck.starterMessage])
+
+  useEffect(() => {
+    const prepare = (event: Event) => {
+      const detail = (event as CustomEvent<string>).detail
+      if (typeof detail !== 'string') return
+      setValues((current) => ({ ...current, message: current.message.includes(detail) ? current.message : [current.message, detail].filter(Boolean).join('\n') }))
+      setStatus('idle')
+      requestAnimationFrame(() => formRef.current?.querySelector<HTMLElement>('[name="name"]')?.focus({ preventScroll: true }))
+    }
+    window.addEventListener(PACKAGE_EVENT, prepare)
+    return () => window.removeEventListener(PACKAGE_EVENT, prepare)
+  }, [])
 
   const update = (field: InquiryField) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const next = { ...values, [field]: event.target.value }

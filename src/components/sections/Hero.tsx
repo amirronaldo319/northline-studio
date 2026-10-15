@@ -1,6 +1,6 @@
 import { ArrowRight, ArrowUpRight, Check } from 'lucide-react'
+import { offers } from '@/content/offers'
 import { HERO_EXAMPLE } from '@/content/examples'
-import { CONTACT_SECTION_ID } from '@/content/navigation'
 import { useCopy } from '@/i18n/context'
 import { enterStep } from '@/lib/reveal'
 import { DemoPreview } from '../DemoPreview'
@@ -30,12 +30,12 @@ export function Hero() {
             <Words text={t.hero.headline} marked={t.hero.markedWords} />
           </h1>
           <p className="lede enter mt-5 max-w-[30rem]" style={enterStep(2)}>
-            {t.hero.lede}
+            {offers[t.locale].intro}
           </p>
 
           <div className="enter mt-7 flex flex-col gap-3 min-[420px]:flex-row" style={enterStep(3)}>
-            <a href={`#${CONTACT_SECTION_ID}`} className={buttonClasses('primary', 'lg', 'nudge')}>
-              {t.common.requestQuote}
+            <a href="#package" className={buttonClasses('primary', 'lg', 'nudge')}>
+              {offers[t.locale].compare}
               <ArrowRight aria-hidden="true" size={18} className="rtl:-scale-x-100" />
             </a>
             <a href="#work" className={buttonClasses('secondary', 'lg')}>

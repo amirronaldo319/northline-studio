@@ -25,7 +25,7 @@ export function SiteCheck() {
             </h2>
             <p className="mt-3 text-[1.0625rem] leading-relaxed text-ink-2">{t.siteCheck.text}</p>
           </div>
-          <button type="button" onClick={start} className={buttonClasses('primary', 'lg', 'nudge shrink-0 self-start md:self-auto')}>
+          <button type="button" onClick={start} className={buttonClasses('primary', 'lg', 'nudge max-w-full shrink-0 self-start !whitespace-normal text-center md:self-auto')}>
             {t.siteCheck.button}
             <ArrowRight aria-hidden="true" size={18} className="rtl:-scale-x-100" />
           </button>

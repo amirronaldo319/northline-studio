@@ -26,7 +26,7 @@ export const en: Copy = {
   meta: {
     homeTitle: 'SitePilot | Custom websites for Vancouver businesses',
     homeDescription:
-      'Custom one-page websites for local service businesses in Vancouver and North Vancouver. See website examples and request a quote.',
+      'One-page websites from CA$299 for Vancouver and North Vancouver businesses. Compare Starter and CA$599 Standard packages. Optional care from CA$29/month.',
     caseTitle: (name, isLive) => `${name}: ${isLive ? 'a live website I built' : 'a concept project'} | SitePilot`,
   },
 
@@ -99,10 +99,10 @@ export const en: Copy = {
     heading: 'One focused page, built around your business.',
     lede: 'It answers the questions customers ask before they call: what you do, what your work looks like, and how to reach you.',
     groups: [
-      { title: 'Design', text: 'A custom one-page layout built around your business, for phones and desktops.' },
+      { title: 'Design', text: 'A template-based Starter or tailored Standard layout, for phones and desktops.' },
       { title: 'Content', text: 'Your services, your own photos, and your contact details, laid out clearly.' },
       { title: 'Inquiries', text: 'A quote-request form and clear contact buttons, so customers know how to reach you.' },
-      { title: 'Launch basics', text: 'A page title, description, and headings, plus how your link looks when it’s shared.' },
+      { title: 'Launch basics', text: 'Page title, description and headings in both packages; a sharing image with Standard.' },
     ],
     quoteLead: 'A written quote comes first.',
     quoteBody:

@@ -175,8 +175,8 @@ export function Work() {
         </div>
 
         <div className="mt-10 grid gap-9 md:mt-12 md:grid-cols-2 md:gap-8 lg:mt-16 lg:gap-12">
-          <ProjectCard project={CONCEPT_PROJECT} index={0} />
-          <ProjectCard project={SECONDARY_PROJECT} index={1} />
+          <ProjectCard project={SECONDARY_PROJECT} index={0} />
+          <ProjectCard project={CONCEPT_PROJECT} index={1} />
           <ProjectCard project={MEND_PROJECT} index={2} />
           {EXAMPLES.filter((example) => example.id !== HERO_EXAMPLE.id).map((example, index) => (
             <ConceptCard key={example.id} example={example} index={index + 3} />

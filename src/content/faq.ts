@@ -22,7 +22,7 @@ export const FAQ: readonly FaqItem[] = [
   {
     question: 'Are hosting and a domain included?',
     answer:
-      'That depends on what you already have, so it’s written into your quote. If you own a domain name, mention it in your message.',
+      'No. Hosting, domain registration and renewals, email and paid tools are billed separately at agreed costs. Optional care starts at CA$29/month and does not include these charges. You own your domain; mention it if you already have one.',
   },
   {
     question: 'How long will it take?',
