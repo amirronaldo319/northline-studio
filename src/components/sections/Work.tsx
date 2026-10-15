@@ -1,6 +1,6 @@
 import { ArrowUpRight } from 'lucide-react'
 import { EXAMPLES, HERO_EXAMPLE, type ExampleSite } from '@/content/examples'
-import { CONCEPT_PROJECT, FEATURED_PROJECT, SECONDARY_PROJECT, type Project } from '@/content/projects'
+import { CONCEPT_PROJECT, FEATURED_PROJECT, MEND_PROJECT, SECONDARY_PROJECT, type Project } from '@/content/projects'
 import { useInViewOnce } from '@/hooks/useInViewOnce'
 import { useCopy, useLocalHref } from '@/i18n/context'
 import { revealDelay } from '@/lib/reveal'
@@ -174,11 +174,12 @@ export function Work() {
           <FeaturedProject project={FEATURED_PROJECT} />
         </div>
 
-        <div className="mt-10 grid gap-9 md:mt-12 md:grid-cols-2 md:gap-8 lg:mt-16 lg:grid-cols-3">
+        <div className="mt-10 grid gap-9 md:mt-12 md:grid-cols-2 md:gap-8 lg:mt-16 lg:gap-12">
           <ProjectCard project={CONCEPT_PROJECT} index={0} />
           <ProjectCard project={SECONDARY_PROJECT} index={1} />
+          <ProjectCard project={MEND_PROJECT} index={2} />
           {EXAMPLES.filter((example) => example.id !== HERO_EXAMPLE.id).map((example, index) => (
-            <ConceptCard key={example.id} example={example} index={index + 2} />
+            <ConceptCard key={example.id} example={example} index={index + 3} />
           ))}
         </div>
       </div>

@@ -25,6 +25,7 @@ const TARGETS = [
   { id: '604kars', url: 'https://604kars.com/', settleMs: 4000 },
   { id: 'ganjineh-ofogh', url: 'https://amirronaldo319.github.io/ganjineh-ofogh/en/', settleMs: 9000 },
   { id: 'farsh-aquatics', url: 'https://farshaquatics.ca/', settleMs: 4000 },
+  { id: 'mend', url: 'https://amirronaldo319.github.io/mend-website/', settleMs: 5000 },
 ]
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))

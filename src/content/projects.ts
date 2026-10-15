@@ -4,6 +4,8 @@ import ganjinehDesktop from '@/assets/projects/ganjineh-ofogh-desktop.webp'
 import ganjinehMobile from '@/assets/projects/ganjineh-ofogh-mobile.webp'
 import farshDesktop from '@/assets/projects/farsh-aquatics-desktop.webp'
 import farshMobile from '@/assets/projects/farsh-aquatics-mobile.webp'
+import mendDesktop from '@/assets/projects/mend-desktop.webp'
+import mendMobile from '@/assets/projects/mend-mobile.webp'
 import { PROJECT_DATA, type ProjectData, type ProjectStatus } from './projectsData'
 
 export type { ProjectStatus }
@@ -38,6 +40,10 @@ const IMAGES: Record<string, Pick<Project, 'desktop' | 'mobile'>> = {
     desktop: { src: ganjinehDesktop, width: 1200, height: 778 },
     mobile: { src: ganjinehMobile, width: 780, height: 1520 },
   },
+  mend: {
+    desktop: { src: mendDesktop, width: 1200, height: 778 },
+    mobile: { src: mendMobile, width: 780, height: 1520 },
+  },
 }
 
 export const PROJECTS: readonly Project[] = PROJECT_DATA.map((data) => {
@@ -60,3 +66,6 @@ export const FEATURED_PROJECT: Project = requireProject('604kars')
 
 /** The concept project shown beside the concept demo. */
 export const CONCEPT_PROJECT: Project = requireProject('ganjineh-ofogh')
+
+/** A product landing page, shown with the other concept work. */
+export const MEND_PROJECT: Project = requireProject('mend')

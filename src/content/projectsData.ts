@@ -78,4 +78,21 @@ export const PROJECT_DATA: readonly ProjectData[] = [
     liveUrl: 'https://amirronaldo319.github.io/ganjineh-ofogh/en/',
     alt: 'The Ganjineh Ofogh home page: the tower name in English and Persian beside an illustrated render of the building.',
   },
+  {
+    id: 'mend',
+    name: 'Mend',
+    status: 'concept',
+    type: 'Product landing page, in development',
+    caption: 'a landing page for an app idea in development',
+    summary:
+      'A landing page for Mend, a self-guided tool still in development for parents and caregivers of children roughly 2–12, with illustrative preview screens and a waitlist.',
+    contribution: 'Design and development of the landing page, including the preview screens and the waitlist form.',
+    decisions: [
+      'The page opens on one quiet moment and one action: joining the waitlist.',
+      'The preview screens show the idea in three steps (pause, reflect, reconnect) and are labelled as illustrative mock-ups, not a finished app.',
+    ],
+    note: 'Mend is not released. The preview screens on the page are illustrative mock-ups, as the page itself says.',
+    liveUrl: 'https://amirronaldo319.github.io/mend-website/',
+    alt: 'The Mend home page: a dark page with the headline “You yelled.” and a line about the quiet that follows, above a waitlist email field.',
+  },
 ]

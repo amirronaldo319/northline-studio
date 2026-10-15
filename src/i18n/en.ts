@@ -64,7 +64,7 @@ export const en: Copy = {
   work: {
     eyebrow: 'Selected work',
     heading: 'What I’ve built, and how I design.',
-    lede: 'Two live websites, a concept project, and design concepts for fictional businesses, each labelled for what it is.',
+    lede: 'Two live websites, two concept projects, and design concepts for fictional businesses, each labelled for what it is.',
     statusLive: 'Live website',
     statusConcept: 'Concept project',
     contribution: 'My contribution:',

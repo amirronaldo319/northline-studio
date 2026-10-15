@@ -84,7 +84,7 @@ export function CasePage({ project }: { project: Project }) {
           <h2 id="case-more" className="text-[1.375rem] font-semibold">
             {t.casePage.more}
           </h2>
-          <ul className="mt-5 grid gap-4 md:grid-cols-2">
+          <ul className="mt-5 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {others.map((other) => (
               <li key={other.id}>
                 <a

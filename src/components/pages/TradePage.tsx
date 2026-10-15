@@ -73,7 +73,7 @@ export function TradePage({ trade }: { trade: Trade }) {
             </h2>
             <p className="lede mt-4">{t.tradePage.recentLede}</p>
           </div>
-          <ul className="reveal mt-8 grid gap-4 md:grid-cols-3">
+          <ul className="reveal mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {PROJECT_DATA.map((project) => (
               <li key={project.id}>
                 <a
