@@ -1,7 +1,7 @@
 import type { Inquiry } from './inquiry'
 
 /** Dispatched on `window` by the site-check band; the inquiry form listens and prepares itself. */
-export const SITE_CHECK_EVENT = 'northline:site-check'
+export const SITE_CHECK_EVENT = 'sitepilot:site-check'
 
 export const SITE_CHECK_MESSAGE = 'Please take a look at my current website and tell me what you would change first.'
 

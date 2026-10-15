@@ -27,7 +27,7 @@ export const TRADES: readonly Trade[] = [
     slug: 'cleaning-companies',
     name: 'cleaning companies',
     noun: 'cleaning company',
-    title: 'Cleaning company websites in Vancouver | Northline Studio',
+    title: 'Cleaning company websites in Vancouver | SitePilot',
     description:
       'A clear one-page website for Vancouver and North Vancouver cleaning companies: what is included, where you work, and an easy way to request a quote.',
     headline: 'A one-page website for your cleaning company.',
@@ -81,7 +81,7 @@ export const TRADES: readonly Trade[] = [
     slug: 'contractors',
     name: 'contractors and renovators',
     noun: 'contracting business',
-    title: 'Contractor websites in Vancouver | Northline Studio',
+    title: 'Contractor websites in Vancouver | SitePilot',
     description:
       'A one-page website for Vancouver and North Vancouver contractors and renovators: the work you take on, examples, and a simple way to start a conversation.',
     headline: 'A one-page website for your contracting business.',
@@ -135,7 +135,7 @@ export const TRADES: readonly Trade[] = [
     slug: 'landscapers',
     name: 'landscapers and gardeners',
     noun: 'landscaping business',
-    title: 'Landscaper websites in Vancouver | Northline Studio',
+    title: 'Landscaper websites in Vancouver | SitePilot',
     description:
       'A one-page website for Vancouver and North Vancouver landscapers and gardeners: your services by season, your work, and an easy way to ask for a quote.',
     headline: 'A one-page website for your landscaping business.',
@@ -189,7 +189,7 @@ export const TRADES: readonly Trade[] = [
     slug: 'barbers-and-salons',
     name: 'barbers and salons',
     noun: 'barber shop or salon',
-    title: 'Barber and salon websites in Vancouver | Northline Studio',
+    title: 'Barber and salon websites in Vancouver | SitePilot',
     description:
       'A one-page website for Vancouver and North Vancouver barbers and salons: services, hours, location, and a clear way for people to book.',
     headline: 'A one-page website for your barber shop or salon.',
@@ -243,7 +243,7 @@ export const TRADES: readonly Trade[] = [
     slug: 'auto-detailing',
     name: 'auto detailers and mobile mechanics',
     noun: 'auto detailing business',
-    title: 'Auto detailing websites in Vancouver | Northline Studio',
+    title: 'Auto detailing websites in Vancouver | SitePilot',
     description:
       'A one-page website for Vancouver and North Vancouver auto detailers and automotive services: packages, where you work, and a simple way to request a booking.',
     headline: 'A one-page website for your auto detailing business.',

@@ -2,7 +2,7 @@ import { LOCALES, enabledLocales } from '../i18n/locales.ts'
 import type { Locale } from '../i18n/types.ts'
 
 /** Where a visitor's chosen language is remembered, so a return visit opens in it. */
-export const LANGUAGE_STORAGE_KEY = 'northline-lang'
+export const LANGUAGE_STORAGE_KEY = 'sitepilot-lang'
 
 /**
  * Decides whether to send the visitor to the same page in the language they chose earlier.

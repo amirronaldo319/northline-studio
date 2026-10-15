@@ -1,6 +1,6 @@
-# Northline Studio
+# SitePilot
 
-One-page marketing site for Northline Studio, an independent web design business serving Vancouver and North
+One-page marketing site for SitePilot, an independent web design business serving Vancouver and North
 Vancouver. React + TypeScript + Tailwind CSS v4, built with Vite. Static output; no server required.
 
 ## Run and build
@@ -33,7 +33,7 @@ Hero → Work → Your website package → Process → About → FAQ → Request
 | What | Where |
 | --- | --- |
 | Business name, contact email, service area | `src/config/site.ts` |
-| Logo | Outlines in `src/assets/brand/logoPaths.ts` (inline SVG in `BrandMark.tsx`; the wordmark follows the text colour, so one logo serves light and dark). `northline-logo.svg` is the same artwork as a file, used for the social image. Favicon: `public/favicon.svg` |
+| Logo | Outlines in `src/assets/brand/logoPaths.ts` (inline SVG in `BrandMark.tsx`; the wordmark follows the text colour, so one logo serves light and dark). `logo.svg` is the same artwork as a file, used for the social image. Favicon: `public/favicon.svg` |
 | Package contents (grouped) | `site.packageGroups` in `src/config/site.ts` |
 | Page title and description | `src/config/seo.ts` **and** the matching tags in `index.html` |
 | Colours, fonts, shadows | `@theme` block at the top of `src/index.css` |
@@ -118,7 +118,7 @@ use commercially. No stock photography is bundled.
   on a page is hard-coded English. `zhHant.ts` is generated from `zhHans.ts`
   (`node scripts/generate-traditional-chinese.mjs`, needs `npm i --no-save opencc-js`).
   The switch works like the Ganjineh Ofogh site's: a button per language goes to the **same page** in that language,
-  keeps the section in the address (`#faq`), and remembers the choice (`northline-lang`); a visitor who chose another
+  keeps the section in the address (`#faq`), and remembers the choice (`sitepilot-lang`); a visitor who chose another
   language and lands on the English page is sent to it (a link opened directly in another language is never
   overridden). Languages are right-to-left aware (Persian) and use system fonts that cover their script.
   **A language is built only when its switch in `site.features.languages` (`src/config/site.ts`) is `true`.**

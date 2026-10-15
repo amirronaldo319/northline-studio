@@ -77,7 +77,7 @@ export function securityPlugin(options: { formEndpoint: string; analyticsToken?:
   let hashes: string[] = []
 
   return {
-    name: 'northline-security',
+    name: 'sitepilot-security',
     apply: 'build',
     // Hash the inline scripts of the source page up front, so `_headers` (written during bundling, before the
     // HTML is finalised) and the meta tag agree.

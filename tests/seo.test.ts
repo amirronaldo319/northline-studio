@@ -7,7 +7,7 @@ type TagList = Array<{ tag: string; attrs?: Record<string, string>; children?: s
 function tagsFor(siteUrl: string): TagList {
   const plugin = seoPlugin({
     siteUrl,
-    businessName: 'Northline Studio',
+    businessName: 'SitePilot',
     email: 'heyamir319@gmail.com',
     description: 'desc',
     areaServed: ['Vancouver'],

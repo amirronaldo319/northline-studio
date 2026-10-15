@@ -9,9 +9,9 @@ export const zhHans: Copy = {
   locale: 'zh-hans',
 
   meta: {
-    homeTitle: 'Northline Studio | 温哥华本地商家的专属网站',
+    homeTitle: 'SitePilot | 温哥华本地商家的专属网站',
     homeDescription: '为温哥华和北温哥华的本地服务型商家制作专属单页网站。查看网站案例，并索取报价。',
-    caseTitle: (name, isLive) => `${name}：${isLive ? '我制作的在线网站' : '概念项目'} | Northline Studio`,
+    caseTitle: (name, isLive) => `${name}：${isLive ? '我制作的在线网站' : '概念项目'} | SitePilot`,
   },
 
   common: {
@@ -300,7 +300,7 @@ export const zhHans: Copy = {
       slug: 'cleaning-companies',
       name: '清洁公司',
       noun: '清洁公司',
-      title: '温哥华清洁公司网站 | Northline Studio',
+      title: '温哥华清洁公司网站 | SitePilot',
       description: '为温哥华和北温哥华的清洁公司制作清晰的单页网站：服务内容、服务范围，以及方便的报价申请。',
       headline: '为您的清洁公司打造一个单页网站。',
       intro:
@@ -338,7 +338,7 @@ export const zhHans: Copy = {
       slug: 'contractors',
       name: '承包商和装修公司',
       noun: '承包公司',
-      title: '温哥华承包商网站 | Northline Studio',
+      title: '温哥华承包商网站 | SitePilot',
       description: '为温哥华和北温哥华的承包商和装修公司制作单页网站：您承接的工程、案例，以及开启对话的简便方式。',
       headline: '为您的承包业务打造一个单页网站。',
       intro:
@@ -376,7 +376,7 @@ export const zhHans: Copy = {
       slug: 'landscapers',
       name: '园艺和景观公司',
       noun: '景观公司',
-      title: '温哥华园艺景观网站 | Northline Studio',
+      title: '温哥华园艺景观网站 | SitePilot',
       description: '为温哥华和北温哥华的园艺和景观公司制作单页网站：按季节列出的服务、您的作品，以及方便的报价申请。',
       headline: '为您的景观业务打造一个单页网站。',
       intro:
@@ -414,7 +414,7 @@ export const zhHans: Copy = {
       slug: 'barbers-and-salons',
       name: '理发店和美容美发沙龙',
       noun: '理发店或美发沙龙',
-      title: '温哥华理发店和沙龙网站 | Northline Studio',
+      title: '温哥华理发店和沙龙网站 | SitePilot',
       description: '为温哥华和北温哥华的理发店和美发沙龙制作单页网站：服务、营业时间、地点，以及清晰的预约方式。',
       headline: '为您的理发店或沙龙打造一个单页网站。',
       intro:
@@ -452,7 +452,7 @@ export const zhHans: Copy = {
       slug: 'auto-detailing',
       name: '汽车美容和上门汽修',
       noun: '汽车美容公司',
-      title: '温哥华汽车美容网站 | Northline Studio',
+      title: '温哥华汽车美容网站 | SitePilot',
       description: '为温哥华和北温哥华的汽车美容和汽车服务制作单页网站：服务套餐、服务范围，以及简便的预约申请。',
       headline: '为您的汽车美容业务打造一个单页网站。',
       intro:
@@ -491,7 +491,7 @@ export const zhHans: Copy = {
   guides: [
     {
       slug: 'what-a-local-business-website-needs',
-      title: '本地商家网站需要什么 | Northline Studio',
+      title: '本地商家网站需要什么 | SitePilot',
       description: '一份简明清单：本地服务型商家的单页网站应包含什么，以及哪些可以省略。',
       headline: '本地商家的单页网站 需要什么。',
       intro:
@@ -534,7 +534,7 @@ export const zhHans: Copy = {
     },
     {
       slug: 'how-to-prepare-for-a-website-quote',
-      title: '如何为网站报价做准备 | Northline Studio',
+      title: '如何为网站报价做准备 | SitePilot',
       description: '向网页设计师询价之前需要准备什么，以及一份清晰的报价应该包含哪些内容，让过程更快、也不会出现意外。',
       headline: '如何为网站报价做准备。',
       intro: '稍作准备，就能让报价更快、更准确，也方便您与其他报价比较。以下是需要准备的内容，以及一份好的报价应该说明什么。',

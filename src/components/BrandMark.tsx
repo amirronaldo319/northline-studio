@@ -1,4 +1,4 @@
-import { LOGO_MARK_PATH, LOGO_VIEWBOX, LOGO_WORDMARK_X, LOGO_WORD_PATH } from '@/assets/brand/logoPaths'
+import { LOGO_ASPECT, LOGO_MARK_PATH, LOGO_VIEWBOX, LOGO_WORDMARK_X, LOGO_WORD_PATH } from '@/assets/brand/logoPaths'
 import { site } from '@/config/site'
 
 type Props = {
@@ -14,14 +14,14 @@ const TONES = {
 } as const
 
 /**
- * The Northline Studio logo as inline SVG, so one set of outlines serves both backgrounds and the
+ * The SitePilot logo as inline SVG, so one set of outlines serves both backgrounds and the
  * mark and wordmark can move independently. The wordmark follows the text colour.
  */
 export function BrandMark({ tone = 'light', intro = false }: Props) {
   return (
     <svg
       viewBox={LOGO_VIEWBOX}
-      width={142}
+      width={Math.round(36 * LOGO_ASPECT)}
       height={36}
       role="img"
       aria-label={site.brand.name}

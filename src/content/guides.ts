@@ -20,7 +20,7 @@ export interface Guide {
 export const GUIDES: readonly Guide[] = [
   {
     slug: 'what-a-local-business-website-needs',
-    title: 'What a local business website needs | Northline Studio',
+    title: 'What a local business website needs | SitePilot',
     description:
       'A plain checklist of what a one-page website for a local service business should include, and what you can leave out.',
     headline: 'What a local business website needs on one page.',
@@ -69,7 +69,7 @@ export const GUIDES: readonly Guide[] = [
   },
   {
     slug: 'how-to-prepare-for-a-website-quote',
-    title: 'How to prepare for a website quote | Northline Studio',
+    title: 'How to prepare for a website quote | SitePilot',
     description:
       'What to gather before asking a web designer for a quote, and what a clear quote should include, so the process is quicker and nothing surprises you.',
     headline: 'How to prepare for a website quote.',

@@ -111,7 +111,7 @@ const targets = wanted.length ? TARGETS.filter((t) => wanted.includes(t.id)) : T
 if (targets.length === 0) throw new Error(`No matching projects. Known: ${TARGETS.map((t) => t.id).join(', ')}`)
 
 mkdirSync(OUT_DIR, { recursive: true })
-const profile = mkdtempSync(path.join(tmpdir(), 'northline-capture-'))
+const profile = mkdtempSync(path.join(tmpdir(), 'sitepilot-capture-'))
 const chrome = spawn(
   CHROME,
   [`--remote-debugging-port=${PORT}`, `--user-data-dir=${profile}`, '--headless=new', '--disable-gpu', '--hide-scrollbars', '--no-first-run'],

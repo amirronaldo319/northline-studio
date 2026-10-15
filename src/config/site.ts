@@ -6,7 +6,7 @@
 export const site = {
   brand: {
     /** Also the logo's alt text. The logo itself lives in `src/assets/brand`. */
-    name: 'Northline Studio',
+    name: 'SitePilot',
     owner: 'Amir',
     tagline: 'Websites for local businesses in Vancouver and North Vancouver.',
   },

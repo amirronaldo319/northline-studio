@@ -24,10 +24,10 @@ export const en: Copy = {
   locale: 'en',
 
   meta: {
-    homeTitle: 'Northline Studio | Custom websites for Vancouver businesses',
+    homeTitle: 'SitePilot | Custom websites for Vancouver businesses',
     homeDescription:
       'Custom one-page websites for local service businesses in Vancouver and North Vancouver. See website examples and request a quote.',
-    caseTitle: (name, isLive) => `${name}: ${isLive ? 'a live website I built' : 'a concept project'} | Northline Studio`,
+    caseTitle: (name, isLive) => `${name}: ${isLive ? 'a live website I built' : 'a concept project'} | SitePilot`,
   },
 
   common: {

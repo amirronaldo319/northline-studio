@@ -80,7 +80,7 @@ describe('dictionaries', () => {
       expect(copy.form.successBody('a@b.ca')).toContain('a@b.ca')
       expect(copy.contact.copiedNote('a@b.ca')).toContain('a@b.ca')
       expect(copy.work.openLarger('604 Kars')).toContain('604 Kars')
-      expect(copy.footer.copyright(2030, 'Northline Studio')).toContain('2030')
+      expect(copy.footer.copyright(2030, 'SitePilot')).toContain('2030')
     }
   })
 
