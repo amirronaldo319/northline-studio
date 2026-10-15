@@ -24,7 +24,7 @@ export function Audience() {
             <li key={trade.slug} className="reveal" style={revealDelay(index)}>
               <a
                 href={localHref(`${trade.slug}/`)}
-                className="project-card group flex h-full flex-col justify-between rounded-xl border border-line-strong/60 bg-paper p-5 transition-colors hover:border-cobalt"
+                className="project-card glow-card group flex h-full flex-col justify-between rounded-xl border border-line-strong/60 bg-paper p-5 transition-colors hover:border-cobalt"
               >
                 <span className="text-[1.1875rem] font-semibold">
                   {trade.name.charAt(0).toUpperCase() + trade.name.slice(1)}

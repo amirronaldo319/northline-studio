@@ -1200,6 +1200,186 @@ dialog.viewer[data-closing]::backdrop {
 }
 
 /*
+ * Trade ticker: a slow band of the kinds of business the site serves. It scrolls only where motion is welcome;
+ * otherwise it is a centred, wrapping list. Print hides it.
+ */
+.trade-ticker {
+  overflow: hidden;
+  border-block: 1px solid var(--color-line);
+  background: color-mix(in srgb, var(--color-card) 70%, transparent);
+  padding-block: 0.85rem;
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+
+.trade-ticker-track {
+  display: flex;
+  width: max-content;
+  max-width: 100%;
+  margin-inline: auto;
+}
+
+.trade-ticker-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem 1.75rem;
+  margin: 0;
+  padding: 0 1rem;
+  list-style: none;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--color-ink-2);
+}
+
+.trade-ticker-group li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  white-space: nowrap;
+}
+
+.trade-ticker-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--color-cobalt);
+}
+
+/* The second copy only exists to make the loop seamless. */
+.trade-ticker-group:nth-child(2) {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .trade-ticker-track {
+    max-width: none;
+    margin-inline: 0;
+    animation: ticker-scroll 55s linear infinite;
+  }
+
+  .trade-ticker-group {
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+    gap: 0 2.5rem;
+    padding-inline: 1.25rem;
+  }
+
+  .trade-ticker-group:nth-child(2) {
+    display: flex;
+  }
+
+  @keyframes ticker-scroll {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  :root[dir='rtl'] .trade-ticker-track {
+    animation-name: ticker-scroll-rtl;
+  }
+
+  @keyframes ticker-scroll-rtl {
+    to {
+      transform: translateX(50%);
+    }
+  }
+
+  /* A small burst of sparks around the "request sent" check mark. */
+  .check-burst {
+    position: relative;
+    display: inline-block;
+    line-height: 0;
+  }
+
+  .check-spark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    margin: -2.5px 0 0 -2.5px;
+    border-radius: 9999px;
+    background: var(--color-cobalt);
+    opacity: 0;
+    animation: spark-burst 760ms var(--motion-ease-out) 420ms backwards;
+  }
+
+  .check-spark:nth-child(even) {
+    background: var(--color-success);
+  }
+
+  @keyframes spark-burst {
+    0% {
+      opacity: 1;
+      transform: rotate(var(--a)) translateY(0) scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: rotate(var(--a)) translateY(-34px) scale(0.4);
+    }
+  }
+}
+
+.check-burst {
+  display: inline-block;
+  line-height: 0;
+}
+
+.check-spark {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .check-spark {
+    display: block;
+  }
+}
+
+/*
+ * Trade cards: a point of light travels around the border while the card is hovered or focused.
+ * It is a hover state, so it needs a fine pointer; the angle is an animatable custom property.
+ */
+@property --glow-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .glow-card {
+    position: relative;
+  }
+
+  .glow-card::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: conic-gradient(from var(--glow-angle), transparent 0 62%, var(--color-cobalt) 82%, transparent 100%);
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+    opacity: 0;
+    transition: opacity var(--motion-dur-ui) ease;
+    pointer-events: none;
+  }
+
+  .glow-card:hover::before {
+    opacity: 1;
+    animation: glow-spin 2.6s linear infinite;
+  }
+
+  @keyframes glow-spin {
+    to {
+      --glow-angle: 360deg;
+    }
+  }
+}
+
+/*
  * Printing: scroll reveals only run on screen, so show everything when the page is printed
  * and keep the sticky header from repeating on every sheet.
  */
@@ -1234,6 +1414,7 @@ dialog.viewer[data-closing]::backdrop {
   }
 
   .scroll-progress,
+  .trade-ticker,
   .hero-atmosphere,
   .footer-glow,
   .quote-bar {
@@ -1254,7 +1435,10 @@ dialog.viewer[data-closing]::backdrop {
   .phone-pop .phone-device,
   .check-draw circle,
   .check-draw path,
-  .process-rail::after {
+  .process-rail::after,
+  .trade-ticker-track,
+  .check-spark,
+  .glow-card::before {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;

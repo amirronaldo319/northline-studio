@@ -15,6 +15,7 @@ import { Hero } from './components/sections/Hero'
 import { Package } from './components/sections/Package'
 import { Process } from './components/sections/Process'
 import { SiteCheck } from './components/sections/SiteCheck'
+import { TradeTicker } from './components/sections/TradeTicker'
 import { Work } from './components/sections/Work'
 import type { PageRef } from './content/pages'
 import { PROJECTS } from './content/projects'
@@ -27,6 +28,7 @@ function HomeSections() {
   return (
     <>
       <Hero />
+      <TradeTicker />
       <Work />
       <Package />
       <Process />
