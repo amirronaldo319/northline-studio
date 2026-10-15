@@ -30,11 +30,11 @@ export const site = {
 
   /**
    * Switches for work that is built but not yet public.
-   * `languages`: translated pages (the dictionaries in src/i18n). Turn one on only after a native speaker has
-   * reviewed its wording. A page that is off is not built, linked, or listed in the sitemap.
+   * `languages`: translated pages (the dictionaries in src/i18n). A language that is off is not built, linked, or
+   * listed in the sitemap. The wording of each is a draft until a native speaker has reviewed it.
    */
   features: {
-    languages: { fa: false, 'zh-hans': false, 'zh-hant': false } as Record<'fa' | 'zh-hans' | 'zh-hant', boolean>,
+    languages: { fa: true, 'zh-hans': true, 'zh-hant': true } as Record<'fa' | 'zh-hans' | 'zh-hant', boolean>,
   },
 
   /** Optional social profiles. Leave empty until real accounts exist; nothing renders when empty. */

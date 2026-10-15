@@ -1,5 +1,7 @@
 import { describe, expect, test } from 'vitest'
-import { allPages, pageFromPath, pageMeta, pagePath, relativePath, withLocale } from './pages'
+import { enabledLocales } from '../i18n/locales'
+import { allPages, pageMeta } from './pageMeta'
+import { pageFromPath, pagePath, relativePath, withLocale } from './pages'
 import { PROJECT_DATA } from './projectsData'
 import { GUIDES } from './guides'
 import { TRADES } from './trades'
@@ -7,9 +9,10 @@ import { TRADES } from './trades'
 describe('allPages', () => {
   const pages = allPages()
 
-  test('lists the English home page first, then every trade, case study, and guide', () => {
+  test('lists the English home page first, then every page in every language that is switched on', () => {
     expect(pages[0].path).toBe('')
-    expect(pages).toHaveLength(1 + TRADES.length + PROJECT_DATA.length + GUIDES.length)
+    const perLanguage = 1 + TRADES.length + PROJECT_DATA.length + GUIDES.length
+    expect(pages).toHaveLength(perLanguage * enabledLocales().length)
   })
 
   test('every path is unique and ends with a slash (or is the English home page)', () => {
@@ -21,13 +24,16 @@ describe('allPages', () => {
   test('every page has a title of at most 62 characters and a description of a sensible length', () => {
     for (const page of pages) {
       expect(page.title.length, page.title).toBeLessThanOrEqual(62)
-      expect(page.description.length, page.path).toBeGreaterThan(60)
-      expect(page.description.length, page.path).toBeLessThanOrEqual(175)
+      // Chinese says in 35 characters what other languages need 120 for, so its range is shorter.
+      const isChinese = page.locale.startsWith('zh')
+      expect(page.description.length, page.path).toBeGreaterThan(isChinese ? 25 : 60)
+      expect(page.description.length, page.path).toBeLessThanOrEqual(isChinese ? 90 : 175)
     }
   })
 
-  test('translations are not built until they are switched on', () => {
-    expect(pages.every((page) => page.locale === 'en')).toBe(true)
+  test('only languages that are switched on are built', () => {
+    const built = new Set(pages.map((page) => page.locale))
+    expect([...built].sort()).toEqual([...enabledLocales()].sort())
   })
 })
 

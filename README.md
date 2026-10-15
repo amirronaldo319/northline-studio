@@ -122,9 +122,11 @@ use commercially. No stock photography is bundled.
   language and lands on the English page is sent to it (a link opened directly in another language is never
   overridden). Languages are right-to-left aware (Persian) and use system fonts that cover their script.
   **A language is built only when its switch in `site.features.languages` (`src/config/site.ts`) is `true`.**
-  All three are off: the wording is a draft that a native speaker must review before its switch is turned on. While
-  off, no translated page is built, linked, or listed in the sitemap, and the language buttons do not appear.
-  Once any is on, `hreflang` links tie each page to its twins (needs `VITE_SITE_URL`).
+  All three are on. The wording of Persian and Chinese is a draft that has not been reviewed by a native speaker; set
+  a language's switch to `false` to remove it entirely (its pages are not built, linked, or listed in the sitemap,
+  and its button disappears). `hreflang` links tie each page to its twins (needs `VITE_SITE_URL`).
+  Each page loads only its own language's dictionary (`src/i18n/load.ts`); the build and tests use `getCopy`
+  (`src/i18n/index.ts`), which bundles all of them, so the browser code must never import that file.
 - **Analytics (optional):** set `VITE_CF_ANALYTICS_TOKEN` (a Cloudflare Web Analytics token) and the build adds the
   beacon and allows its two origins in the security policy. Empty means no analytics and no extra requests.
 - **Security policy:** `vite-security-plugin.ts` builds one Content-Security-Policy and writes it two ways: a meta

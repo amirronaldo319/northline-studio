@@ -1,6 +1,8 @@
 import { renderToString } from 'react-dom/server'
 import App from './App'
-import { allPages, pageMeta, withLocale, type PageMeta, type PageRef } from './content/pages'
+import { allPages, pageMeta, type PageMeta } from './content/pageMeta'
+import { withLocale, type PageRef } from './content/pages'
+import { getCopy } from './i18n'
 import { LOCALES, enabledLocales } from './i18n/locales'
 import { applyPageHead, type Alternate } from './lib/pageHead'
 
@@ -34,5 +36,5 @@ export function alternatesFor(meta: PageMeta): Alternate[] {
  * scripts to the markup, which the page's Content-Security-Policy does not allow.)
  */
 export async function render(page: PageRef = { kind: 'home', locale: 'en' }): Promise<string> {
-  return renderToString(<App page={page} />)
+  return renderToString(<App page={page} copy={getCopy(page.locale)} />)
 }

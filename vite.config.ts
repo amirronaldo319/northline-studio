@@ -7,7 +7,7 @@ import { securityPlugin } from './vite-security-plugin.ts'
 import { site } from './src/config/site.ts'
 import { seo } from './src/config/seo.ts'
 import { FAQ } from './src/content/faq.ts'
-import { allPages } from './src/content/pages.ts'
+import { allPages } from './src/content/pageMeta.ts'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {

@@ -5,6 +5,7 @@ import '@fontsource-variable/bricolage-grotesque/wght.css'
 import './index.css'
 import App from './App'
 import { pageFromPath, pagePath, withLocale } from './content/pages'
+import { loadCopy } from './i18n/load'
 import { LOCALES } from './i18n/locales'
 import { LANGUAGE_STORAGE_KEY, preferredRedirect } from './lib/language'
 
@@ -32,9 +33,12 @@ try {
   /* Storage can be blocked; the page simply stays as it is. */
 }
 
+// Only the page's own language is downloaded; it is ready before the page attaches to the prerendered HTML.
+const copy = await loadCopy(page.locale)
+
 const app = (
   <StrictMode>
-    <App page={page} />
+    <App page={page} copy={copy} />
   </StrictMode>
 )
 

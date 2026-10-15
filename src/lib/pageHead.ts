@@ -1,4 +1,4 @@
-import type { PageMeta } from '../content/pages.ts'
+import type { PageMeta } from '../content/pageMeta.ts'
 import { LOCALES } from '../i18n/locales.ts'
 
 function escapeHtml(value: string): string {

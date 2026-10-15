@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { pageMeta } from '../content/pages'
+import { pageMeta } from '../content/pageMeta'
 import { TRADES } from '../content/trades'
 import { applyPageHead } from './pageHead'
 
