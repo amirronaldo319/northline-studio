@@ -4,6 +4,7 @@ import { CONTACT_SECTION_ID, NAV_LINKS, PRIMARY_CTA_LABEL } from '@/content/navi
 import { useActiveSection } from '@/hooks/useActiveSection'
 import { underlineFor, underlineTarget, type Underline } from '@/lib/navUnderline'
 import { BrandMark } from './BrandMark'
+import { LanguageSwitcher } from './LanguageSwitcher'
 import { useHomeAnchor, useHomeTop } from './pageContext'
 import { buttonClasses } from './ui/button'
 
@@ -148,7 +149,8 @@ export function Header() {
 
         <DesktopNav active={active} />
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          <LanguageSwitcher current="en" label="Language, header" className="hidden min-[1100px]:block" />
           <div className="hidden min-[560px]:block">
             <a href={`#${CONTACT_SECTION_ID}`} className={buttonClasses('primary', 'md')}>
               {PRIMARY_CTA_LABEL}
@@ -186,7 +188,10 @@ export function Header() {
                 </a>
               </li>
             ))}
-            <li className="menu-item pt-4 pb-2" style={{ '--i': NAV_LINKS.length } as React.CSSProperties}>
+            <li className="menu-item pt-4" style={{ '--i': NAV_LINKS.length } as React.CSSProperties}>
+              <LanguageSwitcher current="en" label="Language, menu" />
+            </li>
+            <li className="menu-item pt-4 pb-2" style={{ '--i': NAV_LINKS.length + 1 } as React.CSSProperties}>
               <a href={`#${CONTACT_SECTION_ID}`} onClick={closeMenu} className={buttonClasses('primary', 'lg', 'w-full')}>
                 {PRIMARY_CTA_LABEL}
               </a>

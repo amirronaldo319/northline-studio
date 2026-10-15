@@ -111,9 +111,12 @@ use commercially. No stock photography is bundled.
   with the screenshots wired in `projects.ts`). To add a trade or guide, add an entry; the page, its title and
   description, its FAQ data, and its sitemap line follow. Keep copy free of results, rankings, and prices (the
   copy-rules test checks this).
-- **Persian page:** `src/content/persian.ts` and `PersianPage.tsx`, built at `/fa/` only when
-  `site.features.persianPage` is `true` in `src/config/site.ts`. The wording is a draft that a Persian speaker must
-  review before the switch is turned on.
+- **Translated pages and language buttons:** `src/content/languages.ts` holds drafts for Persian (`/fa/`, right to
+  left), Simplified Chinese (`/zh/`) and Traditional Chinese (`/zh-hant/`). Each is built only when its switch in
+  `site.features.languages` (`src/config/site.ts`) is `true`; a page that is off is not built, linked, or listed in the
+  sitemap. When at least one is on, `LanguageSwitcher` shows a button for each language (header from 1100px up, the
+  mobile menu, the footer, and the translated pages), and every version links to the others with `hreflang` once
+  `VITE_SITE_URL` is set. **The wording is a draft: have a native speaker review a language before switching it on.**
 - **Analytics (optional):** set `VITE_CF_ANALYTICS_TOKEN` (a Cloudflare Web Analytics token) and the build adds the
   beacon and allows its two origins in the security policy. Empty means no analytics and no extra requests.
 - **Security policy:** `vite-security-plugin.ts` builds one Content-Security-Policy and writes it two ways: a meta

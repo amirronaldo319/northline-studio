@@ -51,4 +51,20 @@ describe('applyPageHead', () => {
     const rtl = { ...meta, lang: 'fa', dir: 'rtl' as const }
     expect(applyPageHead(TEMPLATE, rtl, { siteUrl: '' })).toContain('<html lang="fa" dir="rtl">')
   })
+
+  test('adds language alternates when there are several versions, and none otherwise', () => {
+    const home = pageMeta({ kind: 'home' })
+    const withAlternates = applyPageHead(TEMPLATE, home, {
+      siteUrl: 'https://example.ca',
+      alternates: [
+        { hreflang: 'en-CA', path: '' },
+        { hreflang: 'zh-Hans', path: 'zh/' },
+        { hreflang: 'x-default', path: '' },
+      ],
+    })
+    expect(withAlternates).toContain('<link rel="alternate" hreflang="zh-Hans" href="https://example.ca/zh/">')
+    expect(withAlternates).toContain('hreflang="x-default" href="https://example.ca/"')
+    const none = applyPageHead(TEMPLATE, home, { siteUrl: 'https://example.ca', alternates: [] })
+    expect(none).not.toContain('hreflang')
+  })
 })

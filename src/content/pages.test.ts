@@ -26,8 +26,8 @@ describe('allPages', () => {
     }
   })
 
-  test('the Persian page is not built until it is switched on', () => {
-    expect(pages.some((page) => page.ref.kind === 'persian')).toBe(false)
+  test('translated pages are not built until they are switched on', () => {
+    expect(pages.some((page) => page.ref.kind === 'language')).toBe(false)
   })
 })
 

@@ -2,8 +2,7 @@ import { PROJECT_DATA as PROJECTS } from './projectsData.ts'
 import { GUIDES, findGuide } from './guides.ts'
 import { TRADES, findTrade } from './trades.ts'
 import { FAQ, type FaqItem } from './faq.ts'
-import { PERSIAN_PAGE } from './persian.ts'
-import { site } from '../config/site.ts'
+import { enabledLanguages, findLanguage, type LanguageCode } from './languages.ts'
 
 /** Identifies one page of the site. The home page is the long single page; the rest are short landing pages. */
 export type PageRef =
@@ -11,7 +10,7 @@ export type PageRef =
   | { kind: 'trade'; slug: string }
   | { kind: 'case'; id: string }
   | { kind: 'guide'; slug: string }
-  | { kind: 'persian' }
+  | { kind: 'language'; code: LanguageCode }
 
 export interface PageMeta {
   ref: PageRef
@@ -58,22 +57,25 @@ export function pageMeta(ref: PageRef): PageMeta {
         dir: 'ltr',
       }
     }
-    case 'persian':
+    case 'language': {
+      const language = findLanguage(ref.code)
+      if (!language) return homeMeta()
       return {
         ref,
-        path: 'fa/',
-        title: PERSIAN_PAGE.title,
-        description: PERSIAN_PAGE.description,
+        path: language.path,
+        title: language.title,
+        description: language.description,
         faq: [],
-        lang: 'fa',
-        dir: 'rtl',
+        lang: language.htmlLang,
+        dir: language.dir,
       }
+    }
     default:
       return homeMeta()
   }
 }
 
-/** Every page the build produces, home first. The Persian page is included only when switched on in the site config. */
+/** Every page the build produces, home first. A translated page is included only when switched on in the site config. */
 export function allPages(): PageMeta[] {
   const refs: PageRef[] = [
     { kind: 'home' },
@@ -81,7 +83,7 @@ export function allPages(): PageMeta[] {
     ...PROJECTS.map((project): PageRef => ({ kind: 'case', id: project.id })),
     ...GUIDES.map((guide): PageRef => ({ kind: 'guide', slug: guide.slug })),
   ]
-  if (site.features.persianPage) refs.push({ kind: 'persian' })
+  for (const language of enabledLanguages()) refs.push({ kind: 'language', code: language.code })
   return refs.map(pageMeta)
 }
 

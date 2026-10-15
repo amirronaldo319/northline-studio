@@ -17,7 +17,7 @@ await build({
 })
 
 try {
-  const { render, listPages, applyPageHead } = await import(pathToFileURL(path.join(serverDir, 'entry-server.js')).href)
+  const { render, listPages, applyPageHead, alternatesFor } = await import(pathToFileURL(path.join(serverDir, 'entry-server.js')).href)
   const template = await readFile(path.join(distDir, 'index.html'), 'utf8')
   const placeholder = '<div id="root"></div>'
   if (!template.includes(placeholder)) throw new Error('dist/index.html has no empty #root to fill')
@@ -25,7 +25,7 @@ try {
   const pages = listPages()
   for (const meta of pages) {
     const body = await render(meta.ref)
-    const html = applyPageHead(template, meta, { siteUrl }).replace(placeholder, `<div id="root">${body}</div>`)
+    const html = applyPageHead(template, meta, { siteUrl, alternates: alternatesFor(meta) }).replace(placeholder, `<div id="root">${body}</div>`)
     const target = path.join(distDir, meta.path, 'index.html')
     await mkdir(path.dirname(target), { recursive: true })
     await writeFile(target, html)

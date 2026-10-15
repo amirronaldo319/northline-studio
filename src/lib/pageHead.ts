@@ -14,7 +14,18 @@ function setMeta(html: string, attr: 'name' | 'property', key: string, value: st
  * Rewrites the page-specific parts of the built index.html (title, description, social tags, canonical link,
  * language, and FAQ data) so each page is a complete document for crawlers and link previews.
  */
-export function applyPageHead(html: string, meta: PageMeta, options: { siteUrl: string }): string {
+export interface Alternate {
+  /** BCP 47 language tag, or "x-default". */
+  hreflang: string
+  /** Path below the site root. */
+  path: string
+}
+
+export function applyPageHead(
+  html: string,
+  meta: PageMeta,
+  options: { siteUrl: string; alternates?: readonly Alternate[] },
+): string {
   let out = html
   out = out.replace(/<html[^>]*>/, `<html lang="${meta.lang}"${meta.dir === 'rtl' ? ' dir="rtl"' : ''}>`)
   out = out.replace(/<title>[^<]*<\/title>/, `<title>${escapeHtml(meta.title)}</title>`)
@@ -26,6 +37,14 @@ export function applyPageHead(html: string, meta: PageMeta, options: { siteUrl: 
     const url = `${options.siteUrl}/${meta.path}`
     out = out.replace(/(<link rel="canonical" href=")[^"]*(")/, (_match, open: string, close: string) => `${open}${url}${close}`)
     out = setMeta(out, 'property', 'og:url', url)
+  }
+
+  // Language versions point at each other, so search engines show the right one to the right reader.
+  if (options.siteUrl && options.alternates && options.alternates.length > 1) {
+    const links = options.alternates
+      .map((alt) => `<link rel="alternate" hreflang="${escapeHtml(alt.hreflang)}" href="${options.siteUrl}/${alt.path}">`)
+      .join('')
+    out = out.replace('</head>', `${links}</head>`)
   }
 
   // Each page publishes its own questions as FAQPage data.

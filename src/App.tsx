@@ -6,7 +6,7 @@ import { Header } from './components/Header'
 import { PageContext } from './components/pageContext'
 import { CasePage } from './components/pages/CasePage'
 import { GuidePage } from './components/pages/GuidePage'
-import { PersianPage } from './components/pages/PersianPage'
+import { LanguagePage } from './components/pages/LanguagePage'
 import { TradePage } from './components/pages/TradePage'
 import { About } from './components/sections/About'
 import { Audience } from './components/sections/Audience'
@@ -18,6 +18,7 @@ import { Process } from './components/sections/Process'
 import { SiteCheck } from './components/sections/SiteCheck'
 import { Work } from './components/sections/Work'
 import { findGuide } from './content/guides'
+import { findLanguage } from './content/languages'
 import type { PageRef } from './content/pages'
 import { PROJECTS } from './content/projects'
 import { findTrade } from './content/trades'
@@ -61,7 +62,10 @@ export default function App({ page = { kind: 'home' } }: { page?: PageRef }) {
   useReveal()
   useHashScroll()
 
-  if (page.kind === 'persian') return <PersianPage />
+  if (page.kind === 'language') {
+    const language = findLanguage(page.code)
+    if (language) return <LanguagePage language={language} />
+  }
 
   return (
     <PageContext.Provider value={{ isHome: page.kind === 'home' }}>

@@ -1,36 +1,30 @@
 import { ArrowLeft, Mail } from 'lucide-react'
 import { mailtoHref, site } from '@/config/site'
-import { PERSIAN_PAGE } from '@/content/persian'
+import type { LanguageContent } from '@/content/languages'
 import { pageHref } from '@/lib/paths'
 import { BrandMark } from '../BrandMark'
+import { LanguageSwitcher } from '../LanguageSwitcher'
 import { buttonClasses } from '../ui/button'
 
 const CURRENT_YEAR = new Date().getFullYear()
 
 /**
- * The Persian-language page, laid out right to left. It is a short version of the home page: what you get,
- * how it works, how a quote works, and how to get in touch by email.
- * Built only when `site.features.persianPage` is on (see src/content/persian.ts).
+ * A translated page: a short version of the home page (what you get, how it works, how a quote works, and how to
+ * get in touch by email), laid out in the language's own direction.
+ * Built only when its switch in `site.features.languages` is on (see src/content/languages.ts).
  */
-export function PersianPage() {
-  const copy = PERSIAN_PAGE
+export function LanguagePage({ language }: { language: LanguageContent }) {
+  const copy = language
   const mail = `${mailtoHref.split('?')[0]}?subject=${encodeURIComponent(copy.mailSubject)}`
 
   return (
-    <div dir="rtl" lang="fa" className="min-h-screen bg-paper text-ink [font-family:Tahoma,'Segoe_UI',system-ui,sans-serif]">
+    <div dir={copy.dir} lang={copy.htmlLang} className="min-h-screen bg-paper text-ink" style={{ fontFamily: copy.fontStack }}>
       <header className="border-b border-line bg-paper">
         <div className="container-page flex h-16 items-center justify-between">
           <a href={pageHref('')} dir="ltr" lang="en" aria-label={site.brand.name}>
             <BrandMark />
           </a>
-          <a
-            href={pageHref('')}
-            lang="en"
-            dir="ltr"
-            className="inline-flex min-h-11 items-center rounded-full border border-line-strong px-4 text-sm font-semibold hover:border-ink/40"
-          >
-            {copy.englishLink}
-          </a>
+          <LanguageSwitcher current={copy.code} />
         </div>
       </header>
 

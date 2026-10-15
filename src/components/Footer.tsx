@@ -6,6 +6,7 @@ import { GUIDES } from '@/content/guides'
 import { TRADES } from '@/content/trades'
 import { pageHref } from '@/lib/paths'
 import { BrandMark } from './BrandMark'
+import { LanguageSwitcher } from './LanguageSwitcher'
 import { useHomeAnchor } from './pageContext'
 
 const CURRENT_YEAR = new Date().getFullYear()
@@ -72,6 +73,10 @@ export function Footer() {
             </ul>
           </nav>
         </div>
+      </div>
+
+      <div className="container-page pb-6">
+        <LanguageSwitcher current="en" tone="dark" label="Language, footer" />
       </div>
 
       <div className="border-t border-night-line">

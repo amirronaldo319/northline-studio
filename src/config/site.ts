@@ -57,11 +57,11 @@ export const site = {
 
   /**
    * Switches for work that is built but not yet public.
-   * `persianPage`: the Persian-language page at /fa/. Turn on only after a Persian speaker has reviewed
-   * the wording in src/content/persian.ts.
+   * `languages`: translated pages (see src/content/languages.ts). Turn one on only after a native speaker has
+   * reviewed its wording. A page that is off is not built, linked, or listed in the sitemap.
    */
   features: {
-    persianPage: false as boolean,
+    languages: { fa: false, 'zh-hans': false, 'zh-hant': false } as Record<'fa' | 'zh-hans' | 'zh-hant', boolean>,
   },
 
   /** Optional social profiles. Leave empty until real accounts exist; nothing renders when empty. */
