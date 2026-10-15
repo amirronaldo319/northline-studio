@@ -1,16 +1,43 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><style>
   html,body{margin:0;width:1200px;height:630px}
-  body{background:#f7f4ee;font-family:"Helvetica Neue",Arial,sans-serif;color:#131a2b;position:relative;overflow:hidden}
+  body{background:#f7f4ee;color:#131a2b;position:relative;overflow:hidden}
   .grid{position:absolute;inset:0;background-image:linear-gradient(#e3dccf 1px,transparent 1px),linear-gradient(90deg,#e3dccf 1px,transparent 1px);background-size:56px 56px;opacity:.55;-webkit-mask-image:radial-gradient(ellipse at 80% 40%,#000 10%,transparent 70%)}
   .wrap{position:absolute;left:80px;top:72px;right:80px;bottom:72px;display:flex;flex-direction:column;justify-content:space-between}
   .logo img{display:block;height:92px;width:auto}
-  h1{font-size:76px;line-height:1.04;letter-spacing:-2.5px;margin:0;max-width:900px}
+  h1{margin:0;max-width:960px}
   .foot{font-size:28px;color:#3f4658;display:flex;gap:28px;align-items:center}
   .dot{width:8px;height:8px;border-radius:50%;background:#173fd0}
 </style></head><body><div class="grid"></div>
 <div class="wrap">
-  <div class="logo"><img src="../src/assets/brand/northline-logo.svg" alt="Northline Studio"></div>
-  <h1>Custom websites for Vancouver’s local service businesses.</h1>
-  <div class="foot">Independent web design<i class="dot"></i>Vancouver and North Vancouver</div>
-</div></body></html>
+  <div class="logo" id="logo"><img src="../src/assets/brand/northline-logo.svg" alt="Northline Studio"></div>
+  <h1 id="h"></h1>
+  <div class="foot"><span id="a"></span><i class="dot"></i><span id="b"></span></div>
+</div>
+<script>
+  // Social card text per language: render with ?l=en | fa | zh-hans | zh-hant (see render-og-image.mjs).
+  var T = {
+    en: { h: 'Custom websites for Vancouver’s local service businesses.', a: 'Independent web design', b: 'Vancouver and North Vancouver',
+          dir: 'ltr', font: '"Helvetica Neue",Arial,sans-serif', size: 76, line: 1.04, track: '-2.5px' },
+    fa: { h: 'وب‌سایت اختصاصی برای کسب‌وکارهای خدماتی محلی ونکوور.', a: 'طراحی وب مستقل', b: 'ونکوور و نورث ونکوور',
+          dir: 'rtl', font: 'Tahoma,"Geeza Pro",sans-serif', size: 58, line: 1.45, track: '0' },
+    'zh-hans': { h: '为温哥华本地服务型商家\n量身定制的网站。', a: '独立网页设计', b: '温哥华和北温哥华',
+          dir: 'ltr', font: '"PingFang SC","Microsoft YaHei",sans-serif', size: 70, line: 1.25, track: '0' },
+    'zh-hant': { h: '為溫哥華本地服務型商家\n量身訂製的網站。', a: '獨立網頁設計', b: '溫哥華和北溫哥華',
+          dir: 'ltr', font: '"PingFang TC","Microsoft JhengHei",sans-serif', size: 70, line: 1.25, track: '0' }
+  };
+  var l = new URLSearchParams(location.search).get('l') || 'en';
+  var t = T[l] || T.en;
+  document.documentElement.lang = l === 'zh-hans' ? 'zh-Hans' : l === 'zh-hant' ? 'zh-Hant' : l;
+  document.body.dir = t.dir;
+  document.body.style.fontFamily = t.font;
+  var h = document.getElementById('h');
+  h.textContent = t.h;
+  h.style.whiteSpace = 'pre-line';
+  h.style.fontSize = t.size + 'px'; h.style.lineHeight = t.line; h.style.letterSpacing = t.track;
+  document.getElementById('a').textContent = t.a;
+  document.getElementById('b').textContent = t.b;
+  // In right-to-left the logo sits on the right, matching the reading direction.
+  if (t.dir === 'rtl') document.getElementById('logo').style.alignSelf = 'flex-start';
+</script>
+</body></html>

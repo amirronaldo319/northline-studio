@@ -36,7 +36,7 @@ export const zhHant: Copy = {
   nav: { work: '作品', package: '服務內容', process: '流程', about: '關於', faq: '常見問題' },
 
   hero: {
-    headline: '為溫哥華本地服務型商家量身定製的網站。',
+    headline: '為溫哥華本地服務型商家 量身定製的網站。',
     markedWords: [],
     lede: '展示您的作品，說明您的服務，讓客戶輕鬆索取報價。',
     facts: ['先出書面報價，再開始工作', '由我親自設計和製作', '溫哥華和北溫哥華'],
@@ -493,7 +493,7 @@ export const zhHant: Copy = {
       slug: 'what-a-local-business-website-needs',
       title: '本地商家網站需要什麼 | Northline Studio',
       description: '一份簡明清單：本地服務型商家的單頁網站應包含什麼，以及哪些可以省略。',
-      headline: '本地商家的單頁網站需要什麼。',
+      headline: '本地商家的單頁網站 需要什麼。',
       intro:
         '要顯得專業、方便聯繫，並不需要大型網站。對大多數本地服務型商家來說，一個組織良好的頁面就夠了。以下是它應該包含的內容。',
       sections: [
@@ -585,7 +585,7 @@ export const zhHant: Copy = {
     eyebrow: (name) => `為${name}製作網站`,
     crumb: (name) => `為${name}製作網站`,
     customersEyebrow: '客戶關注什麼',
-    checksHeading: (noun) => `人們在聯繫${noun}之前會查看什麼。`,
+    checksHeading: (noun) => `人們在聯繫${noun} 之前會查看什麼。`,
     includesEyebrow: '您的頁面包含什麼',
     includesHeading: '一個專注的頁面，為您的業務而建。',
     includesLede: '先出書面報價，讓您在工作開始之前就清楚範圍和費用。',

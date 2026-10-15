@@ -41,6 +41,27 @@ export function applyPageHead(
     out = setMeta(out, 'property', 'og:url', url)
   }
 
+  // Each language has its own share card (written in that language); English uses the default.
+  if (meta.locale !== 'en') {
+    const card = `/og-image-${meta.locale}.png`
+    out = out.replace(/(<meta (?:property="og:image"|name="twitter:image") content="[^"]*?)\/og-image\.png(")/g, (_m, open: string, close: string) => `${open}${card}${close}`)
+  }
+  out = setMeta(out, 'property', 'og:image:alt', meta.title)
+
+  // Pages below the home page publish their place in the site, so search results can show the trail.
+  if (options.siteUrl && meta.relativePath !== '') {
+    const homeUrl = `${options.siteUrl}/${LOCALES[meta.locale].prefix}`
+    const crumbs = {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: LOCALES[meta.locale].label, item: homeUrl },
+        { '@type': 'ListItem', position: 2, name: meta.title, item: `${options.siteUrl}/${meta.path}` },
+      ],
+    }
+    out = out.replace('</head>', `<script type="application/ld+json">${JSON.stringify(crumbs)}</script></head>`)
+  }
+
   // Language versions point at each other, so search engines show the right one to the right reader.
   if (options.siteUrl && options.alternates && options.alternates.length > 1) {
     const links = options.alternates

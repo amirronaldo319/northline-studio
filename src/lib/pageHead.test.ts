@@ -67,4 +67,24 @@ describe('applyPageHead', () => {
     const none = applyPageHead(TEMPLATE, home, { siteUrl: 'https://example.ca', alternates: [] })
     expect(none).not.toContain('hreflang')
   })
+
+  test('uses the language’s own share card, and the default for English', () => {
+    const page = `${TEMPLATE.replace('</head>', '<meta property="og:image" content="https://example.ca/og-image.png"><meta name="twitter:image" content="https://example.ca/og-image.png"></head>')}`
+    const english = applyPageHead(page, pageMeta({ kind: 'home', locale: 'en' }), { siteUrl: 'https://example.ca' })
+    expect(english).toContain('content="https://example.ca/og-image.png"')
+    const persian = applyPageHead(page, pageMeta({ kind: 'home', locale: 'fa' }), { siteUrl: 'https://example.ca' })
+    expect(persian).toContain('content="https://example.ca/og-image-fa.png"')
+    expect(persian).not.toContain('/og-image.png')
+    expect((persian.match(/og-image-fa\.png/g) ?? []).length).toBe(2)
+  })
+
+  test('adds breadcrumb data below the home page only, and only with a site URL', () => {
+    const trade = pageMeta({ kind: 'trade', locale: 'en', slug: TRADES[0].slug })
+    const withCrumbs = applyPageHead(TEMPLATE, trade, { siteUrl: 'https://example.ca' })
+    expect(withCrumbs).toContain('"@type":"BreadcrumbList"')
+    expect(withCrumbs).toContain(`"item":"https://example.ca/${trade.path}"`)
+    expect(applyPageHead(TEMPLATE, trade, { siteUrl: '' })).not.toContain('BreadcrumbList')
+    const home = applyPageHead(TEMPLATE, pageMeta({ kind: 'home', locale: 'en' }), { siteUrl: 'https://example.ca' })
+    expect(home).not.toContain('BreadcrumbList')
+  })
 })

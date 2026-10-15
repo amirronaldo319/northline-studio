@@ -1,5 +1,5 @@
 import { Fragment, type CSSProperties } from 'react'
-import { splitWords } from '@/lib/words'
+import { tokenize } from '@/lib/words'
 
 /** Words past this index share the last delay, so a long heading never takes seconds to arrive. */
 const MAX_WORD_STEPS = 9
@@ -18,9 +18,9 @@ export function Words({ text, marked = [] }: Props) {
   // <bdi> keeps a heading that starts with a Latin name or a number ("604 Kars") in its own order inside right-to-left text.
   return (
     <bdi>
-      {splitWords(text).map((word, index) => (
+      {tokenize(text).map(({ word, spaceBefore }, index) => (
         <Fragment key={`${word}-${index}`}>
-          {index > 0 && ' '}
+          {spaceBefore && ' '}
           <span
             className={marked.includes(index) ? 'word word-marked' : 'word'}
             style={{ '--w': Math.min(index, MAX_WORD_STEPS) } as CSSProperties}
