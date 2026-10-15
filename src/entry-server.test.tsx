@@ -35,3 +35,15 @@ describe('server render', async () => {
     expect(html).not.toMatch(/<script[\s>]/)
   })
 })
+
+describe('every page renders as a complete document', async () => {
+  const { listPages } = await import('./entry-server')
+
+  test.each(listPages().map((meta) => [meta.path || 'home', meta] as const))('%s', async (_name, meta) => {
+    const html = await render(meta.ref)
+    expect(html.match(/<h1[\s>]/g), 'one h1').toHaveLength(1)
+    expect(html).not.toMatch(/<script[\s>]/)
+    expect(html).toContain('id="contact"')
+  })
+})
+

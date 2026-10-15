@@ -78,3 +78,55 @@ export function CleanArt({ className = '', variant = 0 }: ArtProps & { variant?:
     </svg>
   )
 }
+
+export function GardenArt({ className = '' }: ArtProps) {
+  return (
+    <svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" className={className} aria-hidden="true">
+      <rect width="400" height="260" fill="#e9f1e2" />
+      <circle cx="318" cy="52" r="26" fill="#f6e3a6" />
+      {/* back hedge */}
+      <rect x="0" y="118" width="400" height="46" fill="#4f7d45" />
+      <g fill="#5d8f50">
+        <circle cx="20" cy="118" r="20" />
+        <circle cx="62" cy="114" r="22" />
+        <circle cx="108" cy="118" r="20" />
+        <circle cx="152" cy="112" r="23" />
+        <circle cx="200" cy="118" r="20" />
+        <circle cx="246" cy="114" r="22" />
+        <circle cx="292" cy="118" r="20" />
+        <circle cx="338" cy="112" r="23" />
+        <circle cx="384" cy="118" r="20" />
+      </g>
+      {/* lawn */}
+      <rect x="0" y="150" width="400" height="110" fill="#8fb573" />
+      <path d="M0 196 q100 -22 200 -6 t200 -10 v80 h-400z" fill="#7fa863" />
+      {/* path */}
+      <path d="M176 260 q16 -44 30 -78 q4 -10 10 0 q16 34 32 78z" fill="#e5d7b8" />
+      {/* tree */}
+      <rect x="62" y="84" width="9" height="74" rx="3" fill="#6b4a2f" />
+      <circle cx="66" cy="70" r="34" fill="#3f7a4a" />
+      <circle cx="46" cy="86" r="22" fill="#4a8a54" />
+      <circle cx="88" cy="84" r="24" fill="#4a8a54" />
+      {/* shrubs and flowers */}
+      <ellipse cx="318" cy="170" rx="38" ry="22" fill="#3f7a4a" />
+      <g fill="#e9a23b">
+        <circle cx="300" cy="166" r="4" />
+        <circle cx="318" cy="158" r="4" />
+        <circle cx="334" cy="170" r="4" />
+      </g>
+      <g fill="#d9654b">
+        <circle cx="120" cy="206" r="5" />
+        <circle cx="140" cy="214" r="5" />
+        <circle cx="104" cy="218" r="5" />
+      </g>
+      <g stroke="#3f7a4a" strokeWidth="2">
+        <path d="M120 211v14" />
+        <path d="M140 219v10" />
+        <path d="M104 223v10" />
+      </g>
+      {/* planter */}
+      <rect x="282" y="206" width="46" height="28" rx="4" fill="#b9805a" />
+      <path d="M290 206 q6 -26 14 -4 q6 -24 16 2z" fill="#5d8f50" />
+    </svg>
+  )
+}

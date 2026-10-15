@@ -24,6 +24,19 @@ describe('buildCsp', () => {
   })
 })
 
+describe('analytics origins', () => {
+  test('allows an analytics script origin only when it is passed in', () => {
+    const csp = buildCsp({
+      scriptHashes: ['sha256-abc='],
+      connectOrigins: ['https://cloudflareinsights.com'],
+      scriptOrigins: ['https://static.cloudflareinsights.com'],
+    })
+    expect(csp).toContain("script-src 'self' https://static.cloudflareinsights.com 'sha256-abc='")
+    expect(csp).toContain("connect-src 'self' https://cloudflareinsights.com")
+    expect(buildCsp({ scriptHashes: [], connectOrigins: [] })).not.toContain('cloudflareinsights')
+  })
+})
+
 describe('originOf', () => {
   test('returns the origin of a URL, or nothing for blanks and invalid values', () => {
     expect(originOf('https://formspree.io/f/abc123')).toBe('https://formspree.io')

@@ -14,6 +14,10 @@ interface SeoOptions {
   ogImagePath: string
   /** Published as FAQPage structured data, so the answers can appear in search results. */
   faq?: readonly FaqEntry[]
+  /** Cloudflare Web Analytics token. Empty means no analytics script is added. */
+  analyticsToken?: string
+  /** Page paths below the site root ('' is the home page), listed in the sitemap. */
+  paths?: readonly string[]
 }
 
 /**
@@ -46,6 +50,18 @@ export function seoPlugin(options: SeoOptions): Plugin {
           { tag: 'meta', attrs: { property: 'og:image', content: `${siteUrl}${options.ogImagePath}` }, injectTo: 'head' },
           { tag: 'meta', attrs: { name: 'twitter:image', content: `${siteUrl}${options.ogImagePath}` }, injectTo: 'head' },
         )
+      }
+
+      if (options.analyticsToken) {
+        tags.push({
+          tag: 'script',
+          attrs: {
+            defer: true,
+            src: 'https://static.cloudflareinsights.com/beacon.min.js',
+            'data-cf-beacon': JSON.stringify({ token: options.analyticsToken }),
+          },
+          injectTo: 'body',
+        })
       }
 
       tags.push({
@@ -83,7 +99,7 @@ export function seoPlugin(options: SeoOptions): Plugin {
         const sitemap = [
           '<?xml version="1.0" encoding="UTF-8"?>',
           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-          `  <url><loc>${siteUrl}/</loc></url>`,
+          ...(options.paths ?? ['']).map((pagePath) => `  <url><loc>${siteUrl}/${pagePath}</loc></url>`),
           '</urlset>',
           '',
         ].join('\n')

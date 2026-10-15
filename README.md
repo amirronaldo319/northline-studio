@@ -105,6 +105,17 @@ use commercially. No stock photography is bundled.
 - **Site check:** a band above the contact form (`SiteCheck`) prepares the inquiry for a website review: it sets
   "An update to my current website", adds a starter message without overwriting anything typed, and focuses the
   website field. `#site-check` in the URL does the same, so the link can be shared.
+- **Pages:** the build produces one HTML file per page (`scripts/prerender.mjs`), all sharing one bundle.
+  `src/content/pages.ts` lists them and maps a URL to a page. Content lives in plain data files:
+  `trades.ts` (landing pages for each kind of business), `guides.ts` (articles), `projectsData.ts` (case studies,
+  with the screenshots wired in `projects.ts`). To add a trade or guide, add an entry; the page, its title and
+  description, its FAQ data, and its sitemap line follow. Keep copy free of results, rankings, and prices (the
+  copy-rules test checks this).
+- **Persian page:** `src/content/persian.ts` and `PersianPage.tsx`, built at `/fa/` only when
+  `site.features.persianPage` is `true` in `src/config/site.ts`. The wording is a draft that a Persian speaker must
+  review before the switch is turned on.
+- **Analytics (optional):** set `VITE_CF_ANALYTICS_TOKEN` (a Cloudflare Web Analytics token) and the build adds the
+  beacon and allows its two origins in the security policy. Empty means no analytics and no extra requests.
 - **Security policy:** `vite-security-plugin.ts` builds one Content-Security-Policy and writes it two ways: a meta
   tag in `index.html` (GitHub Pages cannot send headers) and a generated `dist/_headers` for Netlify and Cloudflare.
   Only the page's own files load; the one inline script is allowed by hash, and `VITE_FORM_ENDPOINT`'s origin is added

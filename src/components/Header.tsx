@@ -4,6 +4,7 @@ import { CONTACT_SECTION_ID, NAV_LINKS, PRIMARY_CTA_LABEL } from '@/content/navi
 import { useActiveSection } from '@/hooks/useActiveSection'
 import { underlineFor, underlineTarget, type Underline } from '@/lib/navUnderline'
 import { BrandMark } from './BrandMark'
+import { useHomeAnchor, useHomeTop } from './pageContext'
 import { buttonClasses } from './ui/button'
 
 const DESKTOP_QUERY = '(min-width: 900px)'
@@ -18,6 +19,7 @@ const LINK_PADDING_PX = 14
  */
 function DesktopNav({ active }: { active: string | null }) {
   const listRef = useRef<HTMLUListElement>(null)
+  const homeAnchor = useHomeAnchor()
   const linkRefs = useRef<Array<HTMLAnchorElement | null>>([])
   const [hovered, setHovered] = useState<number | null>(null)
   const [focused, setFocused] = useState<number | null>(null)
@@ -68,7 +70,7 @@ function DesktopNav({ active }: { active: string | null }) {
                 ref={(el) => {
                   linkRefs.current[index] = el
                 }}
-                href={`#${link.id}`}
+                href={homeAnchor(link.id)}
                 aria-current={isActive ? 'location' : undefined}
                 onPointerEnter={(event) => event.pointerType === 'mouse' && setHovered(index)}
                 onFocus={() => setFocused(index)}
@@ -101,6 +103,8 @@ export function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const toggleRef = useRef<HTMLButtonElement>(null)
   const active = useActiveSection(sectionIds)
+  const homeAnchor = useHomeAnchor()
+  const homeTop = useHomeTop()
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 8)
@@ -138,7 +142,7 @@ export function Header() {
       }`}
     >
       <div className="container-page flex h-16 items-center justify-between gap-6">
-        <a href="#top" className="-m-1 rounded-lg p-1">
+        <a href={homeTop} className="-m-1 rounded-lg p-1">
           <BrandMark intro />
         </a>
 
@@ -173,7 +177,7 @@ export function Header() {
             {NAV_LINKS.map((link, index) => (
               <li key={link.id} className="menu-item" style={{ '--i': index } as React.CSSProperties}>
                 <a
-                  href={`#${link.id}`}
+                  href={homeAnchor(link.id)}
                   onClick={closeMenu}
                   aria-current={active === link.id ? 'location' : undefined}
                   className="flex min-h-12 items-center border-b border-line/70 text-lg font-medium text-ink aria-[current=location]:text-cobalt"

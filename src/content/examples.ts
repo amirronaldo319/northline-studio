@@ -1,5 +1,6 @@
 import type { ComponentType } from 'react'
 import { CleaningDemo } from '@/components/demos/CleaningDemo'
+import { LandscapingDemo } from '@/components/demos/LandscapingDemo'
 import type { DemoProps } from '@/components/demos/types'
 
 // The demo is imported directly (not lazily): it is the hero picture, and a lazy boundary would make React
@@ -36,6 +37,16 @@ export const EXAMPLES: readonly ExampleSite[] = [
     action: 'Request a quote',
     previewHeight: { wide: 623, narrow: 440 },
     Demo: CleaningDemo,
+  },
+  {
+    id: 'landscaping',
+    name: 'Fernwood Landscaping',
+    businessType: 'Landscaping',
+    intent: 'Designed to help homeowners see what is looked after through the seasons and ask for a visit.',
+    approach: 'Calm and earthy, with services laid out plainly and the year broken into seasons.',
+    action: 'Request a visit',
+    previewHeight: { wide: 640, narrow: 470 },
+    Demo: LandscapingDemo,
   },
 ]
 

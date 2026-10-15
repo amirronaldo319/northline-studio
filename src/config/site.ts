@@ -55,6 +55,15 @@ export const site = {
     },
   ],
 
+  /**
+   * Switches for work that is built but not yet public.
+   * `persianPage`: the Persian-language page at /fa/. Turn on only after a Persian speaker has reviewed
+   * the wording in src/content/persian.ts.
+   */
+  features: {
+    persianPage: false as boolean,
+  },
+
   /** Optional social profiles. Leave empty until real accounts exist; nothing renders when empty. */
   social: [] as ReadonlyArray<{ label: string; href: string }>,
 } as const

@@ -1,7 +1,11 @@
 import { ArrowUpRight } from 'lucide-react'
+import { EXAMPLES, HERO_EXAMPLE, type ExampleSite } from '@/content/examples'
 import { CONCEPT_PROJECT, FEATURED_PROJECT, SECONDARY_PROJECT, STATUS_LABEL, type Project } from '@/content/projects'
 import { useInViewOnce } from '@/hooks/useInViewOnce'
+import { pageHref } from '@/lib/paths'
 import { revealDelay } from '@/lib/reveal'
+import { DemoPreview } from '../DemoPreview'
+import { useExampleDialog } from '../exampleDialogContext'
 import { LegacyAnchors } from '../LegacyAnchors'
 import { ProjectTrigger } from '../ProjectTrigger'
 import { buttonClasses } from '../ui/button'
@@ -36,16 +40,25 @@ function ProjectText({ project, titleId }: { project: Project; titleId: string }
           </li>
         ))}
       </ul>
-      <a
-        href={project.liveUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={buttonClasses('secondary', 'md', 'mt-5')}
-      >
-        {project.status === 'live' ? 'Visit live site' : 'Open live preview'}
-        <span className="sr-only">: {project.name} (opens in a new tab)</span>
-        <ArrowUpRight aria-hidden="true" size={17} className="card-arrow" />
-      </a>
+      <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2">
+        <a
+          href={project.liveUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={buttonClasses('secondary', 'md')}
+        >
+          {project.status === 'live' ? 'Visit live site' : 'Open live preview'}
+          <span className="sr-only">: {project.name} (opens in a new tab)</span>
+          <ArrowUpRight aria-hidden="true" size={17} className="card-arrow" />
+        </a>
+        <a
+          href={pageHref(`work/${project.id}/`)}
+          className="inline-flex min-h-11 items-center font-semibold text-cobalt underline-offset-4 hover:underline"
+        >
+          Read the case study
+          <span className="sr-only">: {project.name}</span>
+        </a>
+      </div>
     </>
   )
 }
@@ -96,6 +109,45 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
   )
 }
 
+/** A concept demo for a fictional business, opened in the preview dialog. */
+function ConceptCard({ example, index }: { example: ExampleSite; index: number }) {
+  const { open } = useExampleDialog()
+  const titleId = `example-${example.id}-title`
+
+  return (
+    <article aria-labelledby={titleId} className="project-card reveal" style={revealDelay(index)}>
+      <div className="relative">
+        <div className={frameClasses}>
+          <DemoPreview example={example} />
+        </div>
+        {/* Mouse-only convenience; the labelled button below is the accessible control. */}
+        <button
+          type="button"
+          tabIndex={-1}
+          aria-hidden="true"
+          onClick={() => open(example)}
+          className="absolute inset-0 cursor-pointer rounded-lg"
+        />
+      </div>
+      <div className="mt-5">
+        <p className={labelClasses}>
+          Concept demo <span aria-hidden="true">·</span> {example.businessType}
+        </p>
+        <h3 id={titleId} className="mt-2 text-[1.375rem] font-semibold">
+          {example.name}
+        </h3>
+        <p className="mt-2 text-[1.0625rem] leading-relaxed text-ink">{example.intent}</p>
+        <p className="mt-2 hidden text-[0.9375rem] leading-relaxed text-ink-2 sm:block">{example.approach}</p>
+        <button type="button" onClick={() => open(example)} className={buttonClasses('secondary', 'md', 'mt-4')}>
+          View example
+          <span className="sr-only">: {example.name}</span>
+          <ArrowUpRight aria-hidden="true" size={17} className="card-arrow" />
+        </button>
+      </div>
+    </article>
+  )
+}
+
 export function Work() {
   return (
     <section id="work" aria-labelledby="work-title" className="relative border-t border-line py-12 sm:py-20 lg:py-24">
@@ -108,7 +160,7 @@ export function Work() {
             <Words text="What I’ve built, and how I design." />
           </h2>
           <p className="lede mt-4">
-            Two live websites and a concept project, each labelled for what it is.
+            Two live websites, a concept project, and design concepts for fictional businesses, each labelled for what it is.
           </p>
         </div>
 
@@ -116,9 +168,12 @@ export function Work() {
           <FeaturedProject project={FEATURED_PROJECT} />
         </div>
 
-        <div className="mt-10 grid gap-9 md:mt-12 md:grid-cols-2 md:gap-8 lg:mt-16 lg:gap-12">
+        <div className="mt-10 grid gap-9 md:mt-12 md:grid-cols-2 md:gap-8 lg:mt-16 lg:grid-cols-3">
           <ProjectCard project={CONCEPT_PROJECT} index={0} />
           <ProjectCard project={SECONDARY_PROJECT} index={1} />
+          {EXAMPLES.filter((example) => example.id !== HERO_EXAMPLE.id).map((example, index) => (
+            <ConceptCard key={example.id} example={example} index={index + 2} />
+          ))}
         </div>
       </div>
     </section>

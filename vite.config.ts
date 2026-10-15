@@ -7,6 +7,7 @@ import { securityPlugin } from './vite-security-plugin.ts'
 import { site } from './src/config/site.ts'
 import { seo } from './src/config/seo.ts'
 import { FAQ } from './src/content/faq.ts'
+import { allPages } from './src/content/pages.ts'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
@@ -27,9 +28,14 @@ export default defineConfig(({ mode }) => {
         areaServed: site.serviceArea.primary,
         ogImagePath: '/og-image.png',
         faq: FAQ,
+        paths: allPages().map((page) => page.path),
+        analyticsToken: (env.VITE_CF_ANALYTICS_TOKEN ?? '').trim(),
       }),
       fontPreloadPlugin(),
-      securityPlugin({ formEndpoint: (env.VITE_FORM_ENDPOINT ?? '').trim() }),
+      securityPlugin({
+        formEndpoint: (env.VITE_FORM_ENDPOINT ?? '').trim(),
+        analyticsToken: (env.VITE_CF_ANALYTICS_TOKEN ?? '').trim(),
+      }),
     ],
     resolve: {
       alias: {

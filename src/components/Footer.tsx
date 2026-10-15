@@ -2,11 +2,18 @@ import { ArrowUp } from 'lucide-react'
 import { mailtoHref, site } from '@/config/site'
 import { NAV_LINKS } from '@/content/navigation'
 import { revealDelay } from '@/lib/reveal'
+import { GUIDES } from '@/content/guides'
+import { TRADES } from '@/content/trades'
+import { pageHref } from '@/lib/paths'
 import { BrandMark } from './BrandMark'
+import { useHomeAnchor } from './pageContext'
 
 const CURRENT_YEAR = new Date().getFullYear()
+const footerLink = 'inline-flex min-h-10 items-center text-white/85 hover:text-white'
 
 export function Footer() {
+  const homeAnchor = useHomeAnchor()
+
   return (
     <footer className="on-dark relative isolate bg-night text-white">
       <div className="footer-glow" aria-hidden="true" />
@@ -21,22 +28,50 @@ export function Footer() {
           </a>
         </div>
 
-        <nav aria-label="Footer" className="reveal" style={revealDelay(1)}>
-          <ul className="grid grid-cols-2 gap-x-10 gap-y-1 md:grid-cols-1">
-            {NAV_LINKS.map((link) => (
-              <li key={link.id}>
-                <a href={`#${link.id}`} className="inline-flex min-h-10 items-center text-white/85 hover:text-white">
-                  {link.label}
+        <div className="reveal flex flex-wrap gap-x-14 gap-y-8" style={revealDelay(1)}>
+          <nav aria-label="Footer">
+            <ul className="grid grid-cols-2 gap-x-10 gap-y-1 md:grid-cols-1">
+              {NAV_LINKS.map((link) => (
+                <li key={link.id}>
+                  <a href={homeAnchor(link.id)} className={footerLink}>
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+              <li>
+                <a href="#privacy" className={footerLink}>
+                  Privacy
                 </a>
               </li>
-            ))}
-            <li>
-              <a href="#privacy" className="inline-flex min-h-10 items-center text-white/85 hover:text-white">
-                Privacy
-              </a>
-            </li>
-          </ul>
-        </nav>
+            </ul>
+          </nav>
+
+          <nav aria-label="Websites by trade">
+            <p className="text-sm font-semibold text-white/60">Websites for</p>
+            <ul className="mt-1">
+              {TRADES.map((trade) => (
+                <li key={trade.slug}>
+                  <a href={pageHref(`${trade.slug}/`)} className={footerLink}>
+                    {trade.name.charAt(0).toUpperCase() + trade.name.slice(1)}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <nav aria-label="Guides">
+            <p className="text-sm font-semibold text-white/60">Guides</p>
+            <ul className="mt-1">
+              {GUIDES.map((guide) => (
+                <li key={guide.slug}>
+                  <a href={pageHref(`guides/${guide.slug}/`)} className={`${footerLink} max-w-[16rem]`}>
+                    {guide.headline.replace(/\.$/, '')}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
       </div>
 
       <div className="border-t border-night-line">
