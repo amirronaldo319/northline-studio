@@ -13,7 +13,7 @@ export function About() {
             <Words text={t.about.heading} />
           </h2>
 
-          <dl className="mt-8 divide-y divide-line-strong/60 rounded-xl border border-line-strong/60 bg-card text-[0.9375rem]">
+          <dl className="reveal stagger mt-8 divide-y divide-line-strong/60 rounded-xl border border-line-strong/60 bg-card text-[0.9375rem]">
             {t.about.glance.map((row) => (
               <div key={row.label} className="flex flex-col gap-0.5 px-4 py-3 sm:flex-row sm:gap-4">
                 <dt className="shrink-0 text-ink-3 sm:w-36">{row.label}</dt>

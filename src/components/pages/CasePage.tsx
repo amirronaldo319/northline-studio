@@ -41,7 +41,9 @@ export function CasePage({ project }: { project: Project }) {
       <section aria-label={t.casePage.screenshots(project.name)} className="border-t border-line bg-card py-10 sm:py-16">
         <div className="container-page grid items-start gap-6 lg:grid-cols-12 lg:gap-10">
           <div className="reveal overflow-hidden rounded-lg border border-line-strong/60 bg-white shadow-device lg:col-span-9">
-            <ProjectTrigger project={project} isEager />
+            <div className="mask-reveal">
+              <ProjectTrigger project={project} isEager />
+            </div>
           </div>
           <div className="reveal mx-auto w-[min(14rem,60%)] lg:col-span-3 lg:w-full">
             <div className="phone-device">

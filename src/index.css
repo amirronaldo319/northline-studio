@@ -1124,6 +1124,82 @@ dialog.viewer[data-closing]::backdrop {
 }
 
 /*
+ * Page-to-page motion. Pages are separate documents (each language and each page is its own HTML file), so the
+ * browser can cross-fade between them: switching language or opening a case study no longer cuts. The header is
+ * named so it stays put while the rest of the page changes. Browsers without support simply navigate as before.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+
+  header {
+    view-transition-name: site-header;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 260ms;
+    animation-timing-function: var(--motion-ease-out);
+  }
+
+  /* Lists whose items arrive one after another when the list is revealed. */
+  .js .reveal.stagger > * {
+    transition:
+      opacity var(--motion-dur-reveal) var(--motion-ease-out),
+      transform var(--motion-dur-reveal) var(--motion-ease-out);
+    transition-delay: calc(var(--n, 0) * var(--motion-stagger) + 80ms);
+  }
+
+  .js .reveal.stagger:not(.is-visible) > * {
+    opacity: 0;
+    transform: translateY(var(--motion-shift-sm));
+  }
+
+  .stagger > :nth-child(1) { --n: 0; }
+  .stagger > :nth-child(2) { --n: 1; }
+  .stagger > :nth-child(3) { --n: 2; }
+  .stagger > :nth-child(4) { --n: 3; }
+  .stagger > :nth-child(5) { --n: 4; }
+  .stagger > :nth-child(6) { --n: 5; }
+  .stagger > :nth-child(n + 7) { --n: 6; }
+
+  /* A blue rail through the four process steps fills in as the section scrolls into view. */
+  @supports (animation-timeline: view()) {
+    .process-rail {
+      position: relative;
+    }
+
+    .process-rail::after {
+      content: '';
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 2px;
+      border-radius: 9999px;
+      background: var(--color-cobalt);
+      transform-origin: left;
+      animation: rail-fill linear both;
+      animation-timeline: view();
+      animation-range: entry 25% cover 55%;
+      pointer-events: none;
+    }
+
+    :root[dir='rtl'] .process-rail::after {
+      transform-origin: right;
+    }
+
+    @keyframes rail-fill {
+      from {
+        transform: scaleX(0);
+      }
+      to {
+        transform: scaleX(1);
+      }
+    }
+  }
+}
+
+/*
  * Printing: scroll reveals only run on screen, so show everything when the page is printed
  * and keep the sticky header from repeating on every sheet.
  */
@@ -1177,7 +1253,8 @@ dialog.viewer[data-closing]::backdrop {
   .pkg-icon,
   .phone-pop .phone-device,
   .check-draw circle,
-  .check-draw path {
+  .check-draw path,
+  .process-rail::after {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;

@@ -87,6 +87,13 @@ describe('motion system', () => {
     expect(css).not.toMatch(/^\s*will-change\s*:/m)
   })
 
+  test('page transitions and the process rail only run when motion is welcome', () => {
+    for (const name of ['@view-transition', 'rail-fill', 'view-transition-name']) {
+      expect(css).toContain(name)
+      expect(outsideSafeBlocks, `${name} must sit inside a safe block`).not.toContain(name)
+    }
+  })
+
   test('removed pointer-following effects stay removed', () => {
     for (const file of ['src/components/Hero.tsx', 'src/components/sections/Hero.tsx', 'src/components/sections/Work.tsx']) {
       try {

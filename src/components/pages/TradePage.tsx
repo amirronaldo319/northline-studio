@@ -53,7 +53,7 @@ export function TradePage({ trade }: { trade: Trade }) {
             </h2>
             <p className="lede mt-4">{t.tradePage.includesLede}</p>
           </div>
-          <ul className="reveal space-y-3 lg:col-span-7" style={revealDelay(1)}>
+          <ul className="reveal stagger space-y-3 lg:col-span-7" style={revealDelay(1)}>
             {trade.includes.map((item) => (
               <li key={item} className="flex gap-3 rounded-xl border border-line-strong/60 bg-card px-4 py-3.5 text-[1rem] text-ink">
                 <Check aria-hidden="true" size={18} className="mt-1 shrink-0 text-cobalt" />
