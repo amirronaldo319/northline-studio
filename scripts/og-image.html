@@ -17,13 +17,13 @@
 <script>
   // Social card text per language: render with ?l=en | fa | zh-hans | zh-hant (see render-og-image.mjs).
   var T = {
-    en: { h: 'Custom websites for Vancouver’s local service businesses.', a: 'Independent web design', b: 'Vancouver and North Vancouver',
+    en: { h: 'Custom websites for service businesses across Canada.', a: 'Independent web design', b: 'Canada',
           dir: 'ltr', font: '"Helvetica Neue",Arial,sans-serif', size: 76, line: 1.04, track: '-2.5px' },
-    fa: { h: 'وب‌سایت اختصاصی برای کسب‌وکارهای خدماتی محلی ونکوور.', a: 'طراحی وب مستقل', b: 'ونکوور و نورث ونکوور',
+    fa: { h: 'وب‌سایت اختصاصی برای کسب‌وکارهای خدماتی در سراسر کانادا.', a: 'طراحی وب مستقل', b: 'سراسر کانادا',
           dir: 'rtl', font: 'Tahoma,"Geeza Pro",sans-serif', size: 58, line: 1.45, track: '0' },
-    'zh-hans': { h: '为温哥华本地服务型商家\n量身定制的网站。', a: '独立网页设计', b: '温哥华和北温哥华',
+    'zh-hans': { h: '为加拿大本地服务型商家\n量身定制的网站。', a: '独立网页设计', b: '加拿大各地',
           dir: 'ltr', font: '"PingFang SC","Microsoft YaHei",sans-serif', size: 70, line: 1.25, track: '0' },
-    'zh-hant': { h: '為溫哥華本地服務型商家\n量身訂製的網站。', a: '獨立網頁設計', b: '溫哥華和北溫哥華',
+    'zh-hant': { h: '為加拿大本地服務型商家\n量身訂製的網站。', a: '獨立網頁設計', b: '加拿大各地',
           dir: 'ltr', font: '"PingFang TC","Microsoft JhengHei",sans-serif', size: 70, line: 1.25, track: '0' }
   };
   var l = new URLSearchParams(location.search).get('l') || 'en';

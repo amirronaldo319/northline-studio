@@ -24,9 +24,9 @@ export const en: Copy = {
   locale: 'en',
 
   meta: {
-    homeTitle: 'SitePilot | Custom websites for Vancouver businesses',
+    homeTitle: 'SitePilot | Custom websites for Canadian businesses',
     homeDescription:
-      'One-page websites from CA$299 for Vancouver and North Vancouver businesses. Compare Starter and CA$599 Standard packages. Optional care from CA$29/month.',
+      'One-page websites from CA$299 for businesses across Canada. Compare Starter and CA$599 Standard packages. Optional care from CA$29/month.',
     caseTitle: (name, isLive) => `${name}: ${isLive ? 'a live website I built' : 'a concept project'} | SitePilot`,
   },
 
@@ -52,10 +52,10 @@ export const en: Copy = {
   nav: { work: 'Work', package: 'Package', process: 'Process', about: 'About', faq: 'FAQ' },
 
   hero: {
-    headline: 'Custom websites for Vancouver’s local service businesses.',
-    markedWords: [3],
+    headline: 'Custom websites for service businesses across Canada.',
+    markedWords: [6],
     lede: 'Show your work, explain your services, and make requesting a quote easy.',
-    facts: ['Written quote before any work', 'Designed and built by me', 'Vancouver and North Vancouver'],
+    facts: ['Written quote before any work', 'Designed and built by me', 'Serving all of Canada'],
     conceptCaption: (name, businessType) =>
       `Concept demo: ${name}, a design for a fictional ${businessType.toLowerCase()} business.`,
     viewExample: 'View example',
@@ -139,7 +139,7 @@ export const en: Copy = {
     eyebrow: 'About',
     heading: 'You work with me directly.',
     glance: [
-      { label: 'Based in', value: `${site.serviceArea.label}, ${site.serviceArea.region}` },
+      { label: 'Serving', value: 'Businesses across Canada' },
       { label: 'Who builds it', value: 'Me, directly. No hand-offs.' },
       { label: 'Before work starts', value: 'A written quote you approve' },
       { label: 'How we talk', value: 'By email, in plain language' },
@@ -147,7 +147,7 @@ export const en: Copy = {
     paragraphs: [
       `I’m ${site.brand.owner}. I design and build every website myself, so when you send a message you’re talking to the person doing the work.`,
       'Recent builds include a one-page site for a Vancouver private swim-lesson business, a landing page with an interactive estimator for a car-hosting service, and a bilingual concept site with interactive 3D models of a residential tower.',
-      `I focus on practical sites for local service businesses in ${site.serviceArea.label}, and I keep the scope simple and the language plain, so you know what you’re getting and what comes next.`,
+      `I focus on practical sites for service businesses across ${site.serviceArea.label}, and I keep the scope simple and the language plain, so you know what you’re getting and what comes next.`,
     ],
   },
 
@@ -252,7 +252,7 @@ export const en: Copy = {
   },
 
   footer: {
-    tagline: (area) => `Custom one-page websites for local service businesses in ${area}.`,
+    tagline: (area) => `Custom one-page websites for service businesses across ${area}.`,
     websitesFor: 'Websites for',
     guides: 'Guides',
     copyright: (year, name) => `© ${year} ${name}. Example sites shown here are concepts for fictional businesses.`,

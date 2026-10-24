@@ -9,8 +9,8 @@ export const zhHant: Copy = {
   locale: 'zh-hant',
 
   meta: {
-    homeTitle: 'SitePilot | 溫哥華本地商家的專屬網站',
-    homeDescription: '為溫哥華和北溫哥華的本地服務型商家制作專屬單頁網站。查看網站案例，並索取報價。',
+    homeTitle: 'SitePilot | 加拿大本地商家的專屬網站',
+    homeDescription: '為加拿大各地的本地服務型商家制作專屬單頁網站。查看網站案例，並索取報價。',
     caseTitle: (name, isLive) => `${name}：${isLive ? '我製作的在線網站' : '概念項目'} | SitePilot`,
   },
 
@@ -36,10 +36,10 @@ export const zhHant: Copy = {
   nav: { work: '作品', package: '服務內容', process: '流程', about: '關於', faq: '常見問題' },
 
   hero: {
-    headline: '為溫哥華本地服務型商家 量身定製的網站。',
+    headline: '為加拿大本地服務型商家 量身定製的網站。',
     markedWords: [],
     lede: '展示您的作品，說明您的服務，讓客戶輕鬆索取報價。',
-    facts: ['先出書面報價，再開始工作', '由我親自設計和製作', '溫哥華和北溫哥華'],
+    facts: ['先出書面報價，再開始工作', '由我親自設計和製作', '加拿大各地'],
     conceptCaption: (name, businessType) => `概念演示：${name}，為一家虛構的${businessType}商家所做的設計。`,
     viewExample: '查看示例',
   },
@@ -170,7 +170,7 @@ export const zhHant: Copy = {
     eyebrow: '關於',
     heading: '您直接與我合作。',
     glance: [
-      { label: '所在地', value: '溫哥華和北溫哥華，不列顛哥倫比亞省' },
+      { label: '服務範圍', value: '加拿大各地' },
       { label: '誰來製作', value: '我本人，直接對接，沒有中間環節。' },
       { label: '開始工作之前', value: '一份由您確認的書面報價' },
       { label: '溝通方式', value: '通過電子郵件，用簡明的語言' },
@@ -178,7 +178,7 @@ export const zhHant: Copy = {
     paragraphs: [
       '我是 Amir。每一個網站都由我親自設計和製作，所以您發來消息時，對面就是實際做事的人。',
       '近期的作品包括：為溫哥華一傢俬人游泳教學商家制作的單頁網站；為一家車輛託管服務製作的、帶交互式估算器的落地頁；以及一個帶有住宅塔樓交互式 3D 模型的雙語概念網站。',
-      '我專注於為溫哥華和北溫哥華的本地服務型商家制作實用的網站，範圍保持簡單、語言保持平實，讓您清楚知道會得到什麼，以及接下來會發生什麼。',
+      '我專注於為加拿大各地的本地服務型商家制作實用的網站，範圍保持簡單、語言保持平實，讓您清楚知道會得到什麼，以及接下來會發生什麼。',
     ],
   },
 
@@ -302,7 +302,7 @@ export const zhHant: Copy = {
   },
 
   footer: {
-    tagline: () => '為溫哥華和北溫哥華的本地服務型商家制作專屬單頁網站。',
+    tagline: () => '為加拿大各地的本地服務型商家制作專屬單頁網站。',
     websitesFor: '網站服務對象',
     guides: '指南',
     copyright: (year, name) => `© ${year} ${name}。此處展示的示例網站是為虛構商家所做的概念設計。`,
@@ -313,8 +313,8 @@ export const zhHant: Copy = {
       slug: 'cleaning-companies',
       name: '清潔公司',
       noun: '清潔公司',
-      title: '溫哥華清潔公司網站 | SitePilot',
-      description: '為溫哥華和北溫哥華的清潔公司製作清晰的單頁網站：服務內容、服務範圍，以及方便的報價申請。',
+      title: '加拿大清潔公司網站 | SitePilot',
+      description: '為加拿大各地的清潔公司製作清晰的單頁網站：服務內容、服務範圍，以及方便的報價申請。',
       headline: '為您的清潔公司打造一個單頁網站。',
       intro:
         '選擇清潔服務的人想知道：每次上門包含什麼、您是否服務他們所在的區域，以及如何獲得報價。一個清晰的頁面就能回答這三個問題。',
@@ -351,8 +351,8 @@ export const zhHant: Copy = {
       slug: 'contractors',
       name: '承包商和裝修公司',
       noun: '承包公司',
-      title: '溫哥華承包商網站 | SitePilot',
-      description: '為溫哥華和北溫哥華的承包商和裝修公司製作單頁網站：您承接的工程、案例，以及開啟對話的簡便方式。',
+      title: '加拿大承包商網站 | SitePilot',
+      description: '為加拿大各地的承包商和裝修公司製作單頁網站：您承接的工程、案例，以及開啟對話的簡便方式。',
       headline: '為您的承包業務打造一個單頁網站。',
       intro:
         '計劃裝修的人正在決定把自己的家交給誰。一個清晰展示您承接哪些工程、並且方便聯繫的頁面，是開啟這段對話的好起點。',
@@ -389,8 +389,8 @@ export const zhHant: Copy = {
       slug: 'landscapers',
       name: '園藝和景觀公司',
       noun: '景觀公司',
-      title: '溫哥華園藝景觀網站 | SitePilot',
-      description: '為溫哥華和北溫哥華的園藝和景觀公司製作單頁網站：按季節列出的服務、您的作品，以及方便的報價申請。',
+      title: '加拿大園藝景觀網站 | SitePilot',
+      description: '為加拿大各地的園藝和景觀公司製作單頁網站：按季節列出的服務、您的作品，以及方便的報價申請。',
       headline: '為您的景觀業務打造一個單頁網站。',
       intro:
         '景觀工作有季節性，也很直觀。一個展示您的作品、按全年列出服務、並讓人方便地預約上門的單頁網站，非常適合這個行業。',
@@ -427,8 +427,8 @@ export const zhHant: Copy = {
       slug: 'barbers-and-salons',
       name: '理髮店和美容美髮沙龍',
       noun: '理髮店或美髮沙龍',
-      title: '溫哥華理髮店和沙龍網站 | SitePilot',
-      description: '為溫哥華和北溫哥華的理髮店和美髮沙龍製作單頁網站：服務、營業時間、地點，以及清晰的預約方式。',
+      title: '加拿大理髮店和沙龍網站 | SitePilot',
+      description: '為加拿大各地的理髮店和美髮沙龍製作單頁網站：服務、營業時間、地點，以及清晰的預約方式。',
       headline: '為您的理髮店或沙龍打造一個單頁網站。',
       intro:
         '找理髮店或沙龍的人想看到服務項目、找到店鋪位置，並知道如何預約。把這些放在一個整潔的頁面上、放在最前面，下一步就一目瞭然。',
@@ -465,8 +465,8 @@ export const zhHant: Copy = {
       slug: 'auto-detailing',
       name: '汽車美容和上門汽修',
       noun: '汽車美容公司',
-      title: '溫哥華汽車美容網站 | SitePilot',
-      description: '為溫哥華和北溫哥華的汽車美容和汽車服務製作單頁網站：服務套餐、服務範圍，以及簡便的預約申請。',
+      title: '加拿大汽車美容網站 | SitePilot',
+      description: '為加拿大各地的汽車美容和汽車服務製作單頁網站：服務套餐、服務範圍，以及簡便的預約申請。',
       headline: '為您的汽車美容業務打造一個單頁網站。',
       intro:
         '客戶想知道每項服務包含什麼、您是上門服務還是需要他們到店，以及如何預約。一個把這些講清楚的單頁網站，能省去許多來回溝通。',

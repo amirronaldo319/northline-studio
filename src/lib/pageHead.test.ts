@@ -68,14 +68,14 @@ describe('applyPageHead', () => {
     expect(none).not.toContain('hreflang')
   })
 
-  test('uses the language’s own share card, and the default for English', () => {
+  test('uses the Canada-wide share card in every language', () => {
     const page = `${TEMPLATE.replace('</head>', '<meta property="og:image" content="https://example.ca/og-image.png"><meta name="twitter:image" content="https://example.ca/og-image.png"></head>')}`
     const english = applyPageHead(page, pageMeta({ kind: 'home', locale: 'en' }), { siteUrl: 'https://example.ca' })
-    expect(english).toContain('content="https://example.ca/og-image.png"')
+    expect(english).toContain('content="https://example.ca/og-canada.png"')
     const persian = applyPageHead(page, pageMeta({ kind: 'home', locale: 'fa' }), { siteUrl: 'https://example.ca' })
-    expect(persian).toContain('content="https://example.ca/og-image-fa.png"')
+    expect(persian).toContain('content="https://example.ca/og-canada.png"')
     expect(persian).not.toContain('/og-image.png')
-    expect((persian.match(/og-image-fa\.png/g) ?? []).length).toBe(2)
+    expect((persian.match(/og-canada\.png/g) ?? []).length).toBe(2)
   })
 
   test('adds breadcrumb data below the home page only, and only with a site URL', () => {

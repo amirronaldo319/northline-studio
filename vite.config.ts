@@ -26,7 +26,7 @@ export default defineConfig(({ mode }) => {
         email: site.contact.email,
         description: seo.description,
         areaServed: site.serviceArea.primary,
-        ogImagePath: '/og-image.png',
+        ogImagePath: '/og-canada.png',
         faq: FAQ,
         paths: allPages().map((page) => page.path),
         analyticsToken: (env.VITE_CF_ANALYTICS_TOKEN ?? '').trim(),

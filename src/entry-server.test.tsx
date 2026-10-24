@@ -11,7 +11,7 @@ describe('server render', async () => {
   const text = html.replace(/<!-- -->/g, '')
 
   test('contains the headline, every section, and the contact form', () => {
-    expect(html).toContain('Vancouver’s')
+    expect(html).toContain('Canada')
     for (const id of ['work', 'package', 'process', 'about', 'faq', 'site-check', 'contact']) {
       expect(html).toContain(`id="${id}"`)
     }

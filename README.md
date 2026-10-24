@@ -1,7 +1,6 @@
 # SitePilot
 
-One-page marketing site for SitePilot, an independent web design business serving Vancouver and North
-Vancouver. React + TypeScript + Tailwind CSS v4, built with Vite. Static output; no server required.
+One-page marketing site for SitePilot, an independent web design business serving businesses across Canada. React + TypeScript + Tailwind CSS v4, built with Vite. Static output; no server required.
 
 ## Run and build
 

@@ -39,7 +39,7 @@ export function seoPlugin(options: SeoOptions): Plugin {
         name: options.businessName,
         description: options.description,
         email: options.email,
-        areaServed: options.areaServed.map((name) => ({ '@type': 'City', name })),
+        areaServed: options.areaServed.map((name) => ({ '@type': 'Country', name })),
       }
 
       if (hasUrl) {

@@ -3,7 +3,7 @@
  * that don't run JavaScript — update both together.
  */
 export const seo = {
-  title: 'SitePilot | Custom websites for Vancouver businesses',
+  title: 'SitePilot | Custom websites for Canadian businesses',
   description:
-    'One-page websites from CA$299 for Vancouver and North Vancouver businesses. Compare Starter and CA$599 Standard packages. Optional care from CA$29/month.',
+    'One-page websites from CA$299 for businesses across Canada. Compare Starter and CA$599 Standard packages. Optional care from CA$29/month.',
 } as const

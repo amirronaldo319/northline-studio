@@ -39,13 +39,10 @@ export function applyPageHead(
     const url = `${options.siteUrl}/${meta.path}`
     out = out.replace(/(<link rel="canonical" href=")[^"]*(")/, (_match, open: string, close: string) => `${open}${url}${close}`)
     out = setMeta(out, 'property', 'og:url', url)
+    out = setMeta(out, 'property', 'og:image', `${options.siteUrl}/og-canada.png`)
+    out = setMeta(out, 'name', 'twitter:image', `${options.siteUrl}/og-canada.png`)
   }
 
-  // Each language has its own share card (written in that language); English uses the default.
-  if (meta.locale !== 'en' && meta.locale !== 'fr') {
-    const card = `/og-image-${meta.locale}.png`
-    out = out.replace(/(<meta (?:property="og:image"|name="twitter:image") content="[^"]*?)\/og-image\.png(")/g, (_m, open: string, close: string) => `${open}${card}${close}`)
-  }
   out = setMeta(out, 'property', 'og:image:alt', meta.title)
 
   // Pages below the home page publish their place in the site, so search results can show the trail.

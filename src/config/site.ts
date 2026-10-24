@@ -8,7 +8,7 @@ export const site = {
     /** Also the logo's alt text. The logo itself lives in `src/assets/brand`. */
     name: 'SitePilot',
     owner: 'Amir',
-    tagline: 'Websites for local businesses in Vancouver and North Vancouver.',
+    tagline: 'Websites for local businesses in Canada.',
   },
 
   contact: {
@@ -16,11 +16,11 @@ export const site = {
   },
 
   serviceArea: {
-    primary: ['Vancouver', 'North Vancouver'],
-    region: 'British Columbia',
+    primary: ['Canada'],
+    region: 'Canada',
     country: 'Canada',
     /** Human-readable label used in copy. */
-    label: 'Vancouver and North Vancouver',
+    label: 'Canada',
   },
 
   /** The single core offer. No price is published; each written quote states the fee. */

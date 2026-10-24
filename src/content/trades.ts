@@ -27,9 +27,9 @@ export const TRADES: readonly Trade[] = [
     slug: 'cleaning-companies',
     name: 'cleaning companies',
     noun: 'cleaning company',
-    title: 'Cleaning company websites in Vancouver | SitePilot',
+    title: 'Cleaning company websites in Canada | SitePilot',
     description:
-      'A clear one-page website for Vancouver and North Vancouver cleaning companies: what is included, where you work, and an easy way to request a quote.',
+      'A clear one-page website for Canada cleaning companies: what is included, where you work, and an easy way to request a quote.',
     headline: 'A one-page website for your cleaning company.',
     intro:
       'People choosing a cleaner want to know what a visit includes, whether you work in their area, and how to get a price. One clear page can answer all three.',
@@ -81,9 +81,9 @@ export const TRADES: readonly Trade[] = [
     slug: 'contractors',
     name: 'contractors and renovators',
     noun: 'contracting business',
-    title: 'Contractor websites in Vancouver | SitePilot',
+    title: 'Contractor websites in Canada | SitePilot',
     description:
-      'A one-page website for Vancouver and North Vancouver contractors and renovators: the work you take on, examples, and a simple way to start a conversation.',
+      'A one-page website for Canada contractors and renovators: the work you take on, examples, and a simple way to start a conversation.',
     headline: 'A one-page website for your contracting business.',
     intro:
       'Someone planning a renovation is deciding who to trust with their home. A clear page that shows the work you take on, and makes it easy to get in touch, is a good place to begin that conversation.',
@@ -135,9 +135,9 @@ export const TRADES: readonly Trade[] = [
     slug: 'landscapers',
     name: 'landscapers and gardeners',
     noun: 'landscaping business',
-    title: 'Landscaper websites in Vancouver | SitePilot',
+    title: 'Landscaper websites in Canada | SitePilot',
     description:
-      'A one-page website for Vancouver and North Vancouver landscapers and gardeners: your services by season, your work, and an easy way to ask for a quote.',
+      'A one-page website for Canada landscapers and gardeners: your services by season, your work, and an easy way to ask for a quote.',
     headline: 'A one-page website for your landscaping business.',
     intro:
       'Landscaping is seasonal and visual. A single page that shows your work, lists what you offer through the year, and makes it easy to ask for a visit works well for it.',
@@ -189,9 +189,9 @@ export const TRADES: readonly Trade[] = [
     slug: 'barbers-and-salons',
     name: 'barbers and salons',
     noun: 'barber shop or salon',
-    title: 'Barber and salon websites in Vancouver | SitePilot',
+    title: 'Barber and salon websites in Canada | SitePilot',
     description:
-      'A one-page website for Vancouver and North Vancouver barbers and salons: services, hours, location, and a clear way for people to book.',
+      'A one-page website for Canada barbers and salons: services, hours, location, and a clear way for people to book.',
     headline: 'A one-page website for your barber shop or salon.',
     intro:
       'People looking for a barber or salon want to see the services, find the shop, and know how to book. Putting those on one clean page, ahead of everything else, makes the next step obvious.',
@@ -243,9 +243,9 @@ export const TRADES: readonly Trade[] = [
     slug: 'auto-detailing',
     name: 'auto detailers and mobile mechanics',
     noun: 'auto detailing business',
-    title: 'Auto detailing websites in Vancouver | SitePilot',
+    title: 'Auto detailing websites in Canada | SitePilot',
     description:
-      'A one-page website for Vancouver and North Vancouver auto detailers and automotive services: packages, where you work, and a simple way to request a booking.',
+      'A one-page website for Canada auto detailers and automotive services: packages, where you work, and a simple way to request a booking.',
     headline: 'A one-page website for your auto detailing business.',
     intro:
       'Customers want to know what each service includes, whether you come to them or they come to you, and how to book. A single page that lays those out clearly saves a lot of back and forth.',

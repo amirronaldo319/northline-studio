@@ -4,8 +4,8 @@ import type { Copy } from './types.ts'
 export const fr: Copy = {
   locale: 'fr',
   meta: {
-    homeTitle: 'SitePilot | Sites web pour entreprises à Vancouver',
-    homeDescription: 'Sites web d’une page dès 299 $ CA pour les entreprises de Vancouver et de North Vancouver. Forfait Standard à 599 $ CA et entretien facultatif dès 29 $ CA/mois.',
+    homeTitle: 'SitePilot | Sites web pour entreprises au Canada',
+    homeDescription: 'Sites web d’une page dès 299 $ CA pour les entreprises du Canada. Forfait Standard à 599 $ CA et entretien facultatif dès 29 $ CA/mois.',
     caseTitle: (name, isLive) => `${name} : ${isLive ? 'site réalisé' : 'concept'} | SitePilot`,
   },
   common: {
@@ -16,9 +16,9 @@ export const fr: Copy = {
   },
   nav: { work: 'Réalisations', package: 'Forfaits', process: 'Étapes', about: 'À propos', faq: 'FAQ' },
   hero: {
-    headline: 'Des sites web sur mesure pour les entreprises de services à Vancouver.', markedWords: [3, 4],
+    headline: 'Des sites web sur mesure pour les entreprises de services partout au Canada.', markedWords: [3, 4],
     lede: 'Présentez votre travail, expliquez vos services et facilitez les demandes de soumission.',
-    facts: ['Une soumission écrite avant tout travail', 'Conçu et réalisé par moi', 'Vancouver et North Vancouver'],
+    facts: ['Une soumission écrite avant tout travail', 'Conçu et réalisé par moi', 'Partout au Canada'],
     conceptCaption: (name, businessType) => `Démo conceptuelle : ${name}, un site pour une entreprise fictive (${businessType}).`,
     viewExample: 'Voir un exemple',
   },
@@ -100,12 +100,12 @@ export const fr: Copy = {
   about: {
     eyebrow: 'À propos', heading: 'Vous travaillez directement avec moi.',
     glance: [
-      { label: 'Région', value: 'Vancouver et North Vancouver, Colombie-Britannique' },
+      { label: 'Zone desservie', value: 'Partout au Canada' },
       { label: 'Qui réalise le site', value: 'Moi, directement, du début à la fin.' },
       { label: 'Avant de commencer', value: 'Une soumission écrite que vous approuvez' },
       { label: 'Nos échanges', value: 'Par courriel, en termes clairs' },
     ],
-    paragraphs: ['Je m’appelle Amir. Je conçois et réalise chaque site moi-même. Quand vous m’écrivez, vous parlez à la personne qui fait le travail.', 'Mes projets récents comprennent un site de cours privés de natation à Vancouver, une page avec estimateur interactif pour un service de gestion de véhicules et un concept bilingue de tour résidentielle avec modèles 3D interactifs.', 'Je crée des sites pratiques pour les entreprises de services à Vancouver et à North Vancouver. Le travail prévu et les explications restent simples pour que vous sachiez ce que vous achetez et ce qui vient ensuite.'],
+    paragraphs: ['Je m’appelle Amir. Je conçois et réalise chaque site moi-même. Quand vous m’écrivez, vous parlez à la personne qui fait le travail.', 'Mes projets récents comprennent un site de cours privés de natation à Vancouver, une page avec estimateur interactif pour un service de gestion de véhicules et un concept bilingue de tour résidentielle avec modèles 3D interactifs.', 'Je crée des sites pratiques pour les entreprises de services partout au Canada. Le travail prévu et les explications restent simples pour que vous sachiez ce que vous achetez et ce qui vient ensuite.'],
   },
   faq: {
     eyebrow: 'FAQ', heading: 'Avant de me contacter.', moreLead: 'Une autre question? ', askInForm: 'Posez-la dans le formulaire', orEmail: ' ou écrivez à ', moreEnd: '.',
@@ -145,13 +145,13 @@ export const fr: Copy = {
     copyDetails: 'Copier mes renseignements', detailsCopied: 'Renseignements copiés', copyUnavailable: 'Copie indisponible : écrivez-moi par courriel',
   },
   footer: {
-    tagline: () => 'Des sites web d’une page sur mesure pour les entreprises de services à Vancouver et à North Vancouver.', websitesFor: 'Sites web pour', guides: 'Guides',
+    tagline: () => 'Des sites web d’une page sur mesure pour les entreprises de services partout au Canada.', websitesFor: 'Sites web pour', guides: 'Guides',
     copyright: (year, name) => `© ${year} ${name}. Les exemples présentés sont des concepts pour des entreprises fictives.`,
   },
   trades: [
     {
-      slug: 'cleaning-companies', name: 'entreprises d’entretien ménager', noun: 'entreprise d’entretien ménager', title: 'Sites d’entretien ménager à Vancouver | SitePilot',
-      description: 'Un site d’une page pour votre entreprise d’entretien ménager à Vancouver : services inclus, secteurs desservis et formulaire de soumission simple.',
+      slug: 'cleaning-companies', name: 'entreprises d’entretien ménager', noun: 'entreprise d’entretien ménager', title: 'Sites d’entretien ménager au Canada | SitePilot',
+      description: 'Un site d’une page pour votre entreprise d’entretien ménager au Canada : services inclus, secteurs desservis et formulaire de soumission simple.',
       headline: 'Un site d’une page pour votre entreprise d’entretien ménager.',
       intro: 'Les clients veulent savoir ce qu’une visite comprend, si vous desservez leur quartier et comment obtenir un prix. Une page claire peut répondre à ces trois questions.',
       checks: [{ title: 'Ce qu’une visite comprend', text: 'Entretien régulier, nettoyage en profondeur et fin de bail : précisez ce que chaque service comprend.' }, { title: 'Vos secteurs', text: 'Nommez les quartiers et villes que vous desservez pour éviter les questions inutiles.' }, { title: 'Comment obtenir un prix', text: 'Un court formulaire et un bouton d’appel ou de courriel visibles en haut et en bas de la page.' }, { title: 'Qui entre dans la maison', text: 'Présentez-vous et votre équipe en quelques mots pour rassurer les clients.' }],
@@ -159,8 +159,8 @@ export const fr: Copy = {
       faq: [{ question: 'Faut-il des photos avant et après?', answer: 'Elles sont utiles, mais facultatives. Des photos nettes de travaux terminés, bien éclairées, suffisent pour commencer. Je vous indiquerai les ajouts utiles.' }, { question: 'Peut-on demander une soumission sans appeler?', answer: 'Oui. La page propose un court formulaire ainsi que votre téléphone et votre courriel pour laisser le choix aux clients.' }, { question: 'Puis-je indiquer les secteurs desservis?', answer: 'Oui. Une liste de vos quartiers ou villes permet aux clients de voir immédiatement si vous travaillez près de chez eux.' }],
     },
     {
-      slug: 'contractors', name: 'entrepreneurs et rénovateurs', noun: 'entreprise de rénovation', title: 'Sites d’entrepreneurs à Vancouver | SitePilot',
-      description: 'Un site d’une page pour entrepreneurs et rénovateurs à Vancouver et à North Vancouver : services, projets réalisés et prise de contact simple.',
+      slug: 'contractors', name: 'entrepreneurs et rénovateurs', noun: 'entreprise de rénovation', title: 'Sites d’entrepreneurs au Canada | SitePilot',
+      description: 'Un site d’une page pour entrepreneurs et rénovateurs partout au Canada : services, projets réalisés et prise de contact simple.',
       headline: 'Un site d’une page pour votre entreprise de rénovation.',
       intro: 'Les personnes qui préparent des rénovations cherchent quelqu’un de confiance. Une page qui montre vos travaux et facilite le contact permet de commencer cette discussion.',
       checks: [{ title: 'Vos types de travaux', text: 'Cuisines, salles de bain, terrasses ou rénovations complètes : précisez ce que vous faites et ce que vous confiez à d’autres.' }, { title: 'Des projets terminés', text: 'Quelques bonnes photos de vrais chantiers, accompagnées d’une courte description.' }, { title: 'Permis et assurances', text: 'Si vous en avez, présentez-les clairement avec vos propres renseignements.' }, { title: 'Le début d’un projet', text: 'Expliquez brièvement les premières étapes pour que le visiteur sache à quoi s’attendre.' }],
@@ -168,8 +168,8 @@ export const fr: Copy = {
       faq: [{ question: 'Faut-il beaucoup de photos de projets?', answer: 'Non. Quelques bonnes photos valent mieux qu’un grand nombre de photos médiocres. Je peux vous aider à choisir parmi vos photos de téléphone.' }, { question: 'Le formulaire peut-il poser des questions sur le projet?', answer: 'Oui. Il peut demander le type de travaux et l’emplacement pour rendre le premier message plus utile.' }, { question: 'Puis-je afficher le nom d’anciens clients?', answer: 'Uniquement avec leur permission. Sinon, les photos du travail peuvent parler d’elles-mêmes.' }],
     },
     {
-      slug: 'landscapers', name: 'paysagistes et jardiniers', noun: 'entreprise paysagiste', title: 'Sites de paysagistes à Vancouver | SitePilot',
-      description: 'Un site d’une page pour paysagistes et jardiniers à Vancouver : services saisonniers, photos de vos réalisations et demandes de soumission.',
+      slug: 'landscapers', name: 'paysagistes et jardiniers', noun: 'entreprise paysagiste', title: 'Sites de paysagistes au Canada | SitePilot',
+      description: 'Un site d’une page pour paysagistes et jardiniers au Canada : services saisonniers, photos de vos réalisations et demandes de soumission.',
       headline: 'Un site d’une page pour votre entreprise paysagiste.',
       intro: 'L’aménagement paysager est visuel et saisonnier. Une page qui montre vos réalisations, présente vos services au fil de l’année et facilite les demandes de visite convient bien.',
       checks: [{ title: 'Vos services et leurs saisons', text: 'Entretien, plantation, nettoyage et travaux saisonniers : présentez-les pour que les clients trouvent ce qui les concerne.' }, { title: 'Vos réalisations', text: 'Des photos de jardins et de terrains terminés montrent votre travail mieux qu’une description.' }, { title: 'Vos secteurs', text: 'Les quartiers et villes desservis permettent de vérifier si vous pouvez vous déplacer.' }, { title: 'Demander une visite', text: 'Un formulaire ou un bouton indique clairement comment demander une soumission ou une visite.' }],
@@ -177,8 +177,8 @@ export const fr: Copy = {
       faq: [{ question: 'La page peut-elle évoluer selon les saisons?', answer: 'Oui. Une ligne ou une photo se modifie facilement. Les changements saisonniers plus importants peuvent faire l’objet d’une soumission distincte.' }, { question: 'Mes photos de téléphone suffisent-elles?', answer: 'Souvent, oui. De bonnes photos prises à la lumière du jour peuvent très bien convenir. Je vous dirai lesquelles utiliser ou reprendre.' }, { question: 'Puis-je montrer un avant et après?', answer: 'Oui, si vous avez les deux photos. Ces comparaisons s’intègrent facilement à un site d’une page.' }],
     },
     {
-      slug: 'barbers-and-salons', name: 'barbiers et salons de coiffure', noun: 'salon de coiffure', title: 'Sites de salons et barbiers à Vancouver | SitePilot',
-      description: 'Un site d’une page pour salons et barbiers à Vancouver et à North Vancouver : services, horaires, emplacement et accès simple à la réservation.',
+      slug: 'barbers-and-salons', name: 'barbiers et salons de coiffure', noun: 'salon de coiffure', title: 'Sites de salons et barbiers au Canada | SitePilot',
+      description: 'Un site d’une page pour salons et barbiers partout au Canada : services, horaires, emplacement et accès simple à la réservation.',
       headline: 'Un site d’une page pour votre salon ou votre barbier.',
       intro: 'Les clients veulent connaître les services, trouver le salon et savoir comment réserver. Une page claire qui présente ces renseignements facilite leur prochaine étape.',
       checks: [{ title: 'Vos services', text: 'Une liste simple avec les précisions utiles, comme la durée des prestations.' }, { title: 'Adresse et horaires', text: 'Votre adresse, un lien vers la carte et vos heures d’ouverture, faciles à trouver.' }, { title: 'Comment réserver', text: 'Un lien de réservation, un téléphone ou un bouton de message dès le haut de la page.' }, { title: 'L’ambiance du salon', text: 'Quelques photos du salon et de vos réalisations montrent aux clients à quoi s’attendre.' }],
@@ -186,8 +186,8 @@ export const fr: Copy = {
       faq: [{ question: 'Puis-je garder mon application de réservation?', answer: 'Oui. La page peut mener vers l’outil que vous utilisez déjà, sans changer votre façon de prendre des rendez-vous.' }, { question: 'Puis-je ajouter mon Instagram?', answer: 'Oui. La page peut y mener pour permettre aux visiteurs de découvrir davantage de vos réalisations.' }, { question: 'Faut-il un logo?', answer: 'Non. Un logo aide, mais un nom clair et de bonnes photos suffisent pour commencer.' }],
     },
     {
-      slug: 'auto-detailing', name: 'spécialistes de l’esthétique auto et mécaniciens mobiles', noun: 'entreprise d’esthétique automobile', title: 'Sites d’esthétique auto à Vancouver | SitePilot',
-      description: 'Un site d’une page pour l’esthétique et les services automobiles à Vancouver : forfaits, secteurs desservis et demandes de rendez-vous simples.',
+      slug: 'auto-detailing', name: 'spécialistes de l’esthétique auto et mécaniciens mobiles', noun: 'entreprise d’esthétique automobile', title: 'Sites d’esthétique auto au Canada | SitePilot',
+      description: 'Un site d’une page pour l’esthétique et les services automobiles au Canada : forfaits, secteurs desservis et demandes de rendez-vous simples.',
       headline: 'Un site d’une page pour votre entreprise d’esthétique automobile.',
       intro: 'Les clients veulent savoir ce que chaque service comprend, où il est offert et comment réserver. Une page qui explique ces points clairement évite bien des échanges.',
       checks: [{ title: 'Le contenu de chaque service', text: 'Décrivez chaque forfait simplement pour que les clients puissent choisir sans devoir demander.' }, { title: 'Le lieu du travail', text: 'Précisez si vous travaillez en atelier ou chez le client et quels secteurs vous desservez.' }, { title: 'Vos résultats', text: 'Des photos nettes de véhicules terminés, prises sous un bon éclairage.' }, { title: 'Comment réserver', text: 'Un formulaire qui demande le véhicule et le service souhaité rend votre première réponse plus précise.' }],
