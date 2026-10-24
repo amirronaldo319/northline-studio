@@ -11,8 +11,8 @@ import { buttonClasses } from './ui/button'
 
 const DESKTOP_QUERY = '(min-width: 900px)'
 const sectionIds = NAV_LINKS.map((link) => link.id)
-/** Horizontal padding of each desktop link (px-3.5); the underline spans the text inside it. */
-const LINK_PADDING_PX = 14
+/** Horizontal padding of each desktop link (px-2.5); the underline spans the text inside it. */
+const LINK_PADDING_PX = 10
 
 /**
  * Desktop navigation with one underline that slides between links. It follows the active section,
@@ -78,7 +78,7 @@ function DesktopNav({ active }: { active: string | null }) {
                 onPointerEnter={(event) => event.pointerType === 'mouse' && setHovered(index)}
                 onFocus={() => setFocused(index)}
                 onBlur={() => setFocused(null)}
-                className={`block rounded-full px-3.5 py-2 text-[0.9375rem] font-medium transition-colors duration-150 ${
+                className={`block whitespace-nowrap rounded-full px-2.5 py-2 text-[0.9375rem] font-medium transition-colors duration-150 ${
                   isActive ? 'text-ink' : 'text-ink-2 hover:text-ink'
                 }`}
               >
@@ -145,15 +145,15 @@ export function Header() {
           : 'border-transparent bg-paper'
       }`}
     >
-      <div className="container-page flex h-16 items-center justify-between gap-6">
+      <div className="container-page flex h-16 items-center justify-between gap-3">
         <a href={homeTop} className="-m-1 rounded-lg p-1">
           <BrandMark intro />
         </a>
 
         <DesktopNav active={active} />
 
-        <div className="flex items-center gap-3">
-          <LanguageSwitcher className="hidden min-[1100px]:block" />
+        <div className="flex items-center gap-2">
+          <LanguageSwitcher className="hidden min-[1200px]:block [&_a]:px-2 [&_ul]:flex-nowrap" />
           <div className="hidden min-[560px]:block">
             <a href={`#${CONTACT_SECTION_ID}`} className={buttonClasses('primary', 'md')}>
               {t.common.requestQuote}

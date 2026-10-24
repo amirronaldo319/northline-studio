@@ -16,7 +16,7 @@ export const fr: Copy = {
   },
   nav: { work: 'Réalisations', package: 'Forfaits', process: 'Étapes', about: 'À propos', faq: 'FAQ' },
   hero: {
-    headline: 'Des sites web sur mesure pour les entreprises de services à Vancouver.', markedWords: [4, 5],
+    headline: 'Des sites web sur mesure pour les entreprises de services à Vancouver.', markedWords: [3, 4],
     lede: 'Présentez votre travail, expliquez vos services et facilitez les demandes de soumission.',
     facts: ['Une soumission écrite avant tout travail', 'Conçu et réalisé par moi', 'Vancouver et North Vancouver'],
     conceptCaption: (name, businessType) => `Démo conceptuelle : ${name}, un site pour une entreprise fictive (${businessType}).`,
