@@ -6,6 +6,8 @@ import type { Copy, Locale } from './types.ts'
  */
 export async function loadCopy(locale: Locale): Promise<Copy> {
   switch (locale) {
+    case 'fr':
+      return (await import('./fr.ts')).fr
     case 'fa':
       return (await import('./fa.ts')).fa
     case 'zh-hans':

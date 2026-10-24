@@ -34,7 +34,7 @@ export const site = {
    * listed in the sitemap. The wording of each is a draft until a native speaker has reviewed it.
    */
   features: {
-    languages: { fa: true, 'zh-hans': true, 'zh-hant': true } as Record<'fa' | 'zh-hans' | 'zh-hant', boolean>,
+    languages: { fr: true, fa: true, 'zh-hans': true, 'zh-hant': true } as Record<'fr' | 'fa' | 'zh-hans' | 'zh-hant', boolean>,
   },
 
   /** Optional social profiles. Leave empty until real accounts exist; nothing renders when empty. */

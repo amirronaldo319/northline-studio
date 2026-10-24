@@ -42,7 +42,7 @@ export function applyPageHead(
   }
 
   // Each language has its own share card (written in that language); English uses the default.
-  if (meta.locale !== 'en') {
+  if (meta.locale !== 'en' && meta.locale !== 'fr') {
     const card = `/og-image-${meta.locale}.png`
     out = out.replace(/(<meta (?:property="og:image"|name="twitter:image") content="[^"]*?)\/og-image\.png(")/g, (_m, open: string, close: string) => `${open}${card}${close}`)
   }

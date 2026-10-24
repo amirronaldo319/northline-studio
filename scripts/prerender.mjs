@@ -28,7 +28,7 @@ try {
   // page instead of after the main script has run.
   const assets = await readdir(path.join(distDir, 'assets'))
   const dictionaryFile = (locale) => {
-    const name = { en: 'en', fa: 'fa', 'zh-hans': 'zhHans', 'zh-hant': 'zhHant' }[locale]
+    const name = { en: 'en', fr: 'fr', fa: 'fa', 'zh-hans': 'zhHans', 'zh-hant': 'zhHant' }[locale]
     return assets.find((file) => new RegExp(`^${name}-[\\w-]+\\.js$`).test(file) && file.length > 0)
   }
 

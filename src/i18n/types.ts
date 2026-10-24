@@ -6,7 +6,7 @@ import type { Trade } from '../content/trades.ts'
  * Everything a visitor can read, for one language. Every language file must provide every key (TypeScript
  * enforces it), so a translated page can never fall back to English halfway through a sentence.
  */
-export type Locale = 'en' | 'fa' | 'zh-hans' | 'zh-hant'
+export type Locale = 'en' | 'fr' | 'fa' | 'zh-hans' | 'zh-hant'
 
 export interface ProjectText {
   type: string

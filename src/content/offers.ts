@@ -19,6 +19,18 @@ export const offers: Record<Locale, OfferCopy> = {
     care: 'For these static one-page sites: one edit request per month, up to 30 minutes total, for existing text or photo swaps, plus a monthly link/form check. Email support during business days; initial reply within 2 business days. Cancel before the next monthly renewal; unused time does not roll over.',
     exclusions: 'No redesigns, new sections, new features, emergency/on-call support or uptime commitments. Extra work needs a separate approved quote. Hosting, domain renewals, email, paid form services and other third-party charges are separate. You can choose the website without monthly care.',
   },
+  fr: {
+    intro: 'Sites web professionnels d’une page dès 299 $ CA. Commencez simplement, avec un travail bien défini et sans abonnement d’entretien obligatoire.',
+    compare: 'Comparer les forfaits', heading: 'Un premier pas. La place pour grandir.', once: 'paiement unique', choose: 'Se renseigner sur',
+    note: 'Tous les prix sont en dollars canadiens, avant les taxes applicables. Vous fournissez les textes définitifs, les photos et les éléments de marque. Une ronde de révision correspond à une liste regroupée de modifications dans le cadre convenu. Pages supplémentaires, rédaction, traductions, réservation, paiement et fonctions personnalisées sont facturés séparément sur soumission. Hébergement, domaine, courriel et outils payants sont facturés séparément aux coûts convenus; le domaine vous appartient. Une soumission écrite confirme le travail et l’échéancier avant le début.',
+    plans: [
+      { name: 'Starter', price: '299 $ CA', summary: 'Une présence web simple pour une petite ou nouvelle entreprise.', items: ['Une page à partir d’un modèle, jusqu’à 4 sections, dans une langue', 'Vos textes et jusqu’à 5 photos fournies; vos couleurs de marque', 'Mise en page mobile, boutons d’appel et de courriel, formulaire simple', 'Titre et description de page; une ronde de révision'] },
+      { name: 'Standard', price: '599 $ CA', summary: 'Plus d’espace et une conception adaptée à vos services.', items: ['Une page personnalisée, jusqu’à 7 sections, dans une langue', 'Vos textes et jusqu’à 12 photos fournies; mise en page adaptée à votre marque', 'Mise en page mobile, sections services et galerie, formulaire de contact', 'Titre, description et image de partage; deux rondes de révision'] },
+    ],
+    careTitle: 'Entretien facultatif dès 29 $ CA/mois',
+    care: 'Pour ces sites statiques d’une page : une demande de modification par mois, jusqu’à 30 minutes au total, pour remplacer du texte ou des photos existants, avec une vérification mensuelle des liens et du formulaire. Soutien par courriel les jours ouvrables; première réponse dans les 2 jours ouvrables. Résiliation avant le prochain renouvellement mensuel; le temps inutilisé n’est pas reporté.',
+    exclusions: 'Refonte, nouvelles sections ou fonctionnalités, soutien d’urgence ou sur appel et engagements de disponibilité exclus. Le travail supplémentaire nécessite une soumission distincte approuvée. Hébergement, renouvellement du domaine, courriel, formulaires payants et autres frais de tiers sont séparés. Vous pouvez acheter le site sans entretien mensuel.',
+  },
   fa: {
     intro: 'وب‌سایت حرفه‌ای یک‌صفحه‌ای از CA$299. شروعی کوچک با محدوده‌ی روشن و بدون الزام به اشتراک نگهداری.',
     compare: 'مقایسه‌ی بسته‌ها', heading: 'شروعی کوچک، با امکان رشد.', once: 'یک‌بار پرداخت', choose: 'درخواست اطلاعات',

@@ -17,6 +17,7 @@ export interface LocaleInfo {
 
 export const LOCALES: Record<Locale, LocaleInfo> = {
   en: { locale: 'en', prefix: '', htmlLang: 'en-CA', dir: 'ltr', label: 'English', shortLabel: 'EN', ogLocale: 'en_CA' },
+  fr: { locale: 'fr', prefix: 'fr/', htmlLang: 'fr-CA', dir: 'ltr', label: 'Français', shortLabel: 'FR', ogLocale: 'fr_CA' },
   fa: { locale: 'fa', prefix: 'fa/', htmlLang: 'fa', dir: 'rtl', label: 'فارسی', shortLabel: 'فارسی', ogLocale: 'fa_IR' },
   'zh-hans': {
     locale: 'zh-hans',
