@@ -1,0 +1,103 @@
+import { useEffect, useRef } from 'react'
+import { hasFinePointer, hasWebGL, prefersReducedMotion, wantsLessData } from '@/motion/gate'
+
+/** The cobalt of the brand, as the number Vanta expects. */
+const COBALT = 0x173fd0
+/** Vanta and three.js are heavy, so they wait for the browser to be idle after the first paint. */
+const IDLE_TIMEOUT_MS = 2500
+/** Below this width the hero is a single column and the effect would sit behind the text. */
+const MIN_WIDTH_QUERY = '(min-width: 1024px)'
+
+/**
+ * A quiet animated network behind the hero (Vanta.js "Net"), drawn in the brand colour.
+ *
+ * It only runs where it helps and costs nothing elsewhere: wide screens with a mouse, WebGL available, no reduced
+ * motion, no data saver. It loads after the first paint, pauses (is destroyed) when scrolled out of view,
+ * and releases its WebGL context on unmount. Everywhere else the existing static atmosphere is all that shows.
+ */
+export function HeroBackdrop() {
+  const layerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const layer = layerRef.current
+    if (!layer) return
+    if (prefersReducedMotion() || !hasFinePointer() || wantsLessData() || !hasWebGL()) return
+    const wide = window.matchMedia(MIN_WIDTH_QUERY)
+    if (!wide.matches) return
+
+    let effect: { destroy(): void } | null = null
+    let loading = false
+    let visible = false
+    let disposed = false
+    let idleHandle = 0
+
+    const show = (on: boolean) => layer.parentElement?.toggleAttribute('data-vanta', on)
+
+    const create = async () => {
+      if (effect || loading || disposed) return
+      loading = true
+      try {
+        const [{ default: NET }, THREE] = await Promise.all([import('vanta/src/vanta.net.js'), import('@/motion/threeLite')])
+        if (disposed || !visible || effect) return
+        effect = NET({
+          el: layer,
+          THREE,
+          mouseControls: true,
+          touchControls: false,
+          gyroControls: false,
+          scale: 1,
+          scaleMobile: 1,
+          color: COBALT,
+          backgroundAlpha: 0,
+          points: 7,
+          maxDistance: 22,
+          spacing: 19,
+          showDots: true,
+        })
+        show(true)
+      } catch {
+        show(false)
+      } finally {
+        loading = false
+      }
+    }
+
+    const destroy = () => {
+      effect?.destroy()
+      effect = null
+      show(false)
+    }
+
+    const start = () => {
+      if (typeof window.requestIdleCallback === 'function') idleHandle = window.requestIdleCallback(() => void create(), { timeout: IDLE_TIMEOUT_MS })
+      else idleHandle = window.setTimeout(() => void create(), 400)
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        visible = Boolean(entry?.isIntersecting)
+        if (visible) start()
+        else destroy()
+      },
+      { threshold: 0.05 },
+    )
+    observer.observe(layer)
+
+    const onWidth = () => {
+      if (!wide.matches) destroy()
+      else if (visible) start()
+    }
+    wide.addEventListener('change', onWidth)
+
+    return () => {
+      disposed = true
+      observer.disconnect()
+      wide.removeEventListener('change', onWidth)
+      if (typeof window.cancelIdleCallback === 'function') window.cancelIdleCallback(idleHandle)
+      else window.clearTimeout(idleHandle)
+      destroy()
+    }
+  }, [])
+
+  return <div ref={layerRef} className="hero-vanta" aria-hidden="true" />
+}

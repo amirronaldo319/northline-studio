@@ -1466,3 +1466,53 @@ dialog.viewer[data-closing]::backdrop {
     display: none !important;
   }
 }
+
+/*
+ * Lenis smooth scrolling (only added to <html> while the motion engine runs for a mouse user).
+ * Native scroll-behavior must be off then, or the two smoothers fight.
+ */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* Vanta network behind the hero. It fades in once running and the static grid steps back. */
+.hero-vanta {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--motion-dur-mask) var(--motion-ease-out);
+  mask-image: radial-gradient(ellipse at 74% 40%, #000 8%, transparent 72%);
+}
+
+.hero-atmosphere[data-vanta] .hero-vanta {
+  opacity: 0.55;
+}
+
+.hero-atmosphere[data-vanta] .hero-grid {
+  opacity: 0.18;
+}
+
+.hero-vanta canvas {
+  display: block;
+}
+
+[data-parallax] {
+  transition: none;
+}

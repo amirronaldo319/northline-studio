@@ -3,6 +3,7 @@ import { offers, PACKAGE_EVENT } from '@/content/offers'
 import { CONTACT_SECTION_ID } from '@/content/navigation'
 import { useCopy } from '@/i18n/context'
 import { LegacyAnchors } from '../LegacyAnchors'
+import SpotlightCard from '../reactbits/SpotlightCard'
 import { Words } from '../Words'
 import { buttonClasses } from '../ui/button'
 
@@ -37,7 +38,13 @@ export function Package() {
 
         <div className="reveal mt-10 grid gap-6 md:grid-cols-2">
           {offer.plans.map((plan) => (
-            <article key={plan.name} className="flex min-w-0 flex-col rounded-xl border border-line-strong bg-white p-6 sm:p-8">
+            <SpotlightCard
+              key={plan.name}
+              theme="light"
+              spotlightColor="#173fd0"
+              intensity={0.22}
+              className="!rounded-xl !p-6 sm:!p-8 flex min-w-0 flex-col border border-line-strong"
+            >
               <h3 className="text-xl font-semibold">{plan.name}</h3>
               <p className="mt-3 flex flex-wrap items-baseline gap-3"><bdi className="font-display text-4xl font-semibold tracking-tight">{plan.price}</bdi><span className="text-sm text-ink-3">{offer.once}</span></p>
               <p className="mt-4 text-ink-2">{plan.summary}</p>
@@ -48,7 +55,7 @@ export function Package() {
                 onClick={() => window.dispatchEvent(new CustomEvent(PACKAGE_EVENT, { detail: `${offer.choose} ${plan.name} (${plan.price})` }))}>
                 {offer.choose} {plan.name}<ArrowRight aria-hidden="true" size={18} className="rtl:-scale-x-100" />
               </a>
-            </article>
+            </SpotlightCard>
           ))}
         </div>
         <p className="reveal mt-6 max-w-4xl text-sm leading-relaxed text-ink-2">{offer.note}</p>

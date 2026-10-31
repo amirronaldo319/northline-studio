@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { StickyQuoteBar } from './components/StickyQuoteBar'
 import { ExampleDialogProvider } from './components/ExampleDialogProvider'
 import { ProjectViewerProvider } from './components/ProjectViewerProvider'
@@ -23,6 +24,7 @@ import { CopyContext, useCopy } from './i18n/context'
 import type { Copy } from './i18n/types'
 import { useHashScroll } from './hooks/useHashScroll'
 import { useReveal } from './hooks/useReveal'
+import { startMotionEngine } from './motion/engine'
 
 function HomeSections() {
   return (
@@ -65,6 +67,7 @@ const ENGLISH_HOME: PageRef = { kind: 'home', locale: 'en' }
 export default function App({ page = ENGLISH_HOME, copy }: { page?: PageRef; copy: Copy }) {
   useReveal()
   useHashScroll()
+  useEffect(() => startMotionEngine(), [])
 
   return (
     <CopyContext.Provider value={copy}>
