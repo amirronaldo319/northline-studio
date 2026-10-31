@@ -3,7 +3,9 @@ import { hasFinePointer, hasWebGL, prefersReducedMotion, wantsLessData } from '@
 
 /** The cobalt of the brand, as the number Vanta expects. */
 const COBALT = 0x173fd0
-/** Vanta and three.js are heavy, so they wait for the browser to be idle after the first paint. */
+/** Vanta and three.js are heavy and purely decorative, so the first start waits until the page has settled. */
+const FIRST_START_DELAY_MS = 3500
+/** After that, the browser must be idle (or this long has passed) before the effect is built. */
 const IDLE_TIMEOUT_MS = 2500
 /** Below this width the hero is a single column and the effect would sit behind the text. */
 const MIN_WIDTH_QUERY = '(min-width: 1024px)'
@@ -30,6 +32,8 @@ export function HeroBackdrop() {
     let visible = false
     let disposed = false
     let idleHandle = 0
+    let delayHandle = 0
+    let hasStartedOnce = false
 
     const show = (on: boolean) => layer.parentElement?.toggleAttribute('data-vanta', on)
 
@@ -68,9 +72,19 @@ export function HeroBackdrop() {
       show(false)
     }
 
-    const start = () => {
+    const whenIdle = () => {
       if (typeof window.requestIdleCallback === 'function') idleHandle = window.requestIdleCallback(() => void create(), { timeout: IDLE_TIMEOUT_MS })
       else idleHandle = window.setTimeout(() => void create(), 400)
+    }
+
+    const start = () => {
+      window.clearTimeout(delayHandle)
+      if (hasStartedOnce) {
+        whenIdle()
+        return
+      }
+      hasStartedOnce = true
+      delayHandle = window.setTimeout(whenIdle, FIRST_START_DELAY_MS)
     }
 
     const observer = new IntersectionObserver(
@@ -93,6 +107,7 @@ export function HeroBackdrop() {
       disposed = true
       observer.disconnect()
       wide.removeEventListener('change', onWidth)
+      window.clearTimeout(delayHandle)
       if (typeof window.cancelIdleCallback === 'function') window.cancelIdleCallback(idleHandle)
       else window.clearTimeout(idleHandle)
       destroy()

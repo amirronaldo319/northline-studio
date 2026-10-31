@@ -103,8 +103,10 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
   return (
     <article aria-labelledby={titleId} className="project-card reveal" style={revealDelay(index)}>
-      <div className={frameClasses}>
-        <ProjectTrigger project={project} />
+      <div data-card-tilt="">
+        <div className={frameClasses}>
+          <ProjectTrigger project={project} />
+        </div>
       </div>
       <div className="mt-5">
         <ProjectText project={project} titleId={titleId} />
@@ -122,7 +124,7 @@ function ConceptCard({ example, index }: { example: ExampleSite; index: number }
 
   return (
     <article aria-labelledby={titleId} className="project-card reveal" style={revealDelay(index)}>
-      <div className="relative">
+      <div className="relative" data-card-tilt="">
         <div className={frameClasses}>
           <DemoPreview example={example} />
         </div>

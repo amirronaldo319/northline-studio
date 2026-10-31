@@ -7,6 +7,11 @@ import { LANGUAGE_STORAGE_KEY } from '@/lib/language'
 import { useCopy } from '@/i18n/context'
 import { PageContext } from './pageContext'
 
+/** The accessible name must begin with the visible text ("EN"), so voice-control users can say what they see. */
+function labelFor(visible: string, full: string): string {
+  return full.startsWith(visible) ? full : `${visible}, ${full}`
+}
+
 type Props = {
   className?: string
   /** `dark` is for navy backgrounds. */
@@ -45,7 +50,7 @@ export function LanguageSwitcher({ className = '', tone = 'light' }: Props) {
                 lang={info.htmlLang}
                 hrefLang={info.htmlLang}
                 aria-current={isCurrent ? 'page' : undefined}
-                aria-label={info.label}
+                aria-label={labelFor(info.shortLabel, info.label)}
                 onClick={(event) => {
                   remember(locale)
                   // Keep the visitor's place: the twin page has the same section ids.

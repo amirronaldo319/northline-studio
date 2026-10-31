@@ -14,8 +14,11 @@ const PARALLAX_SCALE = 1.1
 const PARALLAX_TRAVEL_PERCENT = 4.5
 /** Largest tilt of the hero preview, in degrees. Small on purpose: it should feel like depth, not a gimmick. */
 const TILT_MAX_DEG = 4
-/** Words in scrubbed paragraphs start this faint and settle to full strength as they are read. */
-const SCRUB_TEXT_START_OPACITY = 0.28
+/** Portfolio cards lean less than the hero preview: there are many of them on screen at once. */
+const CARD_TILT_MAX_DEG = 2.5
+/** Scroll speed (px/s) that doubles the ticker, and the most it can be sped up. */
+const TICKER_PX_PER_SPEED_STEP = 600
+const TICKER_MAX_RATE = 5
 
 const all = <T extends Element = HTMLElement>(selector: string) => Array.from(document.querySelectorAll<T>(selector))
 
@@ -26,8 +29,10 @@ const all = <T extends Element = HTMLElement>(selector: string) => Array.from(do
  * - `[data-parallax]`       a picture drifts a few percent inside its frame as the frame crosses the screen
  * - `[data-hero-copy]`      the hero text drifts up and softens as the page leaves the first screen
  * - `[data-tilt]`           the hero preview leans toward the pointer (mouse only)
+ * - `[data-card-tilt]`      portfolio cards lean a little toward the pointer (mouse only)
+ * - `.trade-ticker-track`   the trade band speeds up with scroll speed and settles when scrolling stops
  * - `[data-pointer-glow]`   a soft light trails the pointer across the hero (mouse only)
- * - `[data-scrub-text]`     a paragraph's words brighten one by one as it scrolls through the screen
+ * - `[data-scrub-text]`     a paragraph's words darken one by one as it scrolls through the screen
  * - `[data-stagger]`        the children of a group rise in one after another
  * - `[data-curtain]`        a dark panel grows to full size as it arrives (a wrapper, so the panel's own reveal is untouched)
  * - `[data-step-pulse]`     a numbered badge pops once when its step comes into view
@@ -44,8 +49,10 @@ export function initScrollEffects({ gsap, ScrollTrigger, SplitText }: MotionTool
     stagger(gsap)
     curtain(gsap)
     stepPulse(gsap)
+    tickerBoost(gsap, ScrollTrigger, undo)
     if (hasFinePointer()) {
-      tilt(gsap, undo)
+      tilt(gsap, '[data-tilt]', TILT_MAX_DEG, (card) => card.parentElement, undo)
+      tilt(gsap, '[data-card-tilt]', CARD_TILT_MAX_DEG, (card) => card, undo)
       pointerGlow(gsap, undo)
     }
   })
@@ -86,17 +93,26 @@ function heroDrift(gsap: typeof Gsap) {
   }
 }
 
-/** Words fade up one by one, tied to scroll position. The text stays real text, read in order by assistive tech. */
+/**
+ * Words darken one by one, tied to scroll position: from the site's muted ink to its full ink.
+ * Both colours are the design's own AA-contrast text colours, so every word is readable at every moment
+ * (an opacity fade would leave unread text below contrast). The text stays real text, read in order.
+ */
 function scrubText(gsap: typeof Gsap, SplitText: typeof SplitTextType, undo: Array<() => void>) {
+  const styles = getComputedStyle(document.documentElement)
+  const muted = styles.getPropertyValue('--color-ink-3').trim()
+  const full = styles.getPropertyValue('--color-ink').trim()
+  if (!muted || !full) return
+
   for (const paragraph of all('[data-scrub-text]')) {
     // `aria: 'none'` leaves the markup readable as it was: the words are plain inline spans in the same order.
     const split = SplitText.create(paragraph, { type: 'words', aria: 'none' })
     undo.push(() => split.revert())
     gsap.fromTo(
       split.words,
-      { opacity: SCRUB_TEXT_START_OPACITY },
+      { color: muted },
       {
-        opacity: 1,
+        color: full,
         ease: 'none',
         stagger: 0.12,
         scrollTrigger: { trigger: paragraph, start: 'top 88%', end: 'bottom 58%', scrub: true },
@@ -155,10 +171,16 @@ function stepPulse(gsap: typeof Gsap) {
   }
 }
 
-/** The hero preview leans toward the pointer, easing back when it leaves. */
-function tilt(gsap: typeof Gsap, undo: Array<() => void>) {
-  for (const card of all('[data-tilt]')) {
-    const area = card.parentElement
+/** An element leans toward the pointer while it is over `area`, easing back when it leaves. */
+function tilt(
+  gsap: typeof Gsap,
+  selector: string,
+  maxDegrees: number,
+  areaOf: (card: HTMLElement) => HTMLElement | null,
+  undo: Array<() => void>,
+) {
+  for (const card of all(selector)) {
+    const area = areaOf(card)
     if (!area) continue
     gsap.set(card, { transformPerspective: 1000, transformOrigin: '50% 50%' })
     const rotateX = gsap.quickTo(card, 'rotationX', { duration: 0.7, ease: 'power3.out' })
@@ -168,8 +190,8 @@ function tilt(gsap: typeof Gsap, undo: Array<() => void>) {
       const box = card.getBoundingClientRect()
       const x = (event.clientX - box.left) / box.width - 0.5
       const y = (event.clientY - box.top) / box.height - 0.5
-      rotateY(Math.max(-0.5, Math.min(0.5, x)) * 2 * TILT_MAX_DEG)
-      rotateX(Math.max(-0.5, Math.min(0.5, y)) * -2 * TILT_MAX_DEG)
+      rotateY(Math.max(-0.5, Math.min(0.5, x)) * 2 * maxDegrees)
+      rotateX(Math.max(-0.5, Math.min(0.5, y)) * -2 * maxDegrees)
     }
     const onLeave = () => {
       rotateX(0)
@@ -182,6 +204,31 @@ function tilt(gsap: typeof Gsap, undo: Array<() => void>) {
       area.removeEventListener('pointerleave', onLeave)
     })
   }
+}
+
+/**
+ * The trade band is a CSS animation. Its playback rate follows how fast the page is being scrolled, then eases
+ * back to normal when scrolling stops, so the page feels connected to the band instead of the band ignoring it.
+ */
+function tickerBoost(gsap: typeof Gsap, ScrollTrigger: typeof ScrollTriggerType, undo: Array<() => void>) {
+  const tracks = all('.trade-ticker-track')
+  if (tracks.length === 0) return
+
+  const state = { rate: 1 }
+  const apply = () => tracks.forEach((track) => track.getAnimations().forEach((animation) => animation.updatePlaybackRate(state.rate)))
+  const setRate = gsap.quickTo(state, 'rate', { duration: 0.7, ease: 'power2.out', onUpdate: apply })
+
+  const trigger = ScrollTrigger.create({
+    onUpdate: (self) => setRate(1 + Math.min(Math.abs(self.getVelocity()) / TICKER_PX_PER_SPEED_STEP, TICKER_MAX_RATE - 1)),
+  })
+  const settle = () => setRate(1)
+  ScrollTrigger.addEventListener('scrollEnd', settle)
+  undo.push(() => {
+    ScrollTrigger.removeEventListener('scrollEnd', settle)
+    trigger.kill()
+    state.rate = 1
+    apply()
+  })
 }
 
 /** A soft cobalt light that trails the pointer across the hero and fades out when the pointer leaves it. */
