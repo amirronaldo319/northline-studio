@@ -51,6 +51,7 @@ export function ProjectShot({ project, isEager = false, variant = 'responsive' }
           loading={loading}
           fetchPriority={fetchPriority}
           decoding="async"
+          data-parallax=""
           className="shot-img h-full w-full object-cover object-top"
         />
       </picture>

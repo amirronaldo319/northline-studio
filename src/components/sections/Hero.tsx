@@ -4,6 +4,8 @@ import { HERO_EXAMPLE } from '@/content/examples'
 import { useCopy } from '@/i18n/context'
 import { enterStep } from '@/lib/reveal'
 import { DemoPreview } from '../DemoPreview'
+import { HeroBackdrop } from '../HeroBackdrop'
+import Magnet from '../reactbits/Magnet'
 import { Words } from '../Words'
 import { useExampleDialog } from '../exampleDialogContext'
 import { buttonClasses } from '../ui/button'
@@ -19,9 +21,11 @@ export function Hero() {
         <div className="hero-grid" />
         <div className="hero-orb hero-orb-blue" />
         <div className="hero-orb hero-orb-sand" />
+        <HeroBackdrop />
+        <div className="hero-pointer-glow" data-pointer-glow="" />
       </div>
       <div className="container-page grid items-center gap-9 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-14">
-        <div>
+        <div data-hero-copy="">
           {/* Entrance sequence: headline, copy, buttons, note, then the project picture (see `.enter`). */}
           <h1
             id="hero-title"
@@ -34,10 +38,13 @@ export function Hero() {
           </p>
 
           <div className="enter mt-7 flex flex-col gap-3 min-[420px]:flex-row" style={enterStep(3)}>
-            <a href="#package" className={buttonClasses('primary', 'lg', 'nudge')}>
-              {offers[t.locale].compare}
-              <ArrowRight aria-hidden="true" size={18} className="rtl:-scale-x-100" />
-            </a>
+            {/* React Bits "Magnet": the button leans toward a nearby pointer. Full width on the smallest screens. */}
+            <Magnet padding={70} magnetStrength={5} maxOffset={10} wrapperClassName="max-[419px]:!block" innerClassName="max-[419px]:*:w-full">
+              <a href="#package" className={buttonClasses('primary', 'lg', 'nudge')}>
+                {offers[t.locale].compare}
+                <ArrowRight aria-hidden="true" size={18} className="rtl:-scale-x-100" />
+              </a>
+            </Magnet>
             <a href="#work" className={buttonClasses('secondary', 'lg')}>
               {t.common.seeMyWork}
             </a>
@@ -54,7 +61,7 @@ export function Hero() {
         </div>
 
         <figure className="enter" style={enterStep(4)}>
-          <div className="relative">
+          <div className="relative" data-tilt="">
             <div className="hero-figure overflow-hidden rounded-lg border border-line-strong/60 bg-white shadow-device">
               <DemoPreview example={HERO_EXAMPLE} isEager />
             </div>

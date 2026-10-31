@@ -3,6 +3,8 @@ import { offers, PACKAGE_EVENT } from '@/content/offers'
 import { CONTACT_SECTION_ID } from '@/content/navigation'
 import { useCopy } from '@/i18n/context'
 import { LegacyAnchors } from '../LegacyAnchors'
+import Magnet from '../reactbits/Magnet'
+import SpotlightCard from '../reactbits/SpotlightCard'
 import { Words } from '../Words'
 import { buttonClasses } from '../ui/button'
 
@@ -29,15 +31,23 @@ export function Package() {
             </h2>
             <p className="lede mt-4">{offer.intro}</p>
           </div>
-          <a href={`#${CONTACT_SECTION_ID}`} className={buttonClasses('primary', 'lg', 'nudge self-start lg:self-auto')}>
-            {t.common.requestQuote}
-            <ArrowRight aria-hidden="true" size={18} className="rtl:-scale-x-100" />
-          </a>
+          <Magnet padding={70} magnetStrength={5} maxOffset={10} wrapperClassName="self-start lg:self-auto">
+            <a href={`#${CONTACT_SECTION_ID}`} className={buttonClasses('primary', 'lg', 'nudge')}>
+              {t.common.requestQuote}
+              <ArrowRight aria-hidden="true" size={18} className="rtl:-scale-x-100" />
+            </a>
+          </Magnet>
         </div>
 
-        <div className="reveal mt-10 grid gap-6 md:grid-cols-2">
+        <div className="reveal mt-10 grid gap-6 md:grid-cols-2" data-stagger="">
           {offer.plans.map((plan) => (
-            <article key={plan.name} className="flex min-w-0 flex-col rounded-xl border border-line-strong bg-white p-6 sm:p-8">
+            <SpotlightCard
+              key={plan.name}
+              theme="light"
+              spotlightColor="#173fd0"
+              intensity={0.22}
+              className="!rounded-xl !p-6 sm:!p-8 flex min-w-0 flex-col border border-line-strong"
+            >
               <h3 className="text-xl font-semibold">{plan.name}</h3>
               <p className="mt-3 flex flex-wrap items-baseline gap-3"><bdi className="font-display text-4xl font-semibold tracking-tight">{plan.price}</bdi><span className="text-sm text-ink-3">{offer.once}</span></p>
               <p className="mt-4 text-ink-2">{plan.summary}</p>
@@ -48,7 +58,7 @@ export function Package() {
                 onClick={() => window.dispatchEvent(new CustomEvent(PACKAGE_EVENT, { detail: `${offer.choose} ${plan.name} (${plan.price})` }))}>
                 {offer.choose} {plan.name}<ArrowRight aria-hidden="true" size={18} className="rtl:-scale-x-100" />
               </a>
-            </article>
+            </SpotlightCard>
           ))}
         </div>
         <p className="reveal mt-6 max-w-4xl text-sm leading-relaxed text-ink-2">{offer.note}</p>
@@ -73,20 +83,22 @@ export function Package() {
           })}
         </ul>
 
-        <div className="on-dark panel-glow reveal mt-10 rounded-xl bg-night p-5 text-white sm:p-7 lg:mt-12">
-          <p className="max-w-3xl text-[1rem] leading-relaxed">
-            <strong className="font-semibold">{t.package.quoteLead}</strong>{' '}
-            <span className="text-white/80">{t.package.quoteBody}</span>
-          </p>
+        <div data-curtain="" className="mt-10 lg:mt-12">
+          <div className="on-dark panel-glow reveal rounded-xl bg-night p-5 text-white sm:p-7">
+            <p className="max-w-3xl text-[1rem] leading-relaxed">
+              <strong className="font-semibold">{t.package.quoteLead}</strong>{' '}
+              <span className="text-white/80">{t.package.quoteBody}</span>
+            </p>
 
-          <dl className="mt-6 grid gap-x-8 gap-y-4 border-t border-night-line pt-5 sm:grid-cols-2 lg:grid-cols-4">
-            {t.package.factors.map((factor) => (
-              <div key={factor.title}>
-                <dt className="text-sm font-semibold">{factor.title}</dt>
-                <dd className="mt-1 text-sm leading-relaxed text-white/75">{factor.text}</dd>
-              </div>
-            ))}
-          </dl>
+            <dl className="mt-6 grid gap-x-8 gap-y-4 border-t border-night-line pt-5 sm:grid-cols-2 lg:grid-cols-4">
+              {t.package.factors.map((factor) => (
+                <div key={factor.title}>
+                  <dt className="text-sm font-semibold">{factor.title}</dt>
+                  <dd className="mt-1 text-sm leading-relaxed text-white/75">{factor.text}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
         </div>
       </div>
     </section>

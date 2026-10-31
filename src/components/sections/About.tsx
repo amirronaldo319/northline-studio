@@ -25,7 +25,7 @@ export function About() {
 
         <div className="reveal space-y-4 text-[1.0625rem] leading-relaxed text-ink-2 lg:col-span-7">
           {t.about.paragraphs.map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
+            <p key={paragraph} data-scrub-text="">{paragraph}</p>
           ))}
         </div>
       </div>

@@ -101,6 +101,7 @@ export function ExampleDialog({ example, onClose, onRequestQuote }: Props) {
 
   return (
     <dialog
+      data-lenis-prevent=""
       ref={dialogRef}
       aria-labelledby="example-dialog-title"
       onClose={handleClose}
