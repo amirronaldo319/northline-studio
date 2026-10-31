@@ -18,7 +18,7 @@ export function Process() {
         <ol className="process-rail mt-10 grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:mt-12 lg:grid-cols-4">
           {t.process.steps.map((step, index) => (
             <li key={step.title} className="reveal draw-line pt-4" style={revealDelay(index)}>
-              <span className="step-num grid size-9 place-items-center rounded-full bg-cobalt font-display text-sm font-semibold text-white tabular-nums">
+              <span data-step-pulse="" className="step-num grid size-9 place-items-center rounded-full bg-cobalt font-display text-sm font-semibold text-white tabular-nums">
                 {index + 1}
               </span>
               <h3 className="mt-2 text-[1.1875rem] font-semibold">{step.title}</h3>

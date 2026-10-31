@@ -7,6 +7,7 @@ import { underlineFor, underlineTarget, type Underline } from '@/lib/navUnderlin
 import { BrandMark } from './BrandMark'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { useHomeAnchor, useHomeTop } from './pageContext'
+import Magnet from './reactbits/Magnet'
 import { buttonClasses } from './ui/button'
 
 const DESKTOP_QUERY = '(min-width: 900px)'
@@ -155,9 +156,11 @@ export function Header() {
         <div className="flex items-center gap-2">
           <LanguageSwitcher className="hidden min-[1200px]:block [&_a]:px-2 [&_ul]:flex-nowrap" />
           <div className="hidden min-[560px]:block">
-            <a href={`#${CONTACT_SECTION_ID}`} className={buttonClasses('primary', 'md')}>
-              {t.common.requestQuote}
-            </a>
+            <Magnet padding={50} magnetStrength={6} maxOffset={8}>
+              <a href={`#${CONTACT_SECTION_ID}`} className={buttonClasses('primary', 'md')}>
+                {t.common.requestQuote}
+              </a>
+            </Magnet>
           </div>
           <button
             ref={toggleRef}

@@ -3,6 +3,7 @@ import { offers, PACKAGE_EVENT } from '@/content/offers'
 import { CONTACT_SECTION_ID } from '@/content/navigation'
 import { useCopy } from '@/i18n/context'
 import { LegacyAnchors } from '../LegacyAnchors'
+import Magnet from '../reactbits/Magnet'
 import SpotlightCard from '../reactbits/SpotlightCard'
 import { Words } from '../Words'
 import { buttonClasses } from '../ui/button'
@@ -30,13 +31,15 @@ export function Package() {
             </h2>
             <p className="lede mt-4">{offer.intro}</p>
           </div>
-          <a href={`#${CONTACT_SECTION_ID}`} className={buttonClasses('primary', 'lg', 'nudge self-start lg:self-auto')}>
-            {t.common.requestQuote}
-            <ArrowRight aria-hidden="true" size={18} className="rtl:-scale-x-100" />
-          </a>
+          <Magnet padding={70} magnetStrength={5} maxOffset={10} wrapperClassName="self-start lg:self-auto">
+            <a href={`#${CONTACT_SECTION_ID}`} className={buttonClasses('primary', 'lg', 'nudge')}>
+              {t.common.requestQuote}
+              <ArrowRight aria-hidden="true" size={18} className="rtl:-scale-x-100" />
+            </a>
+          </Magnet>
         </div>
 
-        <div className="reveal mt-10 grid gap-6 md:grid-cols-2">
+        <div className="reveal mt-10 grid gap-6 md:grid-cols-2" data-stagger="">
           {offer.plans.map((plan) => (
             <SpotlightCard
               key={plan.name}
@@ -80,20 +83,22 @@ export function Package() {
           })}
         </ul>
 
-        <div className="on-dark panel-glow reveal mt-10 rounded-xl bg-night p-5 text-white sm:p-7 lg:mt-12">
-          <p className="max-w-3xl text-[1rem] leading-relaxed">
-            <strong className="font-semibold">{t.package.quoteLead}</strong>{' '}
-            <span className="text-white/80">{t.package.quoteBody}</span>
-          </p>
+        <div data-curtain="" className="mt-10 lg:mt-12">
+          <div className="on-dark panel-glow reveal rounded-xl bg-night p-5 text-white sm:p-7">
+            <p className="max-w-3xl text-[1rem] leading-relaxed">
+              <strong className="font-semibold">{t.package.quoteLead}</strong>{' '}
+              <span className="text-white/80">{t.package.quoteBody}</span>
+            </p>
 
-          <dl className="mt-6 grid gap-x-8 gap-y-4 border-t border-night-line pt-5 sm:grid-cols-2 lg:grid-cols-4">
-            {t.package.factors.map((factor) => (
-              <div key={factor.title}>
-                <dt className="text-sm font-semibold">{factor.title}</dt>
-                <dd className="mt-1 text-sm leading-relaxed text-white/75">{factor.text}</dd>
-              </div>
-            ))}
-          </dl>
+            <dl className="mt-6 grid gap-x-8 gap-y-4 border-t border-night-line pt-5 sm:grid-cols-2 lg:grid-cols-4">
+              {t.package.factors.map((factor) => (
+                <div key={factor.title}>
+                  <dt className="text-sm font-semibold">{factor.title}</dt>
+                  <dd className="mt-1 text-sm leading-relaxed text-white/75">{factor.text}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
         </div>
       </div>
     </section>

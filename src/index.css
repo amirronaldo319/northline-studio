@@ -1516,3 +1516,16 @@ html.lenis body {
 [data-parallax] {
   transition: none;
 }
+
+/* A soft light that trails the pointer across the hero (moved by the motion engine; invisible until it runs). */
+.hero-pointer-glow {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 30rem;
+  height: 30rem;
+  margin: -15rem 0 0 -15rem;
+  border-radius: 9999px;
+  background: radial-gradient(closest-side, rgb(23 63 208 / 0.11), transparent);
+  opacity: 0;
+}

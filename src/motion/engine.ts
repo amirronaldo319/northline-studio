@@ -21,9 +21,13 @@ export function startMotionEngine(): Stop {
   const start = async () => {
     if (prefersReducedMotion()) return
 
-    const [{ gsap }, { ScrollTrigger }] = await Promise.all([import('gsap'), import('gsap/ScrollTrigger')])
+    const [{ gsap }, { ScrollTrigger }, { SplitText }] = await Promise.all([
+      import('gsap'),
+      import('gsap/ScrollTrigger'),
+      import('gsap/SplitText'),
+    ])
     if (stopped) return
-    gsap.registerPlugin(ScrollTrigger)
+    gsap.registerPlugin(ScrollTrigger, SplitText)
 
     const stops: Stop[] = []
     if (hasFinePointer()) stops.push(await startSmoothScroll(gsap, ScrollTrigger))
@@ -31,7 +35,7 @@ export function startMotionEngine(): Stop {
       stops.forEach((stop) => stop())
       return
     }
-    stops.push(initScrollEffects(gsap, ScrollTrigger))
+    stops.push(initScrollEffects({ gsap, ScrollTrigger, SplitText }))
 
     // Images and fonts change layout after first paint; measure again so triggers land correctly.
     const refresh = () => ScrollTrigger.refresh()

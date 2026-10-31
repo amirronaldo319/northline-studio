@@ -52,8 +52,8 @@ The site keeps its own CSS motion system (tokens at the top of `src/index.css`, 
 | Library | Used for | Where | Runs when |
 | --- | --- | --- | --- |
 | [Lenis](https://lenis.darkroom.engineering/) | Smooth wheel scrolling and gliding in-page links | `src/motion/engine.ts` | Mouse or trackpad, no reduced motion. Touch screens keep native scrolling |
-| [GSAP](https://gsap.com) + ScrollTrigger | Scroll-linked parallax on project screenshots (`data-parallax`) | `src/motion/effects.ts` | No reduced motion. Lenis drives ScrollTrigger so there is one scroll controller |
-| [React Bits](https://reactbits.dev) | `SpotlightCard` on the package cards, `Magnet` on the hero button | `src/components/reactbits/` | Pointer devices; both are inert under reduced motion |
+| [GSAP](https://gsap.com) + ScrollTrigger + SplitText | Parallax screenshots, hero text drift, hero preview tilt and pointer light, word-by-word scrubbed About text, staggered package cards, panel grow, step-number pop. Each is opt-in by a `data-*` attribute (listed at the top of `src/motion/effects.ts`) | `src/motion/effects.ts` | No reduced motion (tilt and pointer light also need a mouse). Lenis drives ScrollTrigger so there is one scroll controller |
+| [React Bits](https://reactbits.dev) | `SpotlightCard` on the package cards, `Magnet` on the header, hero and package buttons | `src/components/reactbits/` | Pointer devices; both are inert under reduced motion |
 | [Vanta.js](https://www.vantajs.com/) (Net) + three.js | A quiet network behind the hero | `src/components/HeroBackdrop.tsx`, `src/motion/threeLite.ts` | Width 1024px or more, mouse, WebGL, no reduced motion, no data saver. Loads when idle, is destroyed when scrolled away |
 
 Everything is downloaded on demand, never in the first paint. The React Bits files are copied from the official registry (`npx shadcn@latest add https://reactbits.dev/r/SpotlightCard-TS-TW.json`), kept unmodified and excluded from lint. When adding a Vanta effect, list the three.js classes it needs in `threeLite.ts`.

@@ -22,9 +22,10 @@ export function Hero() {
         <div className="hero-orb hero-orb-blue" />
         <div className="hero-orb hero-orb-sand" />
         <HeroBackdrop />
+        <div className="hero-pointer-glow" data-pointer-glow="" />
       </div>
       <div className="container-page grid items-center gap-9 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-14">
-        <div>
+        <div data-hero-copy="">
           {/* Entrance sequence: headline, copy, buttons, note, then the project picture (see `.enter`). */}
           <h1
             id="hero-title"
@@ -60,7 +61,7 @@ export function Hero() {
         </div>
 
         <figure className="enter" style={enterStep(4)}>
-          <div className="relative">
+          <div className="relative" data-tilt="">
             <div className="hero-figure overflow-hidden rounded-lg border border-line-strong/60 bg-white shadow-device">
               <DemoPreview example={HERO_EXAMPLE} isEager />
             </div>
