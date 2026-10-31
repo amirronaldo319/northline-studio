@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import type { VantaEffect } from 'vanta/src/vanta.net.js'
 import { hasFinePointer, hasWebGL, prefersReducedMotion, wantsLessData } from '@/motion/gate'
 
 /** The cobalt of the brand, as the number Vanta expects. */
@@ -7,6 +8,10 @@ const COBALT = 0x173fd0
 const FIRST_START_DELAY_MS = 3500
 /** After that, the browser must be idle (or this long has passed) before the effect is built. */
 const IDLE_TIMEOUT_MS = 2500
+/** The network is a quiet decoration, so it is drawn at about this many frames a second, not at every refresh. */
+const FRAME_INTERVAL_MS = 1000 / 24
+/** While the page is scrolling, and for this long after, the picture holds still so scrolling gets the whole frame budget. */
+const SCROLL_REST_MS = 180
 /** Below this width the hero is a single column and the effect would sit behind the text. */
 const MIN_WIDTH_QUERY = '(min-width: 1024px)'
 
@@ -27,7 +32,7 @@ export function HeroBackdrop() {
     const wide = window.matchMedia(MIN_WIDTH_QUERY)
     if (!wide.matches) return
 
-    let effect: { destroy(): void } | null = null
+    let effect: VantaEffect | null = null
     let loading = false
     let visible = false
     let disposed = false
@@ -49,7 +54,8 @@ export function HeroBackdrop() {
           mouseControls: true,
           touchControls: false,
           gyroControls: false,
-          scale: 1,
+          // Vanta draws at devicePixelRatio / scale; this keeps it at one pixel per CSS pixel, even on retina.
+          scale: Math.max(1, window.devicePixelRatio || 1),
           scaleMobile: 1,
           color: COBALT,
           backgroundAlpha: 0,
@@ -58,11 +64,37 @@ export function HeroBackdrop() {
           spacing: 19,
           showDots: true,
         })
+        paceLoop(effect)
         show(true)
       } catch {
         show(false)
       } finally {
         loading = false
+      }
+    }
+
+    let lastScrollAt = -Infinity
+    const onScroll = () => {
+      lastScrollAt = performance.now()
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+
+    /**
+     * Vanta redraws on every animation frame by itself. Wrap its loop so it draws at a modest rate and not at all
+     * while scrolling. Vanta's `animationLoop` is internal, so this does nothing if a future version renames it.
+     */
+    const paceLoop = (target: VantaEffect) => {
+      const original = target.animationLoop
+      if (typeof original !== 'function') return
+      let lastDraw = 0
+      target.animationLoop = (time: number) => {
+        const restingFromScroll = performance.now() - lastScrollAt < SCROLL_REST_MS
+        if (restingFromScroll || time - lastDraw < FRAME_INTERVAL_MS) {
+          target.req = window.requestAnimationFrame(target.animationLoop as FrameRequestCallback)
+          return target.req
+        }
+        lastDraw = time
+        return original(time)
       }
     }
 
@@ -107,6 +139,7 @@ export function HeroBackdrop() {
       disposed = true
       observer.disconnect()
       wide.removeEventListener('change', onWidth)
+      window.removeEventListener('scroll', onScroll)
       window.clearTimeout(delayHandle)
       if (typeof window.cancelIdleCallback === 'function') window.cancelIdleCallback(idleHandle)
       else window.clearTimeout(idleHandle)
