@@ -47,20 +47,42 @@ describe('motion gates', () => {
   })
 })
 
-describe('motion engine under reduced motion', () => {
-  test('starts nothing and returns a stop function that is safe to call twice', async () => {
-    const listeners: string[] = []
+describe('motion engine startup', () => {
+  /** A minimal browser that records which event listeners are attached. */
+  function stubEngineBrowser(reduced: boolean) {
+    const listeners = new Map<string, Set<unknown>>()
+    const add = (type: string, fn: unknown) => listeners.set(type, (listeners.get(type) ?? new Set()).add(fn))
+    const remove = (type: string, fn: unknown) => listeners.get(type)?.delete(fn)
     vi.stubGlobal('window', {
-      matchMedia: () => ({
-        matches: true,
-        addEventListener: (type: string) => listeners.push(type),
-        removeEventListener: () => {},
-      }),
+      matchMedia: () => ({ matches: reduced, addEventListener: add.bind(null, 'media'), removeEventListener: remove.bind(null, 'media') }),
+      addEventListener: add,
+      removeEventListener: remove,
+      setTimeout: () => 1,
+      clearTimeout: () => {},
     })
+    vi.stubGlobal('document', { readyState: 'loading', addEventListener: (type: string, fn: unknown) => add(`doc-${type}`, fn), removeEventListener: (type: string, fn: unknown) => remove(`doc-${type}`, fn) })
+    const count = (type: string) => listeners.get(type)?.size ?? 0
+    return { count }
+  }
+
+  test('waits for the visitor to scroll or the page to settle, and removes its listeners when stopped', async () => {
+    const { count } = stubEngineBrowser(false)
     const { startMotionEngine } = await import('./engine')
     const stop = startMotionEngine()
-    expect(listeners).toEqual(['change'])
+    const types = ['wheel', 'touchstart', 'scroll', 'keydown', 'load', 'media', 'doc-click']
+    for (const type of types) expect(count(type), type).toBe(1)
     stop()
+    for (const type of types) expect(count(type), type).toBe(0)
     expect(() => stop()).not.toThrow()
+  })
+
+  test('under reduced motion it still stops cleanly and never starts the engine', async () => {
+    const { count } = stubEngineBrowser(true)
+    const { startMotionEngine } = await import('./engine')
+    const stop = startMotionEngine()
+    expect(count('media')).toBe(1)
+    expect(count('doc-click')).toBe(0)
+    stop()
+    expect(count('media')).toBe(0)
   })
 })
