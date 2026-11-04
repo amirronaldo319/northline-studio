@@ -254,7 +254,7 @@ export function ProjectViewerProvider({ children }: { children: ReactNode }) {
             <div className="viewer-content">
               <div className="mb-3 flex items-start justify-between gap-4 text-white">
                 <div className="min-w-0">
-                  <p className="text-xs font-semibold tracking-[0.08em] text-white/75 uppercase">
+                  <p className="text-[0.875rem] font-semibold text-white/75">
                     {project.status === 'live' ? t.work.statusLive : t.work.statusConcept} <span aria-hidden="true">·</span>{' '}
                     {t.projects[project.id].type}
                   </p>

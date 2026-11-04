@@ -140,7 +140,7 @@ export function InquiryForm() {
   if (status === 'success') {
     const firstName = values.name.trim().split(/\s+/)[0]
     return (
-      <div ref={resultRef} tabIndex={-1} role="status" className="fx-in rounded-xl border border-success/25 bg-white p-6 focus:outline-none sm:p-8">
+      <div ref={resultRef} tabIndex={-1} role="status" className="tile-paper fx-in focus:outline-none">
         <SuccessCheck />
         <h3 className="mt-4 text-2xl font-semibold">{t.form.successTitle(firstName)}</h3>
         <p className="mt-3 leading-relaxed text-ink-2">{t.form.successBody(values.email.trim())}</p>
@@ -180,7 +180,7 @@ export function InquiryForm() {
       noValidate
       onSubmit={handleSubmit}
       aria-labelledby="contact-title"
-      className="relative rounded-xl border border-line bg-white p-5 shadow-soft sm:p-7"
+      className="tile-paper relative"
     >
       <div className="grid gap-5 sm:grid-cols-2">
         <Field id="inquiry-name" label={t.form.name} error={errors.name}>

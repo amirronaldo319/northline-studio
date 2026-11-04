@@ -36,6 +36,7 @@ Hero → Work → Your website package → Process → About → FAQ → Request
 | Package contents (grouped) | `site.packageGroups` in `src/config/site.ts` |
 | Page title and description | `src/config/seo.ts` **and** the matching tags in `index.html` |
 | Colours, fonts, shadows | `@theme` block at the top of `src/index.css` |
+| Type, section spacing, tiles, chevron links | `.h-section`, `.lede`, `.section-pad`, `.section-intro`, `.tile` / `.tile-paper` / `.tile-dark`, `.chevron-link` in `src/index.css` |
 | Liquid Glass look (tint, frost, bend, rim, accent) | The `--lg-*` block under "Liquid Glass (Glisse)" at the end of `src/index.css` |
 | Navigation and the primary button label | `src/content/navigation.ts` |
 | Unconfirmed commercial terms (kept off the page) | `pendingTerms` in `src/config/site.ts` |
@@ -48,16 +49,27 @@ meta description, and adjust the price rule in `tests/content-rules.test.ts`.
 
 ## Motion and interactive libraries
 
-The site keeps its own CSS motion system (tokens at the top of `src/index.css`, tested in `tests/motion.test.ts`) and adds four libraries on top. All of them are optional enhancements: the page is complete and fast without them.
+The site keeps its own CSS motion system (tokens at the top of `src/index.css`, tested in `tests/motion.test.ts`) and adds two libraries on top. Both are optional enhancements: the page is complete and fast without them.
 
 | Library | Used for | Where | Runs when |
 | --- | --- | --- | --- |
 | [Lenis](https://lenis.darkroom.engineering/) | Smooth wheel scrolling and gliding in-page links | `src/motion/engine.ts` | Mouse or trackpad, no reduced motion. Touch screens keep native scrolling |
-| [GSAP](https://gsap.com) + ScrollTrigger + SplitText | Parallax screenshots, hero text drift, hero preview tilt and pointer light, word-by-word scrubbed About text, staggered package cards, panel grow, step-number pop. Each is opt-in by a `data-*` attribute (listed at the top of `src/motion/effects.ts`) | `src/motion/effects.ts` | No reduced motion (tilt and pointer light also need a mouse). Lenis drives ScrollTrigger so there is one scroll controller |
-| [React Bits](https://reactbits.dev) | `SpotlightCard` on the package cards, `Magnet` on the header, hero and package buttons | `src/components/reactbits/` | Pointer devices; both are inert under reduced motion |
-| [Vanta.js](https://www.vantajs.com/) (Net) + three.js | A quiet network behind the hero | `src/components/HeroBackdrop.tsx`, `src/motion/threeLite.ts` | Width 1024px or more, mouse, WebGL, no reduced motion, no data saver. Loads when idle, is destroyed when scrolled away |
+| [GSAP](https://gsap.com) + ScrollTrigger + SplitText | Parallax screenshots, hero text drift, word-by-word scrubbed About text, staggered package cards, panel grow, step-number pop. Each is opt-in by a `data-*` attribute (listed at the top of `src/motion/effects.ts`; the tilt and pointer-light effects there are no longer used by any page) | `src/motion/effects.ts` | No reduced motion. Lenis drives ScrollTrigger so there is one scroll controller |
 
-Everything is downloaded on demand, never in the first paint. The React Bits files are copied from the official registry (`npx shadcn@latest add https://reactbits.dev/r/SpotlightCard-TS-TW.json`), kept unmodified and excluded from lint. When adding a Vanta effect, list the three.js classes it needs in `threeLite.ts`.
+Everything is downloaded on demand, never in the first paint. The Apple-style pass removed the Vanta.js network (and three.js), the React Bits magnet buttons and spotlight cards, and the pointer tilt: they competed with the work. They can be restored from git history (before the "Apple-style design pass" commit).
+
+## Design language
+
+The site follows Apple's product-page conventions while keeping the SitePilot brand (logo, cobalt, cream):
+
+- **Type:** one family for headings and text: the device's system font on Apple devices (San Francisco, via
+  `-apple-system`) and Inter elsewhere. Headlines are large, bold and tightly tracked; body text is 17px.
+- **Rhythm:** sections alternate white-cream (`bg-card`) and cream (`bg-paper`) with generous padding
+  (`.section-pad`), open with a centred intro (`.section-intro`: label, headline, lede) and hold their content in
+  borderless rounded tiles (`.tile` on cream, `.tile-paper` on white, `.tile-dark` for the one dark moment).
+- **Actions:** flat blue pills for main actions, blue outline pills beside them, and blue text links with a
+  chevron (`.chevron-link`) for "read more".
+- **Footer:** light and small, in columns of plain links.
 
 ## Liquid Glass (Glisse)
 
@@ -191,8 +203,8 @@ use commercially. No stock photography is bundled.
   the headline paints before any script runs. `src/entry-server.test.tsx` guards the output. Anything that reads
   `window` during render must go through `useSyncExternalStore` (see `useMediaQuery`) so the server and the
   browser agree on the first render.
-- **Search and sharing:** the build adds FAQPage structured data from `src/content/faq.ts`, preloads the two Latin
-  fonts, and ships a branded `404.html`. Canonical, `og:url`, absolute social image, sitemap and `robots.txt`
+- **Search and sharing:** the build adds FAQPage structured data from `src/content/faq.ts`, preloads the Latin
+  Inter font (Apple devices use their own system font and never need it), and ships a branded `404.html`. Canonical, `og:url`, absolute social image, sitemap and `robots.txt`
   Sitemap line still switch on with `VITE_SITE_URL` (see the deploy section).
 - **Motion:** CSS only, no libraries. All timings, distances, and curves are tokens at the top of `src/index.css`
   (`--motion-*`); change one there to retune the whole site. Everything sits inside
@@ -200,10 +212,10 @@ use commercially. No stock photography is bundled.
   that can hover, and everything is neutralised when printing.
   - Hero: headline, copy, buttons, then the project picture enter in sequence (`.enter`, `enterStep`), about 0.7 s.
   - Logo: the mark rises and the wordmark slides in once on load (header only, `.brand-logo[data-intro]`).
-  - Hero atmosphere: a faint grid and two slow colour fields behind the first screen (`.hero-atmosphere`); the
-    picture and grid drift a little with page scroll where `animation-timeline` is supported. Pointer-following
-    tilt and spotlight effects were deliberately removed earlier and are guarded by a test.
-  - Primary buttons: a single light sweep on hover (`.shine`). Section labels draw a short rule as they appear.
+  - Hero atmosphere: one soft, still light behind the headline (`.hero-light`). Where `animation-timeline` is
+    supported, the preview starts at 94% and grows to full size as the page scrolls, the way Apple brings a
+    product forward. Pointer-following tilt and spotlight effects are removed and guarded by a test.
+  - Buttons: flat pills (`src/components/ui/button.ts`), no shadows or light sweeps.
   - Words: the hero headline arrives word by word and draws an underline under "Vancouver’s"; section headings
     do the same as they scroll in (`Words`, `.word`). Header links arrive in turn on load.
   - Process numbers fill in and package icons pop as their group is revealed; the featured project's phone drifts

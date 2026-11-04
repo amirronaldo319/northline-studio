@@ -25,11 +25,9 @@ export function PageHero({ crumbs, eyebrow, headline, intro, secondary, showWork
   const t = useCopy()
 
   return (
-    <section aria-labelledby="page-title" className="relative isolate pt-8 pb-12 sm:pt-12 lg:pt-14 lg:pb-16">
+    <section aria-labelledby="page-title" className="relative isolate pt-8 pb-16 sm:pt-12 sm:pb-20 lg:pt-14 lg:pb-24">
       <div className="hero-atmosphere" aria-hidden="true">
-        <div className="hero-grid" />
-        <div className="hero-orb hero-orb-blue" />
-        <div className="hero-orb hero-orb-sand" />
+        <div className="hero-light" />
       </div>
       <div className="container-page">
         <Breadcrumb items={crumbs} />
@@ -38,14 +36,14 @@ export function PageHero({ crumbs, eyebrow, headline, intro, secondary, showWork
         </p>
         <h1
           id="page-title"
-          className="word-enter mt-3 max-w-[18ch] text-[clamp(2.15rem,1.55rem+2.7vw,3.5rem)] font-[680] leading-[1.05] tracking-[-0.03em] sm:max-w-3xl"
+          className="word-enter mt-3 max-w-[18ch] text-[clamp(2.5rem,1.5rem+4.2vw,4.75rem)] font-bold leading-[1.03] tracking-[-0.042em] sm:max-w-4xl"
         >
           <Words text={headline} />
         </h1>
-        <p className="lede enter mt-5 max-w-[38rem]" style={enterStep(2)}>
+        <p className="lede enter mt-6 max-w-[40rem]" style={enterStep(2)}>
           {intro}
         </p>
-        <div className="enter mt-7 flex flex-col gap-3 min-[420px]:flex-row" style={enterStep(3)}>
+        <div className="enter mt-9 flex flex-col gap-3 min-[420px]:flex-row" style={enterStep(3)}>
           <a href={`#${CONTACT_SECTION_ID}`} className={buttonClasses('primary', 'lg', 'nudge')}>
             {t.common.requestQuote}
             <ArrowRight aria-hidden="true" size={18} className="rtl:-scale-x-100" />

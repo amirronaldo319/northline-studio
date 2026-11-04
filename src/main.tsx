@@ -1,7 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot, hydrateRoot } from 'react-dom/client'
 import '@fontsource-variable/inter/wght.css'
-import '@fontsource-variable/bricolage-grotesque/wght.css'
 import './index.css'
 import App from './App'
 import { pageFromPath, pagePath, withLocale } from './content/pages'

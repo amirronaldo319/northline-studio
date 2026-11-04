@@ -2,22 +2,24 @@ export type ButtonVariant = 'primary' | 'secondary' | 'inverse' | 'quiet'
 export type ButtonSize = 'md' | 'lg'
 
 const base =
-  'inline-flex items-center justify-center gap-2 rounded-full font-semibold whitespace-nowrap select-none ' +
+  'inline-flex items-center justify-center gap-2 rounded-full font-medium whitespace-nowrap select-none ' +
   'transition-[background-color,color,border-color,box-shadow,transform] duration-200 ease-out ' +
   'active:scale-[0.98] active:duration-100 disabled:cursor-not-allowed disabled:opacity-70'
 
+/*
+ * Apple-style buttons: a flat blue pill for the main action, a blue outline pill beside it, no drop shadows or
+ * light sweeps. The label carries the weight, not effects.
+ */
 const variants: Record<ButtonVariant, string> = {
-  primary:
-    'shine bg-cobalt text-white shadow-[0_1px_0_rgb(255_255_255/0.2)_inset,0_6px_16px_-6px_rgb(23_63_208/0.55)] ' +
-    'hover:bg-cobalt-deep hover:shadow-[0_1px_0_rgb(255_255_255/0.2)_inset,0_10px_22px_-8px_rgb(23_63_208/0.65)]',
-  secondary: 'border border-line-strong bg-card text-ink hover:border-ink/40 hover:bg-white',
+  primary: 'bg-cobalt text-white hover:bg-[#2a51de] active:bg-cobalt-deep',
+  secondary: 'border border-cobalt text-cobalt hover:bg-cobalt hover:text-white',
   inverse: 'bg-white text-night hover:bg-cobalt-soft',
   quiet: 'text-ink underline decoration-line-strong underline-offset-4 hover:decoration-cobalt',
 }
 
 const sizes: Record<ButtonSize, string> = {
   md: 'min-h-11 px-5 text-[0.9375rem]',
-  lg: 'min-h-12 px-6 text-base',
+  lg: 'min-h-12 px-7 text-[1.0625rem]',
 }
 
 export function buttonClasses(variant: ButtonVariant = 'primary', size: ButtonSize = 'md', extra = ''): string {

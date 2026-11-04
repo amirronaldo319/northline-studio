@@ -25,7 +25,7 @@ export function TradePage({ trade }: { trade: Trade }) {
         intro={trade.intro}
       />
 
-      <section aria-labelledby="checks-title" className="border-t border-line bg-card py-12 sm:py-20">
+      <section aria-labelledby="checks-title" className="section-pad bg-card">
         <div className="container-page">
           <div className="reveal max-w-2xl">
             <p className="eyebrow">{t.tradePage.customersEyebrow}</p>
@@ -33,10 +33,10 @@ export function TradePage({ trade }: { trade: Trade }) {
               <Words text={t.tradePage.checksHeading(trade.noun)} />
             </h2>
           </div>
-          <ul className="reveal mt-10 grid gap-x-8 gap-y-8 sm:grid-cols-2">
+          <ul className="reveal mt-12 grid gap-5 sm:grid-cols-2">
             {trade.checks.map((check, index) => (
-              <li key={check.title} className="draw-line pt-4" style={{ '--line-i': index % 2 } as React.CSSProperties}>
-                <h3 className="text-[1.1875rem] font-semibold">{check.title}</h3>
+              <li key={check.title} className="tile-paper" style={{ '--line-i': index % 2 } as React.CSSProperties}>
+                <h3 className="text-[1.25rem] font-semibold">{check.title}</h3>
                 <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-2">{check.text}</p>
               </li>
             ))}
@@ -44,7 +44,7 @@ export function TradePage({ trade }: { trade: Trade }) {
         </div>
       </section>
 
-      <section aria-labelledby="includes-title" className="py-12 sm:py-20">
+      <section aria-labelledby="includes-title" className="section-pad bg-paper">
         <div className="container-page grid gap-10 lg:grid-cols-12 lg:gap-14">
           <div className="reveal lg:col-span-5">
             <p className="eyebrow">{t.tradePage.includesEyebrow}</p>
@@ -55,7 +55,7 @@ export function TradePage({ trade }: { trade: Trade }) {
           </div>
           <ul className="reveal stagger space-y-3 lg:col-span-7" style={revealDelay(1)}>
             {trade.includes.map((item) => (
-              <li key={item} className="flex gap-3 rounded-xl border border-line-strong/60 bg-card px-4 py-3.5 text-[1rem] text-ink">
+              <li key={item} className="flex gap-3 rounded-2xl bg-card px-5 py-4 text-[1.0625rem] text-ink">
                 <Check aria-hidden="true" size={18} className="mt-1 shrink-0 text-cobalt" />
                 {item}
               </li>
@@ -64,7 +64,7 @@ export function TradePage({ trade }: { trade: Trade }) {
         </div>
       </section>
 
-      <section aria-labelledby="proof-title" className="border-t border-line bg-paper-2 py-12 sm:py-20">
+      <section aria-labelledby="proof-title" className="section-pad bg-card">
         <div className="container-page">
           <div className="reveal max-w-2xl">
             <p className="eyebrow">{t.tradePage.recentEyebrow}</p>
@@ -73,14 +73,14 @@ export function TradePage({ trade }: { trade: Trade }) {
             </h2>
             <p className="lede mt-4">{t.tradePage.recentLede}</p>
           </div>
-          <ul className="reveal mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <ul className="reveal mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
             {PROJECT_DATA.map((project) => (
               <li key={project.id}>
                 <a
                   href={localHref(`work/${project.id}/`)}
-                  className="group block h-full rounded-xl border border-line-strong/60 bg-card p-5 transition-colors hover:border-cobalt"
+                  className="tile-paper tile-link group block h-full !p-6"
                 >
-                  <p className="text-xs font-semibold tracking-[0.08em] text-cobalt uppercase">
+                  <p className="text-[0.875rem] font-semibold text-cobalt">
                     {project.status === 'live' ? t.work.statusLive : t.work.statusConcept}
                   </p>
                   <h3 className="mt-2 flex items-center gap-1.5 text-[1.125rem] font-semibold">

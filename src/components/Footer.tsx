@@ -2,40 +2,35 @@ import { ArrowUp } from 'lucide-react'
 import { mailtoHref, site } from '@/config/site'
 import { NAV_LINKS } from '@/content/navigation'
 import { useCopy, useLocalHref } from '@/i18n/context'
-import { revealDelay } from '@/lib/reveal'
 import { BrandMark } from './BrandMark'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { useHomeAnchor } from './pageContext'
 
 const CURRENT_YEAR = new Date().getFullYear()
-const footerLink = 'inline-flex min-h-10 items-center text-white/85 hover:text-white'
+const footerLink = 'inline-flex min-h-9 items-center text-ink-2 hover:text-ink hover:underline'
+const columnTitle = 'text-[0.8125rem] font-semibold text-ink'
 
+/** A quiet, light footer in Apple's manner: small type, columns of plain links, a hairline above the fine print. */
 export function Footer() {
   const homeAnchor = useHomeAnchor()
   const localHref = useLocalHref()
   const t = useCopy()
 
   return (
-    <footer className="on-dark relative isolate bg-night text-white">
-      <div className="footer-glow" aria-hidden="true" />
-      <div className="container-page flex flex-col gap-8 py-12 md:flex-row md:items-start md:justify-between">
-        <div className="reveal">
-          <BrandMark tone="dark" />
-          <p className="mt-4 max-w-sm text-[0.9375rem] leading-relaxed text-white/70">
-            {t.footer.tagline(site.serviceArea.label)}
-          </p>
-          <a
-            href={mailtoHref}
-            dir="ltr"
-            className="mt-4 inline-block font-semibold [overflow-wrap:anywhere] underline decoration-white/30 underline-offset-4 hover:decoration-white"
-          >
+    <footer className="site-footer bg-paper-2 text-[0.8125rem] text-ink-3">
+      <div className="container-page flex flex-col gap-10 pt-14 pb-10 md:flex-row md:items-start md:justify-between">
+        <div className="max-w-xs">
+          <BrandMark />
+          <p className="mt-4 leading-relaxed">{t.footer.tagline(site.serviceArea.label)}</p>
+          <a href={mailtoHref} dir="ltr" className="mt-3 inline-block font-medium [overflow-wrap:anywhere] text-cobalt hover:underline">
             {site.contact.email}
           </a>
         </div>
 
-        <div className="reveal flex flex-wrap gap-x-14 gap-y-8" style={revealDelay(1)}>
+        <div className="flex flex-wrap gap-x-14 gap-y-8">
           <nav aria-label={t.common.footerNav}>
-            <ul className="grid grid-cols-2 gap-x-10 gap-y-1 md:grid-cols-1">
+            <p className={columnTitle}>{site.brand.name}</p>
+            <ul className="mt-2 grid grid-cols-2 gap-x-10 md:grid-cols-1">
               {NAV_LINKS.map((link) => (
                 <li key={link.id}>
                   <a href={homeAnchor(link.id)} className={footerLink}>
@@ -52,8 +47,8 @@ export function Footer() {
           </nav>
 
           <nav aria-label={t.footer.websitesFor}>
-            <p className="text-sm font-semibold text-white/60">{t.footer.websitesFor}</p>
-            <ul className="mt-1">
+            <p className={columnTitle}>{t.footer.websitesFor}</p>
+            <ul className="mt-2">
               {t.trades.map((trade) => (
                 <li key={trade.slug}>
                   <a href={localHref(`${trade.slug}/`)} className={footerLink}>
@@ -65,8 +60,8 @@ export function Footer() {
           </nav>
 
           <nav aria-label={t.footer.guides}>
-            <p className="text-sm font-semibold text-white/60">{t.footer.guides}</p>
-            <ul className="mt-1">
+            <p className={columnTitle}>{t.footer.guides}</p>
+            <ul className="mt-2">
               {t.guides.map((guide) => (
                 <li key={guide.slug}>
                   <a href={localHref(`guides/${guide.slug}/`)} className={`${footerLink} max-w-[16rem]`}>
@@ -79,17 +74,16 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="container-page pb-6">
-        <LanguageSwitcher tone="dark" />
-      </div>
-
-      <div className="border-t border-night-line">
-        <div className="container-page flex flex-col gap-1 py-5 text-sm text-white/60 sm:flex-row sm:items-center sm:justify-between">
+      <div className="container-page">
+        <div className="flex flex-col gap-4 border-t border-ink/10 py-5 sm:flex-row sm:items-center sm:justify-between">
           <p>{t.footer.copyright(CURRENT_YEAR, site.brand.name)}</p>
-          <a href="#top" className="inline-flex min-h-10 items-center gap-1.5 font-medium text-white/85 hover:text-white">
-            <ArrowUp aria-hidden="true" size={15} />
-            {t.common.backToTop}
-          </a>
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+            <LanguageSwitcher />
+            <a href="#top" className="inline-flex min-h-9 items-center gap-1.5 font-medium text-ink-2 hover:text-ink">
+              <ArrowUp aria-hidden="true" size={14} />
+              {t.common.backToTop}
+            </a>
+          </div>
         </div>
       </div>
     </footer>
