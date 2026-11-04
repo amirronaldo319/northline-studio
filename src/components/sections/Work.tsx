@@ -1,9 +1,10 @@
-import { ArrowUpRight, ChevronRight } from 'lucide-react'
+import { ArrowUpRight, ChevronRight, Lock } from 'lucide-react'
 import { Button } from 'glisse'
 import { EXAMPLES, HERO_EXAMPLE, type ExampleSite } from '@/content/examples'
-import { CONCEPT_PROJECT, FEATURED_PROJECT, MEND_PROJECT, SECONDARY_PROJECT, type Project } from '@/content/projects'
+import { APP_PROJECTS, FEATURED_PROJECT, GALLERY_WEBSITES, type Project } from '@/content/projects'
 import { useInViewOnce } from '@/hooks/useInViewOnce'
 import { useCopy, useLocalHref } from '@/i18n/context'
+import { linkLabel, statusLabel } from '@/i18n/projectStatus'
 import { DemoPreview } from '../DemoPreview'
 import { useExampleDialog } from '../exampleDialogContext'
 import { LegacyAnchors } from '../LegacyAnchors'
@@ -28,7 +29,7 @@ function ProjectText({ project, titleId }: { project: Project; titleId: string }
   return (
     <>
       <p className={labelClasses}>
-        {project.status === 'live' ? t.work.statusLive : t.work.statusConcept} <span aria-hidden="true">·</span> {text.type}
+        {statusLabel(t.work, project.status)} <span aria-hidden="true">·</span> {text.type}
       </p>
       <h3 id={titleId} className="mt-2 text-[1.75rem] font-bold tracking-[-0.03em]">
         <bdi>{project.name}</bdi>
@@ -46,16 +47,23 @@ function ProjectText({ project, titleId }: { project: Project; titleId: string }
         ))}
       </ul>
       <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2">
-        <a
-          href={project.liveUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={buttonClasses('outlineLight', 'md')}
-        >
-          {project.status === 'live' ? t.work.visitLive : t.work.openLivePreview}
-          <span className="sr-only">{t.common.opensNewTab(project.name)}</span>
-          <ArrowUpRight aria-hidden="true" size={17} className="card-arrow" />
-        </a>
+        {project.liveUrl ? (
+          <a
+            href={project.liveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={buttonClasses('outlineLight', 'md')}
+          >
+            {linkLabel(t.work, project.status)}
+            <span className="sr-only">{t.common.opensNewTab(project.name)}</span>
+            <ArrowUpRight aria-hidden="true" size={17} className="card-arrow" />
+          </a>
+        ) : (
+          <p className="inline-flex items-center gap-2 text-[0.9375rem] text-white/60">
+            <Lock aria-hidden="true" size={15} />
+            {t.work.noPublicLink}
+          </p>
+        )}
         <a href={localHref(`work/${project.id}/`)} className="chevron-link">
           {t.work.readCaseStudy}
           <span className="sr-only">: {project.name}</span>
@@ -176,14 +184,31 @@ export function Work() {
 
       </div>
 
-      {/* The rest of the work as a sideways gallery, as Apple shows its highlights; the next tile peeks in. */}
+      {/* The rest of the websites as a sideways gallery, as Apple shows its highlights; the next tile peeks in. */}
       <div className="reveal mt-5">
-        <Gallery label={t.work.eyebrow}>
-          <ProjectCard project={SECONDARY_PROJECT} />
-          <ProjectCard project={CONCEPT_PROJECT} />
-          <ProjectCard project={MEND_PROJECT} />
+        <Gallery label={t.work.sitesLabel}>
+          {GALLERY_WEBSITES.map((project) => (
+            <ProjectCard key={project.id} project={project} />
+          ))}
           {EXAMPLES.filter((example) => example.id !== HERO_EXAMPLE.id).map((example) => (
             <ConceptCard key={example.id} example={example} />
+          ))}
+        </Gallery>
+      </div>
+
+      {/* My own apps and tools get their own row, so they are never mistaken for work for a business. */}
+      <div className="container-page mt-20 lg:mt-28">
+        <div className="section-intro reveal">
+          <h3 id="apps-title" className="h-subsection word-reveal">
+            <Words text={t.work.appsHeading} twoTone />
+          </h3>
+          <p className="lede mt-4">{t.work.appsLede}</p>
+        </div>
+      </div>
+      <div className="reveal mt-10 lg:mt-12">
+        <Gallery label={t.work.appsHeading.replace(/[.。]$/u, '')}>
+          {APP_PROJECTS.map((project) => (
+            <ProjectCard key={project.id} project={project} />
           ))}
         </Gallery>
       </div>

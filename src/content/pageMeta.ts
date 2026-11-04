@@ -51,7 +51,7 @@ export function pageMeta(ref: PageRef): PageMeta {
       if (!project) return home
       return {
         ...base,
-        title: copy.meta.caseTitle(project.name, project.status === 'live'),
+        title: copy.meta.caseTitle(project.name, project.status),
         description: copy.projects[project.id]?.summary ?? project.summary,
         faq: [],
       }

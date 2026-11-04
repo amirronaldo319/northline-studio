@@ -6,9 +6,25 @@ import farshDesktop from '@/assets/projects/farsh-aquatics-desktop.webp'
 import farshMobile from '@/assets/projects/farsh-aquatics-mobile.webp'
 import mendDesktop from '@/assets/projects/mend-desktop.webp'
 import mendMobile from '@/assets/projects/mend-mobile.webp'
-import { PROJECT_DATA, type ProjectData, type ProjectStatus } from './projectsData'
+import storageDesktop from '@/assets/projects/storage4666-desktop.webp'
+import storageMobile from '@/assets/projects/storage4666-mobile.webp'
+import maidNewDesktop from '@/assets/projects/maid-new-desktop.webp'
+import maidNewMobile from '@/assets/projects/maid-new-mobile.webp'
+import octaiqDesktop from '@/assets/projects/octaiq-desktop.webp'
+import octaiqMobile from '@/assets/projects/octaiq-mobile.webp'
+import shamsiDesktop from '@/assets/projects/shamsi-calendar-desktop.webp'
+import shamsiMobile from '@/assets/projects/shamsi-calendar-mobile.webp'
+import mendAppDesktop from '@/assets/projects/mend-app-desktop.webp'
+import mendAppMobile from '@/assets/projects/mend-app-mobile.webp'
+import jarvisDesktop from '@/assets/projects/jarvis-desktop.webp'
+import jarvisMobile from '@/assets/projects/jarvis-mobile.webp'
+import stayinDesktop from '@/assets/projects/stayin-desktop.webp'
+import stayinMobile from '@/assets/projects/stayin-mobile.webp'
+import motionKitDesktop from '@/assets/projects/motion-kit-desktop.webp'
+import motionKitMobile from '@/assets/projects/motion-kit-mobile.webp'
+import { PROJECT_DATA, type ProjectData, type ProjectKind, type ProjectStatus } from './projectsData'
 
-export type { ProjectStatus }
+export type { ProjectKind, ProjectStatus }
 
 export interface ProjectImage {
   src: string
@@ -24,9 +40,10 @@ export interface Project extends ProjectData {
 export const STATUS_LABEL: Record<ProjectStatus, string> = {
   live: 'Live website',
   concept: 'Concept project',
+  personal: 'Personal project',
 }
 
-/** Captures of each public site (see src/assets/projects/SOURCES.md). */
+/** Captures of each project (see src/assets/projects/SOURCES.md). */
 const IMAGES: Record<string, Pick<Project, 'desktop' | 'mobile'>> = {
   'farsh-aquatics': {
     desktop: { src: farshDesktop, width: 1200, height: 778 },
@@ -43,6 +60,38 @@ const IMAGES: Record<string, Pick<Project, 'desktop' | 'mobile'>> = {
   mend: {
     desktop: { src: mendDesktop, width: 1200, height: 778 },
     mobile: { src: mendMobile, width: 780, height: 1520 },
+  },
+  storage4666: {
+    desktop: { src: storageDesktop, width: 1200, height: 778 },
+    mobile: { src: storageMobile, width: 780, height: 1520 },
+  },
+  'maid-new': {
+    desktop: { src: maidNewDesktop, width: 1200, height: 778 },
+    mobile: { src: maidNewMobile, width: 780, height: 1520 },
+  },
+  octaiq: {
+    desktop: { src: octaiqDesktop, width: 1200, height: 778 },
+    mobile: { src: octaiqMobile, width: 780, height: 1520 },
+  },
+  'shamsi-calendar': {
+    desktop: { src: shamsiDesktop, width: 1200, height: 778 },
+    mobile: { src: shamsiMobile, width: 780, height: 1520 },
+  },
+  'mend-app': {
+    desktop: { src: mendAppDesktop, width: 1200, height: 778 },
+    mobile: { src: mendAppMobile, width: 780, height: 1520 },
+  },
+  jarvis: {
+    desktop: { src: jarvisDesktop, width: 1200, height: 778 },
+    mobile: { src: jarvisMobile, width: 780, height: 1520 },
+  },
+  stayin: {
+    desktop: { src: stayinDesktop, width: 1200, height: 778 },
+    mobile: { src: stayinMobile, width: 780, height: 1520 },
+  },
+  'motion-kit': {
+    desktop: { src: motionKitDesktop, width: 1200, height: 778 },
+    mobile: { src: motionKitMobile, width: 780, height: 1520 },
   },
 }
 
@@ -64,8 +113,19 @@ export const SECONDARY_PROJECT: Project = requireProject('farsh-aquatics')
 /** The live website shown large at the top of the portfolio, in a different style from the hero. */
 export const FEATURED_PROJECT: Project = requireProject('604kars')
 
-/** The concept project shown beside the concept demo. */
+/** A website concept, kept distinct from the live work in tests and copy. */
 export const CONCEPT_PROJECT: Project = requireProject('ganjineh-ofogh')
 
-/** A product landing page, shown with the other concept work. */
-export const MEND_PROJECT: Project = requireProject('mend')
+const FEATURED_IDS = new Set([SECONDARY_PROJECT.id, FEATURED_PROJECT.id])
+
+/** The websites shown in the portfolio gallery, in order, after the featured project. */
+export const GALLERY_WEBSITES: readonly Project[] = [
+  SECONDARY_PROJECT,
+  ...PROJECTS.filter((project) => project.kind === 'website' && !FEATURED_IDS.has(project.id)),
+]
+
+/** Apps and tools I built for myself, shown in their own gallery. */
+export const APP_PROJECTS: readonly Project[] = PROJECTS.filter((project) => project.kind === 'app')
+
+/** Projects that are websites for a business or product, the work a trade page points to. */
+export const WEBSITE_PROJECTS: readonly Project[] = PROJECTS.filter((project) => project.kind === 'website')

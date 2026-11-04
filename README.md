@@ -22,7 +22,7 @@ Hero → Work → Your website package → Process → About → FAQ → Request
 | Section | File |
 | --- | --- |
 | Hero (headline, CTAs, featured preview) | `src/components/sections/Hero.tsx` |
-| Work (live sites, concept project, concept demo) | `src/components/sections/Work.tsx`; real projects in `src/content/projects.ts`, concept demos in `src/content/examples.ts` |
+| Work (live sites, website concepts, apps and tools, concept demos) | `src/components/sections/Work.tsx`; real projects in `src/content/projects.ts`, concept demos in `src/content/examples.ts` |
 | Package (deliverables and written-quote note) | `src/components/sections/Package.tsx`, items in `src/config/site.ts` |
 | Process, About, FAQ | `Process.tsx`, `About.tsx`, `Faq.tsx`; FAQ text in `src/content/faq.ts` |
 | Inquiry form | `src/components/sections/Contact.tsx`, `src/components/contact/InquiryForm.tsx`, logic in `src/lib/inquiry.ts` |
@@ -150,20 +150,27 @@ VITE_SITE_URL=https://your-domain.ca                     # no trailing slash
 
 ## Portfolio and imagery
 
-Three kinds of work appear, each labelled for what it is:
+Four kinds of work appear, each labelled for what it is:
 
 - **Live websites** (Farsh Aquatics, 604 Kars): real public sites. Screenshots are captures, not mock-ups.
-- **Concept project** (Ganjineh Ofogh): a self-initiated design, shown with its live preview.
+- **Concept projects** (Storage4666, Maid New, Ganjineh Ofogh): unpaid designs for a business, shown with their live
+  previews. Storage4666 and Maid New are unofficial redesign concepts, shown with the businesses' permission.
+- **Personal projects**: my own products and tools. The Mend landing page sits with the websites; OctaIQ, Shamsi
+  Calendar, the Mend app, Jarvis, STAYIN, and Motion Kit get their own "Apps and tools" gallery (`kind: 'app'`).
+  STAYIN and Motion Kit have private repositories, so they have no `liveUrl` and say so on the page.
 - **Concept demo** (Tidewell Cleaning, shown in the hero): a design for a fictional business, opened in an accessible preview dialog
   (Escape, focus containment, focus restoration, desktop/phone toggle) with a separate button to the real inquiry form.
 
 **Add or refresh a real project**
 
-1. Add it to `src/content/projects.ts`. Only state what you can trace to the project itself: no outcomes, no metrics,
-   no client claims.
+1. Add it to `src/content/projectsData.ts` (with `status` and `kind`), its screenshots to `src/content/projects.ts`,
+   and its copy to every language in `src/i18n/` (Traditional Chinese: edit `zhHans.ts`, then
+   `node scripts/generate-traditional-chinese.mjs`). Only state what you can trace to the project itself: no outcomes,
+   no metrics, no client claims.
 2. Add a target to `scripts/capture-project-screenshots.mjs` and run
    `node scripts/capture-project-screenshots.mjs <id>`. It writes optimised WebP desktop and phone captures to
-   `src/assets/projects/`. Needs Google Chrome.
+   `src/assets/projects/`. Needs Google Chrome or Chromium (`CHROME_PATH`). For a private project, pass a local
+   copy: `node scripts/capture-project-screenshots.mjs stayin=file:///path/to/index.html`.
 3. Record the source and capture date in `src/assets/projects/SOURCES.md`.
 
 Only feature public work you built, and confirm the owner of any business shown is happy to be featured.
