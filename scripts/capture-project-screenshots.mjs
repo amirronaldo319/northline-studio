@@ -21,11 +21,46 @@ const PORT = 9333
 const DESKTOP = { width: 1200, height: 778, deviceScaleFactor: 1, mobile: false }
 const PHONE = { width: 390, height: 760, deviceScaleFactor: 2, mobile: true }
 
+// Projects with a private repository and no public page have `url: null`. Capture them from a local copy by
+// passing `id=url`, for example `node scripts/capture-project-screenshots.mjs stayin=file:///path/web/index.html`.
 const TARGETS = [
   { id: '604kars', url: 'https://604kars.com/', settleMs: 4000 },
   { id: 'ganjineh-ofogh', url: 'https://amirronaldo319.github.io/ganjineh-ofogh/en/', settleMs: 9000 },
   { id: 'farsh-aquatics', url: 'https://farshaquatics.ca/', settleMs: 4000 },
   { id: 'mend', url: 'https://amirronaldo319.github.io/mend-website/', settleMs: 5000 },
+  { id: 'storage4666', url: 'https://amirronaldo319.github.io/storage4666-concept/', settleMs: 4000 },
+  {
+    id: 'maid-new',
+    url: 'https://amirronaldo319.github.io/maid-new-redesign-demo/',
+    settleMs: 6000,
+    // The concept's "What's improved" note slides in over the hero after a few seconds; mark it as seen.
+    initScript: "try { sessionStorage.setItem('sp-nudge', '1') } catch {}",
+  },
+  { id: 'octaiq', url: 'https://amirronaldo319.github.io/octaiq/', settleMs: 6000 },
+  { id: 'shamsi-calendar', url: 'https://amirronaldo319.github.io/shamsi-calendar/', settleMs: 4000 },
+  {
+    id: 'mend-app',
+    url: 'https://amirronaldo319.github.io/mend-prototype/',
+    // The app opens on a short splash screen, then says once that it works offline; dismiss that notice.
+    settleMs: 10000,
+    beforeShot: "[...document.querySelectorAll('button, [role=button]')].find((el) => el.textContent.trim() === 'Dismiss')?.click()",
+  },
+  { id: 'jarvis', url: 'https://amirronaldo319.github.io/jarvis-agent/', settleMs: 5000 },
+  {
+    id: 'stayin',
+    url: null, // private repo: capture STAYIN-iOS/web/index.html
+    settleMs: 2000,
+    // Open on Home (as after setup, with progress hidden) and give the single-file preview a phone viewport.
+    initScript: `
+      try { localStorage.setItem('stayin-silver-preview', JSON.stringify({ v: 1, goal: 0, start: new Date().toISOString(), reason: '', hide: true })) } catch {}
+      document.addEventListener('DOMContentLoaded', () => {
+        const meta = document.createElement('meta')
+        meta.name = 'viewport'
+        meta.content = 'width=device-width, initial-scale=1'
+        document.head.append(meta)
+      })`,
+  },
+  { id: 'motion-kit', url: null, settleMs: 6000 },
 ]
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
@@ -93,10 +128,15 @@ async function capture(target, kind, viewport) {
     await page.send('Page.enable')
     await page.send('Emulation.setDeviceMetricsOverride', viewport)
     if (viewport.mobile) await page.send('Emulation.setTouchEmulationEnabled', { enabled: true })
+    if (target.initScript) await page.send('Page.addScriptToEvaluateOnNewDocument', { source: target.initScript })
     const loaded = page.once('Page.loadEventFired')
     await page.send('Page.navigate', { url: target.url })
     await loaded
     await sleep(target.settleMs)
+    if (target.beforeShot) {
+      await page.send('Runtime.evaluate', { expression: target.beforeShot })
+      await sleep(800)
+    }
     const shot = await page.send('Page.captureScreenshot', { format: 'webp', quality: 82, fromSurface: true })
     const file = path.join(OUT_DIR, `${target.id}-${kind}.webp`)
     writeFileSync(file, Buffer.from(shot.data, 'base64'))
@@ -107,15 +147,37 @@ async function capture(target, kind, viewport) {
   }
 }
 
-const wanted = process.argv.slice(2)
-const targets = wanted.length ? TARGETS.filter((t) => wanted.includes(t.id)) : TARGETS
+// Each argument is a project id, or `id=url` to capture that project from another address (a local copy).
+const overrides = new Map(
+  process.argv.slice(2).map((arg) => {
+    const [id, ...rest] = arg.split('=')
+    return [id, rest.length ? rest.join('=') : null]
+  }),
+)
+const targets = (overrides.size ? TARGETS.filter((t) => overrides.has(t.id)) : TARGETS)
+  .map((t) => ({ ...t, url: overrides.get(t.id) ?? t.url }))
+  .filter((t) => {
+    if (t.url) return true
+    console.log(`skipped ${t.id}: no public page. Pass ${t.id}=<local url> to capture it.`)
+    return false
+  })
 if (targets.length === 0) throw new Error(`No matching projects. Known: ${TARGETS.map((t) => t.id).join(', ')}`)
 
 mkdirSync(OUT_DIR, { recursive: true })
 const profile = mkdtempSync(path.join(tmpdir(), 'sitepilot-capture-'))
 const chrome = spawn(
   CHROME,
-  [`--remote-debugging-port=${PORT}`, `--user-data-dir=${profile}`, '--headless=new', '--disable-gpu', '--hide-scrollbars', '--no-first-run'],
+  [
+    `--remote-debugging-port=${PORT}`,
+    `--user-data-dir=${profile}`,
+    '--headless=new',
+    '--disable-gpu',
+    '--hide-scrollbars',
+    '--no-first-run',
+    // Linux containers: Chrome refuses to run as root without this, and only reads a proxy from a flag.
+    ...(process.getuid?.() === 0 ? ['--no-sandbox'] : []),
+    ...(process.env.HTTPS_PROXY ? [`--proxy-server=${process.env.HTTPS_PROXY}`] : []),
+  ],
   { stdio: 'ignore' },
 )
 

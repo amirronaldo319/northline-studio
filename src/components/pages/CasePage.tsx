@@ -1,6 +1,7 @@
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight, Lock } from 'lucide-react'
 import { PROJECTS, type Project } from '@/content/projects'
 import { useCopy, useLocalHref } from '@/i18n/context'
+import { linkLabel, statusLabel } from '@/i18n/projectStatus'
 import { Contact } from '../sections/Contact'
 import { SiteCheck } from '../sections/SiteCheck'
 import { ProjectTrigger } from '../ProjectTrigger'
@@ -16,7 +17,6 @@ export function CasePage({ project }: { project: Project }) {
   const t = useCopy()
   const text = t.projects[project.id]
   const others = PROJECTS.filter((candidate) => candidate.id !== project.id)
-  const live = project.status === 'live'
 
   return (
     <>
@@ -26,15 +26,22 @@ export function CasePage({ project }: { project: Project }) {
           { label: t.common.work, href: homeAnchor('work') },
           { label: project.name },
         ]}
-        eyebrow={`${live ? t.work.statusLive : t.work.statusConcept} · ${text.type}`}
+        eyebrow={`${statusLabel(t.work, project.status)} · ${text.type}`}
         headline={project.name}
         intro={text.summary}
         secondary={
-          <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className={buttonClasses('secondary', 'lg')}>
-            {live ? t.work.visitLive : t.work.openLivePreview}
-            <span className="sr-only">{t.common.opensNewTab(project.name)}</span>
-            <ArrowUpRight aria-hidden="true" size={17} className="card-arrow" />
-          </a>
+          project.liveUrl ? (
+            <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className={buttonClasses('secondary', 'lg')}>
+              {linkLabel(t.work, project.status)}
+              <span className="sr-only">{t.common.opensNewTab(project.name)}</span>
+              <ArrowUpRight aria-hidden="true" size={17} className="card-arrow" />
+            </a>
+          ) : (
+            <p className="inline-flex items-center justify-center gap-2 text-[1rem] text-ink-3">
+              <Lock aria-hidden="true" size={16} />
+              {t.work.noPublicLink}
+            </p>
+          )
         }
       />
 
@@ -93,7 +100,7 @@ export function CasePage({ project }: { project: Project }) {
                   href={localHref(`work/${other.id}/`)}
                   className="tile-paper tile-link group block !p-6"
                 >
-                  <p className="text-[0.875rem] font-semibold text-cobalt">{other.status === 'live' ? t.work.statusLive : t.work.statusConcept}</p>
+                  <p className="text-[0.875rem] font-semibold text-cobalt">{statusLabel(t.work, other.status)}</p>
                   <p className="mt-2 text-[1.125rem] font-semibold">
                     <bdi>{other.name}</bdi>
                   </p>

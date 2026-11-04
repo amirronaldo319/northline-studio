@@ -2,6 +2,7 @@ import { ArrowUpRight, Check } from 'lucide-react'
 import { PROJECT_DATA } from '@/content/projectsData'
 import type { Trade } from '@/content/trades'
 import { useCopy, useLocalHref } from '@/i18n/context'
+import { statusLabel } from '@/i18n/projectStatus'
 import { revealDelay } from '@/lib/reveal'
 import { Contact } from '../sections/Contact'
 import { Faq } from '../sections/Faq'
@@ -73,15 +74,15 @@ export function TradePage({ trade }: { trade: Trade }) {
             </h2>
             <p className="lede mt-5">{t.tradePage.recentLede}</p>
           </div>
-          <ul className="reveal mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-            {PROJECT_DATA.map((project) => (
+          <ul className="reveal mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {PROJECT_DATA.filter((project) => project.kind === 'website').map((project) => (
               <li key={project.id}>
                 <a
                   href={localHref(`work/${project.id}/`)}
                   className="tile-paper tile-link group block h-full !p-6"
                 >
                   <p className="text-[0.875rem] font-semibold text-cobalt">
-                    {project.status === 'live' ? t.work.statusLive : t.work.statusConcept}
+                    {statusLabel(t.work, project.status)}
                   </p>
                   <h3 className="mt-2 flex items-center gap-1.5 text-[1.125rem] font-semibold">
                     <bdi>{project.name}</bdi>

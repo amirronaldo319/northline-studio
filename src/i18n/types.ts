@@ -1,6 +1,7 @@
 import type { FaqItem } from '../content/faq.ts'
 import type { Guide } from '../content/guides.ts'
 import type { Trade } from '../content/trades.ts'
+import type { ProjectStatus } from '../content/projectsData.ts'
 
 /**
  * Everything a visitor can read, for one language. Every language file must provide every key (TypeScript
@@ -53,7 +54,7 @@ export interface Copy {
   meta: {
     homeTitle: string
     homeDescription: string
-    caseTitle: (name: string, isLive: boolean) => string
+    caseTitle: (name: string, status: ProjectStatus) => string
   }
 
   common: {
@@ -98,9 +99,16 @@ export interface Copy {
     lede: string
     statusLive: string
     statusConcept: string
+    statusPersonal: string
     contribution: string
     visitLive: string
     openLivePreview: string
+    /** Shown instead of a link when a project's repository is private. */
+    noPublicLink: string
+    /** Label for the gallery of websites. */
+    sitesLabel: string
+    appsHeading: string
+    appsLede: string
     readCaseStudy: string
     conceptDemo: string
     viewExample: string

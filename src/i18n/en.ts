@@ -27,7 +27,8 @@ export const en: Copy = {
     homeTitle: 'SitePilot | Custom websites for Canadian businesses',
     homeDescription:
       'One-page websites from CA$299 for businesses across Canada. Compare Starter and CA$599 Standard packages. Optional care from CA$29/month.',
-    caseTitle: (name, isLive) => `${name}: ${isLive ? 'a live website I built' : 'a concept project'} | SitePilot`,
+    caseTitle: (name, status) =>
+      `${name}: ${{ live: 'a live website I built', concept: 'a concept project', personal: 'a personal project' }[status]} | SitePilot`,
   },
 
   common: {
@@ -67,12 +68,17 @@ export const en: Copy = {
   work: {
     eyebrow: 'Selected work',
     heading: 'What I’ve built, and how I design.',
-    lede: 'Two live websites, two concept projects, and design concepts for fictional businesses, each labelled for what it is.',
+    lede: 'Two live websites, three website concepts, my own products and tools, and design demos for fictional businesses, each labelled for what it is.',
     statusLive: 'Live website',
     statusConcept: 'Concept project',
+    statusPersonal: 'Personal project',
     contribution: 'My contribution:',
     visitLive: 'Visit live site',
     openLivePreview: 'Open live preview',
+    noPublicLink: 'Private repository, no public link',
+    sitesLabel: 'Websites',
+    appsHeading: 'Apps and tools.',
+    appsLede: 'Things I designed and built for myself: web apps, phone prototypes, and a developer kit.',
     readCaseStudy: 'Read the case study',
     conceptDemo: 'Concept demo',
     viewExample: 'View example',

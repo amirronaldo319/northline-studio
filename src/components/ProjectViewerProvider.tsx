@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
-import { ArrowUpRight, Monitor, Smartphone, X } from 'lucide-react'
+import { ArrowUpRight, Lock, Monitor, Smartphone, X } from 'lucide-react'
 import { Button, SegmentedControl } from 'glisse'
 import type { Project } from '@/content/projects'
 import { useCopy } from '@/i18n/context'
+import { linkLabel, statusLabel } from '@/i18n/projectStatus'
 import { canShareElement, flipCss, flipTransform, isInViewport } from '@/lib/flip'
 import {
   ProjectViewerContext,
@@ -255,7 +256,7 @@ export function ProjectViewerProvider({ children }: { children: ReactNode }) {
               <div className="mb-3 flex items-start justify-between gap-4 text-white">
                 <div className="min-w-0">
                   <p className="text-[0.875rem] font-semibold text-white/75">
-                    {project.status === 'live' ? t.work.statusLive : t.work.statusConcept} <span aria-hidden="true">·</span>{' '}
+                    {statusLabel(t.work, project.status)} <span aria-hidden="true">·</span>{' '}
                     {t.projects[project.id].type}
                   </p>
                   <h2 id="project-viewer-title" className="mt-1 text-xl font-semibold sm:text-2xl">
@@ -327,16 +328,23 @@ export function ProjectViewerProvider({ children }: { children: ReactNode }) {
               <div ref={panelRef} className="mt-3 rounded-xl bg-card p-4 text-ink sm:p-5">
                 <p className="max-w-[46rem] text-[0.9375rem] leading-relaxed text-ink-2">{t.projects[project.id].summary}</p>
                 <div className="mt-4 flex flex-wrap items-center gap-3">
-                  <a
-                    href={project.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={buttonClasses('primary', 'md')}
-                  >
-                    {project.status === 'live' ? t.work.visitLive : t.work.openLivePreview}
-                    <span className="sr-only">{t.common.opensNewTab(project.name)}</span>
-                    <ArrowUpRight aria-hidden="true" size={17} className="card-arrow" />
-                  </a>
+                  {project.liveUrl ? (
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={buttonClasses('primary', 'md')}
+                    >
+                      {linkLabel(t.work, project.status)}
+                      <span className="sr-only">{t.common.opensNewTab(project.name)}</span>
+                      <ArrowUpRight aria-hidden="true" size={17} className="card-arrow" />
+                    </a>
+                  ) : (
+                    <p className="inline-flex items-center gap-2 text-[0.9375rem] text-ink-3">
+                      <Lock aria-hidden="true" size={15} />
+                      {t.work.noPublicLink}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
