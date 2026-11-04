@@ -1,4 +1,10 @@
 @import 'tailwindcss';
+/*
+ * Liquid Glass components (Glisse). The library also adds this stylesheet from JavaScript; importing it here as
+ * well means the prerendered page is styled at first paint, before any script runs. Both copies hold the same rules
+ * and are unlayered, so the cascade is the same before and after hydration. Brand tuning is at the end of this file.
+ */
+@import 'glisse/styles.css';
 
 /*
  * Design tokens — change the brand palette and type here.
@@ -316,8 +322,8 @@ html:has(dialog[open]) {
   margin: -6px;
 }
 
-/* The mobile menu is replaced by the inline navigation on wide screens. (Unlayered, so it beats utilities.) */
-@media (min-width: 900px) {
+/* The mobile menu is replaced by the glass tab bar on wide screens. (Unlayered, so it beats utilities.) */
+@media (min-width: 1024px) {
   .mobile-menu {
     display: none;
   }
@@ -1125,16 +1131,19 @@ dialog.viewer[data-closing]::backdrop {
 
 /*
  * Page-to-page motion. Pages are separate documents (each language and each page is its own HTML file), so the
- * browser can cross-fade between them: switching language or opening a case study no longer cuts. The header is
- * named so it stays put while the rest of the page changes. Browsers without support simply navigate as before.
+ * browser can cross-fade between them: switching language or opening a case study no longer cuts. Browsers without support simply navigate as before.
  */
 @media (prefers-reduced-motion: no-preference) {
   @view-transition {
     navigation: auto;
   }
 
-  header {
-    view-transition-name: site-header;
+  /*
+   * The brand capsule is named so the logo stays put while the rest of the page changes. Only the capsule, not
+   * the whole header: a named element is a backdrop root, and glass inside it could no longer see the page.
+   */
+  .glass-brand {
+    view-transition-name: site-brand;
   }
 
   ::view-transition-old(root),
@@ -1421,6 +1430,18 @@ dialog.viewer[data-closing]::backdrop {
     display: none !important;
   }
 
+  /* Glass prints as its plain tint: no frost or rim, and no open menu sheet. */
+  .glass-sheet-wrap,
+  .lg-menu-card {
+    display: none !important;
+  }
+
+  .lg-glass {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background-image: none !important;
+  }
+
   .hero-figure,
   .hero-grid {
     animation: none !important;
@@ -1528,4 +1549,525 @@ html.lenis body {
   border-radius: 9999px;
   background: radial-gradient(closest-side, rgb(23 63 208 / 0.11), transparent);
   opacity: 0;
+}
+
+/* ==========================================================================================================
+ * Liquid Glass (Glisse)
+ *
+ * Glass is used where something sits over the page: the floating header, the phone menu sheet, the phone quote
+ * bar, and the controls of the two preview dialogs. Text-heavy surfaces stay solid for reading. Glisse reads the
+ * `--lg-*` variables below on every fit, so the whole look is tuned from this block.
+ *
+ * Browsers: Chromium refracts whatever is behind the glass. Safari and Firefox keep the frost and the lit rim,
+ * and refract only content marked `data-glisse-backdrop` (the project viewer's screenshot). The theme is pinned
+ * with `data-theme` (light on <body>, dark on navy surfaces), so the glass never follows the device's dark mode
+ * onto this light page.
+ * ======================================================================================================== */
+
+:root,
+[data-theme='light'] {
+  --lg-glass: rgb(255 253 249 / 0.6);
+  --lg-glass-active: rgb(236 231 221 / 0.86);
+  --lg-blur: 8px;
+  --lg-glass-bend: 0.3;
+  --lg-glass-dispersion: 0.2;
+  --lg-rim-shine: 0.32;
+  --lg-fill: #173fd0;
+  --lg-on: #20683f;
+
+  --lg-foreground: #131a2b;
+  --lg-muted: #4f5567;
+  --lg-ring: #173fd0;
+  --lg-edge: rgb(19 26 43 / 0.12);
+  --lg-drop: rgb(19 26 43 / 0.08);
+  --lg-selection: rgb(19 26 43 / 0.08);
+  --lg-segment-track: rgb(19 26 43 / 0.07);
+  --lg-segment-label: #131a2b;
+  --lg-surface: rgb(255 253 249 / 0.9);
+  --lg-highlight: rgb(19 26 43 / 0.07);
+  --lg-separator: rgb(19 26 43 / 0.12);
+  --lg-rail: rgb(19 26 43 / 0.12);
+
+  /* The drop shadow under floating glass (see `.glass-lift`). */
+  --glass-drop: 0 1px 2px rgb(19 26 43 / 0.05), 0 8px 24px -14px rgb(19 26 43 / 0.28);
+}
+
+[data-theme='dark'] {
+  --lg-glass: rgb(26 34 56 / 0.58);
+  --lg-glass-active: rgb(52 63 96 / 0.72);
+  --lg-rim-shine: 0.16;
+  --lg-fill: #3358e0;
+  --lg-on: #2f8f58;
+
+  --lg-foreground: #ffffff;
+  --lg-muted: rgb(255 255 255 / 0.72);
+  --lg-ring: #ffffff;
+  --lg-edge: rgb(255 255 255 / 0.14);
+  --lg-selection: rgb(255 255 255 / 0.16);
+  --lg-segment-label: #ffffff;
+}
+
+/* Shared sizes: every glass control is at least 44px tall, the site's touch-target size. */
+.glass-capsule {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  border-radius: 9999px;
+}
+
+.lg-button.glass-icon-button,
+.glass-lang-menu .lg-button {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 9999px;
+}
+
+.lg-button.glass-btn {
+  height: auto;
+  min-height: 2.75rem;
+  white-space: nowrap;
+  border-radius: 9999px;
+  padding-inline: 1.125rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.lg-button.glass-btn-sm {
+  min-height: 2.5rem;
+  padding-inline: 0.875rem;
+  font-size: 0.875rem;
+}
+
+.lg-button.glass-btn-lg {
+  height: auto;
+  min-height: 3rem;
+  white-space: nowrap;
+  border-radius: 9999px;
+  padding-inline: 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Long labels may wrap (the site-check band); the capsule grows instead of clipping. */
+.lg-button.glass-btn-wrap {
+  padding-block: 0.625rem;
+  white-space: normal;
+  line-height: 1.3;
+}
+
+.lg-button:is(.glass-btn, .glass-btn-lg) > svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.lg-button.glass-btn-sm > svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+/*
+ * Glass on a flat surface (the white form card, plain paper) has nothing behind it to bend or frost, so it skips
+ * sampling the backdrop: it looks the same and costs nothing per frame. Filled buttons are opaque, likewise.
+ * Only glass that floats over changing content (header, quote bar, hero, dialogs) keeps the live backdrop.
+ */
+.lg-glass.glass-flat,
+.lg-button[data-variant='filled'] {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/*
+ * Frost: glass over a backdrop that keeps moving (the fixed header and phone quote bar, which every scroll passes
+ * under, and the hero pieces over its animated grid, colour and network) frosts and keeps its lit rim, but does not
+ * bend. Re-bending a moving backdrop every frame is the costly part, and at the tint these labels need the bend is
+ * barely visible. This is also what Safari and Firefox show for glass over arbitrary content, so all browsers
+ * match. Glass in the dialogs, where the backdrop is still, keeps the full refraction, and the tab bar's
+ * selection still bends while it is held.
+ */
+.site-header .lg-glass:not(.lg-tab-lens),
+.lg-glass.glass-quote,
+.lg-glass.glass-frost {
+  -webkit-backdrop-filter: blur(var(--lg-blur, 3px)) saturate(1.5);
+  backdrop-filter: blur(var(--lg-blur, 3px)) saturate(1.5);
+}
+
+/* A filled action keeps a readable label while busy (the library dims disabled buttons to 35%). */
+.lg-button[data-variant='filled']:disabled {
+  opacity: 0.78;
+  cursor: progress;
+}
+
+/* Visible focus for every glass control, in the brand ring (white on navy). */
+.lg-button:focus-visible,
+.lg-tab:focus-visible,
+.lg-menu-item:focus-visible {
+  outline: 2.5px solid var(--lg-ring);
+  outline-offset: 3px;
+}
+
+.lg-tab:focus-visible {
+  outline-offset: -3px;
+}
+
+/* ---- Floating header ---------------------------------------------------------------------------------- */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  /* The gaps between the glass pieces let clicks through to the page underneath. */
+  pointer-events: none;
+}
+
+.site-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  height: 4rem;
+}
+
+.site-header-row > * {
+  pointer-events: auto;
+}
+
+@media (min-width: 1024px) {
+  .site-header-row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+}
+
+/*
+ * Lift: a soft drop shadow under floating glass. Before the rim is painted (first paint, no JavaScript) the
+ * library's hairline edge is kept; once painted, the rim draws the edge itself.
+ */
+.lg-glass.glass-lift,
+.glass-lift > .lg-tab-bar-glass,
+.glass-tabs .lg-tab-bar-glass,
+.site-header .glass-lang-menu .lg-button {
+  box-shadow:
+    inset 0 0 0 0.5px var(--lg-edge),
+    var(--glass-drop);
+  transition:
+    box-shadow var(--motion-dur-ui) var(--motion-ease-out),
+    background-color 0.2s;
+}
+
+.lg-glass.glass-lift[data-rim],
+.glass-lift > .lg-tab-bar-glass[data-rim],
+.glass-tabs .lg-tab-bar-glass[data-rim],
+.site-header .glass-lang-menu .lg-button[data-rim] {
+  box-shadow: var(--glass-drop);
+}
+
+.site-header {
+  --glass-drop: 0 1px 2px rgb(19 26 43 / 0.05), 0 8px 24px -14px rgb(19 26 43 / 0.28);
+}
+
+.site-header[data-scrolled='true'] {
+  --glass-drop: 0 1px 2px rgb(19 26 43 / 0.06), 0 14px 32px -14px rgb(19 26 43 / 0.38);
+}
+
+/* Over moving page content the header frosts a little more, so its labels stay crisp. */
+.site-header {
+  --lg-blur: 12px;
+  --lg-glass: rgb(255 253 249 / 0.72);
+}
+
+.glass-brand {
+  justify-self: start;
+}
+
+.glass-brand-link {
+  display: flex;
+  align-items: center;
+  height: 2.75rem;
+  padding-inline: 0.875rem 1rem;
+  border-radius: inherit;
+}
+
+.glass-brand-link:focus-visible {
+  outline-offset: 2px;
+  border-radius: 9999px;
+}
+
+.glass-brand .brand-logo {
+  height: 1.75rem;
+  width: auto;
+}
+
+/* The tab bar: 44px tall like the other pieces, and wide enough for the longest label in each language. */
+.glass-tabs {
+  --lg-tab-height: 2.25rem;
+  --lg-tab-width: 5.25rem;
+  --lg-tab-inset: 0.25rem;
+}
+
+:root:lang(fr) .glass-tabs {
+  --lg-tab-width: 6.25rem;
+}
+
+:root:lang(fr) .glass-tabs :is(.lg-tab, .lg-tab-copy) {
+  font-size: 0.875rem;
+}
+
+:root:lang(zh-Hans) .glass-tabs,
+:root:lang(zh-Hant) .glass-tabs {
+  --lg-tab-width: 4.75rem;
+}
+
+.glass-tabs :is(.lg-tab, .lg-tab-copy) {
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.glass-tabs .lg-tab {
+  color: var(--color-ink-2);
+}
+
+.glass-nav-capsule {
+  padding-block: 0.125rem;
+}
+
+/* The reading progress line runs along the top edge of the screen, above the floating pieces. */
+.site-header .scroll-progress {
+  inset: 0 0 auto 0;
+}
+
+/* Phone menu: a glass sheet under the bar. Mounted always; hidden and inert while closed. */
+.glass-sheet-wrap {
+  position: absolute;
+  top: calc(100% - 0.25rem);
+  inset-inline: 1.25rem;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-0.5rem) scale(0.98);
+  transform-origin: top right;
+  pointer-events: none;
+}
+
+:root[dir='rtl'] .glass-sheet-wrap {
+  transform-origin: top left;
+}
+
+@media (min-width: 560px) {
+  .glass-sheet-wrap {
+    inset-inline: auto 1.25rem;
+    width: min(24rem, calc(100% - 2.5rem));
+  }
+
+  :root[dir='rtl'] .glass-sheet-wrap {
+    inset-inline: 1.25rem auto;
+  }
+}
+
+@media (min-width: 768px) {
+  .glass-sheet-wrap {
+    inset-inline: auto 2rem;
+  }
+
+  :root[dir='rtl'] .glass-sheet-wrap {
+    inset-inline: 2rem auto;
+  }
+}
+
+.glass-sheet-wrap[data-open='true'] {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.glass-sheet {
+  /* Reading surface: more frost and a denser tint than the bar, so the links read over anything. */
+  --lg-glass: rgb(255 253 249 / 0.9);
+  --lg-blur: 22px;
+  --glass-drop: 0 24px 60px -24px rgb(19 26 43 / 0.45);
+  border-radius: 1.75rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .glass-sheet-wrap {
+    transition:
+      opacity var(--motion-dur-ui) var(--motion-ease-out),
+      transform var(--motion-dur-ui) var(--motion-ease-out),
+      visibility 0s linear var(--motion-dur-ui);
+  }
+
+  .glass-sheet-wrap[data-open='true'] {
+    transition-delay: 0s;
+  }
+
+  .glass-sheet-wrap[data-open='true'] .menu-item {
+    opacity: 1;
+    transform: none;
+    transition-delay: calc(var(--i, 0) * 35ms + 40ms);
+  }
+}
+
+/* ---- Phone quote bar ---------------------------------------------------------------------------------- */
+
+.glass-quote {
+  --glass-drop: 0 16px 40px -18px rgb(19 26 43 / 0.45);
+  display: flex;
+  padding: 0.375rem;
+  border-radius: 9999px;
+}
+
+/* ---- Hero --------------------------------------------------------------------------------------------- */
+
+/* The secondary link on clear glass. The link fills the capsule, so the whole capsule is the target. */
+.glass-cta {
+  min-height: 3rem;
+}
+
+.glass-cta-link {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding-inline: 1.5rem;
+  border-radius: inherit;
+  color: var(--color-ink);
+  font-size: 1rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.glass-cta:has(.glass-cta-link:active) {
+  background-color: var(--lg-glass-active);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .glass-cta:has(.glass-cta-link:hover) {
+    background-color: var(--lg-glass-active);
+  }
+}
+
+/* The hero's grid and colour reach up behind the floating header, so the glass has something to show. */
+.hero-atmosphere {
+  top: -4rem;
+}
+
+/* "View the example" floats over the preview's lower corner. */
+.hero-peek {
+  position: absolute;
+  inset-inline-end: 0.75rem;
+  bottom: 0.75rem;
+  z-index: 1;
+}
+
+.hero-peek .lg-button {
+  --lg-glass: rgb(255 253 249 / 0.7);
+}
+
+/* ---- Preview dialogs ---------------------------------------------------------------------------------- */
+
+/* Desktop / phone: a segmented control wide enough for "Ordinateur" with its icon. */
+.glass-segmented {
+  --lg-tab-height: 2.25rem;
+  --lg-tab-width: 7.25rem;
+  --lg-thumb-inset: 3px;
+}
+
+.glass-segmented :is(.lg-tab, .lg-tab-copy) {
+  font-size: 0.875rem;
+}
+
+/* In the project viewer the toggle floats over the screenshot it switches. */
+.viewer-toggle {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 50%;
+  z-index: 1;
+  translate: -50% 0;
+  /* Screenshots can be dark or busy under the toggle; a denser tint keeps its labels readable on any of them. */
+  --lg-glass: rgb(255 253 249 / 0.86);
+  --glass-drop: 0 10px 30px -12px rgb(16 23 42 / 0.5);
+}
+
+/* The phone preview's width slider floats at the top of the scrolling preview. */
+.phone-width-bar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  padding-block: 0.75rem;
+  pointer-events: none;
+}
+
+.phone-width-capsule {
+  --lg-glass: rgb(255 253 249 / 0.78);
+  --lg-blur: 14px;
+  gap: 0.75rem;
+  padding-inline: 1rem 0.75rem;
+  pointer-events: auto;
+}
+
+.lg-slider.phone-width-slider {
+  width: 9rem;
+}
+
+/* ---- Inquiry form fields -------------------------------------------------------------------------------- */
+
+/*
+ * Every field is glass: Glisse `Input`s for single lines, and the textarea and select inside `Glass`. On the
+ * white form card a faint tint and a 1px line keep each field's edge visible; focus adds the brand ring.
+ */
+.lg-input.field-input,
+.lg-glass.field-glass {
+  --lg-glass: rgb(19 26 43 / 0.035);
+  --lg-glass-active: #ffffff;
+  --lg-rim-shine: 0;
+  display: block;
+  width: 100%;
+  max-width: none;
+  border-radius: 0.875rem;
+  box-shadow: inset 0 0 0 1px rgb(19 26 43 / 0.22);
+  transition:
+    background-color var(--motion-dur-hover) ease,
+    box-shadow var(--motion-dur-hover) ease;
+}
+
+.lg-input.field-input {
+  display: flex;
+  height: 3rem;
+  padding-inline: 1rem;
+}
+
+/* 16px text: anything smaller makes iOS zoom the page when the field is focused. */
+.lg-input.field-input input {
+  font-size: 1rem;
+  color: var(--color-ink);
+}
+
+.lg-input.field-input input::placeholder {
+  color: rgb(95 101 118 / 0.75);
+}
+
+.field-textarea {
+  min-height: 8.5rem;
+}
+
+.lg-input.field-input:focus-within,
+.lg-glass.field-glass:focus-within {
+  background-color: #ffffff;
+  box-shadow:
+    inset 0 0 0 1.5px var(--color-cobalt),
+    0 0 0 4px rgb(23 63 208 / 0.14);
+}
+
+.lg-input.field-input:has([aria-invalid='true']),
+.lg-glass.field-glass:has([aria-invalid='true']) {
+  box-shadow: inset 0 0 0 1.5px var(--color-danger);
+}
+
+.lg-input.field-input:has([aria-invalid='true']):focus-within,
+.lg-glass.field-glass:has([aria-invalid='true']):focus-within {
+  box-shadow:
+    inset 0 0 0 1.5px var(--color-danger),
+    0 0 0 4px rgb(180 35 24 / 0.12);
 }

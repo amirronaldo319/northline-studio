@@ -1,4 +1,5 @@
 import { ArrowUpRight } from 'lucide-react'
+import { Button } from 'glisse'
 import { EXAMPLES, HERO_EXAMPLE, type ExampleSite } from '@/content/examples'
 import { CONCEPT_PROJECT, FEATURED_PROJECT, MEND_PROJECT, SECONDARY_PROJECT, type Project } from '@/content/projects'
 import { useInViewOnce } from '@/hooks/useInViewOnce'
@@ -146,11 +147,11 @@ function ConceptCard({ example, index }: { example: ExampleSite; index: number }
         </h3>
         <p className="mt-2 text-[1.0625rem] leading-relaxed text-ink">{text.intent}</p>
         <p className="mt-2 hidden text-[0.9375rem] leading-relaxed text-ink-2 sm:block">{text.approach}</p>
-        <button type="button" onClick={() => open(example)} className={buttonClasses('secondary', 'md', 'mt-4')}>
+        <Button onClick={() => open(example)} className="glass-btn glass-flat mt-4">
           {t.work.viewExample}
           <span className="sr-only">: {example.name}</span>
-          <ArrowUpRight aria-hidden="true" size={17} className="card-arrow" />
-        </button>
+          <ArrowUpRight aria-hidden="true" className="card-arrow" />
+        </Button>
       </div>
     </article>
   )

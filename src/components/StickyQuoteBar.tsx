@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react'
 import { ArrowRight } from 'lucide-react'
+import { Glass } from 'glisse'
 import { CONTACT_SECTION_ID } from '@/content/navigation'
 import { useCopy } from '@/i18n/context'
 import { shouldShowQuoteBar } from '@/lib/quoteBar'
 import { buttonClasses } from './ui/button'
 
-/** Phones hide the header button to save space, so a quote link follows the visitor once they are past the first screen. */
+/**
+ * Phones hide the header button to save space, so a quote link follows the visitor once they are past the first
+ * screen, on a glass capsule.
+ */
 export function StickyQuoteBar() {
   const t = useCopy()
   const [scrolledPast, setScrolledPast] = useState(false)
@@ -43,13 +47,13 @@ export function StickyQuoteBar() {
       inert={!isVisible}
       className="quote-bar pointer-events-none fixed inset-x-0 bottom-0 z-30 flex justify-center px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] min-[560px]:hidden print:hidden"
     >
-      <a
-        href={`#${CONTACT_SECTION_ID}`}
-        className={buttonClasses('primary', 'lg', 'pointer-events-auto w-full max-w-sm shadow-lift')}
-      >
-        {t.common.requestQuote}
-        <ArrowRight aria-hidden="true" size={18} className="rtl:-scale-x-100" />
-      </a>
+      {/* A glass capsule floats the link over the page as it scrolls underneath. */}
+      <Glass className="glass-lift glass-quote pointer-events-auto w-full max-w-sm">
+        <a href={`#${CONTACT_SECTION_ID}`} className={buttonClasses('primary', 'lg', 'w-full')}>
+          {t.common.requestQuote}
+          <ArrowRight aria-hidden="true" size={18} className="rtl:-scale-x-100" />
+        </a>
+      </Glass>
     </div>
   )
 }

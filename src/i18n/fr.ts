@@ -11,7 +11,7 @@ export const fr: Copy = {
   common: {
     skipToContent: 'Aller au contenu', requestQuote: 'Demander une soumission', seeMyWork: 'Voir mes réalisations',
     openMenu: 'Ouvrir le menu', closeMenu: 'Fermer le menu', mainNav: 'Navigation principale', mobileNav: 'Navigation mobile',
-    footerNav: 'Pied de page', languageNav: 'Langue', backToTop: 'Retour en haut', privacy: 'Confidentialité', home: 'Accueil',
+    footerNav: 'Pied de page', languageNav: 'Langue', currentLanguage: 'actuelle', backToTop: 'Retour en haut', privacy: 'Confidentialité', home: 'Accueil',
     work: 'Réalisations', guides: 'Guides', breadcrumb: 'Fil d’Ariane', opensNewTab: (name) => ` : ${name} (s’ouvre dans un nouvel onglet)`,
   },
   nav: { work: 'Réalisations', package: 'Forfaits', process: 'Étapes', about: 'À propos', faq: 'FAQ' },
@@ -232,7 +232,7 @@ export const fr: Copy = {
   guidePage: { eyebrow: 'Guide', next: 'Guide suivant :' },
   dialogs: {
     conceptDemo: 'Démo conceptuelle', fictional: (businessType) => `Une entreprise fictive (${businessType}). Les boutons de cette démo n’envoient rien.`,
-    previewSize: 'Format de l’aperçu', desktop: 'Ordinateur', phone: 'Téléphone', closeExample: 'Fermer l’exemple', closePreview: 'Fermer l’aperçu', loading: 'Chargement de l’exemple…',
+    previewSize: 'Format de l’aperçu', previewWidth: 'Largeur du téléphone', desktop: 'Ordinateur', phone: 'Téléphone', closeExample: 'Fermer l’exemple', closePreview: 'Fermer l’aperçu', loading: 'Chargement de l’exemple…',
     demoNotice: 'Il s’agit d’une démo : rien n’a été envoyé. Sur un vrai site, le message serait transmis à l’entreprise.',
     wantSite: 'Vous souhaitez un site comme celui-ci? Ce bouton mène à mon véritable formulaire de contact.', requestForMyBusiness: 'Demander une soumission pour mon entreprise',
   },

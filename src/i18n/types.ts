@@ -66,6 +66,8 @@ export interface Copy {
     mobileNav: string
     footerNav: string
     languageNav: string
+    /** Marks the language being shown in the header's language menu, for screen readers. */
+    currentLanguage: string
     backToTop: string
     privacy: string
     home: string
@@ -254,6 +256,8 @@ export interface Copy {
     conceptDemo: string
     fictional: (businessType: string) => string
     previewSize: string
+    /** Label of the phone preview's width slider. */
+    previewWidth: string
     desktop: string
     phone: string
     closeExample: string

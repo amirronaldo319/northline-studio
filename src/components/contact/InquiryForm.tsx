@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react'
 import { AlertCircle, ChevronDown, Copy, Loader2, Mail, Send } from 'lucide-react'
+import { Button, Glass, Input } from 'glisse'
 import { PACKAGE_EVENT } from '@/content/offers'
 import { formEndpoint } from '@/config/env'
 import { mailtoHref, site } from '@/config/site'
@@ -16,9 +17,8 @@ import {
 } from '@/lib/inquiry'
 import { SITE_CHECK_EVENT, siteCheckPreset } from '@/lib/siteCheck'
 import { useCopy } from '@/i18n/context'
-import { buttonClasses } from '../ui/button'
 import { Field } from './fields'
-import { describedBy, inputClasses } from './fieldStyles'
+import { describedBy, fieldControlClasses } from './fieldStyles'
 import { SuccessCheck } from '../ui/SuccessCheck'
 
 type Status = 'idle' | 'submitting' | 'success' | 'error' | 'email-opened'
@@ -67,12 +67,15 @@ export function InquiryForm() {
     return () => window.removeEventListener(PACKAGE_EVENT, prepare)
   }, [])
 
-  const update = (field: InquiryField) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const next = { ...values, [field]: event.target.value }
+  const setField = (field: InquiryField, value: string) => {
+    const next = { ...values, [field]: value }
     setValues(next)
     if (hasAttempted) setErrors(validateInquiry(next, t.form.errors))
     if (status === 'error' || status === 'email-opened') setStatus('idle')
   }
+
+  const update = (field: InquiryField) => (event: ChangeEvent<HTMLTextAreaElement | HTMLSelectElement | HTMLInputElement>) =>
+    setField(field, event.target.value)
 
   const focusField = (field: InquiryField) => {
     // Optional fields live behind the disclosure, so open it first, then focus once it has rendered.
@@ -141,9 +144,9 @@ export function InquiryForm() {
         <SuccessCheck />
         <h3 className="mt-4 text-2xl font-semibold">{t.form.successTitle(firstName)}</h3>
         <p className="mt-3 leading-relaxed text-ink-2">{t.form.successBody(values.email.trim())}</p>
-        <button type="button" onClick={resetForm} className={buttonClasses('secondary', 'md', 'mt-6')}>
+        <Button onClick={resetForm} className="glass-btn glass-flat mt-6">
           {t.form.sendAnother}
-        </button>
+        </Button>
       </div>
     )
   }
@@ -160,6 +163,17 @@ export function InquiryForm() {
     'aria-describedby': describedBy(`inquiry-${field}`, errors[field], hasHint),
   })
 
+  /** The same wiring for a Glisse `Input`, which reports its text through `onValueChange`. */
+  const inputProps = (field: InquiryField) => ({
+    id: `inquiry-${field}`,
+    name: field,
+    value: values[field],
+    onValueChange: (value: string) => setField(field, value),
+    'aria-invalid': errors[field] ? true : undefined,
+    'aria-describedby': describedBy(`inquiry-${field}`, errors[field]),
+    className: 'field-input glass-flat',
+  })
+
   return (
     <form
       ref={formRef}
@@ -170,10 +184,10 @@ export function InquiryForm() {
     >
       <div className="grid gap-5 sm:grid-cols-2">
         <Field id="inquiry-name" label={t.form.name} error={errors.name}>
-          <input {...fieldProps('name')} type="text" autoComplete="name" required className={inputClasses} />
+          <Input {...inputProps('name')} type="text" autoComplete="name" required />
         </Field>
         <Field id="inquiry-email" label={t.form.email} error={errors.email}>
-          <input {...fieldProps('email')} dir="ltr" type="email" autoComplete="email" inputMode="email" required className={`${inputClasses} text-start`} />
+          <Input {...inputProps('email')} dir="ltr" type="email" autoComplete="email" inputMode="email" required />
         </Field>
       </div>
 
@@ -184,25 +198,27 @@ export function InquiryForm() {
         hint={t.form.messageHint}
         className="mt-5"
       >
-        <textarea {...fieldProps('message', true)} rows={5} required className={`${inputClasses} resize-y`} />
+        <Glass className="field-glass glass-flat">
+          <textarea {...fieldProps('message', true)} rows={5} required className={`${fieldControlClasses} field-textarea resize-y`} />
+        </Glass>
       </Field>
 
       <div className="mt-5 border-t border-line pt-4">
-        <button
-          type="button"
+        <Button
           aria-expanded={isDetailsOpen}
           aria-controls="inquiry-details"
           onClick={() => setIsDetailsOpen((open) => !open)}
-          className="-ms-1 inline-flex min-h-11 items-center gap-2 rounded-lg px-1 text-[0.9375rem] font-semibold text-ink hover:text-cobalt"
+          className="glass-btn glass-flat"
+          icon={
+            <ChevronDown
+              aria-hidden="true"
+              className={`transition-transform duration-200 motion-reduce:transition-none ${isDetailsOpen ? 'rotate-180' : ''}`}
+            />
+          }
         >
-          <ChevronDown
-            aria-hidden="true"
-            size={18}
-            className={`transition-transform duration-200 motion-reduce:transition-none ${isDetailsOpen ? 'rotate-180' : ''}`}
-          />
           {t.form.addDetails}
           <span className="text-sm font-normal text-ink-3">{t.form.optional}</span>
-        </button>
+        </Button>
 
         <div id="inquiry-details" className="disclosure disclosure-pad" data-open={isDetailsOpen} inert={!isDetailsOpen}>
           <div className="disclosure-inner">
@@ -210,11 +226,11 @@ export function InquiryForm() {
             <div className="mt-3 space-y-5">
               <div className="grid gap-5 sm:grid-cols-2">
                 <Field id="inquiry-business" label={t.form.businessName} isOptional>
-                  <input {...fieldProps('business')} type="text" autoComplete="organization" className={inputClasses} />
+                  <Input {...inputProps('business')} type="text" autoComplete="organization" />
                 </Field>
                 <Field id="inquiry-businessType" label={t.form.businessType} isOptional>
-                  <div className="relative">
-                    <select {...fieldProps('businessType')} className={`${inputClasses} appearance-none pe-10`}>
+                  <Glass className="field-glass glass-flat relative">
+                    <select {...fieldProps('businessType')} className={`${fieldControlClasses} appearance-none pe-10`}>
                       <option value="">{t.form.chooseOne}</option>
                       {t.form.businessTypes.map((type) => (
                         <option key={type.value} value={type.value}>
@@ -223,14 +239,14 @@ export function InquiryForm() {
                       ))}
                     </select>
                     <ChevronDown aria-hidden="true" size={18} className="pointer-events-none absolute end-3.5 top-1/2 -translate-y-1/2 text-ink-3" />
-                  </div>
+                  </Glass>
                 </Field>
                 <Field id="inquiry-phone" label={t.form.phone} isOptional error={errors.phone}>
-                  <input {...fieldProps('phone')} dir="ltr" type="tel" autoComplete="tel" inputMode="tel" className={`${inputClasses} text-start`} />
+                  <Input {...inputProps('phone')} dir="ltr" type="tel" autoComplete="tel" inputMode="tel" />
                 </Field>
                 <Field id="inquiry-website" label={t.form.existingWebsite} isOptional error={errors.website}>
-                  <input
-                    {...fieldProps('website')}
+                  <Input
+                    {...inputProps('website')}
                     dir="ltr"
                     type="text"
                     inputMode="url"
@@ -238,7 +254,6 @@ export function InquiryForm() {
                     placeholder={t.form.websitePlaceholder}
                     spellCheck={false}
                     autoCapitalize="none"
-                    className={`${inputClasses} text-start`}
                   />
                 </Field>
               </div>
@@ -304,32 +319,31 @@ export function InquiryForm() {
             </a>
             {t.form.emailOpenedAfter}
           </p>
-          <button type="button" onClick={copyDetails} className={buttonClasses('secondary', 'md', 'mt-3')}>
-            <Copy aria-hidden="true" size={16} />
+          <Button onClick={copyDetails} className="glass-btn glass-flat mt-3" icon={<Copy aria-hidden="true" />}>
             {copyState === 'copied' ? t.form.detailsCopied : copyState === 'unavailable' ? t.form.copyUnavailable : t.form.copyDetails}
-          </button>
+          </Button>
         </div>
       )}
 
       <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
-        <button type="submit" disabled={isSubmitting} aria-disabled={isSubmitting} className={buttonClasses('primary', 'lg', 'w-full sm:w-auto')}>
-          {isSubmitting ? (
-            <>
-              <Loader2 aria-hidden="true" size={18} className="animate-spin motion-reduce:animate-none" />
-              {t.form.sending}
-            </>
-          ) : isConnected ? (
-            <>
-              <Send aria-hidden="true" size={17} />
-              {t.form.send}
-            </>
-          ) : (
-            <>
-              <Mail aria-hidden="true" size={18} />
-              {t.form.openEmail}
-            </>
-          )}
-        </button>
+        <Button
+          type="submit"
+          variant="filled"
+          disabled={isSubmitting}
+          aria-disabled={isSubmitting}
+          className="glass-btn-lg w-full sm:w-auto"
+          icon={
+            isSubmitting ? (
+              <Loader2 aria-hidden="true" className="animate-spin motion-reduce:animate-none" />
+            ) : isConnected ? (
+              <Send aria-hidden="true" />
+            ) : (
+              <Mail aria-hidden="true" />
+            )
+          }
+        >
+          {isSubmitting ? t.form.sending : isConnected ? t.form.send : t.form.openEmail}
+        </Button>
         <p className="text-sm text-ink-3">
           {isConnected ? t.form.sentDirect : t.form.mailtoNote}
         </p>

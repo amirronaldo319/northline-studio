@@ -40,6 +40,7 @@ export const en: Copy = {
     mobileNav: 'Mobile',
     footerNav: 'Footer',
     languageNav: 'Language',
+    currentLanguage: 'current',
     backToTop: 'Back to top',
     privacy: 'Privacy',
     home: 'Home',
@@ -292,6 +293,7 @@ export const en: Copy = {
     fictional: (businessType) =>
       `A fictional ${businessType.toLowerCase()} business. Buttons in this demo don’t send anything.`,
     previewSize: 'Preview size',
+    previewWidth: 'Phone width',
     desktop: 'Desktop',
     phone: 'Phone',
     closeExample: 'Close example',
