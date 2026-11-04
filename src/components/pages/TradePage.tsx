@@ -27,7 +27,7 @@ export function TradePage({ trade }: { trade: Trade }) {
 
       <section aria-labelledby="checks-title" className="section-pad bg-card">
         <div className="container-page">
-          <div className="reveal max-w-2xl">
+          <div className="section-intro reveal">
             <p className="eyebrow">{t.tradePage.customersEyebrow}</p>
             <h2 id="checks-title" className="h-section word-reveal mt-3">
               <Words text={t.tradePage.checksHeading(trade.noun)} twoTone />
@@ -66,12 +66,12 @@ export function TradePage({ trade }: { trade: Trade }) {
 
       <section aria-labelledby="proof-title" className="section-pad bg-card">
         <div className="container-page">
-          <div className="reveal max-w-2xl">
+          <div className="section-intro reveal">
             <p className="eyebrow">{t.tradePage.recentEyebrow}</p>
             <h2 id="proof-title" className="h-section word-reveal mt-3">
               <Words text={t.tradePage.recentHeading} twoTone />
             </h2>
-            <p className="lede mt-4">{t.tradePage.recentLede}</p>
+            <p className="lede mt-5">{t.tradePage.recentLede}</p>
           </div>
           <ul className="reveal mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
             {PROJECT_DATA.map((project) => (

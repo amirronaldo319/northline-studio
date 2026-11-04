@@ -25,6 +25,8 @@ export const zhHans: Copy = {
     footerNav: '页脚',
     languageNav: '语言',
     currentLanguage: '当前',
+    previous: '上一个',
+    next: '下一个',
     backToTop: '回到顶部',
     privacy: '隐私',
     home: '首页',

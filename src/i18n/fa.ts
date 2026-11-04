@@ -25,6 +25,8 @@ export const fa: Copy = {
     footerNav: 'پایین صفحه',
     languageNav: 'زبان',
     currentLanguage: 'زبان فعلی',
+    previous: 'قبلی',
+    next: 'بعدی',
     backToTop: 'بازگشت به بالا',
     privacy: 'حریم خصوصی',
     home: 'خانه',

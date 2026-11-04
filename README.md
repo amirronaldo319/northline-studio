@@ -54,9 +54,9 @@ The site keeps its own CSS motion system (tokens at the top of `src/index.css`, 
 | Library | Used for | Where | Runs when |
 | --- | --- | --- | --- |
 | [Lenis](https://lenis.darkroom.engineering/) | Smooth wheel scrolling and gliding in-page links | `src/motion/engine.ts` | Mouse or trackpad, no reduced motion. Touch screens keep native scrolling |
-| [GSAP](https://gsap.com) + ScrollTrigger + SplitText | Parallax screenshots, hero text drift, word-by-word scrubbed About text, staggered package cards, panel grow, step-number pop. Each is opt-in by a `data-*` attribute (listed at the top of `src/motion/effects.ts`; the tilt and pointer-light effects there are no longer used by any page) | `src/motion/effects.ts` | No reduced motion. Lenis drives ScrollTrigger so there is one scroll controller |
+| [GSAP](https://gsap.com) + ScrollTrigger + SplitText | Parallax screenshots, hero text drift, word-by-word scrubbed About text, staggered package cards, panel grow, step-number pop. Each is opt-in by a `data-*` attribute (listed at the top of `src/motion/effects.ts`) | `src/motion/effects.ts` | No reduced motion. Lenis drives ScrollTrigger so there is one scroll controller |
 
-Everything is downloaded on demand, never in the first paint. The Apple-style pass removed the Vanta.js network (and three.js), the React Bits magnet buttons and spotlight cards, and the pointer tilt: they competed with the work. They can be restored from git history (before the "Apple-style design pass" commit).
+Everything is downloaded on demand, never in the first paint. The Apple-style passes removed the Vanta.js network (and three.js), the React Bits magnet buttons and spotlight cards, the pointer tilt and light, and the scrolling band of trades: they competed with the work. They can be restored from git history (before the "Apple-style design pass" commit).
 
 ## Design language
 
@@ -76,6 +76,10 @@ The site follows Apple's product-page conventions while keeping the SitePilot br
   (`src/hooks/useOverDarkSurface.ts`); add `data-surface="dark"` to any new dark section for the same behaviour.
 - **Actions:** flat blue pills for main actions, outline pills beside them (`outlineLight` on dark), and blue text
   links with a chevron (`.chevron-link`) for "read more".
+- **Highlights gallery:** the work after the featured project sits in a sideways, snapping gallery
+  (`src/components/ui/Gallery.tsx`), as in Apple's "Get the highlights": the next tile peeks in, glass buttons
+  step through it, and dots mark the tiles in view. It is a native scroller with every tile in reading order;
+  nothing moves on its own. Right-to-left pages scroll the other way (`galleryEdges` in `src/lib/gallery.ts`).
 - **Hero:** the brand name as a product label, a centred headline, and the preview in a plain window frame that
   fades at its foot and grows to full size as the page scrolls.
 - **Footer:** light and small, in columns of plain links.

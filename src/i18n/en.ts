@@ -41,6 +41,8 @@ export const en: Copy = {
     footerNav: 'Footer',
     languageNav: 'Language',
     currentLanguage: 'current',
+    previous: 'Previous',
+    next: 'Next',
     backToTop: 'Back to top',
     privacy: 'Privacy',
     home: 'Home',
