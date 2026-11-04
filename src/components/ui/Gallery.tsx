@@ -9,6 +9,8 @@ type Props = {
   label: string
   /** One element per tile; each becomes a list item. */
   children: ReactNode
+  /** "wide" shows two tiles across a wide screen; "compact" shows three, for portrait tiles such as phone apps. */
+  size?: 'wide' | 'compact'
 }
 
 /**
@@ -16,7 +18,7 @@ type Props = {
  * glass buttons step through them. It is a native scroller, so touch, trackpad and keyboard work as usual; every
  * tile stays in the page and in reading order, and nothing moves on its own.
  */
-export function Gallery({ label, children }: Props) {
+export function Gallery({ label, children, size = 'wide' }: Props) {
   const t = useCopy()
   const scrollerRef = useRef<HTMLUListElement>(null)
   const [edges, setEdges] = useState({ atStart: true, atEnd: false })
@@ -69,7 +71,7 @@ export function Gallery({ label, children }: Props) {
   }
 
   return (
-    <div className="gallery">
+    <div className="gallery" data-size={size}>
       <ul ref={scrollerRef} className="gallery-track" aria-label={label} tabIndex={0}>
         {items.map((item, index) => (
           <li key={index} className="gallery-item">

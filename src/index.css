@@ -2084,6 +2084,80 @@ html.lenis body {
   }
 }
 
+/* Compact galleries hold portrait tiles (phone apps): three across a wide screen, the fourth peeking in. */
+.gallery[data-size='compact'] .gallery-item {
+  flex-basis: min(74%, 19rem);
+}
+
+@media (min-width: 768px) {
+  .gallery[data-size='compact'] .gallery-item {
+    flex-basis: min(42%, 21rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .gallery[data-size='compact'] .gallery-item {
+    flex-basis: calc((min(100vw, 76rem) - 4rem - 2.5rem) / 3);
+  }
+}
+
+/*
+ * The stage for an app's phone: a deep surface lit from behind in the app's own colour, as Apple lights an iPhone.
+ * The device stands on the stage's lower edge, so it reads large and the glow rises around it.
+ */
+.app-stage {
+  position: relative;
+  display: grid;
+  place-items: start center;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 1.25rem;
+  background:
+    radial-gradient(78% 58% at 50% 52%, color-mix(in oklab, var(--tint, #7593ff) 52%, transparent), transparent 74%),
+    linear-gradient(180deg, #26262b 0%, #121214 100%);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.06);
+}
+
+.app-phone {
+  width: 58%;
+  margin-top: 13%;
+  border-width: 6px;
+  border-radius: 1.75rem;
+}
+
+.app-phone .phone-trigger,
+.app-phone .shot {
+  border-radius: 1.35rem;
+  overflow: hidden;
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .app-phone {
+    transition: transform var(--motion-dur-presentation) var(--motion-ease-out);
+  }
+
+  .project-card:hover .app-phone,
+  .app-phone:focus-within {
+    transform: translateY(-6px) scale(1.015);
+  }
+}
+
+/* Related work at the end of a case study: the picture leans in a touch on hover. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .related-shot {
+    transition: transform var(--motion-dur-presentation) var(--motion-ease-out);
+  }
+
+  .tile-link:hover .related-shot {
+    transform: scale(1.03);
+  }
+}
+
+/* Captions are written to follow a project name ("a site I built"); on their own line they start a sentence. */
+.caption-sentence::first-letter {
+  text-transform: uppercase;
+}
+
 .gallery-controls {
   display: flex;
   align-items: center;

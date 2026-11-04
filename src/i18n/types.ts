@@ -255,6 +255,7 @@ export interface Copy {
     decisions: string
     worthKnowing: string
     more: string
+    allWork: string
     screenshots: (name: string) => string
   }
 

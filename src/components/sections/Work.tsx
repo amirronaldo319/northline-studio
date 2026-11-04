@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import { ArrowUpRight, ChevronRight, Lock } from 'lucide-react'
 import { Button } from 'glisse'
 import { EXAMPLES, HERO_EXAMPLE, type ExampleSite } from '@/content/examples'
@@ -20,8 +21,12 @@ const LEGACY_IDS = ['examples'] as const
 
 const labelClasses = 'text-[0.875rem] font-semibold text-sky'
 
-/** Text block for a real project: what it is, what I did, and the decisions worth noting. */
-function ProjectText({ project, titleId }: { project: Project; titleId: string }) {
+/**
+ * Text block for a real project. The featured project tells the whole story: what it is, what I did, and the
+ * decisions worth noting. A gallery tile is a highlight, as on Apple's cards: the label, the name, one line, and
+ * the way in; the rest waits on the case study.
+ */
+function ProjectText({ project, titleId, brief = false }: { project: Project; titleId: string; brief?: boolean }) {
   const t = useCopy()
   const localHref = useLocalHref()
   const text = t.projects[project.id]
@@ -29,24 +34,36 @@ function ProjectText({ project, titleId }: { project: Project; titleId: string }
   return (
     <>
       <p className={labelClasses}>
-        {statusLabel(t.work, project.status)} <span aria-hidden="true">·</span> {text.type}
+        {statusLabel(t.work, project.status)}
+        {!brief && (
+          <>
+            {' '}
+            <span aria-hidden="true">·</span> {text.type}
+          </>
+        )}
       </p>
       <h3 id={titleId} className="mt-2 text-[1.75rem] font-bold tracking-[-0.03em]">
         <bdi>{project.name}</bdi>
       </h3>
-      <p className="mt-3 text-[1.0625rem] leading-relaxed text-white/90">{text.summary}</p>
-      <p className="mt-3 text-[0.9375rem] leading-relaxed text-white/65">
-        <strong className="font-semibold text-white/90">{t.work.contribution}</strong> {text.contribution}
-      </p>
-      <ul className="mt-3 space-y-2 text-[0.9375rem] leading-relaxed text-white/65">
-        {text.decisions.map((decision, index) => (
-          <li key={decision} className={`gap-3 ${index === 0 ? 'flex' : 'hidden sm:flex'}`}>
-            <span aria-hidden="true" className="mt-2.5 size-1.5 shrink-0 rounded-full bg-sky" />
-            {decision}
-          </li>
-        ))}
-      </ul>
-      <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2">
+      {brief ? (
+        <p className="caption-sentence mt-2 text-[1.0625rem] leading-snug text-white/75">{text.caption}</p>
+      ) : (
+        <>
+          <p className="mt-3 text-[1.0625rem] leading-relaxed text-white/90">{text.summary}</p>
+          <p className="mt-3 text-[0.9375rem] leading-relaxed text-white/65">
+            <strong className="font-semibold text-white/90">{t.work.contribution}</strong> {text.contribution}
+          </p>
+          <ul className="mt-3 space-y-2 text-[0.9375rem] leading-relaxed text-white/65">
+            {text.decisions.map((decision, index) => (
+              <li key={decision} className={`gap-3 ${index === 0 ? 'flex' : 'hidden sm:flex'}`}>
+                <span aria-hidden="true" className="mt-2.5 size-1.5 shrink-0 rounded-full bg-sky" />
+                {decision}
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+      <div className={`${brief ? 'mt-auto pt-5' : 'mt-6'} flex flex-wrap items-center gap-x-6 gap-y-2`}>
         {project.liveUrl ? (
           <a
             href={project.liveUrl}
@@ -104,17 +121,38 @@ function FeaturedProject({ project }: { project: Project }) {
   )
 }
 
-/** A real project as a gallery tile, in the same shape as a concept demo tile. */
+/** A real website as a gallery tile, in the same shape as a concept demo tile. */
 function ProjectCard({ project }: { project: Project }) {
   const titleId = `project-${project.id}-title`
 
   return (
-    <article aria-labelledby={titleId} className="project-card tile-paper h-full">
+    <article aria-labelledby={titleId} className="project-card tile-paper flex h-full flex-col">
       <div className={frameClasses}>
         <ProjectTrigger project={project} />
       </div>
-      <div className="mt-7">
-        <ProjectText project={project} titleId={titleId} />
+      <div className="mt-7 flex flex-1 flex-col">
+        <ProjectText project={project} titleId={titleId} brief />
+      </div>
+    </article>
+  )
+}
+
+/**
+ * An app as a portrait tile: its real phone capture in a device, lit from behind in the app's own colour, as
+ * Apple stages an iPhone. The phone is the button that opens the larger preview.
+ */
+function AppCard({ project }: { project: Project }) {
+  const titleId = `project-${project.id}-title`
+
+  return (
+    <article aria-labelledby={titleId} className="project-card tile-paper flex h-full flex-col">
+      <div className="app-stage" style={{ '--tint': project.tint } as CSSProperties}>
+        <div className="app-phone phone-device">
+          <ProjectTrigger project={project} view="phone" className="phone-trigger" />
+        </div>
+      </div>
+      <div className="mt-7 flex flex-1 flex-col">
+        <ProjectText project={project} titleId={titleId} brief />
       </div>
     </article>
   )
@@ -128,7 +166,7 @@ function ConceptCard({ example }: { example: ExampleSite }) {
   const titleId = `example-${example.id}-title`
 
   return (
-    <article aria-labelledby={titleId} className="project-card tile-paper h-full">
+    <article aria-labelledby={titleId} className="project-card tile-paper flex h-full flex-col">
       <div className="relative">
         <div className={frameClasses}>
           <DemoPreview example={example} />
@@ -142,20 +180,21 @@ function ConceptCard({ example }: { example: ExampleSite }) {
           className="absolute inset-0 cursor-pointer rounded-[1rem]"
         />
       </div>
-      <div className="mt-7">
+      <div className="mt-7 flex flex-1 flex-col">
         <p className={labelClasses}>
           {t.work.conceptDemo} <span aria-hidden="true">·</span> {text.businessType}
         </p>
         <h3 id={titleId} className="mt-2 text-[1.75rem] font-bold tracking-[-0.03em]">
           {example.name}
         </h3>
-        <p className="mt-2 text-[1.0625rem] leading-relaxed text-white/90">{text.intent}</p>
-        <p className="mt-2 hidden text-[0.9375rem] leading-relaxed text-white/65 sm:block">{text.approach}</p>
-        <Button onClick={() => open(example)} className="glass-btn glass-flat mt-4">
-          {t.work.viewExample}
-          <span className="sr-only">: {example.name}</span>
-          <ArrowUpRight aria-hidden="true" className="card-arrow" />
-        </Button>
+        <p className="mt-2 text-[1.0625rem] leading-snug text-white/75">{text.intent}</p>
+        <div className="mt-auto pt-5">
+          <Button onClick={() => open(example)} className="glass-btn glass-flat">
+            {t.work.viewExample}
+            <span className="sr-only">: {example.name}</span>
+            <ArrowUpRight aria-hidden="true" className="card-arrow" />
+          </Button>
+        </div>
       </div>
     </article>
   )
@@ -206,9 +245,9 @@ export function Work() {
         </div>
       </div>
       <div className="reveal mt-10 lg:mt-12">
-        <Gallery label={t.work.appsHeading.replace(/[.。]$/u, '')}>
+        <Gallery label={t.work.appsHeading.replace(/[.。]$/u, '')} size="compact">
           {APP_PROJECTS.map((project) => (
-            <ProjectCard key={project.id} project={project} />
+            <AppCard key={project.id} project={project} />
           ))}
         </Gallery>
       </div>

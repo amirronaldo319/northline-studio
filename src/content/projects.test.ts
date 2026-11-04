@@ -52,6 +52,11 @@ describe('portfolio projects', () => {
     }
   })
 
+  test('every app has its own key colour for the glow behind its phone', () => {
+    for (const project of APP_PROJECTS) expect(project.tint, project.id).toMatch(/^#[0-9a-f]{6}$/i)
+    expect(new Set(APP_PROJECTS.map((project) => project.tint)).size).toBe(APP_PROJECTS.length)
+  })
+
   test('the home page shows every project exactly once: featured, the websites gallery, or the apps gallery', () => {
     const shown = [FEATURED_PROJECT, ...GALLERY_WEBSITES, ...APP_PROJECTS].map((project) => project.id)
     expect(new Set(shown).size).toBe(shown.length)

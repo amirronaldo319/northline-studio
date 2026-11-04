@@ -35,6 +35,18 @@ export interface ProjectImage {
 export interface Project extends ProjectData {
   desktop: ProjectImage
   mobile: ProjectImage
+  /** The project's own key colour, taken from its interface: the glow behind its phone in the apps gallery. */
+  tint: string
+}
+
+/** Key colours sampled from each app's own screens. Projects without one use the site's accent. */
+const TINTS: Record<string, string> = {
+  octaiq: '#e5484d',
+  'shamsi-calendar': '#b8432b',
+  'mend-app': '#e0a44a',
+  jarvis: '#36d6ff',
+  stayin: '#b9bec8',
+  'motion-kit': '#5ad1c8',
 }
 
 export const STATUS_LABEL: Record<ProjectStatus, string> = {
@@ -98,7 +110,7 @@ const IMAGES: Record<string, Pick<Project, 'desktop' | 'mobile'>> = {
 export const PROJECTS: readonly Project[] = PROJECT_DATA.map((data) => {
   const images = IMAGES[data.id]
   if (!images) throw new Error(`No screenshots for project: ${data.id}`)
-  return { ...data, ...images }
+  return { ...data, ...images, tint: TINTS[data.id] ?? '#7593ff' }
 })
 
 function requireProject(id: string): Project {
