@@ -1,5 +1,8 @@
-/** Every text control in the inquiry form: a white box with a clear grey edge and a strong focus ring (see `.field`). */
-export const fieldControlClasses = 'field'
+/**
+ * Every text control in the inquiry form: a well inset into the glass, with a clear grey edge (3:1) and a strong focus
+ * ring (see `.field` and `.liquid-glass-input`).
+ */
+export const fieldControlClasses = 'field liquid-glass-input'
 
 /** aria-describedby value for a control rendered inside <Field>. */
 export function describedBy(id: string, error?: string, hasHint = false): string | undefined {

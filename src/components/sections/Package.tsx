@@ -4,6 +4,7 @@ import { Glass } from 'glisse'
 import { offers, PACKAGE_EVENT } from '@/content/offers'
 import { CONTACT_SECTION_ID } from '@/content/navigation'
 import { useCopy } from '@/i18n/context'
+import { GlassShapes } from '../glass/GlassShapes'
 import { LegacyAnchors } from '../LegacyAnchors'
 import { Words } from '../Words'
 import { buttonClasses } from '../ui/button'
@@ -15,8 +16,9 @@ const LEGACY_IDS = ['pricing', 'included'] as const
 const GROUP_ICONS: readonly LucideIcon[] = [LayoutTemplate, FileText, MessageSquareText, Rocket]
 
 /**
- * Pricing: the two packages compared row by row, the essential costs in one visible line, optional care as a quieter
- * separate offer, and the full terms in a disclosure.
+ * Pricing: the two packages compared row by row on one panel of glass, each plan heading its column on a card of glass
+ * set into it (the second with a little more glass and light, and no label), the essential costs in one visible line,
+ * optional care as a quieter separate card, and the full terms in a disclosure.
  */
 export function Package() {
   const t = useCopy()
@@ -50,8 +52,9 @@ export function Package() {
   }, [])
 
   return (
-    <section id="package" aria-labelledby="package-title" className="section-pad bg-paper">
+    <section id="package" aria-labelledby="package-title" className="section-pad ambient ambient-pricing">
       <LegacyAnchors ids={LEGACY_IDS} />
+      <GlassShapes set="pricing" />
 
       <div className="container-page">
         <div className="section-intro reveal">
@@ -67,14 +70,18 @@ export function Package() {
           topic, each answered in both columns, so the difference reads straight across. It is a table to assistive
           technology (explicit roles survive the grid layout).
         */}
-        <div ref={chartRef} role="table" aria-label={offer.compare} className="compare tile reveal mt-14 lg:mt-20">
+        <div ref={chartRef} role="table" aria-label={offer.compare} className="compare liquid-glass reveal mt-14 lg:mt-20">
           <div role="rowgroup" ref={headRef}>
             <div role="row" className="compare-row compare-head">
               <span role="columnheader" className="sr-only lg:not-sr-only lg:pt-1.5 lg:text-[1.0625rem] lg:font-semibold lg:text-ink-3">
                 {t.package.included}
               </span>
-              {offer.plans.map((plan) => (
-                <div key={plan.name} role="columnheader" className="compare-plan">
+              {offer.plans.map((plan, index) => (
+                <div
+                  key={plan.name}
+                  role="columnheader"
+                  className={`compare-plan plan-card ${index === 1 ? 'liquid-glass-strong plan-card-featured' : 'liquid-glass-subtle'}`}
+                >
                   <h3 className="text-[clamp(1.25rem,1.05rem+0.9vw,1.75rem)] font-semibold">{plan.name}</h3>
                   <p className="mt-3 flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
                     <bdi className="font-display text-[clamp(1.625rem,0.9rem+3.6vw,3.5rem)] leading-none font-bold tracking-[-0.04em]">
@@ -85,7 +92,11 @@ export function Package() {
                   <p className="mt-3 text-[0.9375rem] leading-snug text-ink-2 sm:text-[1.0625rem]">{plan.summary}</p>
                   <a
                     href={`#${CONTACT_SECTION_ID}`}
-                    className={buttonClasses('primary', 'md', 'max-w-full !whitespace-normal text-center max-[399px]:px-3.5 max-[399px]:text-[0.875rem]')}
+                    className={buttonClasses(
+                      index === 1 ? 'primary' : 'secondary',
+                      'md',
+                      'plan-cta max-w-full !whitespace-normal text-center max-[399px]:px-3.5 max-[399px]:text-[0.875rem]',
+                    )}
                     onClick={() =>
                       window.dispatchEvent(new CustomEvent(PACKAGE_EVENT, { detail: `${offer.choose} ${plan.name} (${plan.price})` }))
                     }
@@ -117,7 +128,7 @@ export function Package() {
               return (
                 <div key={group} role="row" className="compare-row">
                   <div role="rowheader" className="compare-topic">
-                    <span aria-hidden="true" className="pkg-icon grid size-9 place-items-center rounded-xl bg-paper text-ink-2">
+                    <span aria-hidden="true" className="pkg-icon grid size-9 place-items-center rounded-xl">
                       <Icon size={18} />
                     </span>
                     {group}
@@ -135,11 +146,13 @@ export function Package() {
         <p className="reveal mx-auto mt-6 max-w-[46rem] text-center text-[0.9375rem] leading-relaxed text-ink-3">{offer.essentials}</p>
 
         {/* Optional care: a separate, quieter offer, not a third column. */}
-        <div className="reveal mx-auto mt-14 max-w-[46rem] border-t border-line pt-10 text-center">
-          <h3 id="care-title" className="text-[1.375rem] font-semibold tracking-[-0.015em]">
-            {offer.careTitle}
-          </h3>
-          <p className="mt-3 leading-relaxed text-ink-2">{offer.care}</p>
+        <div className="reveal mx-auto mt-14 max-w-[46rem]">
+          <div className="care-card liquid-glass-subtle text-center">
+            <h3 id="care-title" className="text-[1.375rem] font-semibold tracking-[-0.015em]">
+              {offer.careTitle}
+            </h3>
+            <p className="mt-3 leading-relaxed text-ink-2">{offer.care}</p>
+          </div>
         </div>
 
         {/* The longer terms stay one click away, for anyone who wants every detail before asking. */}

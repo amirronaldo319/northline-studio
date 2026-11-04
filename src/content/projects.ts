@@ -26,6 +26,7 @@ import farsh2x from '@/assets/projects/farsh-aquatics-desktop-2x.webp'
 import k604Desktop2x from '@/assets/projects/604kars-desktop-2x.webp'
 import storage2x from '@/assets/projects/storage4666-desktop-2x.webp'
 import maidNew2x from '@/assets/projects/maid-new-desktop-2x.webp'
+import ganjineh2x from '@/assets/projects/ganjineh-ofogh-desktop-2x.webp'
 import { PROJECT_DATA, type ProjectData, type ProjectKind, type ProjectStatus } from './projectsData'
 
 export type { ProjectKind, ProjectStatus }
@@ -74,6 +75,7 @@ const IMAGES: Record<string, Pick<Project, 'desktop' | 'desktop2x' | 'mobile'>> 
     mobile: { src: k604Mobile, width: 780, height: 1520 },
   },
   'ganjineh-ofogh': {
+    desktop2x: { src: ganjineh2x, width: 2400, height: 1556 },
     desktop: { src: ganjinehDesktop, width: 1200, height: 778 },
     mobile: { src: ganjinehMobile, width: 780, height: 1520 },
   },
@@ -135,7 +137,7 @@ export const HERO_PROJECT: Project = requireProject('farsh-aquatics')
 /** The live website shown large at the top of the portfolio, in a different style from the hero. */
 export const FEATURED_PROJECT: Project = requireProject('604kars')
 
-/** A website concept, kept distinct from the live work in tests and copy. */
+/** A website concept shown beside its words on the home page, after the featured live site. */
 export const CONCEPT_PROJECT: Project = requireProject('ganjineh-ofogh')
 
 /** The two projects shown after the featured one on the home page: the strongest website concepts, labelled as such. */

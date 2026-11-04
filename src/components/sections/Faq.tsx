@@ -16,7 +16,7 @@ export function Faq({ items, heading, label }: Props) {
   const entries = items ?? t.faq.items
 
   return (
-    <section id="faq" aria-labelledby="faq-title" className="section-pad">
+    <section id="faq" aria-labelledby="faq-title" className="section-pad ambient ambient-cards">
       <div className="container-page">
         <div className="section-intro reveal">
           <p className="eyebrow">{label ?? t.faq.eyebrow}</p>
@@ -25,23 +25,23 @@ export function Faq({ items, heading, label }: Props) {
           </h2>
           <p className="lede mt-5">
             {t.faq.moreLead}
-            <a href={`#${CONTACT_SECTION_ID}`} className="text-cobalt hover:underline">
+            <a href={`#${CONTACT_SECTION_ID}`} className="text-link-inline">
               {t.faq.askInForm}
             </a>
             {t.faq.orEmail}
-            <a href={mailtoHref} dir="ltr" className="whitespace-nowrap text-cobalt hover:underline">
+            <a href={mailtoHref} dir="ltr" className="text-link-inline whitespace-nowrap">
               {site.contact.email}
             </a>
             {t.faq.moreEnd}
           </p>
         </div>
 
-        <div className="reveal mx-auto mt-12 max-w-[52rem] border-b border-line lg:mt-14">
+        <div className="faq-panel liquid-glass reveal mx-auto mt-12 max-w-[52rem] lg:mt-14">
           {entries.map((item) => (
             <details key={item.question} className="faq-item group border-t border-line">
-              <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-6 py-5 text-start text-[1.125rem] font-semibold tracking-[-0.01em] transition-colors hover:text-cobalt sm:text-[1.25rem]">
+              <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-6 py-5 text-start text-[1.125rem] font-semibold tracking-[-0.01em] transition-colors hover:text-accent sm:text-[1.25rem]">
                 {item.question}
-                <Plus aria-hidden="true" size={18} className="faq-icon shrink-0 text-ink-3 transition-transform duration-200 group-hover:text-cobalt" />
+                <Plus aria-hidden="true" size={18} className="faq-icon shrink-0 text-ink-3 transition-transform duration-200 group-hover:text-accent" />
               </summary>
               <p className="max-w-[44rem] pb-6 text-[1.0625rem] leading-relaxed text-ink-2">{item.answer}</p>
             </details>

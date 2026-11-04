@@ -25,7 +25,7 @@ export function TradePage({ trade }: { trade: Trade }) {
         intro={trade.intro}
       />
 
-      <section aria-labelledby="checks-title" className="section-pad bg-card">
+      <section aria-labelledby="checks-title" className="section-pad ambient ambient-cards">
         <div className="container-page">
           <div className="section-intro reveal">
             <p className="eyebrow">{t.tradePage.customersEyebrow}</p>
@@ -35,7 +35,11 @@ export function TradePage({ trade }: { trade: Trade }) {
           </div>
           <ul className="reveal mt-12 grid gap-5 sm:grid-cols-2">
             {trade.checks.map((check, index) => (
-              <li key={check.title} className="tile-paper" style={{ '--line-i': index % 2 } as React.CSSProperties}>
+              <li
+                key={check.title}
+                className="liquid-glass p-[clamp(1.5rem,1rem+1.6vw,2.25rem)]"
+                style={{ '--line-i': index % 2 } as React.CSSProperties}
+              >
                 <h3 className="text-[1.25rem] font-semibold">{check.title}</h3>
                 <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-2">{check.text}</p>
               </li>
@@ -44,7 +48,7 @@ export function TradePage({ trade }: { trade: Trade }) {
         </div>
       </section>
 
-      <section aria-labelledby="includes-title" className="section-pad bg-paper">
+      <section aria-labelledby="includes-title" className="section-pad ambient ambient-pricing">
         <div className="container-page grid gap-10 lg:grid-cols-12 lg:gap-14">
           <div className="reveal lg:col-span-5">
             <p className="eyebrow">{t.tradePage.includesEyebrow}</p>
@@ -55,7 +59,7 @@ export function TradePage({ trade }: { trade: Trade }) {
           </div>
           <ul className="reveal stagger space-y-3 lg:col-span-7" style={revealDelay(1)}>
             {trade.includes.map((item) => (
-              <li key={item} className="flex gap-3 rounded-2xl bg-card px-5 py-4 text-[1.0625rem] text-ink">
+              <li key={item} className="liquid-glass-subtle flex gap-3 px-5 py-4 text-[1.0625rem] text-ink [--glass-radius:1.25rem]">
                 <Check aria-hidden="true" size={18} className="mt-1 shrink-0 text-cobalt" />
                 {item}
               </li>
@@ -64,7 +68,7 @@ export function TradePage({ trade }: { trade: Trade }) {
         </div>
       </section>
 
-      <section aria-labelledby="proof-title" className="section-pad bg-card">
+      <section aria-labelledby="proof-title" className="section-pad ambient ambient-work">
         <div className="container-page">
           <div className="section-intro reveal">
             <p className="eyebrow">{t.tradePage.recentEyebrow}</p>
@@ -76,11 +80,8 @@ export function TradePage({ trade }: { trade: Trade }) {
           <ul className="reveal mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {PROJECT_DATA.filter((project) => project.kind === 'website').map((project) => (
               <li key={project.id}>
-                <a
-                  href={localHref(`work/${project.id}/`)}
-                  className="tile-paper tile-link group block h-full !p-6"
-                >
-                  <p className="text-[0.875rem] font-semibold text-cobalt">
+                <a href={localHref(`work/${project.id}/`)} className="liquid-glass-card group block h-full p-6">
+                  <p className="text-[0.875rem] font-semibold text-accent">
                     {statusLabel(t.work, project.status)}
                   </p>
                   <h3 className="mt-2 flex items-center gap-1.5 text-[1.125rem] font-semibold">

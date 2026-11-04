@@ -1,6 +1,5 @@
-import { useContext, useEffect, useRef, useState } from 'react'
-import { Menu as MenuIcon, X } from 'lucide-react'
-import { Button, Glass, TabBar } from 'glisse'
+import { useContext, useEffect, useRef, useState, type CSSProperties } from 'react'
+import { TabBar } from 'glisse'
 import { CONTACT_SECTION_ID, MENU_LINKS, NAV_LINKS } from '@/content/navigation'
 import { useCopy } from '@/i18n/context'
 import { LOCALES } from '@/i18n/locales'
@@ -68,9 +67,10 @@ function PlainLinks({ active }: { active: string | null }) {
 }
 
 /**
- * One floating bar of Liquid Glass: the wordmark, three links with a sliding lens, the language menu and the quote
- * button, all on a single frosted surface that the page scrolls under. On phones the links open in a glass sheet:
- * focus moves into it, Escape or a link closes it, focus returns to the button, and the page behind is out of reach.
+ * One floating capsule of Liquid Glass: the wordmark, three links with a sliding lens, the language menu and the quote
+ * button, all on a single frosted surface that the page scrolls under. Once the page scrolls, the capsule draws in a
+ * little and frosts more. On phones the links open in a glass sheet: focus moves into it, Escape or a link closes it,
+ * focus returns to the button, and the page behind is out of reach.
  */
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -122,7 +122,7 @@ export function Header() {
   return (
     <header className="site-nav" data-scrolled={isScrolled || isMenuOpen || undefined} data-open={isMenuOpen || undefined}>
       <div className="container-page">
-        <Glass className="nav-glass glass-frost glass-lift">
+        <div className="nav-shell liquid-glass-navigation">
           <div className="site-nav-row">
             <a href={homeTop} className="site-nav-brand" onClick={closeMenu}>
               <BrandMark />
@@ -139,30 +139,32 @@ export function Header() {
                 {t.common.requestQuote}
               </a>
               <div className="site-nav-toggle">
-                <Button
+                <button
                   ref={toggleRef}
-                  className="glass-icon-button glass-flat nav-toggle-button"
-                  icon={isMenuOpen ? <X aria-hidden="true" /> : <MenuIcon aria-hidden="true" />}
+                  type="button"
+                  className="liquid-glass-button glass-btn-secondary glass-btn-icon nav-toggle"
                   aria-label={isMenuOpen ? t.common.closeMenu : t.common.openMenu}
                   aria-expanded={isMenuOpen}
                   aria-controls="mobile-menu"
                   onClick={() => setIsMenuOpen((open) => !open)}
-                />
+                >
+                  <span aria-hidden="true" className="nav-toggle-lines" />
+                </button>
               </div>
             </div>
           </div>
-        </Glass>
+        </div>
       </div>
 
       {/* The phone menu: a glass sheet over a soft scrim. A tap on the scrim closes it. */}
       <div id="mobile-menu" className="site-menu" data-open={isMenuOpen || undefined} hidden={!isMenuOpen}>
         <div className="site-menu-scrim" aria-hidden="true" onClick={closeMenu} />
         <div ref={sheetRef} className="container-page site-menu-panel">
-          <Glass className="menu-glass glass-frost glass-lift">
+          <div className="menu-sheet liquid-glass-strong">
             <nav aria-label={t.common.mobileNav}>
               <ul className="site-menu-list">
-                {MENU_LINKS.map((link) => (
-                  <li key={link.id}>
+                {MENU_LINKS.map((link, index) => (
+                  <li key={link.id} style={{ '--i': index } as CSSProperties}>
                     <a
                       href={homeAnchor(link.id)}
                       onClick={closeMenu}
@@ -174,14 +176,16 @@ export function Header() {
                   </li>
                 ))}
               </ul>
-              <div className="mt-6">
-                <LanguageSwitcher />
+              <div className="menu-sheet-foot" style={{ '--i': MENU_LINKS.length } as CSSProperties}>
+                <div className="mt-6">
+                  <LanguageSwitcher />
+                </div>
+                <a href={`#${CONTACT_SECTION_ID}`} onClick={closeMenu} className={buttonClasses('primary', 'lg', 'mt-6 w-full')}>
+                  {t.common.requestQuote}
+                </a>
               </div>
-              <a href={`#${CONTACT_SECTION_ID}`} onClick={closeMenu} className={buttonClasses('primary', 'lg', 'mt-6 w-full')}>
-                {t.common.requestQuote}
-              </a>
             </nav>
-          </Glass>
+          </div>
         </div>
       </div>
     </header>

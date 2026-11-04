@@ -56,7 +56,7 @@ export function GuidePage({ guide }: { guide: Guide }) {
           {next && (
             <p className="mt-12 max-w-2xl border-t border-ink/10 pt-6 text-[1.0625rem] text-ink-2">
               {t.guidePage.next}{' '}
-              <a href={localHref(`guides/${next.slug}/`)} className="font-semibold text-cobalt underline underline-offset-4">
+              <a href={localHref(`guides/${next.slug}/`)} className="font-semibold text-accent underline underline-offset-4">
                 {next.headline.replace(/[.。]$/, '')}
               </a>
             </p>

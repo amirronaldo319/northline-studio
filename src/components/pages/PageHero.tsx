@@ -20,21 +20,21 @@ type Props = {
   showQuote?: boolean
 }
 
-/** The top of every inner page: breadcrumb, label, headline, intro, one blue action and one text link. */
+/** The top of every inner page, in the same soft light as the home page: breadcrumb, label, headline, intro and two glass actions. */
 export function PageHero({ crumbs, eyebrow, headline, intro, secondary, showWorkLink = true, showQuote = true }: Props) {
   const homeAnchor = useHomeAnchor()
   const t = useCopy()
   const link =
     secondary ??
     (showWorkLink && (
-      <a href={homeAnchor('work')} className="text-link text-[1.0625rem]">
+      <a href={homeAnchor('work')} className={buttonClasses('secondary', 'lg')}>
         {t.hero.seeWork}
-        <ChevronRight aria-hidden="true" size={18} className="rtl:-scale-x-100" />
+        <ChevronRight aria-hidden="true" size={18} className="-me-1 rtl:-scale-x-100" />
       </a>
     ))
 
   return (
-    <section aria-labelledby="page-title" className="page-hero">
+    <section aria-labelledby="page-title" className="page-hero ambient ambient-hero">
       <div className="container-page">
         <Breadcrumb items={crumbs} />
         <div className="mx-auto mt-10 max-w-[52rem] text-center sm:mt-14">
@@ -48,7 +48,7 @@ export function PageHero({ crumbs, eyebrow, headline, intro, secondary, showWork
             {intro}
           </p>
           {(showQuote || link) && (
-            <div className="enter mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-4" style={enterStep(2)}>
+            <div className="hero-actions enter mt-8" style={enterStep(2)}>
               {showQuote && (
                 <a href={`#${CONTACT_SECTION_ID}`} className={buttonClasses('primary', 'lg')}>
                   {t.common.requestQuote}

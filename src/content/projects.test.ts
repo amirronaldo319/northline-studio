@@ -57,11 +57,11 @@ describe('portfolio projects', () => {
     expect(new Set(APP_PROJECTS.map((project) => project.tint)).size).toBe(APP_PROJECTS.length)
   })
 
-  test('the home page leads with live work, then two different website concepts, each shown once', () => {
-    const home = [HERO_PROJECT, FEATURED_PROJECT, ...SUPPORTING_PROJECTS]
-    expect(new Set(home.map((project) => project.id)).size).toBe(4)
+  test('the home page leads with live work, then three different website concepts, each shown once', () => {
+    const home = [HERO_PROJECT, FEATURED_PROJECT, CONCEPT_PROJECT, ...SUPPORTING_PROJECTS]
+    expect(new Set(home.map((project) => project.id)).size).toBe(5)
     expect([HERO_PROJECT.status, FEATURED_PROJECT.status]).toEqual(['live', 'live'])
-    for (const project of SUPPORTING_PROJECTS) {
+    for (const project of [CONCEPT_PROJECT, ...SUPPORTING_PROJECTS]) {
       expect(project.kind).toBe('website')
       expect(project.status).not.toBe('personal')
     }
@@ -75,7 +75,7 @@ describe('portfolio projects', () => {
   })
 
   test('projects shown large on the home page have a sharp 2x capture', () => {
-    for (const project of [HERO_PROJECT, FEATURED_PROJECT, ...SUPPORTING_PROJECTS]) {
+    for (const project of [HERO_PROJECT, FEATURED_PROJECT, CONCEPT_PROJECT, ...SUPPORTING_PROJECTS]) {
       expect(project.desktop2x?.width, project.id).toBe(project.desktop.width * 2)
     }
   })

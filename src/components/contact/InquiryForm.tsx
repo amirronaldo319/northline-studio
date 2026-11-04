@@ -261,7 +261,7 @@ export function InquiryForm() {
                         onChange={update('need')}
                         className="peer sr-only"
                       />
-                      <span className="inline-flex min-h-11 items-center rounded-full border border-line-strong bg-white px-4 text-[0.9375rem] font-medium text-ink-2 transition-colors peer-checked:border-cobalt peer-checked:bg-cobalt-soft peer-checked:text-ink peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-cobalt hover:border-ink/40">
+                      <span className="glass-choice">
                         {option.label}
                       </span>
                     </label>
@@ -291,7 +291,7 @@ export function InquiryForm() {
           <p className="font-semibold text-danger">{t.form.errorTitle}</p>
           <p className="mt-1 text-ink-2">
             {t.form.errorBefore}
-            <a href={mailtoHref} dir="ltr" className="font-semibold text-cobalt underline underline-offset-4">
+            <a href={mailtoHref} dir="ltr" className="font-semibold text-accent underline underline-offset-4">
               {site.contact.email}
             </a>
             {t.form.errorAfter}
@@ -304,7 +304,7 @@ export function InquiryForm() {
           <p className="font-semibold">{t.form.emailOpenedTitle}</p>
           <p className="mt-1 text-ink-2">
             {t.form.emailOpenedBefore}
-            <a href={mailtoHref} dir="ltr" className="font-semibold text-cobalt underline underline-offset-4">
+            <a href={mailtoHref} dir="ltr" className="font-semibold text-accent underline underline-offset-4">
               {site.contact.email}
             </a>
             {t.form.emailOpenedAfter}

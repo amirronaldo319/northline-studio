@@ -18,7 +18,7 @@ function CardText({ project }: { project: Project }) {
   const titleId = `project-${project.id}-title`
 
   return (
-    <div className="mt-5">
+    <div className="project-card-body">
       <p className="project-label">{t.projects[project.id].type}</p>
       <h3 id={titleId} className="mt-1.5 text-[1.5rem] leading-tight font-semibold tracking-[-0.018em]">
         <bdi>{project.name}</bdi>
@@ -50,13 +50,15 @@ function CardText({ project }: { project: Project }) {
 function WebsiteCard({ project }: { project: Project }) {
   const t = useCopy()
   return (
-    <article aria-labelledby={`project-${project.id}-title`} className="reveal">
-      <div className="shot-frame relative">
-        <ProjectTrigger project={project} sizes="(min-width: 1216px) 560px, (min-width: 768px) 46vw, 92vw" />
-        <ShotChip>{statusLabel(t.work, project.status)}</ShotChip>
-      </div>
-      <CardText project={project} />
-    </article>
+    <div className="reveal">
+      <article aria-labelledby={`project-${project.id}-title`} className="project-card liquid-glass-card">
+        <div className="shot-frame card-shot relative">
+          <ProjectTrigger project={project} sizes="(min-width: 1216px) 540px, (min-width: 768px) 44vw, 90vw" />
+          <ShotChip>{statusLabel(t.work, project.status)}</ShotChip>
+        </div>
+        <CardText project={project} />
+      </article>
+    </div>
   )
 }
 
@@ -64,15 +66,17 @@ function WebsiteCard({ project }: { project: Project }) {
 function AppCard({ project }: { project: Project }) {
   const t = useCopy()
   return (
-    <article aria-labelledby={`project-${project.id}-title`} className="reveal">
-      <div className="app-stage" style={{ '--tint': project.tint } as CSSProperties}>
-        <ShotChip>{statusLabel(t.work, project.status)}</ShotChip>
-        <div className="app-phone phone-device">
-          <ProjectTrigger project={project} view="phone" className="phone-trigger" />
+    <div className="reveal">
+      <article aria-labelledby={`project-${project.id}-title`} className="project-card liquid-glass-card">
+        <div className="app-stage" style={{ '--tint': project.tint } as CSSProperties}>
+          <ShotChip>{statusLabel(t.work, project.status)}</ShotChip>
+          <div className="app-phone phone-device">
+            <ProjectTrigger project={project} view="phone" className="phone-trigger" />
+          </div>
         </div>
-      </div>
-      <CardText project={project} />
-    </article>
+        <CardText project={project} />
+      </article>
+    </div>
   )
 }
 
@@ -84,26 +88,28 @@ function DemoCard({ example }: { example: ExampleSite }) {
   const titleId = `example-${example.id}-title`
 
   return (
-    <article aria-labelledby={titleId} className="reveal">
-      <div className="shot-frame relative">
-        <DemoPreview example={example} />
-        <ShotChip>{t.work.conceptDemo}</ShotChip>
-        {/* Mouse-only convenience; the labelled button below is the accessible control. */}
-        <button type="button" tabIndex={-1} aria-hidden="true" onClick={() => open(example)} className="absolute inset-0 cursor-pointer" />
-      </div>
-      <div className="mt-5">
-        <p className="project-label">{text.businessType}</p>
-        <h3 id={titleId} className="mt-1.5 text-[1.5rem] leading-tight font-semibold tracking-[-0.018em]">
-          {example.name}
-        </h3>
-        <p className="mt-1.5 leading-snug text-ink-2">{text.intent}</p>
-        <button type="button" onClick={() => open(example)} className="text-link mt-3">
-          {t.work.viewExample}
-          <span className="sr-only">: {example.name}</span>
-          <ChevronRight aria-hidden="true" size={17} className="rtl:-scale-x-100" />
-        </button>
-      </div>
-    </article>
+    <div className="reveal">
+      <article aria-labelledby={titleId} className="project-card liquid-glass-card">
+        <div className="shot-frame card-shot relative">
+          <DemoPreview example={example} />
+          <ShotChip>{t.work.conceptDemo}</ShotChip>
+          {/* Mouse-only convenience; the labelled button below is the accessible control. */}
+          <button type="button" tabIndex={-1} aria-hidden="true" onClick={() => open(example)} className="absolute inset-0 cursor-pointer" />
+        </div>
+        <div className="project-card-body">
+          <p className="project-label">{text.businessType}</p>
+          <h3 id={titleId} className="mt-1.5 text-[1.5rem] leading-tight font-semibold tracking-[-0.018em]">
+            {example.name}
+          </h3>
+          <p className="mt-1.5 leading-snug text-ink-2">{text.intent}</p>
+          <button type="button" onClick={() => open(example)} className="text-link mt-3">
+            {t.work.viewExample}
+            <span className="sr-only">: {example.name}</span>
+            <ChevronRight aria-hidden="true" size={17} className="rtl:-scale-x-100" />
+          </button>
+        </div>
+      </article>
+    </div>
   )
 }
 
@@ -122,12 +128,12 @@ export function WorkPage() {
         showWorkLink={false}
       />
 
-      <section aria-labelledby="sites-title" className="section-pad bg-paper">
+      <section aria-labelledby="sites-title" className="section-pad ambient ambient-work">
         <div className="container-page">
           <h2 id="sites-title" className="h-subsection reveal">
             {t.work.sitesLabel}
           </h2>
-          <div className="mt-10 grid gap-x-8 gap-y-14 md:grid-cols-2 lg:gap-x-12">
+          <div className="mt-10 grid gap-8 md:grid-cols-2 lg:gap-10">
             {WEBSITE_PROJECTS.map((project) => (
               <WebsiteCard key={project.id} project={project} />
             ))}
@@ -135,7 +141,7 @@ export function WorkPage() {
         </div>
       </section>
 
-      <section aria-labelledby="apps-title" className="section-pad">
+      <section aria-labelledby="apps-title" className="section-pad ambient ambient-cards">
         <div className="container-page">
           <div className="reveal max-w-[44rem]">
             <h2 id="apps-title" className="h-subsection">
@@ -143,7 +149,7 @@ export function WorkPage() {
             </h2>
             <p className="mt-3 text-[1.0625rem] leading-relaxed text-ink-2">{t.work.appsLede}</p>
           </div>
-          <div className="mt-10 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {APP_PROJECTS.map((project) => (
               <AppCard key={project.id} project={project} />
             ))}
@@ -151,7 +157,7 @@ export function WorkPage() {
         </div>
       </section>
 
-      <section aria-labelledby="demos-title" className="section-pad bg-paper">
+      <section aria-labelledby="demos-title" className="section-pad ambient ambient-pricing">
         <div className="container-page">
           <div className="reveal max-w-[44rem]">
             <h2 id="demos-title" className="h-subsection">
@@ -159,7 +165,7 @@ export function WorkPage() {
             </h2>
             <p className="mt-3 text-[1.0625rem] leading-relaxed text-ink-2">{t.work.demosLede}</p>
           </div>
-          <div className="mt-10 grid gap-x-8 gap-y-14 md:grid-cols-2 lg:gap-x-12">
+          <div className="mt-10 grid gap-8 md:grid-cols-2 lg:gap-10">
             {EXAMPLES.map((example) => (
               <DemoCard key={example.id} example={example} />
             ))}

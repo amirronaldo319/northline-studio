@@ -124,7 +124,7 @@ export function ExampleDialog({ example, onClose, onRequestQuote }: Props) {
         <div className="flex h-full flex-col">
           <div className="flex items-start justify-between gap-4 border-b border-line bg-card px-4 py-3 sm:items-center sm:px-6">
             <div className="min-w-0">
-              <p className="text-[0.875rem] font-semibold text-cobalt">{t.dialogs.conceptDemo}</p>
+              <p className="text-[0.875rem] font-semibold text-accent">{t.dialogs.conceptDemo}</p>
               <h2 id="example-dialog-title" className="mt-0.5 text-lg font-semibold sm:text-xl">
                 {example.name}
               </h2>

@@ -8,7 +8,7 @@ Re-run `node scripts/capture-project-screenshots.mjs` after a project changes, a
 | --- | --- | --- | --- | --- |
 | `604kars-desktop.webp`, `604kars-mobile.webp` | 604 Kars | https://604kars.com/ (repo: amirronaldo319/604kars, public) | 2026-10-14 | 1200×778 @1x, 390×760 @2x |
 | `farsh-aquatics-desktop.webp`, `farsh-aquatics-mobile.webp` | Farsh Aquatics | https://farshaquatics.ca/ (public website; logo and card source files are in local project folders, not in a repository) | 2026-10-14 | 1200×778 @1x, 390×760 @2x |
-| `ganjineh-ofogh-desktop.webp`, `ganjineh-ofogh-mobile.webp` | Ganjineh Ofogh (concept project) | https://amirronaldo319.github.io/ganjineh-ofogh/en/ (repo: amirronaldo319/ganjineh-ofogh, public) | 2026-10-14 | 1200×778 @1x, 390×760 @2x |
+| `ganjineh-ofogh-desktop.webp`, `ganjineh-ofogh-desktop-2x.webp`, `ganjineh-ofogh-mobile.webp` | Ganjineh Ofogh (concept project) | https://amirronaldo319.github.io/ganjineh-ofogh/en/ (repo: amirronaldo319/ganjineh-ofogh, public) | 2026-11-04 | 1200×778 @1x and @2x, 390×760 @2x |
 | `mend-desktop.webp`, `mend-mobile.webp` | Mend (concept project) | https://amirronaldo319.github.io/mend-website/ (repo: amirronaldo319/mend-website, public) | 2026-10-15 | 1200×778 @1x, 390×760 @2x |
 | `storage4666-desktop.webp`, `storage4666-mobile.webp` | Storage4666 (redesign concept) | https://amirronaldo319.github.io/storage4666-concept/ (repo: amirronaldo319/storage4666-concept, public) | 2026-11-04 | 1200×778 @1x, 390×760 @2x |
 | `maid-new-desktop.webp`, `maid-new-mobile.webp` | Maid New (redesign concept) | https://amirronaldo319.github.io/maid-new-redesign-demo/ (repo: amirronaldo319/maid-new-redesign-demo, public) | 2026-11-04 | 1200×778 @1x, 390×760 @2x |

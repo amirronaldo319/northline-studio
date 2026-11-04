@@ -20,12 +20,12 @@ export function Footer() {
   const t = useCopy()
 
   return (
-    <footer id="site-footer" className="site-footer bg-paper text-[0.8125rem] text-ink-3">
+    <footer id="site-footer" className="site-footer text-[0.8125rem] text-ink-3">
       <div className="container-page flex flex-col gap-8 border-t border-line pt-10 pb-8 md:flex-row md:items-start md:justify-between">
         <div className="max-w-xs">
           <BrandMark />
           <p className="mt-4 leading-relaxed">{t.footer.tagline(site.serviceArea.label)}</p>
-          <a href={mailtoHref} dir="ltr" className="mt-3 inline-block font-medium [overflow-wrap:anywhere] text-cobalt hover:underline">
+          <a href={mailtoHref} dir="ltr" className="mt-3 inline-block font-medium [overflow-wrap:anywhere] text-accent hover:underline">
             {site.contact.email}
           </a>
         </div>

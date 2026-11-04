@@ -10,16 +10,35 @@ describe('glass markup without JavaScript', async () => {
     for (const id of ['work', 'package', 'about']) expect(html).toMatch(new RegExp(`<a href="#${id}" class="lg-tab"`))
   })
 
-  test('the whole bar is one surface of glass, not a row of separate capsules', () => {
-    expect(html.match(/class="lg-glass nav-glass/g)).toHaveLength(1)
+  test('the whole bar is one capsule of glass, not a row of separate capsules', () => {
+    expect(html.match(/class="nav-shell liquid-glass-navigation"/g)).toHaveLength(1)
     expect(html).not.toContain('glass-brand')
   })
 
-  test('form fields stay plain and readable inside the glass card, with their names, labels and autocomplete', () => {
-    expect(html).toMatch(/class="lg-glass form-glass/)
+  test('the menu button is a real button that says what it does and what it controls', () => {
+    expect(html).toMatch(/<button type="button" class="liquid-glass-button[^"]*nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu"/)
+  })
+
+  test('the contact form sits in one large glass panel, with real inputs, labels and autocomplete', () => {
+    expect(html).toMatch(/class="contact-panel liquid-glass-strong[^"]*"[^]*?class="form-well liquid-glass-subtle"/)
     expect(html).toMatch(/<label for="inquiry-name"/)
-    expect(html).toMatch(/<input[^>]*autoComplete="name"|<input[^>]*autocomplete="name"/i)
+    expect(html).toMatch(/<input[^>]*autoComplete="name"[^>]*class="field liquid-glass-input"|<input[^>]*class="field liquid-glass-input"[^>]*autoComplete="name"/i)
     expect(html).not.toMatch(/class="lg-glass lg-input/)
+  })
+
+  test('the glass shapes behind the hero, the work, the pricing and the contact panel are decoration only', () => {
+    const sets = [...html.matchAll(/<div class="glass-shapes ([a-z]+)-shapes"([^>]*)>/g)]
+    expect(sets.map((match) => match[1])).toEqual(['hero', 'cards', 'pricing', 'contact'])
+    for (const match of sets) expect(match[2]).toContain('aria-hidden="true"')
+  })
+
+  test('both plans head their columns on glass, and neither carries a label such as "most popular"', () => {
+    expect(html.match(/role="columnheader" class="compare-plan plan-card liquid-glass-(subtle|strong)/g)).toHaveLength(2)
+    expect(html).not.toMatch(/most popular|recommended|best value/i)
+  })
+
+  test('the portfolio shows 604 Kars, Farsh Aquatics and Ganjineh Ofogh, each linked to its page', () => {
+    for (const id of ['604kars', 'farsh-aquatics', 'ganjineh-ofogh']) expect(html).toContain(`href="/work/${id}/"`)
   })
 
   test('screenshots carry glass labels, and the hero screenshot a glass caption with a real link', () => {
