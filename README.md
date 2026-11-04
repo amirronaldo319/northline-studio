@@ -60,15 +60,24 @@ Everything is downloaded on demand, never in the first paint. The Apple-style pa
 
 ## Design language
 
-The site follows Apple's product-page conventions while keeping the SitePilot brand (logo, cobalt, cream):
+The site follows Apple's product-page conventions while keeping the SitePilot brand (logo, cobalt):
 
 - **Type:** one family for headings and text: the device's system font on Apple devices (San Francisco, via
   `-apple-system`) and Inter elsewhere. Headlines are large, bold and tightly tracked; body text is 17px.
-- **Rhythm:** sections alternate white-cream (`bg-card`) and cream (`bg-paper`) with generous padding
-  (`.section-pad`), open with a centred intro (`.section-intro`: label, headline, lede) and hold their content in
-  borderless rounded tiles (`.tile` on cream, `.tile-paper` on white, `.tile-dark` for the one dark moment).
-- **Actions:** flat blue pills for main actions, blue outline pills beside them, and blue text links with a
-  chevron (`.chevron-link`) for "read more".
+  Section headlines are two-tone (`<Words twoTone />`): the words after the first clause turn grey, as in
+  "A small start. *Room to grow.*" (`softFrom` in `src/lib/words.ts`). The hero's key word is in a cobalt gradient.
+- **Palette:** Apple's neutral white (`bg-card`) and light grey (`bg-paper`, #f5f5f7), alternating by section,
+  with near-black text (#1d1d1f). Cobalt stays the one accent; `sky` is cobalt lifted for text on black.
+- **Rhythm:** generous section padding (`.section-pad`), centred intros (`.section-intro`: label, headline, lede),
+  and content in borderless rounded tiles (`.tile` on grey, `.tile-paper` on white, `.tile-dark`). The process title
+  stays pinned while its steps scroll past on wide screens.
+- **Black stage:** the work section is near-black (`data-surface="dark"`, `.on-dark`, `data-theme="dark"`), as
+  Apple stages pro products. The floating header and the phone quote bar turn to dark glass while over it
+  (`src/hooks/useOverDarkSurface.ts`); add `data-surface="dark"` to any new dark section for the same behaviour.
+- **Actions:** flat blue pills for main actions, outline pills beside them (`outlineLight` on dark), and blue text
+  links with a chevron (`.chevron-link`) for "read more".
+- **Hero:** the brand name as a product label, a centred headline, and the preview in a plain window frame that
+  fades at its foot and grows to full size as the page scrolls.
 - **Footer:** light and small, in columns of plain links.
 
 ## Liquid Glass (Glisse)

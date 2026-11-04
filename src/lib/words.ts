@@ -42,3 +42,16 @@ export function tokenize(text: string): WordToken[] {
 export function splitWords(text: string): string[] {
   return tokenize(text).map((token) => token.word)
 }
+
+/** Punctuation that ends a clause or sentence, in the site's languages (Latin, Persian, Chinese). */
+const CLAUSE_END = /[.!?,;:،؛؟。，；：？！]$/
+
+/**
+ * Where a two-tone heading turns grey: the first unit after the first clause or sentence ends, as Apple sets
+ * "A small start. Room to grow." Returns null when the heading is a single clause, so it stays one colour.
+ */
+export function softFrom(text: string): number | null {
+  const units = splitWords(text)
+  const end = units.findIndex((unit, index) => index < units.length - 1 && CLAUSE_END.test(unit))
+  return end === -1 ? null : end + 1
+}

@@ -30,7 +30,7 @@ export function TradePage({ trade }: { trade: Trade }) {
           <div className="reveal max-w-2xl">
             <p className="eyebrow">{t.tradePage.customersEyebrow}</p>
             <h2 id="checks-title" className="h-section word-reveal mt-3">
-              <Words text={t.tradePage.checksHeading(trade.noun)} />
+              <Words text={t.tradePage.checksHeading(trade.noun)} twoTone />
             </h2>
           </div>
           <ul className="reveal mt-12 grid gap-5 sm:grid-cols-2">
@@ -49,7 +49,7 @@ export function TradePage({ trade }: { trade: Trade }) {
           <div className="reveal lg:col-span-5">
             <p className="eyebrow">{t.tradePage.includesEyebrow}</p>
             <h2 id="includes-title" className="h-section word-reveal mt-3">
-              <Words text={t.tradePage.includesHeading} />
+              <Words text={t.tradePage.includesHeading} twoTone />
             </h2>
             <p className="lede mt-4">{t.tradePage.includesLede}</p>
           </div>
@@ -69,7 +69,7 @@ export function TradePage({ trade }: { trade: Trade }) {
           <div className="reveal max-w-2xl">
             <p className="eyebrow">{t.tradePage.recentEyebrow}</p>
             <h2 id="proof-title" className="h-section word-reveal mt-3">
-              <Words text={t.tradePage.recentHeading} />
+              <Words text={t.tradePage.recentHeading} twoTone />
             </h2>
             <p className="lede mt-4">{t.tradePage.recentLede}</p>
           </div>

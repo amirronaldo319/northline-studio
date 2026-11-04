@@ -14,7 +14,7 @@ export function Audience() {
         <div className="section-intro reveal">
           <p className="eyebrow">{t.audience.eyebrow}</p>
           <h2 id="trades-title" className="h-section word-reveal mt-3">
-            <Words text={t.audience.heading} />
+            <Words text={t.audience.heading} twoTone />
           </h2>
           <p className="lede mt-5">{t.audience.lede}</p>
         </div>

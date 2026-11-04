@@ -2,6 +2,7 @@ import { ArrowRight, ArrowUpRight, Check } from 'lucide-react'
 import { Button, Glass } from 'glisse'
 import { offers } from '@/content/offers'
 import { HERO_EXAMPLE } from '@/content/examples'
+import { site } from '@/config/site'
 import { useCopy } from '@/i18n/context'
 import { enterStep } from '@/lib/reveal'
 import { DemoPreview } from '../DemoPreview'
@@ -34,7 +35,10 @@ export function Hero() {
       </div>
       <div className="container-page">
         <div data-hero-copy="" className="mx-auto max-w-[60rem] text-center">
-          {/* Entrance sequence: headline, copy, buttons, note, then the picture (see `.enter`). */}
+          {/* Entrance sequence: name, headline, copy, buttons, note, then the picture (see `.enter`). */}
+          <p className="eyebrow enter mb-4" style={enterStep(0)}>
+            {site.brand.name}
+          </p>
           <h1 id="hero-title" className="hero-title word-enter">
             <Words text={t.hero.headline} marked={t.hero.markedWords} />
           </h1>
@@ -67,6 +71,12 @@ export function Hero() {
 
         <figure className="enter mx-auto mt-14 max-w-[68rem] sm:mt-16" style={enterStep(4)}>
           <div className="hero-figure relative overflow-hidden rounded-[1.25rem] bg-white shadow-device sm:rounded-[1.75rem]">
+            {/* A plain window frame, so the preview reads as a site on a screen. */}
+            <div className="window-bar" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </div>
             <DemoPreview example={HERO_EXAMPLE} isEager />
             {/* Mouse-only convenience; the labelled glass button is the accessible control. */}
             <button

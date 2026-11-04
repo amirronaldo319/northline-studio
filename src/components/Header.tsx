@@ -5,6 +5,7 @@ import { CONTACT_SECTION_ID, NAV_LINKS } from '@/content/navigation'
 import { useCopy } from '@/i18n/context'
 import { LOCALES } from '@/i18n/locales'
 import { useActiveSection } from '@/hooks/useActiveSection'
+import { useOverDarkSurface } from '@/hooks/useOverDarkSurface'
 import { PENDING_HOLD_MS, settlePending, shownSection } from '@/lib/navSelection'
 import { underlineFor, underlineTarget, type Underline } from '@/lib/navUnderline'
 import { BrandMark } from './BrandMark'
@@ -160,6 +161,8 @@ function UnderlineNav({ active }: { active: string | null }) {
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  // Over a dark section the glass turns dark, as Liquid Glass adapts to what is under it (32px = the row's middle).
+  const isOverDark = useOverDarkSurface('top', 32)
   const toggleRef = useRef<HTMLButtonElement>(null)
   const sheetRef = useRef<HTMLDivElement>(null)
   const active = useActiveSection(sectionIds)
@@ -204,7 +207,7 @@ export function Header() {
   const closeMenu = () => setIsMenuOpen(false)
 
   return (
-    <header className="site-header" data-scrolled={isScrolled || isMenuOpen}>
+    <header className="site-header" data-scrolled={isScrolled || isMenuOpen} data-theme={isOverDark && !isMenuOpen ? 'dark' : 'light'}>
       <div className="scroll-progress" aria-hidden="true" />
 
       <div className="container-page relative">
@@ -244,7 +247,7 @@ export function Header() {
         </div>
 
         {/* Always mounted so it can animate and its glass is fitted once; `inert` keeps it out of reach when closed. */}
-        <div ref={sheetRef} id="mobile-menu" className="mobile-menu glass-sheet-wrap" data-open={isMenuOpen} inert={!isMenuOpen}>
+        <div ref={sheetRef} id="mobile-menu" className="mobile-menu glass-sheet-wrap" data-theme="light" data-open={isMenuOpen} inert={!isMenuOpen}>
           <Glass className="glass-lift glass-sheet">
             <nav aria-label={t.common.mobileNav}>
               <ul className="flex flex-col px-5 py-3">

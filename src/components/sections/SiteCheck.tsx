@@ -21,7 +21,7 @@ export function SiteCheck() {
           <div className="max-w-[44rem]">
             <p className="eyebrow">{t.siteCheck.eyebrow}</p>
             <h2 id="site-check-title" className="h-section word-reveal mt-3">
-              <Words text={t.siteCheck.heading} />
+              <Words text={t.siteCheck.heading} twoTone />
             </h2>
             <p className="lede mt-5">{t.siteCheck.text}</p>
           </div>

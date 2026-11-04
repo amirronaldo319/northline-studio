@@ -16,7 +16,7 @@ export function Contact() {
         <div className="reveal lg:col-span-5">
           <p className="eyebrow">{t.contact.eyebrow}</p>
           <h2 id="contact-title" className="h-section word-reveal mt-3">
-            <Words text={t.contact.heading} />
+            <Words text={t.contact.heading} twoTone />
           </h2>
           <p className="lede mt-5">{t.contact.lede}</p>
 

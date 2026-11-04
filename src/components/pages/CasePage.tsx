@@ -58,7 +58,7 @@ export function CasePage({ project }: { project: Project }) {
           <div className="reveal lg:col-span-5">
             <p className="eyebrow">{t.casePage.whatIDid}</p>
             <h2 id="case-did" className="h-section word-reveal mt-3">
-              <Words text={t.casePage.myPart} />
+              <Words text={t.casePage.myPart} twoTone />
             </h2>
             <p className="lede mt-5">{text.contribution}</p>
           </div>

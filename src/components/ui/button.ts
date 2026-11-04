@@ -1,4 +1,4 @@
-export type ButtonVariant = 'primary' | 'secondary' | 'inverse' | 'quiet'
+export type ButtonVariant = 'primary' | 'secondary' | 'outlineLight' | 'inverse' | 'quiet'
 export type ButtonSize = 'md' | 'lg'
 
 const base =
@@ -13,6 +13,8 @@ const base =
 const variants: Record<ButtonVariant, string> = {
   primary: 'bg-cobalt text-white hover:bg-[#2a51de] active:bg-cobalt-deep',
   secondary: 'border border-cobalt text-cobalt hover:bg-cobalt hover:text-white',
+  /** The outline pill on dark surfaces. */
+  outlineLight: 'border border-white/45 text-white hover:border-white hover:bg-white hover:text-night',
   inverse: 'bg-white text-night hover:bg-cobalt-soft',
   quiet: 'text-ink underline decoration-line-strong underline-offset-4 hover:decoration-cobalt',
 }
