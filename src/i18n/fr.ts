@@ -11,7 +11,7 @@ export const fr: Copy = {
   common: {
     skipToContent: 'Aller au contenu', requestQuote: 'Demander une soumission', seeMyWork: 'Voir mes réalisations',
     openMenu: 'Ouvrir le menu', closeMenu: 'Fermer le menu', mainNav: 'Navigation principale', mobileNav: 'Navigation mobile',
-    footerNav: 'Pied de page', languageNav: 'Langue', currentLanguage: 'actuelle', backToTop: 'Retour en haut', privacy: 'Confidentialité', home: 'Accueil',
+    footerNav: 'Pied de page', languageNav: 'Langue', currentLanguage: 'actuelle', previous: 'Précédent', next: 'Suivant', backToTop: 'Retour en haut', privacy: 'Confidentialité', home: 'Accueil',
     work: 'Réalisations', guides: 'Guides', breadcrumb: 'Fil d’Ariane', opensNewTab: (name) => ` : ${name} (s’ouvre dans un nouvel onglet)`,
   },
   nav: { work: 'Réalisations', package: 'Forfaits', process: 'Étapes', about: 'À propos', faq: 'FAQ' },

@@ -25,6 +25,8 @@ export const zhHant: Copy = {
     footerNav: '頁腳',
     languageNav: '語言',
     currentLanguage: '當前',
+    previous: '上一個',
+    next: '下一個',
     backToTop: '回到頂部',
     privacy: '隱私',
     home: '首頁',

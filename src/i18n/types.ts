@@ -68,6 +68,9 @@ export interface Copy {
     languageNav: string
     /** Marks the language being shown in the header's language menu, for screen readers. */
     currentLanguage: string
+    /** The gallery's step buttons. */
+    previous: string
+    next: string
     backToTop: string
     privacy: string
     home: string

@@ -4,12 +4,12 @@ import { EXAMPLES, HERO_EXAMPLE, type ExampleSite } from '@/content/examples'
 import { CONCEPT_PROJECT, FEATURED_PROJECT, MEND_PROJECT, SECONDARY_PROJECT, type Project } from '@/content/projects'
 import { useInViewOnce } from '@/hooks/useInViewOnce'
 import { useCopy, useLocalHref } from '@/i18n/context'
-import { revealDelay } from '@/lib/reveal'
 import { DemoPreview } from '../DemoPreview'
 import { useExampleDialog } from '../exampleDialogContext'
 import { LegacyAnchors } from '../LegacyAnchors'
 import { ProjectTrigger } from '../ProjectTrigger'
 import { buttonClasses } from '../ui/button'
+import { Gallery } from '../ui/Gallery'
 import { Words } from '../Words'
 
 const frameClasses = 'card-frame overflow-hidden rounded-[1rem] bg-white shadow-soft'
@@ -96,12 +96,12 @@ function FeaturedProject({ project }: { project: Project }) {
   )
 }
 
-/** A real project shown as a stacked card, in the same shape as a concept demo card. */
-function ProjectCard({ project, index }: { project: Project; index: number }) {
+/** A real project as a gallery tile, in the same shape as a concept demo tile. */
+function ProjectCard({ project }: { project: Project }) {
   const titleId = `project-${project.id}-title`
 
   return (
-    <article aria-labelledby={titleId} className="project-card tile-paper reveal" style={revealDelay(index)}>
+    <article aria-labelledby={titleId} className="project-card tile-paper h-full">
       <div className={frameClasses}>
         <ProjectTrigger project={project} />
       </div>
@@ -113,14 +113,14 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 }
 
 /** A concept demo for a fictional business, opened in the preview dialog. */
-function ConceptCard({ example, index }: { example: ExampleSite; index: number }) {
+function ConceptCard({ example }: { example: ExampleSite }) {
   const { open } = useExampleDialog()
   const t = useCopy()
   const text = t.examples[example.id]
   const titleId = `example-${example.id}-title`
 
   return (
-    <article aria-labelledby={titleId} className="project-card tile-paper reveal" style={revealDelay(index)}>
+    <article aria-labelledby={titleId} className="project-card tile-paper h-full">
       <div className="relative">
         <div className={frameClasses}>
           <DemoPreview example={example} />
@@ -174,14 +174,18 @@ export function Work() {
           <FeaturedProject project={FEATURED_PROJECT} />
         </div>
 
-        <div className="mt-5 grid gap-5 md:grid-cols-2">
-          <ProjectCard project={SECONDARY_PROJECT} index={0} />
-          <ProjectCard project={CONCEPT_PROJECT} index={1} />
-          <ProjectCard project={MEND_PROJECT} index={2} />
-          {EXAMPLES.filter((example) => example.id !== HERO_EXAMPLE.id).map((example, index) => (
-            <ConceptCard key={example.id} example={example} index={index + 3} />
+      </div>
+
+      {/* The rest of the work as a sideways gallery, as Apple shows its highlights; the next tile peeks in. */}
+      <div className="reveal mt-5">
+        <Gallery label={t.work.eyebrow}>
+          <ProjectCard project={SECONDARY_PROJECT} />
+          <ProjectCard project={CONCEPT_PROJECT} />
+          <ProjectCard project={MEND_PROJECT} />
+          {EXAMPLES.filter((example) => example.id !== HERO_EXAMPLE.id).map((example) => (
+            <ConceptCard key={example.id} example={example} />
           ))}
-        </div>
+        </Gallery>
       </div>
     </section>
   )
