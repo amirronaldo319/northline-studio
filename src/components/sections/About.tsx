@@ -10,7 +10,7 @@ export function About() {
         <div className="reveal lg:col-span-5">
           <p className="eyebrow">{t.about.eyebrow}</p>
           <h2 id="about-title" className="h-section word-reveal mt-3">
-            <Words text={t.about.heading} />
+            <Words text={t.about.heading} twoTone />
           </h2>
 
           <dl className="tile-paper reveal stagger mt-10 divide-y divide-ink/10 !py-2 text-[0.9375rem]">

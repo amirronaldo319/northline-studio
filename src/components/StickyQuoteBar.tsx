@@ -3,6 +3,7 @@ import { ArrowRight } from 'lucide-react'
 import { Glass } from 'glisse'
 import { CONTACT_SECTION_ID } from '@/content/navigation'
 import { useCopy } from '@/i18n/context'
+import { useOverDarkSurface } from '@/hooks/useOverDarkSurface'
 import { shouldShowQuoteBar } from '@/lib/quoteBar'
 import { buttonClasses } from './ui/button'
 
@@ -14,6 +15,8 @@ export function StickyQuoteBar() {
   const t = useCopy()
   const [scrolledPast, setScrolledPast] = useState(false)
   const [atEnd, setAtEnd] = useState(false)
+  // The capsule turns to dark glass over the dark work section (40px up from the bottom edge is its middle).
+  const isOverDark = useOverDarkSurface('bottom', 40)
 
   useEffect(() => {
     const onScroll = () =>
@@ -44,6 +47,7 @@ export function StickyQuoteBar() {
   return (
     <div
       data-visible={isVisible}
+      data-theme={isOverDark ? 'dark' : 'light'}
       inert={!isVisible}
       className="quote-bar pointer-events-none fixed inset-x-0 bottom-0 z-30 flex justify-center px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] min-[560px]:hidden print:hidden"
     >

@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { splitWords, tokenize } from './words'
+import { softFrom, splitWords, tokenize } from './words'
 
 describe('splitWords', () => {
   test('keeps words in order and drops extra whitespace', () => {
@@ -47,5 +47,25 @@ describe('tokenize', () => {
       { word: '为本地商家', spaceBefore: false },
       { word: '量身定制的网站。', spaceBefore: true },
     ])
+  })
+})
+
+describe('softFrom', () => {
+  test('turns grey after the first sentence', () => {
+    expect(softFrom('A small start. Room to grow.')).toBe(3)
+  })
+
+  test('turns grey after the first clause', () => {
+    expect(softFrom('What I’ve built, and how I design.')).toBe(3)
+  })
+
+  test('keeps a single-clause heading one colour', () => {
+    expect(softFrom('Request a quote.')).toBeNull()
+    expect(softFrom('Made for local service businesses.')).toBeNull()
+  })
+
+  test('works for Chinese clauses and Persian punctuation', () => {
+    expect(softFrom('我做过什么，以及我如何设计。')).toBe(1)
+    expect(softFrom('شروعی کوچک، جا برای رشد.')).toBe(2)
   })
 })

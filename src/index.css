@@ -11,23 +11,26 @@
  * Every component uses these names (bg-paper, text-ink, bg-cobalt, …).
  */
 @theme {
-  --color-paper: #f7f4ee;
-  --color-paper-2: #efeae0;
-  --color-card: #fffdf9;
-  --color-line: #e3dccf;
-  --color-line-strong: #cfc6b6;
+  /* Apple's neutral surfaces: white and a light grey, alternating section by section. */
+  --color-paper: #f5f5f7;
+  --color-paper-2: #ececf0;
+  --color-card: #ffffff;
+  --color-line: #d2d2d7;
+  --color-line-strong: #c2c2c8;
 
-  --color-ink: #131a2b;
-  --color-ink-2: #3f4658;
-  --color-ink-3: #5f6576;
+  --color-ink: #1d1d1f;
+  --color-ink-2: #424245;
+  --color-ink-3: #6e6e73;
 
   --color-cobalt: #173fd0;
   --color-cobalt-deep: #112f9e;
   --color-cobalt-soft: #e5eafb;
 
-  --color-night: #10172a;
-  --color-night-2: #1a2238;
-  --color-night-line: #2c3654;
+  /* Dark surfaces are near-black, as on Apple's pro pages; `sky` is the brand blue lifted for text on them. */
+  --color-night: #0b0b0d;
+  --color-night-2: #1c1c1e;
+  --color-night-line: #2c2c2e;
+  --color-sky: #7593ff;
 
   --color-sand: #d9ccb4;
   --color-moss: #5d6b4f;
@@ -62,14 +65,14 @@
   --motion-dur-hover: 180ms;
   --motion-dur-ui: 260ms;
   --motion-dur-enter: 560ms;
-  --motion-dur-reveal: 640ms;
+  --motion-dur-reveal: 860ms;
   --motion-dur-mask: 900ms;
   --motion-dur-nav: 180ms;
   --motion-dur-expand: 300ms;
   --motion-dur-presentation: 450ms;
 
   --motion-shift-sm: 8px;
-  --motion-shift-md: 14px;
+  --motion-shift-md: 22px;
   --motion-shift-lg: 20px;
 
   --motion-stagger: 70ms;
@@ -628,7 +631,7 @@ dialog.viewer[data-closing]::backdrop {
   height: 1.75rem;
   border-radius: 9999px;
   color: var(--color-ink);
-  background: rgb(255 253 249 / 0.92);
+  background: rgb(255 255 255 / 0.92);
   border: 1px solid var(--color-line);
   box-shadow: var(--shadow-soft);
   transition:
@@ -906,20 +909,22 @@ dialog.viewer[data-closing]::backdrop {
   display: inline-block;
 }
 
+/* The hero's key word, set in a brand gradient (cobalt to a lighter blue), as Apple tints a product name. */
 .word-marked {
-  position: relative;
+  background: linear-gradient(100deg, #1434c4 0%, #3156f0 48%, #5b8cff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-bottom: 0.06em;
 }
 
-.word-marked::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -0.04em;
-  height: 0.085em;
-  border-radius: 9999px;
-  background: var(--color-cobalt);
-  transform-origin: left;
+/* Two-tone headlines: the words after the first clause are grey. */
+.word-soft {
+  color: var(--color-ink-3);
+}
+
+.on-dark .word-soft {
+  color: #86868b;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -929,20 +934,11 @@ dialog.viewer[data-closing]::backdrop {
     animation-delay: calc(var(--w, 0) * 32ms);
   }
 
-  .js .word-enter .word-marked::after {
-    animation: mark-draw var(--motion-dur-mask) var(--motion-ease-in-out) 760ms backwards;
-  }
 
   @keyframes word-in {
     from {
       opacity: 0;
       transform: translateY(0.4em);
-    }
-  }
-
-  @keyframes mark-draw {
-    from {
-      transform: scaleX(0);
     }
   }
 
@@ -1098,8 +1094,7 @@ dialog.viewer[data-closing]::backdrop {
 
 /* Right to left: things that grow or slide from the start edge start from the right. */
 :root[dir='rtl'] .draw-line::before,
-:root[dir='rtl'] .scroll-progress,
-:root[dir='rtl'] .word-marked::after {
+:root[dir='rtl'] .scroll-progress {
   transform-origin: right;
 }
 
@@ -1389,7 +1384,6 @@ dialog.viewer[data-closing]::backdrop {
   }
 
   .word,
-  .word-marked::after,
   .nav-enter,
   .step-num,
   .pkg-icon,
@@ -1472,7 +1466,7 @@ html.lenis body {
 
 :root,
 [data-theme='light'] {
-  --lg-glass: rgb(255 253 249 / 0.6);
+  --lg-glass: rgb(255 255 255 / 0.6);
   --lg-glass-active: rgb(236 231 221 / 0.86);
   --lg-blur: 8px;
   --lg-glass-bend: 0.3;
@@ -1489,7 +1483,7 @@ html.lenis body {
   --lg-selection: rgb(19 26 43 / 0.08);
   --lg-segment-track: rgb(19 26 43 / 0.07);
   --lg-segment-label: #131a2b;
-  --lg-surface: rgb(255 253 249 / 0.9);
+  --lg-surface: rgb(255 255 255 / 0.9);
   --lg-highlight: rgb(19 26 43 / 0.07);
   --lg-separator: rgb(19 26 43 / 0.12);
   --lg-rail: rgb(19 26 43 / 0.12);
@@ -1499,8 +1493,8 @@ html.lenis body {
 }
 
 [data-theme='dark'] {
-  --lg-glass: rgb(26 34 56 / 0.58);
-  --lg-glass-active: rgb(52 63 96 / 0.72);
+  --lg-glass: rgb(44 44 46 / 0.62);
+  --lg-glass-active: rgb(72 72 74 / 0.72);
   --lg-rim-shine: 0.16;
   --lg-fill: #3358e0;
   --lg-on: #2f8f58;
@@ -1678,7 +1672,7 @@ html.lenis body {
 /* Over moving page content the header frosts a little more, so its labels stay crisp. */
 .site-header {
   --lg-blur: 12px;
-  --lg-glass: rgb(255 253 249 / 0.72);
+  --lg-glass: rgb(255 255 255 / 0.72);
 }
 
 .glass-brand {
@@ -1787,7 +1781,7 @@ html.lenis body {
 
 .glass-sheet {
   /* Reading surface: more frost and a denser tint than the bar, so the links read over anything. */
-  --lg-glass: rgb(255 253 249 / 0.9);
+  --lg-glass: rgb(255 255 255 / 0.9);
   --lg-blur: 22px;
   --glass-drop: 0 24px 60px -24px rgb(19 26 43 / 0.45);
   border-radius: 1.75rem;
@@ -1866,7 +1860,7 @@ html.lenis body {
 }
 
 .hero-peek .lg-button {
-  --lg-glass: rgb(255 253 249 / 0.7);
+  --lg-glass: rgb(255 255 255 / 0.7);
 }
 
 /* ---- Preview dialogs ---------------------------------------------------------------------------------- */
@@ -1890,7 +1884,7 @@ html.lenis body {
   z-index: 1;
   translate: -50% 0;
   /* Screenshots can be dark or busy under the toggle; a denser tint keeps its labels readable on any of them. */
-  --lg-glass: rgb(255 253 249 / 0.86);
+  --lg-glass: rgb(255 255 255 / 0.86);
   --glass-drop: 0 10px 30px -12px rgb(16 23 42 / 0.5);
 }
 
@@ -1906,7 +1900,7 @@ html.lenis body {
 }
 
 .phone-width-capsule {
-  --lg-glass: rgb(255 253 249 / 0.78);
+  --lg-glass: rgb(255 255 255 / 0.78);
   --lg-blur: 14px;
   gap: 0.75rem;
   padding-inline: 1rem 0.75rem;
@@ -2024,5 +2018,79 @@ html.lenis body {
 .site-footer [role='group'] a {
   min-height: 2.25rem;
   font-size: 0.8125rem;
+}
+
+/* ---- Dark stage (the work section) ------------------------------------------------------------------- */
+
+.on-dark .eyebrow,
+.on-dark .chevron-link {
+  color: var(--color-sky);
+}
+
+.on-dark .lede {
+  color: #a1a1a6;
+}
+
+.on-dark .tile-paper {
+  background: var(--color-night-2);
+}
+
+/* The phone's dark bezel would vanish against a dark tile, so it gets a hairline of light. */
+.on-dark .phone-device {
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.14),
+    var(--shadow-device);
+}
+
+/* ---- Header over dark sections -------------------------------------------------------------------------- */
+
+.site-header[data-theme='dark'] {
+  --lg-glass: rgb(36 36 38 / 0.72);
+  --glass-drop: 0 1px 2px rgb(0 0 0 / 0.3), 0 12px 30px -14px rgb(0 0 0 / 0.6);
+}
+
+.quote-bar[data-theme='dark'] .glass-quote {
+  --lg-glass: rgb(36 36 38 / 0.72);
+  --glass-drop: 0 16px 40px -18px rgb(0 0 0 / 0.7);
+}
+
+.site-header[data-theme='dark'] .glass-tabs .lg-tab {
+  color: rgb(255 255 255 / 0.78);
+}
+
+.site-header[data-theme='dark'] .glass-brand .brand-logo {
+  color: #ffffff;
+  --logo-mark: var(--color-sky);
+}
+
+/* ---- Hero window frame ---------------------------------------------------------------------------------- */
+
+.window-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  height: 2.25rem;
+  padding-inline: 1rem;
+  background: #e8e8ed;
+  border-bottom: 1px solid rgb(0 0 0 / 0.07);
+}
+
+.window-bar span {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 9999px;
+  background: #c4c4ca;
+}
+
+@media (max-width: 639.98px) {
+  .window-bar {
+    height: 1.75rem;
+    padding-inline: 0.75rem;
+  }
+
+  .window-bar span {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
 }
 

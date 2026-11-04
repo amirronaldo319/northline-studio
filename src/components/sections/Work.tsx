@@ -17,7 +17,7 @@ const frameClasses = 'card-frame overflow-hidden rounded-[1rem] bg-white shadow-
 /** Section ids from earlier versions of the page. Links shared with these still land on this section. */
 const LEGACY_IDS = ['examples'] as const
 
-const labelClasses = 'text-[0.875rem] font-semibold text-cobalt'
+const labelClasses = 'text-[0.875rem] font-semibold text-sky'
 
 /** Text block for a real project: what it is, what I did, and the decisions worth noting. */
 function ProjectText({ project, titleId }: { project: Project; titleId: string }) {
@@ -33,14 +33,14 @@ function ProjectText({ project, titleId }: { project: Project; titleId: string }
       <h3 id={titleId} className="mt-2 text-[1.75rem] font-bold tracking-[-0.03em]">
         <bdi>{project.name}</bdi>
       </h3>
-      <p className="mt-3 text-[1.0625rem] leading-relaxed text-ink">{text.summary}</p>
-      <p className="mt-3 text-[0.9375rem] leading-relaxed text-ink-2">
-        <strong className="font-semibold text-ink">{t.work.contribution}</strong> {text.contribution}
+      <p className="mt-3 text-[1.0625rem] leading-relaxed text-white/90">{text.summary}</p>
+      <p className="mt-3 text-[0.9375rem] leading-relaxed text-white/65">
+        <strong className="font-semibold text-white/90">{t.work.contribution}</strong> {text.contribution}
       </p>
-      <ul className="mt-3 space-y-2 text-[0.9375rem] leading-relaxed text-ink-2">
+      <ul className="mt-3 space-y-2 text-[0.9375rem] leading-relaxed text-white/65">
         {text.decisions.map((decision, index) => (
           <li key={decision} className={`gap-3 ${index === 0 ? 'flex' : 'hidden sm:flex'}`}>
-            <span aria-hidden="true" className="mt-2.5 size-1.5 shrink-0 rounded-full bg-cobalt" />
+            <span aria-hidden="true" className="mt-2.5 size-1.5 shrink-0 rounded-full bg-sky" />
             {decision}
           </li>
         ))}
@@ -50,7 +50,7 @@ function ProjectText({ project, titleId }: { project: Project; titleId: string }
           href={project.liveUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className={buttonClasses('secondary', 'md')}
+          className={buttonClasses('outlineLight', 'md')}
         >
           {project.status === 'live' ? t.work.visitLive : t.work.openLivePreview}
           <span className="sr-only">{t.common.opensNewTab(project.name)}</span>
@@ -141,8 +141,8 @@ function ConceptCard({ example, index }: { example: ExampleSite; index: number }
         <h3 id={titleId} className="mt-2 text-[1.75rem] font-bold tracking-[-0.03em]">
           {example.name}
         </h3>
-        <p className="mt-2 text-[1.0625rem] leading-relaxed text-ink">{text.intent}</p>
-        <p className="mt-2 hidden text-[0.9375rem] leading-relaxed text-ink-2 sm:block">{text.approach}</p>
+        <p className="mt-2 text-[1.0625rem] leading-relaxed text-white/90">{text.intent}</p>
+        <p className="mt-2 hidden text-[0.9375rem] leading-relaxed text-white/65 sm:block">{text.approach}</p>
         <Button onClick={() => open(example)} className="glass-btn glass-flat mt-4">
           {t.work.viewExample}
           <span className="sr-only">: {example.name}</span>
@@ -157,14 +157,15 @@ export function Work() {
   const t = useCopy()
 
   return (
-    <section id="work" aria-labelledby="work-title" className="section-pad relative bg-card">
+    // Apple stages its pro products on black; the work gets the same stage. The header turns dark over it.
+    <section id="work" aria-labelledby="work-title" data-theme="dark" data-surface="dark" className="on-dark section-pad relative bg-night text-white">
       <LegacyAnchors ids={LEGACY_IDS} />
 
       <div className="container-page">
         <div className="section-intro reveal">
           <p className="eyebrow">{t.work.eyebrow}</p>
           <h2 id="work-title" className="h-section word-reveal mt-3">
-            <Words text={t.work.heading} />
+            <Words text={t.work.heading} twoTone />
           </h2>
           <p className="lede mt-5">{t.work.lede}</p>
         </div>

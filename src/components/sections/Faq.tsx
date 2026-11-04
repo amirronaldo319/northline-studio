@@ -21,7 +21,7 @@ export function Faq({ items, heading, label }: Props) {
         <div className="section-intro reveal">
           <p className="eyebrow">{label ?? t.faq.eyebrow}</p>
           <h2 id="faq-title" className="h-section word-reveal mt-3">
-            <Words text={heading ?? t.faq.heading} />
+            <Words text={heading ?? t.faq.heading} twoTone />
           </h2>
           <p className="lede mt-5">
             {t.faq.moreLead}

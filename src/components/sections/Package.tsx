@@ -26,7 +26,7 @@ export function Package() {
         <div className="section-intro reveal">
           <p className="eyebrow">{t.package.eyebrow}</p>
           <h2 id="package-title" className="h-section word-reveal mt-3">
-            <Words text={offer.heading} />
+            <Words text={offer.heading} twoTone />
           </h2>
           <p className="lede mt-5">{offer.intro}</p>
           <a href={`#${CONTACT_SECTION_ID}`} className={buttonClasses('primary', 'lg', 'nudge mt-8')}>
