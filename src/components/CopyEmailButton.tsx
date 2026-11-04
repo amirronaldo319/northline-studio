@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Check, Copy } from 'lucide-react'
+import { Button } from 'glisse'
 import { site } from '@/config/site'
 import { useCopy } from '@/i18n/context'
 import { copyText } from '@/lib/clipboard'
@@ -33,18 +34,13 @@ export function CopyEmailButton() {
 
   return (
     <span className="inline-flex flex-wrap items-center gap-x-3 gap-y-1">
-      <button
-        type="button"
+      <Button
         onClick={copy}
-        className="inline-flex min-h-10 items-center gap-1.5 rounded-full border border-line-strong bg-card px-3.5 text-sm font-semibold text-ink transition-[border-color,transform] duration-150 hover:border-ink/40 active:scale-[0.98] active:duration-100"
+        className="glass-btn glass-btn-sm glass-flat"
+        icon={state === 'copied' ? <Check aria-hidden="true" className="text-success" /> : <Copy aria-hidden="true" />}
       >
-        {state === 'copied' ? (
-          <Check aria-hidden="true" size={15} className="text-success" />
-        ) : (
-          <Copy aria-hidden="true" size={15} />
-        )}
         {state === 'copied' ? t.contact.copied : t.contact.copyEmail}
-      </button>
+      </Button>
       <span role="status" aria-live="polite" className="text-sm text-ink-3">
         {state === 'copied' ? t.contact.copiedNote(site.contact.email) : null}
         {state === 'failed' ? t.contact.copyFailed : null}

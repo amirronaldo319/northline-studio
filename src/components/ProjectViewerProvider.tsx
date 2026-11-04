@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { ArrowUpRight, Monitor, Smartphone, X } from 'lucide-react'
+import { Button, SegmentedControl } from 'glisse'
 import type { Project } from '@/content/projects'
 import { useCopy } from '@/i18n/context'
 import { canShareElement, flipCss, flipTransform, isInViewport } from '@/lib/flip'
@@ -38,6 +39,11 @@ export function ProjectViewerProvider({ children }: { children: ReactNode }) {
   const [project, setProject] = useState<Project | null>(null)
   const [view, setView] = useState<ViewerView>('desktop')
   const [openToken, setOpenToken] = useState(0)
+  /**
+   * True once the picture has landed. The glass toggle over the screenshot mounts only then: it finds the
+   * screenshot behind it when it mounts, which needs the dialog open and the picture in its final place.
+   */
+  const [isSettled, setIsSettled] = useState(false)
 
   const dialogRef = useRef<HTMLDialogElement>(null)
   const frameRef = useRef<HTMLDivElement>(null)
@@ -66,6 +72,7 @@ export function ProjectViewerProvider({ children }: { children: ReactNode }) {
     cancelAnimations()
     dialogRef.current?.removeAttribute('data-closing')
     phaseRef.current = 'closed'
+    setIsSettled(false)
     setProject(null)
     const origin = originRef.current
     if (origin?.isConnected) origin.focus()
@@ -89,6 +96,7 @@ export function ProjectViewerProvider({ children }: { children: ReactNode }) {
     }
 
     phaseRef.current = 'closing'
+    setIsSettled(false)
     cancelAnimations()
     dialog.setAttribute('data-closing', '')
 
@@ -131,6 +139,7 @@ export function ProjectViewerProvider({ children }: { children: ReactNode }) {
 
   const open = useCallback((next: Project, options: OpenProjectOptions) => {
     originRef.current = options.origin
+    setIsSettled(false)
     setProject(next)
     setView(options.view ?? 'desktop')
     setOpenToken((token) => token + 1)
@@ -152,6 +161,8 @@ export function ProjectViewerProvider({ children }: { children: ReactNode }) {
 
     if (prefersReducedMotion()) {
       phaseRef.current = 'open'
+      // Next task: the dialog is open by then, so the toggle can find the screenshot behind it.
+      openTimerRef.current = window.setTimeout(() => setIsSettled(true), 0)
       return
     }
 
@@ -196,7 +207,9 @@ export function ProjectViewerProvider({ children }: { children: ReactNode }) {
       )
     }
     openTimerRef.current = window.setTimeout(() => {
-      if (phaseRef.current === 'opening') phaseRef.current = 'open'
+      if (phaseRef.current !== 'opening') return
+      phaseRef.current = 'open'
+      setIsSettled(true)
     }, duration)
   }, [openToken, cancelAnimations, clearTimers])
 
@@ -249,36 +262,65 @@ export function ProjectViewerProvider({ children }: { children: ReactNode }) {
                     <bdi>{project.name}</bdi>
                   </h2>
                 </div>
-                <button
-                  type="button"
-                  data-autofocus
-                  onClick={requestClose}
-                  className="grid size-11 shrink-0 place-items-center rounded-full bg-white/15 text-white transition-[background-color,transform] duration-150 hover:bg-white/25 active:scale-[0.96] active:duration-100"
-                >
-                  <X aria-hidden="true" size={20} />
-                  <span className="sr-only">{t.dialogs.closePreview}</span>
-                </button>
+                {/* Dark glass, to sit on the dimmed backdrop. */}
+                <div data-theme="dark" className="shrink-0">
+                  <Button
+                    data-autofocus
+                    onClick={requestClose}
+                    className="glass-icon-button"
+                    icon={<X aria-hidden="true" />}
+                    aria-label={t.dialogs.closePreview}
+                  />
+                </div>
               </div>
 
               <div className="flex justify-center" data-viewer-gutter>
                 <div
                   ref={frameRef}
-                  className="viewer-frame overflow-hidden rounded-lg border border-white/20 bg-paper-2 shadow-device"
+                  className="viewer-frame relative overflow-hidden rounded-lg border border-white/20 bg-paper-2 shadow-device"
                   style={{
                     width: isPhone
                       ? `min(390px, 100%, calc((100dvh - ${CHROME_HEIGHT}) * 0.5132))`
                       : `min(100%, 1200px, calc((100dvh - ${CHROME_HEIGHT}) * 1.5424))`,
                   }}
                 >
-                  <img
-                    key={view}
-                    src={isPhone ? project.mobile.src : project.desktop.src}
-                    width={isPhone ? 390 : project.desktop.width}
-                    height={isPhone ? 760 : project.desktop.height}
-                    alt={t.projects[project.id].alt}
-                    decoding="async"
-                    className="view-in block h-auto w-full"
-                  />
+                  {/*
+                    The screenshot is a known backdrop: marked, so the glass toggle over it refracts it in every
+                    browser, not only Chromium. The mark sits on a wrapper that stays put when the picture changes.
+                  */}
+                  <div data-glisse-backdrop="">
+                    <img
+                      key={view}
+                      src={isPhone ? project.mobile.src : project.desktop.src}
+                      width={isPhone ? 390 : project.desktop.width}
+                      height={isPhone ? 760 : project.desktop.height}
+                      alt={t.projects[project.id].alt}
+                      decoding="async"
+                      className="view-in block h-auto w-full"
+                    />
+                  </div>
+                  {isSettled && (
+                    <div className="viewer-toggle fx-in">
+                      <SegmentedControl
+                        aria-label={t.dialogs.previewSize}
+                        className="glass-segmented glass-lift"
+                        items={(['desktop', 'phone'] as const).map((id) => {
+                          const Icon = DEVICE_ICONS[id]
+                          return {
+                            value: id,
+                            label: (
+                              <span className="inline-flex items-center gap-1.5">
+                                <Icon aria-hidden="true" size={15} />
+                                {id === 'desktop' ? t.dialogs.desktop : t.dialogs.phone}
+                              </span>
+                            ),
+                          }
+                        })}
+                        value={view}
+                        onValueChange={(next) => setView(next === 'phone' ? 'phone' : 'desktop')}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -295,26 +337,6 @@ export function ProjectViewerProvider({ children }: { children: ReactNode }) {
                     <span className="sr-only">{t.common.opensNewTab(project.name)}</span>
                     <ArrowUpRight aria-hidden="true" size={17} className="card-arrow" />
                   </a>
-
-                  <div role="group" aria-label={t.dialogs.previewSize} className="flex rounded-full border border-line-strong bg-paper p-1">
-                    {(['desktop', 'phone'] as const).map((id) => {
-                      const Icon = DEVICE_ICONS[id]
-                      return (
-                      <button
-                        key={id}
-                        type="button"
-                        aria-pressed={view === id}
-                        onClick={() => setView(id)}
-                        className={`inline-flex min-h-9 items-center gap-1.5 rounded-full px-3.5 text-sm font-semibold transition-colors duration-150 ${
-                          view === id ? 'bg-ink text-white' : 'text-ink-2 hover:text-ink'
-                        }`}
-                      >
-                        <Icon aria-hidden="true" size={15} />
-                        {id === 'desktop' ? t.dialogs.desktop : t.dialogs.phone}
-                      </button>
-                      )
-                    })}
-                  </div>
                 </div>
               </div>
             </div>

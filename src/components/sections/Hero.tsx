@@ -1,4 +1,5 @@
 import { ArrowRight, ArrowUpRight, Check } from 'lucide-react'
+import { Button, Glass } from 'glisse'
 import { offers } from '@/content/offers'
 import { HERO_EXAMPLE } from '@/content/examples'
 import { useCopy } from '@/i18n/context'
@@ -14,6 +15,15 @@ export function Hero() {
   const { open } = useExampleDialog()
   const t = useCopy()
   const example = t.examples[HERO_EXAMPLE.id]
+
+  // One control, placed over the preview on wider screens and under it on phones (only one is ever displayed).
+  const viewButton = (
+    <Button onClick={() => open(HERO_EXAMPLE)} className="glass-btn glass-lift glass-frost nudge-up" tint="var(--color-cobalt)">
+      {t.hero.viewExample}
+      <ArrowUpRight aria-hidden="true" className="card-arrow" />
+      <span className="sr-only">: {HERO_EXAMPLE.name}</span>
+    </Button>
+  )
 
   return (
     <section aria-labelledby="hero-title" className="relative isolate pt-8 pb-12 sm:pt-12 lg:pt-16 lg:pb-24">
@@ -45,9 +55,12 @@ export function Hero() {
                 <ArrowRight aria-hidden="true" size={18} className="rtl:-scale-x-100" />
               </a>
             </Magnet>
-            <a href="#work" className={buttonClasses('secondary', 'lg')}>
-              {t.common.seeMyWork}
-            </a>
+            {/* The secondary link sits on clear glass over the hero's grid and colour, beside the solid primary. */}
+            <Glass className="glass-capsule glass-lift glass-frost glass-cta">
+              <a href="#work" className="glass-cta-link">
+                {t.common.seeMyWork}
+              </a>
+            </Glass>
           </div>
 
           <ul className="enter mt-6 flex flex-col gap-2 text-sm text-ink-2" style={enterStep(4)}>
@@ -62,31 +75,24 @@ export function Hero() {
 
         <figure className="enter" style={enterStep(4)}>
           <div className="relative" data-tilt="">
-            <div className="hero-figure overflow-hidden rounded-lg border border-line-strong/60 bg-white shadow-device">
+            <div className="hero-figure relative overflow-hidden rounded-lg border border-line-strong/60 bg-white shadow-device">
               <DemoPreview example={HERO_EXAMPLE} isEager />
+              {/* Mouse-only convenience; the labelled glass button below is the accessible control. */}
+              <button
+                type="button"
+                tabIndex={-1}
+                aria-hidden="true"
+                onClick={() => open(HERO_EXAMPLE)}
+                className="absolute inset-0 cursor-pointer rounded-lg"
+              />
+              {/* From 640px a glass control floats over the preview itself, so the demo shows through it. */}
+              <div className="hero-peek hidden sm:block">{viewButton}</div>
             </div>
-            {/* Mouse-only convenience; the labelled button in the caption is the accessible control. */}
-            <button
-              type="button"
-              tabIndex={-1}
-              aria-hidden="true"
-              onClick={() => open(HERO_EXAMPLE)}
-              className="absolute inset-0 cursor-pointer rounded-lg"
-            />
           </div>
-          <figcaption className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-sm text-ink-3">
-            <span>
-              {t.hero.conceptCaption(HERO_EXAMPLE.name, example.businessType)}
-            </span>
-            <button
-              type="button"
-              onClick={() => open(HERO_EXAMPLE)}
-              className="nudge-up inline-flex min-h-10 items-center gap-1.5 font-semibold text-cobalt underline-offset-4 hover:underline"
-            >
-              {t.hero.viewExample}
-              <ArrowUpRight aria-hidden="true" size={15} className="card-arrow" />
-              <span className="sr-only">: {HERO_EXAMPLE.name}</span>
-            </button>
+          <figcaption className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 text-sm text-ink-3">
+            <span>{t.hero.conceptCaption(HERO_EXAMPLE.name, example.businessType)}</span>
+            {/* Phones show the small preview's own buttons, so the control sits under it instead of over it. */}
+            <div className="sm:hidden">{viewButton}</div>
           </figcaption>
         </figure>
       </div>

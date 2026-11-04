@@ -1,8 +1,8 @@
 import { ArrowRight } from 'lucide-react'
+import { Button } from 'glisse'
 import { CONTACT_SECTION_ID } from '@/content/navigation'
 import { useCopy } from '@/i18n/context'
 import { SITE_CHECK_EVENT } from '@/lib/siteCheck'
-import { buttonClasses } from '../ui/button'
 import { Words } from '../Words'
 
 /** For visitors who already have a site: a lighter first step than a full quote request. */
@@ -25,10 +25,14 @@ export function SiteCheck() {
             </h2>
             <p className="mt-3 text-[1.0625rem] leading-relaxed text-ink-2">{t.siteCheck.text}</p>
           </div>
-          <button type="button" onClick={start} className={buttonClasses('primary', 'lg', 'nudge max-w-full shrink-0 self-start !whitespace-normal text-center md:self-auto')}>
+          <Button
+            variant="filled"
+            onClick={start}
+            className="glass-btn-lg glass-btn-wrap nudge max-w-full shrink-0 self-start text-center md:self-auto"
+          >
             {t.siteCheck.button}
-            <ArrowRight aria-hidden="true" size={18} className="rtl:-scale-x-100" />
-          </button>
+            <ArrowRight aria-hidden="true" className="rtl:-scale-x-100" />
+          </Button>
         </div>
       </div>
     </section>

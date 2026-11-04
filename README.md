@@ -36,6 +36,7 @@ Hero → Work → Your website package → Process → About → FAQ → Request
 | Package contents (grouped) | `site.packageGroups` in `src/config/site.ts` |
 | Page title and description | `src/config/seo.ts` **and** the matching tags in `index.html` |
 | Colours, fonts, shadows | `@theme` block at the top of `src/index.css` |
+| Liquid Glass look (tint, frost, bend, rim, accent) | The `--lg-*` block under "Liquid Glass (Glisse)" at the end of `src/index.css` |
 | Navigation and the primary button label | `src/content/navigation.ts` |
 | Unconfirmed commercial terms (kept off the page) | `pendingTerms` in `src/config/site.ts` |
 
@@ -57,6 +58,46 @@ The site keeps its own CSS motion system (tokens at the top of `src/index.css`, 
 | [Vanta.js](https://www.vantajs.com/) (Net) + three.js | A quiet network behind the hero | `src/components/HeroBackdrop.tsx`, `src/motion/threeLite.ts` | Width 1024px or more, mouse, WebGL, no reduced motion, no data saver. Loads when idle, is destroyed when scrolled away |
 
 Everything is downloaded on demand, never in the first paint. The React Bits files are copied from the official registry (`npx shadcn@latest add https://reactbits.dev/r/SpotlightCard-TS-TW.json`), kept unmodified and excluded from lint. When adding a Vanta effect, list the three.js classes it needs in `threeLite.ts`.
+
+## Liquid Glass (Glisse)
+
+The interface uses [Glisse](https://glisse.kelvinzhang.ca) (`glisse`, pinned to 0.5.0 because the brand styling
+targets its class names), Kelvin Zhang's React implementation of Apple's Liquid Glass. Only its documented exports
+are used (`tests/glass.test.ts` checks this).
+
+| Where | Glisse component |
+| --- | --- |
+| Floating header: brand capsule, section tabs, language, phone menu button | `Glass`, `TabBar` (links, so it is real navigation), `Menu`, `Button` (`src/components/Header.tsx`, `LanguageMenu.tsx`) |
+| Phone menu sheet, phone quote bar, hero "See my work" | `Glass` |
+| Hero "View the example", work and form actions, copy email | `Button` (`glass`; `filled` for the primary form, site-check and dialog actions) |
+| Inquiry form | `Input` for single-line fields, `Glass` around the textarea and select (`InquiryForm.tsx`) |
+| Concept-demo dialog | `SegmentedControl` (desktop / phone), `Slider` (phone width 320–430 px), `Button` |
+| Project viewer | `SegmentedControl` floating over the screenshot, `Button` (dark glass) |
+
+Not used: `Switch` and `SearchField`. Nothing on the site is an on/off setting or long enough to need searching, so
+they were left out rather than invented. `--lg-on` (the switch colour) is still set to the brand green.
+
+**How it is tuned.** All `--lg-*` variables (`--lg-glass`, `--lg-glass-active`, `--lg-blur`, `--lg-glass-bend`,
+`--lg-glass-dispersion`, `--lg-rim-shine`, `--lg-fill`, `--lg-on`, plus text, ring and edge colours) are set once for
+the light page and once for `[data-theme='dark']`. `<body data-theme="light">` pins the theme: without it the glass
+would follow the device's dark mode onto this light page. Navy surfaces put `data-theme="dark"` on a wrapper.
+
+**Where glass bends, frosts, or neither** (measured; see the comments in `src/index.css`):
+
+- *Bends* (full refraction): the dialogs' controls, whose backdrop is still, and the tab bar's selection while held.
+  The project viewer's screenshot is marked `data-glisse-backdrop`, so the toggle over it bends it in every browser.
+- *Frosts* (blur and lit rim, no bend): the header pieces, the phone quote bar and the two hero pieces
+  (`.glass-frost`). Their backdrop moves on every scroll or animates, and re-bending it each frame cost about half the
+  frame rate on desktop in testing. This is also what Safari and Firefox show for glass over arbitrary content.
+- *Neither* (`.glass-flat`, and filled buttons): glass on the white form card or plain paper has nothing behind it,
+  so it skips the backdrop and looks the same.
+
+**Things to know when editing.** Glisse's stylesheet is unlayered, so it beats Tailwind utilities on its own
+elements: put breakpoint and display classes on a wrapper, not on a Glisse component (a test checks this). Glisse
+injects its CSS from JavaScript; `src/index.css` also imports it so the prerendered page is styled at first paint.
+A `view-transition-name`, `opacity` below 1, `filter` or `mask` on an ancestor of glass hides the page from it, which
+is why only the brand capsule is named for page transitions. Persian keeps the underline nav inside a glass capsule:
+Glisse's tab bar positions its selection from the left edge only.
 
 ## Inquiry form
 
@@ -183,10 +224,13 @@ use commercially. No stock photography is bundled.
   - Featured project: the real desktop capture is the anchor and the real phone capture arrives beside it once
     (450 ms, 24 px, only when it enters view). Its column is reserved up front, the text never moves, and small
     screens show the single phone capture instead of two tiny ones.
-  - Navigation: one underline slides between desktop links (transform only, 180 ms). Hover and keyboard focus borrow
-    it and the active section is restored afterwards; it re-measures on resize and when fonts load.
-  - Mobile menu and optional form fields share one disclosure pattern (`.disclosure`): always mounted, `inert`
-    when closed, so they animate smoothly, keep entered values, and stay out of the tab order.
+  - Navigation: from 1024px a glass tab bar (Glisse `TabBar`) follows the section being read; a tab the visitor picks
+    is held while the page glides there (`src/lib/navSelection.ts`), so the selection does not bounce through the
+    sections in between. Persian keeps the sliding underline (transform only, 180 ms), which hover and keyboard focus
+    borrow; it re-measures on resize and when fonts load.
+  - Optional form fields use one disclosure pattern (`.disclosure`), and the phone menu a glass sheet
+    (`.glass-sheet-wrap`) that follows the same rules: always mounted, `inert` when closed, so they animate smoothly,
+    keep entered values, and stay out of the tab order. The sheet also closes on Escape or a tap outside it.
   - Dialog: a short entrance and exit; closing is timer-driven so a stalled animation can never leave an overlay.
   - Form: errors and status messages fade in, with text carrying the meaning.
 - **Performance:** the three demo sites are code-split and mounted only as they approach the viewport.

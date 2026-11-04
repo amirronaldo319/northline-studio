@@ -1,8 +1,8 @@
 import { Suspense, useEffect, useRef, useState } from 'react'
 import { Info, Monitor, Smartphone, X } from 'lucide-react'
+import { Button, Glass, SegmentedControl, Slider } from 'glisse'
 import type { ExampleSite } from '@/content/examples'
 import { useCopy } from '@/i18n/context'
-import { buttonClasses } from './ui/button'
 
 type Props = {
   example: ExampleSite | null
@@ -15,6 +15,9 @@ const NOTICE_TIMEOUT_MS = 5000
 /** Length of the exit animation. A plain timer drives the close, so a stalled animation can never trap the page. */
 const EXIT_MS = 170
 const PHONE_WIDTH_PX = 390
+/** The phone preview's width range: from the narrowest phones in use to the largest. */
+const PHONE_MIN_PX = 320
+const PHONE_MAX_PX = 430
 
 type Device = 'desktop' | 'phone'
 
@@ -33,6 +36,7 @@ export function ExampleDialog({ example, onClose, onRequestQuote }: Props) {
   const exitTimerRef = useRef<number | null>(null)
   const [notice, setNotice] = useState('')
   const [device, setDevice] = useState<Device>('desktop')
+  const [phoneWidth, setPhoneWidth] = useState(PHONE_WIDTH_PX)
 
   useEffect(() => {
     const dialog = dialogRef.current
@@ -82,6 +86,7 @@ export function ExampleDialog({ example, onClose, onRequestQuote }: Props) {
     }
     setNotice('')
     setDevice('desktop')
+    setPhoneWidth(PHONE_WIDTH_PX)
 
     if (isRequestingQuoteRef.current) {
       isRequestingQuoteRef.current = false
@@ -129,34 +134,34 @@ export function ExampleDialog({ example, onClose, onRequestQuote }: Props) {
               </p>
             </div>
             <div className="flex shrink-0 items-center gap-2">
-              <div role="group" aria-label={t.dialogs.previewSize} className="hidden rounded-full border border-line-strong bg-paper p-1 sm:flex">
-                {(['desktop', 'phone'] as const).map((id) => {
-                  const Icon = DEVICE_ICONS[id]
-                  return (
-                  <button
-                    key={id}
-                    type="button"
-                    aria-pressed={device === id}
-                    onClick={() => setDevice(id)}
-                    className={`inline-flex min-h-9 items-center gap-1.5 rounded-full px-3.5 text-sm font-semibold transition-colors ${
-                      device === id ? 'bg-ink text-white' : 'text-ink-2 hover:text-ink'
-                    }`}
-                  >
-                    <Icon aria-hidden="true" size={15} />
-                    {id === 'desktop' ? t.dialogs.desktop : t.dialogs.phone}
-                  </button>
-                  )
-                })}
+              {/* Desktop or phone preview: a Glisse segmented control (a radio group). Phones show the phone layout already. */}
+              <div className="hidden sm:block">
+                <SegmentedControl
+                  aria-label={t.dialogs.previewSize}
+                  className="glass-segmented"
+                  items={(['desktop', 'phone'] as const).map((id) => {
+                    const Icon = DEVICE_ICONS[id]
+                    return {
+                      value: id,
+                      label: (
+                        <span className="inline-flex items-center gap-1.5">
+                          <Icon aria-hidden="true" size={15} />
+                          {id === 'desktop' ? t.dialogs.desktop : t.dialogs.phone}
+                        </span>
+                      ),
+                    }
+                  })}
+                  value={device}
+                  onValueChange={(next) => setDevice(next === 'phone' ? 'phone' : 'desktop')}
+                />
               </div>
-              <button
-                type="button"
+              <Button
                 data-autofocus
                 onClick={requestClose}
-                className="grid size-11 shrink-0 place-items-center rounded-full border border-line-strong bg-paper text-ink transition-colors hover:border-ink/40"
-              >
-                <X aria-hidden="true" size={20} />
-                <span className="sr-only">{t.dialogs.closeExample}</span>
-              </button>
+                className="glass-icon-button"
+                icon={<X aria-hidden="true" />}
+                aria-label={t.dialogs.closeExample}
+              />
             </div>
           </div>
 
@@ -171,16 +176,39 @@ export function ExampleDialog({ example, onClose, onRequestQuote }: Props) {
 
           <div
             className={`demo-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain ${
-              device === 'phone' ? 'bg-paper-2 px-4 py-6' : ''
+              device === 'phone' ? 'bg-paper-2 px-4 pb-6' : ''
             }`}
           >
+            {device === 'phone' && (
+              // Floats over the phone as it scrolls: try the layout at any phone width.
+              <div className="phone-width-bar">
+                <Glass className="glass-capsule glass-lift phone-width-capsule">
+                  <label htmlFor="phone-width" className="text-sm font-semibold whitespace-nowrap text-ink">
+                    {t.dialogs.previewWidth}
+                  </label>
+                  <Slider
+                    id="phone-width"
+                    className="phone-width-slider"
+                    min={PHONE_MIN_PX}
+                    max={PHONE_MAX_PX}
+                    step={1}
+                    value={phoneWidth}
+                    onValueChange={setPhoneWidth}
+                    aria-valuetext={`${phoneWidth} px`}
+                  />
+                  <span aria-hidden="true" className="w-14 text-end text-sm font-semibold tabular-nums text-ink-2" dir="ltr">
+                    {phoneWidth} px
+                  </span>
+                </Glass>
+              </div>
+            )}
             <div
               className={
                 device === 'phone'
                   ? 'mx-auto overflow-hidden rounded-[2rem] border-[10px] border-[#16181d] bg-white shadow-device'
                   : ''
               }
-              style={device === 'phone' ? { width: PHONE_WIDTH_PX, maxWidth: '100%' } : undefined}
+              style={device === 'phone' ? { width: phoneWidth, maxWidth: '100%' } : undefined}
             >
               <Suspense fallback={<div className="grid h-64 place-items-center text-sm text-ink-3">{t.dialogs.loading}</div>}>
                 <Demo
@@ -196,9 +224,9 @@ export function ExampleDialog({ example, onClose, onRequestQuote }: Props) {
             <p className="text-sm text-ink-2">
               {t.dialogs.wantSite}
             </p>
-            <button type="button" onClick={requestQuote} className={buttonClasses('primary', 'md', 'shrink-0')}>
+            <Button variant="filled" onClick={requestQuote} className="glass-btn shrink-0">
               {t.dialogs.requestForMyBusiness}
-            </button>
+            </Button>
           </div>
         </div>
       )}
