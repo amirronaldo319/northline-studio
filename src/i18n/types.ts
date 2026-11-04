@@ -123,7 +123,10 @@ export interface Copy {
     eyebrow: string
     heading: string
     lede: string
-    groups: readonly [Step, Step, Step, Step]
+    /** Row titles of the package comparison, in the order of each plan's items. */
+    groups: readonly [string, string, string, string]
+    /** Names the comparison's first column for screen readers. */
+    included: string
     quoteLead: string
     quoteBody: string
     factors: readonly [Step, Step, Step, Step]
