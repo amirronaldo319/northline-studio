@@ -107,12 +107,7 @@ export const en: Copy = {
     eyebrow: 'Your website package',
     heading: 'One focused page, built around your business.',
     lede: 'It answers the questions customers ask before they call: what you do, what your work looks like, and how to reach you.',
-    groups: [
-      { title: 'Design', text: 'A template-based Starter or tailored Standard layout, for phones and desktops.' },
-      { title: 'Content', text: 'Your services, your own photos, and your contact details, laid out clearly.' },
-      { title: 'Inquiries', text: 'A quote-request form and clear contact buttons, so customers know how to reach you.' },
-      { title: 'Launch basics', text: 'Page title, description and headings in both packages; a sharing image with Standard.' },
-    ],
+    groups: ['Design', 'Content', 'Inquiries', 'Launch basics'], included: 'What’s included',
     quoteLead: 'A written quote comes first.',
     quoteBody:
       'Before work begins, it confirms the cost, scope, schedule, hosting and domain arrangements, and any ongoing costs. Anything beyond the single page, such as extra pages or features, is quoted separately.',

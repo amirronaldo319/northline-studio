@@ -133,12 +133,7 @@ export const fr: Copy = {
   package: {
     eyebrow: 'Votre forfait web', heading: 'Une page bien pensée, centrée sur votre entreprise.',
     lede: 'Elle répond aux questions que les clients posent avant d’appeler : vos services, votre travail et la façon de vous joindre.',
-    groups: [
-      { title: 'Conception', text: 'Un modèle de départ ou une mise en page Standard personnalisée, adaptée aux téléphones et aux ordinateurs.' },
-      { title: 'Contenu', text: 'Vos services, vos photos et vos coordonnées, présentés clairement.' },
-      { title: 'Demandes', text: 'Un formulaire de soumission et des boutons de contact bien visibles.' },
-      { title: 'Préparation au lancement', text: 'Titre, description et titres de section dans les deux forfaits; image de partage avec Standard.' },
-    ],
+    groups: ['Conception', 'Contenu', 'Demandes', 'Préparation au lancement'], included: 'Ce qui est inclus',
     quoteLead: 'Tout commence par une soumission écrite.',
     quoteBody: 'Elle précise le coût, le travail prévu, l’échéancier, l’hébergement, le domaine et les frais récurrents avant le début du travail. Les pages et fonctionnalités supplémentaires font l’objet d’une soumission distincte.',
     factors: [
