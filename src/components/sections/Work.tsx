@@ -1,12 +1,15 @@
 import { ChevronRight } from 'lucide-react'
-import { CONCEPT_PROJECT, FEATURED_PROJECT, SUPPORTING_PROJECTS, type Project } from '@/content/projects'
+import { EXAMPLES } from '@/content/examples'
+import { APP_PROJECTS, FEATURED_PROJECT, GALLERY_WEBSITES, type Project } from '@/content/projects'
 import { useCopy, useLocalHref } from '@/i18n/context'
 import { statusLabel } from '@/i18n/projectStatus'
 import { GlassShapes } from '../glass/GlassShapes'
 import { LegacyAnchors } from '../LegacyAnchors'
 import { ProjectTrigger } from '../ProjectTrigger'
-import { ShotChip } from '../ShotChip'
 import { buttonClasses } from '../ui/button'
+import { Gallery } from '../ui/Gallery'
+import { AppCard, DemoCard, WebsiteCard } from '../work/ProjectCards'
+import { Words } from '../Words'
 
 /** Section ids from earlier versions of the page. Links shared with these still land on this section. */
 const LEGACY_IDS = ['examples'] as const
@@ -67,65 +70,10 @@ function FeaturedProject({ project }: { project: Project }) {
   )
 }
 
-/** A website concept beside its words: the work stands on a stage of glass, with its phone capture in front. */
-function SplitFeature({ project }: { project: Project }) {
-  const t = useCopy()
-  const titleId = `project-${project.id}-title`
-
-  return (
-    <article aria-labelledby={titleId} className="split-feature">
-      <div className="reveal text-center lg:text-start">
-        <ProjectLabel project={project} />
-        <h3 id={titleId} className="split-name mt-2">
-          <bdi>{project.name}</bdi>
-        </h3>
-        <p className="feature-line caption-sentence mx-auto mt-4 lg:mx-0">{t.projects[project.id].caption}</p>
-        <ViewProject project={project} className="mt-5 text-[1.0625rem]" />
-      </div>
-      <div className="reveal">
-        <div className="split-stage liquid-glass-strong">
-          <div className="showcase">
-            <div className="showcase-desktop">
-              <ProjectTrigger project={project} sizes="(min-width: 1216px) 600px, (min-width: 1024px) 50vw, 88vw" />
-            </div>
-            <div className="showcase-phone phone-device">
-              <ProjectTrigger project={project} view="phone" className="phone-trigger" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </article>
-  )
-}
-
-/** A supporting project: a card of glass with the picture set in it, then the label, the name, one sentence and the link. */
-function SupportingProject({ project }: { project: Project }) {
-  const t = useCopy()
-  const titleId = `project-${project.id}-title`
-
-  return (
-    <div className="reveal">
-      <article aria-labelledby={titleId} className="project-card liquid-glass-card">
-        <div className="shot-frame card-shot relative">
-          <ProjectTrigger project={project} sizes="(min-width: 1216px) 540px, (min-width: 768px) 44vw, 90vw" />
-          <ShotChip>{statusLabel(t.work, project.status)}</ShotChip>
-        </div>
-        <div className="project-card-body">
-          <p className="project-label">{t.projects[project.id].type}</p>
-          <h3 id={titleId} className="mt-1.5 text-[1.75rem] leading-tight font-semibold tracking-[-0.02em]">
-            <bdi>{project.name}</bdi>
-          </h3>
-          <p className="caption-sentence mt-2 text-[1.0625rem] leading-snug text-ink-2">{t.projects[project.id].caption}</p>
-          <ViewProject project={project} className="mt-3" />
-        </div>
-      </article>
-    </div>
-  )
-}
-
 /**
- * Selected work: one live website at full width, a website concept beside its words, two more concepts as cards of
- * glass, and a way to every project. Soft light behind each part gives the glass something to hold.
+ * Selected work: one live website at full width, then the rest of the websites and the design demos as a sideways
+ * gallery of glass cards that the visitor swipes, drags or steps through, then my own apps and tools in their own
+ * gallery, and a way to every project. Soft light behind each part gives the glass something to hold.
  */
 export function Work() {
   const t = useCopy()
@@ -146,22 +94,44 @@ export function Work() {
         </div>
       </div>
 
-      <div className="section-pad ambient ambient-cards">
+      <div className="work-galleries section-pad ambient ambient-cards">
         <GlassShapes set="cards" />
-        <div className="container-page">
-          <SplitFeature project={CONCEPT_PROJECT} />
-          <div className="mt-20 grid gap-10 md:grid-cols-2 md:gap-8 lg:mt-28 lg:gap-10">
-            {SUPPORTING_PROJECTS.map((project) => (
-              <SupportingProject key={project.id} project={project} />
+
+        {/* The rest of the websites as a sideways gallery, as Apple shows its highlights; the next card peeks in. */}
+        <div className="reveal">
+          <Gallery label={t.work.sitesLabel}>
+            {GALLERY_WEBSITES.map((project) => (
+              <WebsiteCard key={project.id} project={project} />
             ))}
-          </div>
-          <p className="reveal mt-14 text-center sm:mt-16">
-            <a href={localHref('work/')} className={buttonClasses('secondary', 'md')}>
-              {t.work.allProjects}
-              <ChevronRight aria-hidden="true" size={17} className="-me-1 rtl:-scale-x-100" />
-            </a>
-          </p>
+            {EXAMPLES.map((example) => (
+              <DemoCard key={example.id} example={example} />
+            ))}
+          </Gallery>
         </div>
+
+        {/* My own apps and tools get their own row, so they are never mistaken for work for a business. */}
+        <div className="container-page mt-20 lg:mt-28">
+          <div className="section-intro reveal">
+            <h3 id="apps-title" className="h-subsection">
+              <Words text={t.work.appsHeading} />
+            </h3>
+            <p className="lede mt-4">{t.work.appsLede}</p>
+          </div>
+        </div>
+        <div className="reveal mt-10 lg:mt-12">
+          <Gallery label={t.work.appsHeading.replace(/[.。]$/u, '')} size="compact">
+            {APP_PROJECTS.map((project) => (
+              <AppCard key={project.id} project={project} />
+            ))}
+          </Gallery>
+        </div>
+
+        <p className="reveal container-page mt-14 text-center sm:mt-16">
+          <a href={localHref('work/')} className={buttonClasses('secondary', 'md')}>
+            {t.work.allProjects}
+            <ChevronRight aria-hidden="true" size={17} className="-me-1 rtl:-scale-x-100" />
+          </a>
+        </p>
       </div>
     </section>
   )

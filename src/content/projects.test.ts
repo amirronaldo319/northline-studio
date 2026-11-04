@@ -5,9 +5,9 @@ import {
   APP_PROJECTS,
   CONCEPT_PROJECT,
   FEATURED_PROJECT,
+  GALLERY_WEBSITES,
   HERO_PROJECT,
   PROJECTS,
-  SUPPORTING_PROJECTS,
   STATUS_LABEL,
   WEBSITE_PROJECTS,
 } from './projects'
@@ -57,14 +57,17 @@ describe('portfolio projects', () => {
     expect(new Set(APP_PROJECTS.map((project) => project.tint)).size).toBe(APP_PROJECTS.length)
   })
 
-  test('the home page leads with live work, then three different website concepts, each shown once', () => {
-    const home = [HERO_PROJECT, FEATURED_PROJECT, CONCEPT_PROJECT, ...SUPPORTING_PROJECTS]
-    expect(new Set(home.map((project) => project.id)).size).toBe(5)
+  test('the home page shows every project exactly once: featured, the websites gallery, or the apps gallery', () => {
+    const shown = [FEATURED_PROJECT, ...GALLERY_WEBSITES, ...APP_PROJECTS].map((project) => project.id)
+    expect(new Set(shown).size).toBe(shown.length)
+    expect([...shown].sort()).toEqual(PROJECTS.map((project) => project.id).sort())
+    for (const project of GALLERY_WEBSITES) expect(project.kind).toBe('website')
     expect([HERO_PROJECT.status, FEATURED_PROJECT.status]).toEqual(['live', 'live'])
-    for (const project of [CONCEPT_PROJECT, ...SUPPORTING_PROJECTS]) {
-      expect(project.kind).toBe('website')
-      expect(project.status).not.toBe('personal')
-    }
+  })
+
+  test('the websites gallery starts with the hero site and holds every other website', () => {
+    expect(GALLERY_WEBSITES[0].id).toBe(HERO_PROJECT.id)
+    expect(GALLERY_WEBSITES.map((project) => project.id)).toEqual(['farsh-aquatics', 'storage4666', 'maid-new', 'ganjineh-ofogh', 'mend'])
   })
 
   test('the work page lists every project exactly once: websites, then apps and tools', () => {
@@ -75,7 +78,7 @@ describe('portfolio projects', () => {
   })
 
   test('projects shown large on the home page have a sharp 2x capture', () => {
-    for (const project of [HERO_PROJECT, FEATURED_PROJECT, CONCEPT_PROJECT, ...SUPPORTING_PROJECTS]) {
+    for (const project of [HERO_PROJECT, FEATURED_PROJECT]) {
       expect(project.desktop2x?.width, project.id).toBe(project.desktop.width * 2)
     }
   })

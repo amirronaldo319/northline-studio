@@ -41,6 +41,28 @@ describe('glass markup without JavaScript', async () => {
     for (const id of ['604kars', 'farsh-aquatics', 'ganjineh-ofogh']) expect(html).toContain(`href="/work/${id}/"`)
   })
 
+  test('the websites and the apps are two swipeable galleries, each a labelled, focusable list', () => {
+    const tracks = [...html.matchAll(/<ul class="gallery-track" aria-label="([^"]+)" tabindex="0">/g)].map((match) => match[1])
+    expect(tracks).toEqual(['Websites', 'Apps and tools'])
+  })
+
+  test('every website after the featured one, both design demos and every app are cards in the galleries', () => {
+    const galleries = html.slice(html.indexOf('class="gallery"'), html.indexOf('id="package"'))
+    for (const id of ['farsh-aquatics', 'storage4666', 'maid-new', 'ganjineh-ofogh', 'mend', 'octaiq', 'shamsi-calendar', 'mend-app', 'jarvis', 'stayin', 'motion-kit']) {
+      expect(galleries, id).toContain(`id="project-${id}-title"`)
+    }
+    for (const id of ['cleaning', 'landscaping']) expect(galleries, id).toContain(`id="example-${id}-title"`)
+  })
+
+  test('each gallery has labelled previous and next buttons, and starts with previous disabled', () => {
+    const buttons = [...html.matchAll(/<button type="button" class="liquid-glass-button glass-btn-secondary glass-btn-icon gallery-button" aria-label="(Previous|Next)"( disabled="")?/g)]
+    expect(buttons.map((match) => `${match[1]}${match[2] ? ' (disabled)' : ''}`)).toEqual(['Previous (disabled)', 'Next', 'Previous (disabled)', 'Next'])
+  })
+
+  test('the gallery position dots are decoration; the buttons and the list carry the meaning', () => {
+    expect(html.match(/<div class="gallery-dots" aria-hidden="true">/g)).toHaveLength(2)
+  })
+
   test('screenshots carry glass labels, and the hero screenshot a glass caption with a real link', () => {
     expect(html).toMatch(/class="lg-glass caption-glass[^"]*"[^]*?<a href="\/work\/farsh-aquatics\/"/)
     expect(html.match(/class="lg-glass chip-glass/g)?.length).toBeGreaterThanOrEqual(2)

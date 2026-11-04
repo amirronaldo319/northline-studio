@@ -137,11 +137,16 @@ export const HERO_PROJECT: Project = requireProject('farsh-aquatics')
 /** The live website shown large at the top of the portfolio, in a different style from the hero. */
 export const FEATURED_PROJECT: Project = requireProject('604kars')
 
-/** A website concept shown beside its words on the home page, after the featured live site. */
+/** A website concept, kept distinct from the live work in tests and copy. */
 export const CONCEPT_PROJECT: Project = requireProject('ganjineh-ofogh')
 
-/** The two projects shown after the featured one on the home page: the strongest website concepts, labelled as such. */
-export const SUPPORTING_PROJECTS: readonly [Project, Project] = [requireProject('storage4666'), requireProject('maid-new')]
+const FEATURED_IDS = new Set([HERO_PROJECT.id, FEATURED_PROJECT.id])
+
+/** The websites in the home page's swipeable gallery, in order, after the featured project: the hero's site first. */
+export const GALLERY_WEBSITES: readonly Project[] = [
+  HERO_PROJECT,
+  ...PROJECTS.filter((project) => project.kind === 'website' && !FEATURED_IDS.has(project.id)),
+]
 
 /** Apps and tools I built for myself, shown in their own gallery. */
 export const APP_PROJECTS: readonly Project[] = PROJECTS.filter((project) => project.kind === 'app')

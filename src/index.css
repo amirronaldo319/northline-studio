@@ -1049,8 +1049,14 @@ dialog.viewer[data-closing]::backdrop {
 
   .glass-shapes,
   .ambient::before,
-  .liquid-glass-button::after {
+  .liquid-glass-button::after,
+  .gallery-controls {
     display: none !important;
+  }
+
+  .gallery-track {
+    flex-wrap: wrap;
+    overflow: visible;
   }
 
   .word,
@@ -3130,47 +3136,6 @@ dialog.viewer[data-closing]::backdrop {
   box-shadow: none;
 }
 
-/* The concept split: the words on one side, the work on a stage of glass on the other. */
-
-.split-feature {
-  display: grid;
-  gap: clamp(2.5rem, 1.5rem + 3vw, 4rem);
-  align-items: center;
-}
-
-@media (min-width: 1024px) {
-  .split-feature {
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  }
-}
-
-.split-name {
-  font-size: clamp(2.25rem, 1.5rem + 2.8vw, 3.75rem);
-  font-weight: 600;
-  line-height: 1.05;
-  letter-spacing: -0.026em;
-}
-
-.split-stage {
-  --glass-radius: clamp(1.5rem, 1rem + 1.6vw, 2.25rem);
-  padding: clamp(1rem, 0.5rem + 2vw, 2rem);
-}
-
-/* Light gathered inside the stage, behind the work: warm where the concept is warm, cool at the far corner. */
-
-.split-stage {
-  background:
-    radial-gradient(60% 55% at 40% 50%, rgb(214 186 140 / 0.22), transparent 72%) padding-box,
-    radial-gradient(50% 50% at 92% 92%, rgb(120 130 255 / 0.16), transparent 70%) padding-box,
-    linear-gradient(160deg, var(--glass-fill-top), var(--glass-fill-mid) 48%, var(--glass-fill-end)) padding-box;
-}
-
-.split-stage .showcase-desktop {
-  box-shadow:
-    0 0 0 1px rgb(0 0 0 / 0.06),
-    0 18px 40px -22px rgb(60 40 10 / 0.35);
-}
-
 /* Project cards: the screenshot set in the card's glass, then the words. */
 
 .project-card {
@@ -3193,6 +3158,183 @@ dialog.viewer[data-closing]::backdrop {
 
 .app-stage {
   border-radius: 1.25rem;
+}
+
+/* ---- Swipeable galleries --------------------------------------------------------------------------------- */
+
+/*
+ * The portfolio's sideways galleries, restored as they were before the redesign: a row of cards that snaps, aligned
+ * with the page's content but running to the screen's edges, so the next card peeks in. Native scrolling, so touch,
+ * trackpad and keyboard work as usual; a mouse can drag it (useDragScroll). The cards are glass, painted rather than
+ * frosted: frosting a whole row of cards as it slides is the one thing an iPhone would stutter on.
+ */
+
+.gallery-track {
+  /* The inset lines the first card up with the content column of `.container-page`. */
+  --gallery-inset: max(1.25rem, calc((100% - 76rem) / 2 + 1.25rem));
+  /* Positioned, so pieces placed absolutely inside the cards are clipped with them. */
+  position: relative;
+  display: flex;
+  gap: 1.25rem;
+  /* Room above and below for the cards' lift and shadow, which a scroller would otherwise clip. */
+  margin: -0.75rem 0 -2.75rem;
+  padding: 0.75rem var(--gallery-inset) 3.5rem;
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gallery-inset);
+  scrollbar-width: none;
+}
+
+.gallery-track::-webkit-scrollbar {
+  display: none;
+}
+
+.gallery-track:focus-visible {
+  outline-offset: -3px;
+  border-radius: 1.75rem;
+}
+
+@media (min-width: 768px) {
+  .gallery-track {
+    --gallery-inset: max(2rem, calc((100% - 76rem) / 2 + 2rem));
+  }
+}
+
+/* A mouse can take hold of the row. While it does, snapping waits and the cards ignore the pointer. */
+
+@media (pointer: fine) {
+  .gallery-track {
+    cursor: grab;
+  }
+}
+
+.gallery-track[data-dragging] {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.gallery-track:is([data-dragging], [data-settling]) {
+  scroll-snap-type: none;
+}
+
+.gallery-track[data-dragging] > * {
+  pointer-events: none;
+}
+
+.gallery-item {
+  display: flex;
+  flex: 0 0 min(86%, 26rem);
+  scroll-snap-align: start;
+}
+
+.gallery-item > * {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  .gallery-item {
+    flex-basis: min(62%, 30rem);
+  }
+}
+
+/* Two cards fill the content column on wide screens; the third peeks in beyond it. */
+
+@media (min-width: 1024px) {
+  .gallery-item {
+    flex-basis: calc((min(100vw, 76rem) - 4rem - 1.25rem) / 2);
+  }
+}
+
+/* Compact galleries hold portrait cards (phone apps): three across a wide screen, the fourth peeking in. */
+
+.gallery[data-size='compact'] .gallery-item {
+  flex-basis: min(74%, 19rem);
+}
+
+@media (min-width: 768px) {
+  .gallery[data-size='compact'] .gallery-item {
+    flex-basis: min(42%, 21rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .gallery[data-size='compact'] .gallery-item {
+    flex-basis: calc((min(100vw, 76rem) - 4rem - 2.5rem) / 3);
+  }
+}
+
+/* Painted glass in the galleries: a little denser, so the cards read as glass without frosting as they slide. */
+
+.gallery .liquid-glass-card {
+  --glass-fill-mid: rgb(255 255 255 / 0.62);
+  --glass-fill-end: rgb(255 255 255 / 0.72);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.gallery-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+/* Where the row is: the cards in view light up their dots. */
+
+.gallery-dots {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-ink);
+}
+
+.gallery-dots span {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: currentColor;
+  opacity: 0.25;
+  transition:
+    width var(--motion-dur-ui) var(--motion-ease-out),
+    opacity var(--motion-dur-ui) var(--motion-ease-out);
+}
+
+.gallery-dots span[data-current] {
+  width: 1.5rem;
+  opacity: 0.8;
+}
+
+/* Previous and next: small lenses of clear glass that fade back at the ends of the row. */
+
+.gallery-button {
+  width: 2.75rem;
+  min-height: 2.75rem;
+  color: var(--color-ink);
+}
+
+.gallery-button:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .gallery-button:disabled:hover {
+    transform: none;
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.95),
+      inset 0 -1px 0 rgb(255 255 255 / 0.3),
+      0 1px 2px rgb(20 30 70 / 0.06),
+      0 10px 22px -12px rgb(20 30 70 / 0.26);
+  }
+
+  .gallery-button:disabled:hover::after {
+    transform: translateX(-120%);
+    transition: none;
+  }
 }
 
 /* ---- Pricing -------------------------------------------------------------------------------------------- */

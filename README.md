@@ -17,14 +17,16 @@ npm run og-image   # re-render public/og-image.png (needs Google Chrome)
 
 ## Page structure
 
-Home: Hero → Selected work (one featured live site, a website concept beside its words, two more concepts as glass
-cards, a link to every project) → Pricing → Process (three steps) → About → FAQ → Contact → Footer. Every project is on the work page (`/work/`, in each
+Home: Hero → Selected work (one featured live site, then two swipeable galleries of glass cards: the other websites and
+the design demos, then my own apps and tools; a link to every project) → Pricing → Process (three steps) → About → FAQ
+→ Contact → Footer. Every project is on the work page (`/work/`, in each
 language): websites, apps and tools, and the design demos.
 
 | Section | File |
 | --- | --- |
 | Hero (headline, price line, a blue and a clear glass action, a real website shown large in a glass bezel) | `src/components/sections/Hero.tsx` |
-| Selected work | `src/components/sections/Work.tsx`; projects in `src/content/projects.ts` (`HERO_PROJECT`, `FEATURED_PROJECT`, `CONCEPT_PROJECT`, `SUPPORTING_PROJECTS`) |
+| Selected work | `src/components/sections/Work.tsx`; projects in `src/content/projects.ts` (`HERO_PROJECT`, `FEATURED_PROJECT`, `GALLERY_WEBSITES`, `APP_PROJECTS`) |
+| Swipeable galleries | `src/components/ui/Gallery.tsx` (native snap scrolling, glass buttons, position dots), mouse dragging in `src/hooks/useDragScroll.ts`, edge and resting rules in `src/lib/gallery.ts`; the cards are shared with the work page (`src/components/work/ProjectCards.tsx`) |
 | All projects | `src/components/pages/WorkPage.tsx`; design demos in `src/content/examples.ts` |
 | Pricing (comparison, visible essentials, optional care, full terms in a disclosure) | `src/components/sections/Package.tsx`, copy in `src/content/offers.ts` |
 | Process, About, FAQ | `Process.tsx`, `About.tsx`, `Faq.tsx`; FAQ text in `src/content/faq.ts` |
@@ -61,7 +63,14 @@ cubic-bezier fallback): buttons rise 1px and catch a sweep of light, cards rise 
 little when pressed. The hero's glass shapes drift slowly and fall behind the content a little as the page scrolls
 (where scroll timelines exist); the hero's main button catches the light every few seconds. The shapes behind frosted
 panels never move, so the frost never has to be recomputed. Nothing hijacks scrolling, nothing follows the pointer,
-and everything is shown at once, still, under reduced motion (`tests/motion.test.ts`). Lenis, GSAP and the Inter web font were removed in the 2026-11 redesign; the system font is used.
+and everything is shown at once, still, under reduced motion (`tests/motion.test.ts`).
+
+**Galleries.** The portfolio's sideways galleries are native scrollers that snap to each card, so a finger, a trackpad
+and the arrow keys move them as the device always does, and vertical scrolling passes through to the page. A mouse
+can drag them: a press becomes a drag after 6px, the row follows the pointer with snapping paused, and on release it
+glides on a little in the direction of the throw and settles on the nearest card; the click at the end of a drag is
+swallowed, so letting go over a screenshot or a link never opens it. The glass buttons step one card at a time and
+fade back at the ends; nothing moves on its own. Lenis, GSAP and the Inter web font were removed in the 2026-11 redesign; the system font is used.
 
 ## Design language
 
