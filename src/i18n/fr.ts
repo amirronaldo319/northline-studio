@@ -170,7 +170,7 @@ export const fr: Copy = {
       { label: 'Avant de commencer', value: 'Une soumission écrite que vous approuvez' },
       { label: 'Nos échanges', value: 'Par courriel, en termes clairs' },
     ],
-    paragraphs: ['Je m’appelle Amir. Je conçois et réalise chaque site moi-même. Quand vous m’écrivez, vous parlez à la personne qui fait le travail.', 'Mes projets récents comprennent un site de cours privés de natation à Vancouver, une page avec estimateur interactif pour un service de gestion de véhicules et un concept bilingue de tour résidentielle avec modèles 3D interactifs.', 'Je crée des sites pratiques pour les entreprises de services partout au Canada. Le travail prévu et les explications restent simples pour que vous sachiez ce que vous achetez et ce qui vient ensuite.'],
+    paragraphs: ['Je m’appelle Amir. Je conçois et réalise chaque site moi-même. Quand vous m’écrivez, vous parlez à la personne qui fait le travail.', 'Mes projets récents comprennent un site de cours privés de natation à Vancouver, une page avec estimateur interactif pour un service de gestion de véhicules et un concept bilingue de tour résidentielle avec modèles 3D interactifs. Je crée aussi mes propres applications, d’un calendrier persan hors ligne à une application de prévisions UFC avec historique public.', 'Je crée des sites pratiques pour les entreprises de services partout au Canada. Le travail prévu et les explications restent simples pour que vous sachiez ce que vous achetez et ce qui vient ensuite.'],
   },
   faq: {
     eyebrow: 'FAQ', heading: 'Avant de me contacter.', moreLead: 'Une autre question? ', askInForm: 'Posez-la dans le formulaire', orEmail: ' ou écrivez à ', moreEnd: '.',
@@ -293,7 +293,7 @@ export const fr: Copy = {
     includesLede: 'Une soumission écrite précise le travail prévu et le coût avant de commencer.', recentEyebrow: 'Réalisations récentes', recentHeading: 'Des sites que j’ai conçus et réalisés.',
     recentLede: 'Chaque projet est clairement identifié. Ouvrez-le pour découvrir sa conception.', faqHeading: (name) => `Questions : ${name}.`, faqLabel: 'Questions',
   },
-  casePage: { whatIDid: 'Mon travail', myPart: 'Ma contribution au projet.', decisions: 'Choix de conception', worthKnowing: 'À savoir :', more: 'D’autres réalisations', screenshots: (name) => `Captures d’écran de ${name}` },
+  casePage: { whatIDid: 'Mon travail', myPart: 'Ma contribution au projet.', decisions: 'Choix de conception', worthKnowing: 'À savoir :', more: 'D’autres réalisations', allWork: 'Voir tous les projets', screenshots: (name) => `Captures d’écran de ${name}` },
   guidePage: { eyebrow: 'Guide', next: 'Guide suivant :' },
   dialogs: {
     conceptDemo: 'Démo conceptuelle', fictional: (businessType) => `Une entreprise fictive (${businessType}). Les boutons de cette démo n’envoient rien.`,

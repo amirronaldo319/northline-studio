@@ -1,4 +1,4 @@
-import { ArrowUpRight, Lock } from 'lucide-react'
+import { ArrowUpRight, ChevronRight, Lock } from 'lucide-react'
 import { PROJECTS, type Project } from '@/content/projects'
 import { useCopy, useLocalHref } from '@/i18n/context'
 import { linkLabel, statusLabel } from '@/i18n/projectStatus'
@@ -16,7 +16,12 @@ export function CasePage({ project }: { project: Project }) {
   const localHref = useLocalHref()
   const t = useCopy()
   const text = t.projects[project.id]
+  // Three more, as Apple ends a page with a few related products: the same kind of work first, then the rest.
   const others = PROJECTS.filter((candidate) => candidate.id !== project.id)
+  const related = [
+    ...others.filter((candidate) => candidate.kind === project.kind),
+    ...others.filter((candidate) => candidate.kind !== project.kind),
+  ].slice(0, 3)
 
   return (
     <>
@@ -90,21 +95,40 @@ export function CasePage({ project }: { project: Project }) {
 
       <section aria-labelledby="case-more" className="section-pad bg-card">
         <div className="container-page">
-          <h2 id="case-more" className="text-[1.75rem] font-bold tracking-[-0.03em]">
-            {t.casePage.more}
-          </h2>
-          <ul className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {others.map((other) => (
+          <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
+            <h2 id="case-more" className="text-[1.75rem] font-bold tracking-[-0.03em]">
+              {t.casePage.more}
+            </h2>
+            <a href={homeAnchor('work')} className="chevron-link">
+              {t.casePage.allWork}
+              <ChevronRight aria-hidden="true" size={18} className="rtl:-scale-x-100" />
+            </a>
+          </div>
+          <ul className="mt-8 grid gap-5 md:grid-cols-3">
+            {related.map((other) => (
               <li key={other.id}>
                 <a
                   href={localHref(`work/${other.id}/`)}
-                  className="tile-paper tile-link group block !p-6"
+                  className="tile-paper tile-link group block h-full overflow-hidden !p-0"
                 >
-                  <p className="text-[0.875rem] font-semibold text-cobalt">{statusLabel(t.work, other.status)}</p>
-                  <p className="mt-2 text-[1.125rem] font-semibold">
-                    <bdi>{other.name}</bdi>
-                  </p>
-                  <p className="mt-1 text-sm text-ink-2">{t.projects[other.id].type}</p>
+                  <span className="block aspect-[1200/778] overflow-hidden bg-paper-2">
+                    <img
+                      src={other.desktop.src}
+                      width={other.desktop.width}
+                      height={other.desktop.height}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                      className="related-shot h-full w-full object-cover object-top"
+                    />
+                  </span>
+                  <span className="block p-6">
+                    <span className="block text-[0.875rem] font-semibold text-cobalt">{statusLabel(t.work, other.status)}</span>
+                    <span className="mt-2 block text-[1.125rem] font-semibold">
+                      <bdi>{other.name}</bdi>
+                    </span>
+                    <span className="mt-1 block text-sm text-ink-2">{t.projects[other.id].type}</span>
+                  </span>
                 </a>
               </li>
             ))}

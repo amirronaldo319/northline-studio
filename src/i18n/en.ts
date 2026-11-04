@@ -155,7 +155,7 @@ export const en: Copy = {
     ],
     paragraphs: [
       `I’m ${site.brand.owner}. I design and build every website myself, so when you send a message you’re talking to the person doing the work.`,
-      'Recent builds include a one-page site for a Vancouver private swim-lesson business, a landing page with an interactive estimator for a car-hosting service, and a bilingual concept site with interactive 3D models of a residential tower.',
+      'Recent builds include a one-page site for a Vancouver private swim-lesson business, a landing page with an interactive estimator for a car-hosting service, and a bilingual concept site with interactive 3D models of a residential tower. I also build apps of my own, from an offline Persian calendar to a UFC forecast app with a public track record.',
       `I focus on practical sites for service businesses across ${site.serviceArea.label}, and I keep the scope simple and the language plain, so you know what you’re getting and what comes next.`,
     ],
   },
@@ -291,6 +291,7 @@ export const en: Copy = {
     decisions: 'Decisions worth noting',
     worthKnowing: 'Worth knowing:',
     more: 'More of my work',
+    allWork: 'See all work',
     screenshots: (name) => `${name} screenshots`,
   },
 
