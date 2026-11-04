@@ -6,20 +6,24 @@ export const fr: Copy = {
   meta: {
     homeTitle: 'SitePilot | Sites web pour entreprises au Canada',
     homeDescription: 'Sites web d’une page dès 299 $ CA pour les entreprises du Canada. Forfait Standard à 599 $ CA et entretien facultatif dès 29 $ CA/mois.',
-    caseTitle: (name, status) => `${name} : ${{ live: 'site réalisé', concept: 'concept', personal: 'projet personnel' }[status]} | SitePilot`,
+    caseTitle: (name, status) => `${name} : ${{ live: 'site réalisé', concept: 'concept', personal: 'projet personnel' }[status]} | SitePilot`, workTitle: 'Tous les projets : sites, concepts et applis | SitePilot',
+    workDescription: 'Sites en ligne, projets conceptuels et applications personnelles conçus et réalisés par Amir, chacun clairement identifié. Ouvrez un projet pour les détails.',
   },
   common: {
-    skipToContent: 'Aller au contenu', requestQuote: 'Demander une soumission', seeMyWork: 'Voir mes réalisations',
+    skipToContent: 'Aller au contenu', requestQuote: 'Demander une soumission', fromPrice: 'Dès 299 $ CA', seeMyWork: 'Voir mes réalisations',
     openMenu: 'Ouvrir le menu', closeMenu: 'Fermer le menu', mainNav: 'Navigation principale', mobileNav: 'Navigation mobile',
     footerNav: 'Pied de page', languageNav: 'Langue', currentLanguage: 'actuelle', previous: 'Précédent', next: 'Suivant', backToTop: 'Retour en haut', privacy: 'Confidentialité', home: 'Accueil',
     work: 'Réalisations', guides: 'Guides', breadcrumb: 'Fil d’Ariane', opensNewTab: (name) => ` : ${name} (s’ouvre dans un nouvel onglet)`,
   },
-  nav: { work: 'Réalisations', package: 'Forfaits', process: 'Étapes', about: 'À propos', faq: 'FAQ' },
+  nav: { work: 'Réalisations', package: 'Tarifs', process: 'Étapes', about: 'À propos', faq: 'FAQ' },
   hero: {
-    headline: 'Des sites web sur mesure pour les entreprises de services partout au Canada.', markedWords: [3, 4],
-    lede: 'Présentez votre travail, expliquez vos services et facilitez les demandes de soumission.',
-    facts: ['Une soumission écrite avant tout travail', 'Conçu et réalisé par moi', 'Partout au Canada'],
-    conceptCaption: (name, businessType) => `Démo conceptuelle : ${name}, un site pour une entreprise fictive (${businessType}).`,
+    headline: ['Votre entreprise.', 'Superbement en ligne.'],
+    lede: 'Des sites web pour les entreprises de services partout au Canada.',
+    priceLine: 'Forfaits d’une page dès 299 $ CA.',
+    explore: 'Voir les forfaits',
+    seeWork: 'Voir les réalisations',
+    visualCaption: (name, caption) => `${name}, ${caption}.`,
+    conceptCaption: (name, businessType) => `Démo conceptuelle : ${name}, un concept pour une entreprise fictive (${businessType.toLowerCase()}).`,
     viewExample: 'Voir un exemple',
   },
   work: {
@@ -27,9 +31,14 @@ export const fr: Copy = {
     lede: 'Deux sites en ligne, trois concepts de sites, mes propres produits et outils, et des exemples pour des entreprises fictives, tous clairement identifiés.',
     statusLive: 'Site en ligne', statusConcept: 'Projet conceptuel', statusPersonal: 'Projet personnel', contribution: 'Ma contribution :', visitLive: 'Visiter le site',
     openLivePreview: 'Ouvrir l’aperçu du site', noPublicLink: 'Dépôt privé, aucun lien public', sitesLabel: 'Sites web',
-    appsHeading: 'Applications et outils.', appsLede: 'Ce que j’ai conçu et réalisé pour moi-même : des applications web, des prototypes mobiles et une trousse pour développeurs.',
+    appsHeading: 'Applications et outils.', appsLede: 'Ce que j’ai conçu et réalisé pour moi-même : des applications web, des prototypes mobiles et une trousse pour développeurs.', viewProject: 'Voir le projet', allProjects: 'Explorer tous les projets',
+    demosHeading: 'Démos de conception.', demosLede: 'Des concepts pour des entreprises fictives, chacun identifié comme une démo.',
     readCaseStudy: 'Lire l’étude de cas', conceptDemo: 'Démo conceptuelle',
     viewExample: 'Voir l’exemple', openLarger: (name) => `Agrandir l’aperçu : ${name}`, openPhone: (name) => `Voir l’aperçu mobile : ${name}`,
+  },
+  workPage: {
+    eyebrow: 'Réalisations', heading: 'Tous les projets.',
+    lede: 'Sites en ligne, projets conceptuels et mes propres applications, chacun clairement identifié.',
   },
   projects: {
     'farsh-aquatics': {
@@ -133,29 +142,15 @@ export const fr: Copy = {
   package: {
     eyebrow: 'Votre forfait web', heading: 'Une page bien pensée, centrée sur votre entreprise.',
     lede: 'Elle répond aux questions que les clients posent avant d’appeler : vos services, votre travail et la façon de vous joindre.',
-    groups: ['Conception', 'Contenu', 'Demandes', 'Préparation au lancement'], included: 'Ce qui est inclus',
-    quoteLead: 'Tout commence par une soumission écrite.',
-    quoteBody: 'Elle précise le coût, le travail prévu, l’échéancier, l’hébergement, le domaine et les frais récurrents avant le début du travail. Les pages et fonctionnalités supplémentaires font l’objet d’une soumission distincte.',
-    factors: [
-      { title: 'Ce qui est prêt', text: 'Vos services, vos photos et vos coordonnées.' },
-      { title: 'Au-delà d’une page', text: 'Les pages et fonctionnalités supplémentaires sont détaillées séparément.' },
-      { title: 'Hébergement et domaine', text: 'Ce que vous avez déjà et ce que vous souhaitez faire mettre en place.' },
-      { title: 'Échéancier', text: 'Quand vos renseignements seront prêts et quand vous souhaitez lancer le site.' },
-    ],
+    groups: ['Conception', 'Contenu', 'Demandes', 'Préparation au lancement'], included: 'Ce qui est inclus', termsSummary: 'Portée, coûts et conditions',
   },
   process: {
     eyebrow: 'Les étapes', heading: 'Comment nous travaillerons ensemble.',
     steps: [
-      { title: 'Présentez votre entreprise.', text: 'Expliquez vos services, votre clientèle et ce que le site doit vous aider à accomplir.' },
-      { title: 'Envoyez votre contenu.', text: 'Partagez vos services, photos, coordonnées et éléments de marque disponibles.' },
-      { title: 'Révisez votre site.', text: 'Vérifiez le design et le contenu avant d’approuver la version finale.' },
-      { title: 'Approuvez le lancement.', text: 'Confirmez le site final et les modalités de mise en ligne.' },
+      { title: 'Présentez votre entreprise.', text: 'Expliquez ce que vous faites et ce que le site doit accomplir. Je vous réponds avec une soumission écrite, et rien ne commence avant votre approbation.' },
+      { title: 'Révisez le design.', text: 'Envoyez vos textes, photos et éléments de marque. Je conçois et réalise la page, et vous la révisez avant sa mise en ligne.' },
+      { title: 'Approuvez et lancez.', text: 'Confirmez le site final, puis nous organisons sa mise en ligne.' },
     ],
-  },
-  audience: {
-    eyebrow: 'Pour qui je crée', heading: 'Pour les entreprises de services locales.',
-    lede: 'Que vos clients vous trouvent par recherche, par recommandation ou sur leur téléphone, une page claire facilite le premier contact. Choisissez le secteur qui ressemble au vôtre.',
-    readPage: 'Consulter la page', forName: (name) => ` : ${name}`, guidesLead: 'Vous préparez un site? Deux guides courts :',
   },
   about: {
     eyebrow: 'À propos', heading: 'Vous travaillez directement avec moi.',
@@ -165,7 +160,7 @@ export const fr: Copy = {
       { label: 'Avant de commencer', value: 'Une soumission écrite que vous approuvez' },
       { label: 'Nos échanges', value: 'Par courriel, en termes clairs' },
     ],
-    paragraphs: ['Je m’appelle Amir. Je conçois et réalise chaque site moi-même. Quand vous m’écrivez, vous parlez à la personne qui fait le travail.', 'Mes projets récents comprennent un site de cours privés de natation à Vancouver, une page avec estimateur interactif pour un service de gestion de véhicules et un concept bilingue de tour résidentielle avec modèles 3D interactifs. Je crée aussi mes propres applications, d’un calendrier persan hors ligne à une application de prévisions UFC avec historique public.', 'Je crée des sites pratiques pour les entreprises de services partout au Canada. Le travail prévu et les explications restent simples pour que vous sachiez ce que vous achetez et ce qui vient ensuite.'],
+    paragraphs: ['Je m’appelle Amir. Je conçois et réalise chaque site moi-même. Quand vous m’écrivez, vous parlez à la personne qui fait le travail.'],
   },
   faq: {
     eyebrow: 'FAQ', heading: 'Avant de me contacter.', moreLead: 'Une autre question? ', askInForm: 'Posez-la dans le formulaire', orEmail: ' ou écrivez à ', moreEnd: '.',
@@ -178,13 +173,12 @@ export const fr: Copy = {
     ],
   },
   siteCheck: {
-    eyebrow: 'Vous avez déjà un site?', heading: 'Commencez par une vérification gratuite.',
-    text: 'Envoyez-moi l’adresse de votre site et je vous dirai ce que je modifierais en premier. Vous pouvez demander cet avis sans acheter de nouveau site; aucun travail ne commence sans votre accord.',
+    eyebrow: 'Vous avez déjà un site?',
     button: 'Demander une vérification', starterMessage: 'Merci de consulter mon site actuel et de me dire ce que vous modifieriez en premier.',
   },
   contact: {
-    eyebrow: 'Pour commencer', heading: 'Demandez une soumission.', lede: 'Présentez votre entreprise et vos besoins. Je vous répondrai pour discuter du travail prévu et des prochaines étapes.',
-    nextTitle: 'La suite', nextSteps: ['Envoyez un message avec les renseignements que vous souhaitez partager.', 'Je le lis et vous réponds par courriel pour préciser vos besoins.', 'Si le projet convient, je vous envoie une soumission écrite. Rien ne commence avant votre approbation.'],
+    eyebrow: 'Pour commencer', heading: 'Créons votre site web.', lede: 'Parlez-moi de votre entreprise. Je vous répondrai par courriel avec les prochaines étapes.',
+    reassurance: 'Rien ne commence avant que vous approuviez la soumission écrite.',
     preferEmail: 'Vous préférez le courriel?', copyEmail: 'Copier l’adresse courriel', copied: 'Adresse copiée', copiedNote: (email) => `${email} a été copié dans le presse-papiers.`,
     copyFailed: 'La copie a échoué. Sélectionnez l’adresse et copiez-la manuellement.', privacyTitle: 'Utilisation de vos renseignements',
     privacyForm: 'Votre message m’est transmis par un service de formulaire tiers. Je l’utilise uniquement pour répondre au sujet de votre site web.',

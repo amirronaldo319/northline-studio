@@ -1,29 +1,27 @@
-export type ButtonVariant = 'primary' | 'secondary' | 'outlineLight' | 'inverse' | 'quiet'
-export type ButtonSize = 'md' | 'lg'
-
-const base =
-  'inline-flex items-center justify-center gap-2 rounded-full font-medium whitespace-nowrap select-none ' +
-  'transition-[background-color,color,border-color,box-shadow,transform] duration-200 ease-out ' +
-  'active:scale-[0.98] active:duration-100 disabled:cursor-not-allowed disabled:opacity-70'
+export type ButtonVariant = 'primary' | 'secondary'
+export type ButtonSize = 'sm' | 'md' | 'lg'
 
 /*
- * Apple-style buttons: a flat blue pill for the main action, a blue outline pill beside it, no drop shadows or
- * light sweeps. The label carries the weight, not effects.
+ * Liquid Glass buttons (see `.liquid-glass-button` in index.css). The hierarchy is carried by the glass itself:
+ *
+ * - primary: a lens of blue glass, lit along its top edge, for the one main action in a view (quote, choose a plan,
+ *   send the form);
+ * - secondary: clear glass with a blue label, beside a primary or where an action matters less.
+ *
+ * Sizes set the role: `sm` in the navigation bar, `md` in cards and bars, `lg` for a section's main action and the
+ * form's send button. Every size is at least a 32px target, and `md` and `lg` are at least 44px.
  */
 const variants: Record<ButtonVariant, string> = {
-  primary: 'bg-cobalt text-white hover:bg-[#2a51de] active:bg-cobalt-deep',
-  secondary: 'border border-cobalt text-cobalt hover:bg-cobalt hover:text-white',
-  /** The outline pill on dark surfaces. */
-  outlineLight: 'border border-white/45 text-white hover:border-white hover:bg-white hover:text-night',
-  inverse: 'bg-white text-night hover:bg-cobalt-soft',
-  quiet: 'text-ink underline decoration-line-strong underline-offset-4 hover:decoration-cobalt',
+  primary: 'glass-btn-primary',
+  secondary: 'glass-btn-secondary',
 }
 
 const sizes: Record<ButtonSize, string> = {
-  md: 'min-h-11 px-5 text-[0.9375rem]',
-  lg: 'min-h-12 px-7 text-[1.0625rem]',
+  sm: 'glass-btn-sm',
+  md: 'glass-btn-md',
+  lg: 'glass-btn-lg',
 }
 
 export function buttonClasses(variant: ButtonVariant = 'primary', size: ButtonSize = 'md', extra = ''): string {
-  return [base, variants[variant], sizes[size], extra].filter(Boolean).join(' ')
+  return ['liquid-glass-button', variants[variant], sizes[size], extra].filter(Boolean).join(' ')
 }

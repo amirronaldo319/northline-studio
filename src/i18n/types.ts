@@ -55,11 +55,15 @@ export interface Copy {
     homeTitle: string
     homeDescription: string
     caseTitle: (name: string, status: ProjectStatus) => string
+    workTitle: string
+    workDescription: string
   }
 
   common: {
     skipToContent: string
     requestQuote: string
+    /** The starting price, as short as it goes, for the phone quote bar. */
+    fromPrice: string
     seeMyWork: string
     openMenu: string
     closeMenu: string
@@ -84,11 +88,15 @@ export interface Copy {
   nav: Record<'work' | 'package' | 'process' | 'about' | 'faq', string>
 
   hero: {
-    headline: string
-    /** Positions of the words that carry the drawn underline. Empty for scripts written without spaces. */
-    markedWords: readonly number[]
+    /** Two lines, each set on its own line where the screen allows. */
+    headline: readonly [string, string]
     lede: string
-    facts: readonly [string, string, string]
+    /** The starting price, on its own line under the lede. */
+    priceLine: string
+    explore: string
+    seeWork: string
+    /** Identifies the website under the hero: its name and its caption (which reads after the name). */
+    visualCaption: (name: string, caption: string) => string
     conceptCaption: (name: string, businessType: string) => string
     viewExample: string
   }
@@ -109,11 +117,22 @@ export interface Copy {
     sitesLabel: string
     appsHeading: string
     appsLede: string
+    viewProject: string
+    allProjects: string
+    demosHeading: string
+    demosLede: string
     readCaseStudy: string
     conceptDemo: string
     viewExample: string
     openLarger: (name: string) => string
     openPhone: (name: string) => string
+  }
+
+  /** The page that lists every project. */
+  workPage: {
+    eyebrow: string
+    heading: string
+    lede: string
   }
 
   projects: Record<string, ProjectText>
@@ -127,31 +146,21 @@ export interface Copy {
     groups: readonly [string, string, string, string]
     /** Names the comparison's first column for screen readers. */
     included: string
-    quoteLead: string
-    quoteBody: string
-    factors: readonly [Step, Step, Step, Step]
+    /** Opens the full scope, costs and terms under the comparison. */
+    termsSummary: string
   }
 
   process: {
     eyebrow: string
     heading: string
-    steps: readonly [Step, Step, Step, Step]
-  }
-
-  audience: {
-    eyebrow: string
-    heading: string
-    lede: string
-    readPage: string
-    forName: (name: string) => string
-    guidesLead: string
+    steps: readonly [Step, Step, Step]
   }
 
   about: {
     eyebrow: string
     heading: string
     glance: ReadonlyArray<{ label: string; value: string }>
-    paragraphs: readonly [string, string, string]
+    paragraphs: readonly [string]
   }
 
   faq: {
@@ -167,8 +176,6 @@ export interface Copy {
 
   siteCheck: {
     eyebrow: string
-    heading: string
-    text: string
     button: string
     starterMessage: string
   }
@@ -177,8 +184,8 @@ export interface Copy {
     eyebrow: string
     heading: string
     lede: string
-    nextTitle: string
-    nextSteps: readonly [string, string, string]
+    /** One line beside the form's button. */
+    reassurance: string
     preferEmail: string
     copyEmail: string
     copied: string

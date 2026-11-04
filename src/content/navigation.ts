@@ -1,6 +1,14 @@
+/** The header's links on wide screens: the three things most visitors look for. */
 export const NAV_LINKS = [
   { id: 'work', label: 'Work' },
-  { id: 'package', label: 'Package' },
+  { id: 'package', label: 'Pricing' },
+  { id: 'about', label: 'About' },
+] as const
+
+/** The phone menu and the footer reach every section of the home page. */
+export const MENU_LINKS = [
+  { id: 'work', label: 'Work' },
+  { id: 'package', label: 'Pricing' },
   { id: 'process', label: 'Process' },
   { id: 'about', label: 'About' },
   { id: 'faq', label: 'FAQ' },

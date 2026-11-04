@@ -10,13 +10,15 @@ type Props = {
   view?: ViewerView
   isEager?: boolean
   className?: string
+  /** How wide the picture is drawn, so high-density screens get the sharp capture. */
+  sizes?: string
 }
 
 /**
  * A project screenshot that is also a real button: activating it opens the project viewer.
  * The small expand marker is always visible, so touch users can see the picture is tappable.
  */
-export function ProjectTrigger({ project, view = 'desktop', isEager = false, className = '' }: Props) {
+export function ProjectTrigger({ project, view = 'desktop', isEager = false, className = '', sizes }: Props) {
   const ref = useRef<HTMLButtonElement>(null)
   const { open } = useProjectViewer()
   const copy = useCopy()
@@ -33,7 +35,7 @@ export function ProjectTrigger({ project, view = 'desktop', isEager = false, cla
       aria-label={view === 'phone' ? copy.work.openPhone(project.name) : copy.work.openLarger(project.name)}
       className={`expand-trigger relative block w-full text-start ${className}`}
     >
-      <ProjectShot project={project} isEager={isEager} variant={view === 'phone' ? 'phone' : 'responsive'} />
+      <ProjectShot project={project} isEager={isEager} variant={view === 'phone' ? 'phone' : 'responsive'} sizes={sizes} />
       <span className="expand-chip" aria-hidden="true">
         <Maximize2 size={14} />
       </span>

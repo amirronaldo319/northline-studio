@@ -1,10 +1,8 @@
 /**
- * A textarea or select inside a glass field (`<Glass className="field-glass">`): transparent, so the glass is the
- * field's surface, matching the Glisse `Input`s beside it. Focus and error rings are drawn by `.field-glass`.
+ * Every text control in the inquiry form: a well inset into the glass, with a clear grey edge (3:1) and a strong focus
+ * ring (see `.field` and `.liquid-glass-input`).
  */
-export const fieldControlClasses =
-  'block min-h-12 w-full rounded-[inherit] bg-transparent px-4 py-3 text-base text-ink placeholder:text-ink-3/70 ' +
-  'focus:outline-none disabled:opacity-60'
+export const fieldControlClasses = 'field liquid-glass-input'
 
 /** aria-describedby value for a control rendered inside <Field>. */
 export function describedBy(id: string, error?: string, hasHint = false): string | undefined {

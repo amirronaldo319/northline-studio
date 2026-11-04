@@ -3,7 +3,6 @@ import { PROJECTS, type Project } from '@/content/projects'
 import { useCopy, useLocalHref } from '@/i18n/context'
 import { linkLabel, statusLabel } from '@/i18n/projectStatus'
 import { Contact } from '../sections/Contact'
-import { SiteCheck } from '../sections/SiteCheck'
 import { ProjectTrigger } from '../ProjectTrigger'
 import { Words } from '../Words'
 import { buttonClasses } from '../ui/button'
@@ -50,11 +49,15 @@ export function CasePage({ project }: { project: Project }) {
         }
       />
 
-      <section aria-label={t.casePage.screenshots(project.name)} className="section-pad bg-card">
+      <section aria-label={t.casePage.screenshots(project.name)} className="section-pad ambient ambient-work">
         <div className="container-page grid items-start gap-6 lg:grid-cols-12 lg:gap-10">
-          <div className="reveal overflow-hidden rounded-[1.25rem] bg-white shadow-device lg:col-span-9">
-            <div className="mask-reveal">
-              <ProjectTrigger project={project} isEager />
+          <div className="reveal lg:col-span-9">
+            <div className="glass-frame">
+              <div className="shot-frame">
+                <div className="mask-reveal">
+                  <ProjectTrigger project={project} isEager />
+                </div>
+              </div>
             </div>
           </div>
           <div className="reveal mx-auto w-[min(14rem,60%)] lg:col-span-3 lg:w-full">
@@ -65,12 +68,12 @@ export function CasePage({ project }: { project: Project }) {
         </div>
       </section>
 
-      <section aria-labelledby="case-did" className="section-pad bg-paper">
+      <section aria-labelledby="case-did" className="section-pad ambient ambient-quiet">
         <div className="container-page grid gap-10 lg:grid-cols-12 lg:gap-14">
           <div className="reveal lg:col-span-5">
             <p className="eyebrow">{t.casePage.whatIDid}</p>
-            <h2 id="case-did" className="h-section word-reveal mt-3">
-              <Words text={t.casePage.myPart} twoTone />
+            <h2 id="case-did" className="h-section mt-3">
+              <Words text={t.casePage.myPart} />
             </h2>
             <p className="lede mt-5">{text.contribution}</p>
           </div>
@@ -85,7 +88,7 @@ export function CasePage({ project }: { project: Project }) {
               ))}
             </ul>
             {text.note && (
-              <p className="tile mt-8 !p-5 text-[0.9375rem] leading-relaxed text-ink-2">
+              <p className="liquid-glass-subtle mt-8 p-5 text-[0.9375rem] leading-relaxed text-ink-2 [--glass-radius:1.25rem]">
                 <strong className="font-semibold text-ink">{t.casePage.worthKnowing}</strong> {text.note}
               </p>
             )}
@@ -93,7 +96,7 @@ export function CasePage({ project }: { project: Project }) {
         </div>
       </section>
 
-      <section aria-labelledby="case-more" className="section-pad bg-card">
+      <section aria-labelledby="case-more" className="section-pad ambient ambient-cards">
         <div className="container-page">
           <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
             <h2 id="case-more" className="text-[1.75rem] font-bold tracking-[-0.03em]">
@@ -107,11 +110,8 @@ export function CasePage({ project }: { project: Project }) {
           <ul className="mt-8 grid gap-5 md:grid-cols-3">
             {related.map((other) => (
               <li key={other.id}>
-                <a
-                  href={localHref(`work/${other.id}/`)}
-                  className="tile-paper tile-link group block h-full overflow-hidden !p-0"
-                >
-                  <span className="block aspect-[1200/778] overflow-hidden bg-paper-2">
+                <a href={localHref(`work/${other.id}/`)} className="project-card liquid-glass-card group block h-full">
+                  <span className="card-shot block aspect-[1200/778] overflow-hidden rounded-[1.25rem] bg-paper-2">
                     <img
                       src={other.desktop.src}
                       width={other.desktop.width}
@@ -122,8 +122,8 @@ export function CasePage({ project }: { project: Project }) {
                       className="related-shot h-full w-full object-cover object-top"
                     />
                   </span>
-                  <span className="block p-6">
-                    <span className="block text-[0.875rem] font-semibold text-cobalt">{statusLabel(t.work, other.status)}</span>
+                  <span className="project-card-body block">
+                    <span className="block text-[0.875rem] font-semibold text-accent">{statusLabel(t.work, other.status)}</span>
                     <span className="mt-2 block text-[1.125rem] font-semibold">
                       <bdi>{other.name}</bdi>
                     </span>
@@ -136,7 +136,6 @@ export function CasePage({ project }: { project: Project }) {
         </div>
       </section>
 
-      <SiteCheck />
       <Contact />
     </>
   )

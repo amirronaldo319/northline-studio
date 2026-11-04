@@ -16,39 +16,34 @@ export function Faq({ items, heading, label }: Props) {
   const entries = items ?? t.faq.items
 
   return (
-    <section id="faq" aria-labelledby="faq-title" className="section-pad bg-paper pb-0">
+    <section id="faq" aria-labelledby="faq-title" className="section-pad ambient ambient-cards">
       <div className="container-page">
         <div className="section-intro reveal">
           <p className="eyebrow">{label ?? t.faq.eyebrow}</p>
-          <h2 id="faq-title" className="h-section word-reveal mt-3">
-            <Words text={heading ?? t.faq.heading} twoTone />
+          <h2 id="faq-title" className="h-section mt-3">
+            <Words text={heading ?? t.faq.heading} />
           </h2>
           <p className="lede mt-5">
             {t.faq.moreLead}
-            <a href={`#${CONTACT_SECTION_ID}`} className="font-medium text-cobalt underline underline-offset-4">
+            <a href={`#${CONTACT_SECTION_ID}`} className="text-link-inline">
               {t.faq.askInForm}
             </a>
             {t.faq.orEmail}
-            <a href={mailtoHref} dir="ltr" className="font-medium whitespace-nowrap text-cobalt underline underline-offset-4">
+            <a href={mailtoHref} dir="ltr" className="text-link-inline whitespace-nowrap">
               {site.contact.email}
             </a>
             {t.faq.moreEnd}
           </p>
         </div>
 
-        <div className="reveal mx-auto mt-14 max-w-[52rem] border-b border-ink/10 lg:mt-16">
+        <div className="faq-panel liquid-glass reveal mx-auto mt-12 max-w-[52rem] lg:mt-14">
           {entries.map((item) => (
-            <details key={item.question} className="faq-item group border-t border-ink/10">
-              <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-6 py-6 text-start font-display text-[1.1875rem] font-semibold tracking-[-0.02em] transition-colors hover:text-cobalt sm:text-[1.375rem]">
+            <details key={item.question} className="faq-item group border-t border-line">
+              <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-6 py-5 text-start text-[1.125rem] font-semibold tracking-[-0.01em] transition-colors hover:text-accent sm:text-[1.25rem]">
                 {item.question}
-                <span
-                  aria-hidden="true"
-                  className="faq-icon grid size-9 shrink-0 place-items-center rounded-full bg-ink/[0.06] text-ink-2 transition-transform duration-300 group-hover:text-cobalt"
-                >
-                  <Plus size={16} />
-                </span>
+                <Plus aria-hidden="true" size={18} className="faq-icon shrink-0 text-ink-3 transition-transform duration-200 group-hover:text-accent" />
               </summary>
-              <p className="max-w-[44rem] pb-7 text-[1.0625rem] leading-relaxed text-ink-2">{item.answer}</p>
+              <p className="max-w-[44rem] pb-6 text-[1.0625rem] leading-relaxed text-ink-2">{item.answer}</p>
             </details>
           ))}
         </div>

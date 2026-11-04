@@ -46,6 +46,8 @@ export function pageMeta(ref: PageRef): PageMeta {
       const guide = copy.guides.find((candidate) => candidate.slug === ref.slug)
       return guide ? { ...base, title: guide.title, description: guide.description, faq: [] } : home
     }
+    case 'work':
+      return { ...base, title: copy.meta.workTitle, description: copy.meta.workDescription, faq: [] }
     case 'case': {
       const project = PROJECT_DATA.find((candidate) => candidate.id === ref.id)
       if (!project) return home

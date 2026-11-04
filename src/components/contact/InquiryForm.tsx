@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react'
-import { AlertCircle, ChevronDown, Copy, Loader2, Mail, Send } from 'lucide-react'
-import { Button, Glass, Input } from 'glisse'
+import { AlertCircle, ChevronDown, Copy, Loader2 } from 'lucide-react'
 import { PACKAGE_EVENT } from '@/content/offers'
 import { formEndpoint } from '@/config/env'
 import { mailtoHref, site } from '@/config/site'
@@ -20,6 +19,7 @@ import { useCopy } from '@/i18n/context'
 import { Field } from './fields'
 import { describedBy, fieldControlClasses } from './fieldStyles'
 import { SuccessCheck } from '../ui/SuccessCheck'
+import { buttonClasses } from '../ui/button'
 
 type Status = 'idle' | 'submitting' | 'success' | 'error' | 'email-opened'
 
@@ -140,13 +140,13 @@ export function InquiryForm() {
   if (status === 'success') {
     const firstName = values.name.trim().split(/\s+/)[0]
     return (
-      <div ref={resultRef} tabIndex={-1} role="status" className="tile-paper fx-in focus:outline-none">
+      <div ref={resultRef} tabIndex={-1} role="status" className="form-card fx-in focus:outline-none">
         <SuccessCheck />
         <h3 className="mt-4 text-2xl font-semibold">{t.form.successTitle(firstName)}</h3>
         <p className="mt-3 leading-relaxed text-ink-2">{t.form.successBody(values.email.trim())}</p>
-        <Button onClick={resetForm} className="glass-btn glass-flat mt-6">
+        <button type="button" onClick={resetForm} className="text-link mt-6">
           {t.form.sendAnother}
-        </Button>
+        </button>
       </div>
     )
   }
@@ -163,16 +163,7 @@ export function InquiryForm() {
     'aria-describedby': describedBy(`inquiry-${field}`, errors[field], hasHint),
   })
 
-  /** The same wiring for a Glisse `Input`, which reports its text through `onValueChange`. */
-  const inputProps = (field: InquiryField) => ({
-    id: `inquiry-${field}`,
-    name: field,
-    value: values[field],
-    onValueChange: (value: string) => setField(field, value),
-    'aria-invalid': errors[field] ? true : undefined,
-    'aria-describedby': describedBy(`inquiry-${field}`, errors[field]),
-    className: 'field-input glass-flat',
-  })
+  const inputProps = (field: InquiryField) => ({ ...fieldProps(field), className: fieldControlClasses })
 
   return (
     <form
@@ -180,14 +171,14 @@ export function InquiryForm() {
       noValidate
       onSubmit={handleSubmit}
       aria-labelledby="contact-title"
-      className="tile-paper relative"
+      className="form-card relative"
     >
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field id="inquiry-name" label={t.form.name} error={errors.name} isFilled={values.name !== ''}>
-          <Input {...inputProps('name')} type="text" autoComplete="name" required />
+        <Field id="inquiry-name" label={t.form.name} error={errors.name}>
+          <input {...inputProps('name')} type="text" autoComplete="name" required />
         </Field>
-        <Field id="inquiry-email" label={t.form.email} error={errors.email} isFilled={values.email !== ''}>
-          <Input {...inputProps('email')} dir="ltr" type="email" autoComplete="email" inputMode="email" required />
+        <Field id="inquiry-email" label={t.form.email} error={errors.email}>
+          <input {...inputProps('email')} dir="ltr" type="email" autoComplete="email" inputMode="email" required />
         </Field>
       </div>
 
@@ -196,43 +187,40 @@ export function InquiryForm() {
         label={t.form.message}
         error={errors.message}
         hint={t.form.messageHint}
-        isFilled={values.message !== ''}
-        isMultiline
+       
         className="mt-4"
       >
-        <Glass className="field-glass glass-flat">
-          <textarea {...fieldProps('message', true)} rows={5} required className={`${fieldControlClasses} field-textarea resize-y`} />
-        </Glass>
+        <textarea {...fieldProps('message', true)} rows={5} required className={`${fieldControlClasses} field-textarea resize-y`} />
       </Field>
 
       <div className="mt-5 border-t border-line pt-4">
-        <Button
+        <button
+          type="button"
           aria-expanded={isDetailsOpen}
           aria-controls="inquiry-details"
           onClick={() => setIsDetailsOpen((open) => !open)}
-          className="glass-btn glass-flat"
-          icon={
-            <ChevronDown
-              aria-hidden="true"
-              className={`transition-transform duration-200 motion-reduce:transition-none ${isDetailsOpen ? 'rotate-180' : ''}`}
-            />
-          }
+          className="disclosure-toggle"
         >
           {t.form.addDetails}
-          <span className="text-sm font-normal text-ink-3">{t.form.optional}</span>
-        </Button>
+          <span className="font-normal text-ink-3">{t.form.optional}</span>
+          <ChevronDown
+            aria-hidden="true"
+            size={17}
+            className={`transition-transform duration-200 motion-reduce:transition-none ${isDetailsOpen ? 'rotate-180' : ''}`}
+          />
+        </button>
 
         <div id="inquiry-details" className="disclosure disclosure-pad" data-open={isDetailsOpen} inert={!isDetailsOpen}>
           <div className="disclosure-inner">
 
             <div className="mt-3 space-y-5">
               <div className="grid gap-4 sm:grid-cols-2">
-                <Field id="inquiry-business" label={t.form.businessName} isOptional isFilled={values.business !== ''}>
-                  <Input {...inputProps('business')} type="text" autoComplete="organization" />
+                <Field id="inquiry-business" label={t.form.businessName} isOptional>
+                  <input {...inputProps('business')} type="text" autoComplete="organization" />
                 </Field>
-                <Field id="inquiry-businessType" label={t.form.businessType} isOptional isFilled>
-                  <Glass className="field-glass glass-flat relative">
-                    <select {...fieldProps('businessType')} className={`${fieldControlClasses} field-select appearance-none pe-10`}>
+                <Field id="inquiry-businessType" label={t.form.businessType} isOptional>
+                  <div className="relative">
+                    <select {...fieldProps('businessType')} className={`${fieldControlClasses} appearance-none pe-10`}>
                       <option value="">{t.form.chooseOne}</option>
                       {t.form.businessTypes.map((type) => (
                         <option key={type.value} value={type.value}>
@@ -241,13 +229,13 @@ export function InquiryForm() {
                       ))}
                     </select>
                     <ChevronDown aria-hidden="true" size={18} className="pointer-events-none absolute end-3.5 top-1/2 -translate-y-1/2 text-ink-3" />
-                  </Glass>
+                  </div>
                 </Field>
-                <Field id="inquiry-phone" label={t.form.phone} isOptional error={errors.phone} isFilled={values.phone !== ''}>
-                  <Input {...inputProps('phone')} dir="ltr" type="tel" autoComplete="tel" inputMode="tel" />
+                <Field id="inquiry-phone" label={t.form.phone} isOptional error={errors.phone}>
+                  <input {...inputProps('phone')} dir="ltr" type="tel" autoComplete="tel" inputMode="tel" />
                 </Field>
-                <Field id="inquiry-website" label={t.form.existingWebsite} isOptional error={errors.website} isFilled={values.website !== ''}>
-                  <Input
+                <Field id="inquiry-website" label={t.form.existingWebsite} isOptional error={errors.website}>
+                  <input
                     {...inputProps('website')}
                     dir="ltr"
                     type="text"
@@ -273,7 +261,7 @@ export function InquiryForm() {
                         onChange={update('need')}
                         className="peer sr-only"
                       />
-                      <span className="inline-flex min-h-11 items-center rounded-full border border-line-strong bg-white px-4 text-[0.9375rem] font-medium text-ink-2 transition-colors peer-checked:border-cobalt peer-checked:bg-cobalt-soft peer-checked:text-ink peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-cobalt hover:border-ink/40">
+                      <span className="glass-choice">
                         {option.label}
                       </span>
                     </label>
@@ -303,7 +291,7 @@ export function InquiryForm() {
           <p className="font-semibold text-danger">{t.form.errorTitle}</p>
           <p className="mt-1 text-ink-2">
             {t.form.errorBefore}
-            <a href={mailtoHref} dir="ltr" className="font-semibold text-cobalt underline underline-offset-4">
+            <a href={mailtoHref} dir="ltr" className="font-semibold text-accent underline underline-offset-4">
               {site.contact.email}
             </a>
             {t.form.errorAfter}
@@ -316,40 +304,31 @@ export function InquiryForm() {
           <p className="font-semibold">{t.form.emailOpenedTitle}</p>
           <p className="mt-1 text-ink-2">
             {t.form.emailOpenedBefore}
-            <a href={mailtoHref} dir="ltr" className="font-semibold text-cobalt underline underline-offset-4">
+            <a href={mailtoHref} dir="ltr" className="font-semibold text-accent underline underline-offset-4">
               {site.contact.email}
             </a>
             {t.form.emailOpenedAfter}
           </p>
-          <Button onClick={copyDetails} className="glass-btn glass-flat mt-3" icon={<Copy aria-hidden="true" />}>
+          <button type="button" onClick={copyDetails} className="text-link mt-3">
+            <Copy aria-hidden="true" size={16} />
             {copyState === 'copied' ? t.form.detailsCopied : copyState === 'unavailable' ? t.form.copyUnavailable : t.form.copyDetails}
-          </Button>
+          </button>
         </div>
       )}
 
-      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
-        <Button
+      <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
+        <button
           type="submit"
-          variant="filled"
           disabled={isSubmitting}
           aria-disabled={isSubmitting}
-          className="glass-btn-lg w-full sm:w-auto"
-          icon={
-            isSubmitting ? (
-              <Loader2 aria-hidden="true" className="animate-spin motion-reduce:animate-none" />
-            ) : isConnected ? (
-              <Send aria-hidden="true" />
-            ) : (
-              <Mail aria-hidden="true" />
-            )
-          }
+          className={buttonClasses('primary', 'lg', 'w-full sm:w-auto')}
         >
-          {isSubmitting ? t.form.sending : isConnected ? t.form.send : t.form.openEmail}
-        </Button>
-        <p className="text-sm text-ink-3">
-          {isConnected ? t.form.sentDirect : t.form.mailtoNote}
-        </p>
+          {isSubmitting && <Loader2 aria-hidden="true" size={18} className="animate-spin motion-reduce:animate-none" />}
+          {isSubmitting ? t.form.sending : t.common.requestQuote}
+        </button>
+        <p className="text-[0.9375rem] leading-snug text-ink-2">{t.contact.reassurance}</p>
       </div>
+      <p className="mt-3 text-sm text-ink-3">{isConnected ? t.form.sentDirect : t.form.mailtoNote}</p>
       <p className="sr-only" role="status" aria-live="polite">
         {isSubmitting ? t.form.sending : ''}
       </p>

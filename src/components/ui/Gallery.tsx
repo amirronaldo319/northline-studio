@@ -1,6 +1,6 @@
 import { Children, useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { Button } from 'glisse'
+import { useDragScroll } from '@/hooks/useDragScroll'
 import { useCopy } from '@/i18n/context'
 import { galleryEdges } from '@/lib/gallery'
 
@@ -15,8 +15,11 @@ type Props = {
 
 /**
  * A row of tiles that scrolls sideways and snaps, as in Apple's "Get the highlights": the next tile peeks in, and
- * glass buttons step through them. It is a native scroller, so touch, trackpad and keyboard work as usual; every
- * tile stays in the page and in reading order, and nothing moves on its own.
+ * glass buttons step through them. It is a native scroller, so touch, trackpad and keyboard work as usual, and a mouse
+ * can drag it too; every tile stays in the page and in reading order, and nothing moves on its own.
+ *
+ * Restored from the portfolio as it was before the 2026-11 redesign (same structure, sizes, snapping, dots and
+ * buttons), now drawn in Liquid Glass.
  */
 export function Gallery({ label, children, size = 'wide' }: Props) {
   const t = useCopy()
@@ -24,6 +27,7 @@ export function Gallery({ label, children, size = 'wide' }: Props) {
   const [edges, setEdges] = useState({ atStart: true, atEnd: false })
   const [inView, setInView] = useState<readonly number[]>([0])
   const items = Children.toArray(children)
+  useDragScroll(scrollerRef)
 
   const measure = useCallback(() => {
     const scroller = scrollerRef.current
@@ -86,20 +90,24 @@ export function Gallery({ label, children, size = 'wide' }: Props) {
           ))}
         </div>
         <div className="flex gap-3">
-          <Button
-            className="glass-icon-button glass-flat"
-            icon={<ChevronLeft aria-hidden="true" className="rtl:-scale-x-100" />}
+          <button
+            type="button"
+            className="liquid-glass-button glass-btn-secondary glass-btn-icon gallery-button"
             aria-label={t.common.previous}
             disabled={edges.atStart}
             onClick={() => step(-1)}
-          />
-          <Button
-            className="glass-icon-button glass-flat"
-            icon={<ChevronRight aria-hidden="true" className="rtl:-scale-x-100" />}
+          >
+            <ChevronLeft aria-hidden="true" size={20} className="rtl:-scale-x-100" />
+          </button>
+          <button
+            type="button"
+            className="liquid-glass-button glass-btn-secondary glass-btn-icon gallery-button"
             aria-label={t.common.next}
             disabled={edges.atEnd}
             onClick={() => step(1)}
-          />
+          >
+            <ChevronRight aria-hidden="true" size={20} className="rtl:-scale-x-100" />
+          </button>
         </div>
       </div>
     </div>

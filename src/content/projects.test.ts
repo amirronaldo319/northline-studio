@@ -6,8 +6,8 @@ import {
   CONCEPT_PROJECT,
   FEATURED_PROJECT,
   GALLERY_WEBSITES,
+  HERO_PROJECT,
   PROJECTS,
-  SECONDARY_PROJECT,
   STATUS_LABEL,
   WEBSITE_PROJECTS,
 } from './projects'
@@ -62,7 +62,25 @@ describe('portfolio projects', () => {
     expect(new Set(shown).size).toBe(shown.length)
     expect([...shown].sort()).toEqual(PROJECTS.map((project) => project.id).sort())
     for (const project of GALLERY_WEBSITES) expect(project.kind).toBe('website')
+    expect([HERO_PROJECT.status, FEATURED_PROJECT.status]).toEqual(['live', 'live'])
+  })
+
+  test('the websites gallery starts with the hero site and holds every other website', () => {
+    expect(GALLERY_WEBSITES[0].id).toBe(HERO_PROJECT.id)
+    expect(GALLERY_WEBSITES.map((project) => project.id)).toEqual(['farsh-aquatics', 'storage4666', 'maid-new', 'ganjineh-ofogh', 'mend'])
+  })
+
+  test('the work page lists every project exactly once: websites, then apps and tools', () => {
+    const listed = [...WEBSITE_PROJECTS, ...APP_PROJECTS].map((project) => project.id)
+    expect(new Set(listed).size).toBe(listed.length)
+    expect([...listed].sort()).toEqual(PROJECTS.map((project) => project.id).sort())
     expect(WEBSITE_PROJECTS.every((project) => project.kind === 'website')).toBe(true)
+  })
+
+  test('projects shown large on the home page have a sharp 2x capture', () => {
+    for (const project of [HERO_PROJECT, FEATURED_PROJECT]) {
+      expect(project.desktop2x?.width, project.id).toBe(project.desktop.width * 2)
+    }
   })
 
   test('screenshots have dimensions and alternative text', () => {
@@ -85,10 +103,10 @@ describe('portfolio projects', () => {
   })
 
   test('the hero and the featured work are live websites, and the concept project is labelled as a concept', () => {
-    expect(SECONDARY_PROJECT.status).toBe('live')
+    expect(HERO_PROJECT.status).toBe('live')
     expect(FEATURED_PROJECT.status).toBe('live')
     expect(CONCEPT_PROJECT.status).toBe('concept')
-    expect(new Set([SECONDARY_PROJECT.id, FEATURED_PROJECT.id, CONCEPT_PROJECT.id]).size).toBe(3)
+    expect(new Set([HERO_PROJECT.id, FEATURED_PROJECT.id, CONCEPT_PROJECT.id]).size).toBe(3)
   })
 
   test('captions read as a sentence fragment after the project name', () => {

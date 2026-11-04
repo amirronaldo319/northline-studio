@@ -1,18 +1,23 @@
 @import 'tailwindcss';
+
 /*
  * Liquid Glass components (Glisse). The library also adds this stylesheet from JavaScript; importing it here as
  * well means the prerendered page is styled at first paint, before any script runs. Both copies hold the same rules
  * and are unlayered, so the cascade is the same before and after hydration. Brand tuning is at the end of this file.
  */
+
 @import 'glisse/styles.css';
 
 /*
  * Design tokens — change the brand palette and type here.
  * Every component uses these names (bg-paper, text-ink, bg-cobalt, …).
  */
+
 @theme {
   /* Apple's neutral surfaces: white and a light grey, alternating section by section. */
   --color-paper: #f5f5f7;
+  /* The page itself: a cool off-white that the ambient light and the glass sit on. */
+  --color-canvas: #f7f8fa;
   --color-paper-2: #ececf0;
   --color-card: #ffffff;
   --color-line: #d2d2d7;
@@ -20,11 +25,15 @@
 
   --color-ink: #1d1d1f;
   --color-ink-2: #424245;
-  --color-ink-3: #6e6e73;
+  /* Secondary text, a step darker than Apple's #6e6e73 so it keeps 4.5:1 where the lit glass tints the page. */
+  --color-ink-3: #66666b;
 
-  --color-cobalt: #173fd0;
-  --color-cobalt-deep: #112f9e;
-  --color-cobalt-soft: #e5eafb;
+  /* Accent: one blue for actions and links (4.6:1 on white, 4.2:1 on the grey sections for large text and icons). */
+  --color-cobalt: #0071e3;
+  --color-cobalt-deep: #0058b0;
+  --color-cobalt-soft: #e8f2fd;
+  /* Links and blue labels on light glass: a deeper link blue, 5.9:1 on white and above 4.5:1 on the lit sections. */
+  --color-accent: #0062c4;
 
   /* Dark surfaces are near-black, as on Apple's pro pages; `sky` is the brand blue lifted for text on them. */
   --color-night: #0b0b0d;
@@ -39,16 +48,16 @@
   --color-success: #20683f;
 
   /*
-   * Type: the device's own system font on Apple devices (San Francisco, through -apple-system), and Inter, a close
-   * match, everywhere else. Headings and text share the family, as on Apple's own pages; size and weight set them apart.
+   * Type: the device's own system font (San Francisco on Apple devices, Segoe UI on Windows, Roboto on Android), with
+   * nothing to download. Headings and text share the family; size and weight set them apart.
    */
-  --font-display: -apple-system, BlinkMacSystemFont, 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
-  --font-sans: -apple-system, BlinkMacSystemFont, 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
 
   --shadow-soft: 0 1px 2px rgb(19 26 43 / 0.04), 0 8px 24px -12px rgb(19 26 43 / 0.12);
   --shadow-lift: 0 2px 4px rgb(19 26 43 / 0.05), 0 24px 48px -24px rgb(19 26 43 / 0.28);
-  --shadow-device: 0 1px 1px rgb(19 26 43 / 0.06), 0 30px 60px -30px rgb(19 26 43 / 0.4),
-    0 12px 24px -16px rgb(19 26 43 / 0.18);
+  /* Pictures are separated by a hairline and the faintest shadow, never a heavy drop. */
+  --shadow-device: 0 0 0 1px rgb(0 0 0 / 0.06), 0 12px 32px -20px rgb(0 0 0 / 0.22);
 
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -57,6 +66,7 @@
  * Motion tokens. One small set of durations, distances, and curves used by every animation,
  * so the whole site moves with the same rhythm. Change a value here to retune everything.
  */
+
 :root {
   --motion-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --motion-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
@@ -64,16 +74,16 @@
   --motion-dur-press: 100ms;
   --motion-dur-hover: 180ms;
   --motion-dur-ui: 260ms;
-  --motion-dur-enter: 560ms;
-  --motion-dur-reveal: 860ms;
+  --motion-dur-enter: 420ms;
+  --motion-dur-reveal: 520ms;
   --motion-dur-mask: 900ms;
   --motion-dur-nav: 180ms;
   --motion-dur-expand: 300ms;
   --motion-dur-presentation: 450ms;
 
   --motion-shift-sm: 8px;
-  --motion-shift-md: 22px;
-  --motion-shift-lg: 20px;
+  --motion-shift-md: 12px;
+  --motion-shift-lg: 10px;
 
   --motion-stagger: 70ms;
 }
@@ -91,12 +101,11 @@
   }
 
   body {
-    background: var(--color-paper);
+    background: var(--color-canvas);
     color: var(--color-ink);
     font-family: var(--font-sans);
     font-size: 1.0625rem;
-    line-height: 1.55;
-    letter-spacing: -0.012em;
+    line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
@@ -106,8 +115,8 @@
   h3,
   h4 {
     font-family: var(--font-display);
-    letter-spacing: -0.022em;
-    line-height: 1.12;
+    letter-spacing: -0.012em;
+    line-height: 1.15;
     text-wrap: balance;
   }
 
@@ -116,9 +125,10 @@
   }
 
   /* Sections land below the sticky header when reached by anchor links. */
+
   section[id],
   [id].anchor-target {
-    scroll-margin-top: 5rem;
+    scroll-margin-top: 4.5rem;
   }
 
   :focus-visible {
@@ -128,14 +138,8 @@
   }
 
   /* Dark sections need a light ring; cobalt is too dim against navy. */
-  .on-dark :focus-visible {
-    outline-color: #ffffff;
-  }
 
   /* Light surfaces nested inside a dark section switch back to the brand ring. */
-  .on-light :focus-visible {
-    outline-color: var(--color-cobalt);
-  }
 
   ::selection {
     background: var(--color-cobalt-soft);
@@ -158,42 +162,50 @@
   }
 
   /* Section label: a short line in brand blue above the headline, as on Apple's product pages. */
+
   .eyebrow {
     font-family: var(--font-sans);
     font-size: clamp(1rem, 0.94rem + 0.3vw, 1.1875rem);
     font-weight: 600;
     letter-spacing: -0.01em;
-    color: var(--color-cobalt);
+    color: var(--color-ink-3);
   }
+
+  /* Section headings: 32px on phones to 56px on wide screens, set tight. */
 
   .h-section {
-    font-size: clamp(2.25rem, 1.35rem + 3.6vw, 4rem);
-    font-weight: 700;
-    letter-spacing: -0.035em;
-    line-height: 1.05;
-  }
-
-  /* A heading inside a section, one step below .h-section. */
-  .h-subsection {
-    font-size: clamp(1.875rem, 1.25rem + 2.4vw, 3rem);
-    font-weight: 700;
-    letter-spacing: -0.032em;
+    font-size: clamp(2rem, 1.3rem + 2.9vw, 3.5rem);
+    font-weight: 600;
+    letter-spacing: -0.024em;
     line-height: 1.08;
   }
 
+  /* A heading inside a section, one step below .h-section. */
+
+  .h-subsection {
+    font-size: clamp(1.75rem, 1.25rem + 2vw, 2.75rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+  }
+
+  /* Introductory text: 19px on phones to 24px on wide screens. */
+
   .lede {
-    font-size: clamp(1.1875rem, 1.06rem + 0.55vw, 1.5rem);
+    font-size: clamp(1.1875rem, 1.06rem + 0.5vw, 1.5rem);
     color: var(--color-ink-2);
-    line-height: 1.45;
-    letter-spacing: -0.016em;
+    line-height: 1.42;
+    letter-spacing: -0.008em;
   }
 
   /* Section rhythm: generous space above and below every section. */
+
   .section-pad {
-    padding-block: clamp(4.5rem, 2.5rem + 7vw, 9rem);
+    padding-block: clamp(4.5rem, 2.75rem + 5.5vw, 8rem);
   }
 
   /* A centred section intro: label, headline and lede, then the content below. */
+
   .section-intro {
     max-width: 50rem;
     margin-inline: auto;
@@ -205,31 +217,8 @@
     margin-inline: auto;
   }
 
-  /*
-   * Tiles: large, borderless, rounded surfaces that hold one idea each. A tile is a step lighter or darker than
-   * the section it sits in (`tile` on cream sections, `tile-paper` on white ones), never outlined.
-   */
-  .tile,
-  .tile-paper,
-  .tile-dark {
-    border-radius: 1.75rem;
-    padding: clamp(1.5rem, 1rem + 1.6vw, 2.5rem);
-  }
-
-  .tile {
-    background: var(--color-card);
-  }
-
-  .tile-paper {
-    background: var(--color-paper);
-  }
-
-  .tile-dark {
-    background: var(--color-night);
-    color: #ffffff;
-  }
-
   /* Apple-style text link: brand blue, a chevron after it, an underline only on hover. */
+
   .chevron-link {
     display: inline-flex;
     align-items: center;
@@ -257,6 +246,7 @@
  * Reveal-on-scroll. Content is only hidden when JS is running AND the visitor has not asked
  * for reduced motion. If the observer never reports, useReveal shows everything.
  */
+
 @media (prefers-reduced-motion: no-preference) {
   .js .reveal:not(.is-visible) {
     opacity: 0;
@@ -269,13 +259,13 @@
       transform var(--motion-dur-reveal) var(--motion-ease-out);
     transition-delay: calc(var(--reveal-step, 0) * var(--motion-stagger));
   }
-
 }
 
 /*
  * Example dialog: a short entrance, and a short exit driven by `data-closing`.
  * ExampleDialog closes with a timer, not an animation event, so a stalled animation can never trap the page.
  */
+
 dialog.demo-dialog[open] {
   transition:
     opacity var(--motion-dur-ui) var(--motion-ease-out),
@@ -326,6 +316,7 @@ dialog.demo-dialog[data-closing]::backdrop {
 }
 
 /* FAQ disclosure: rotate the indicator; animate height where supported. */
+
 details.faq-item summary::-webkit-details-marker {
   display: none;
 }
@@ -355,6 +346,7 @@ details.faq-item[open] .faq-icon {
 }
 
 /* Stop the page behind an open example dialog from scrolling. */
+
 html:has(dialog[open]) {
   overflow: hidden;
 }
@@ -363,6 +355,7 @@ html:has(dialog[open]) {
  * Generic disclosure (mobile menu, optional form fields). The content is always mounted so it can animate
  * and keep its values; `inert` plus `visibility` keep it out of the tab order and accessibility tree while closed.
  */
+
 .disclosure {
   display: grid;
   grid-template-rows: 0fr;
@@ -380,12 +373,14 @@ html:has(dialog[open]) {
 }
 
 /* Form fields: padding with a matching negative margin leaves room for focus rings that would be clipped. */
+
 .disclosure-pad > .disclosure-inner {
   padding: 6px;
   margin: -6px;
 }
 
 /* The mobile menu is replaced by the glass tab bar on wide screens. (Unlayered, so it beats utilities.) */
+
 @media (min-width: 1024px) {
   .mobile-menu {
     display: none;
@@ -402,23 +397,10 @@ html:has(dialog[open]) {
   .disclosure[data-open='true'] {
     transition-delay: 0s;
   }
-
-  .menu-item {
-    opacity: 0;
-    transform: translateY(calc(var(--motion-shift-sm) * -1));
-    transition:
-      opacity var(--motion-dur-hover) var(--motion-ease-out),
-      transform var(--motion-dur-hover) var(--motion-ease-out);
-  }
-
-  .disclosure[data-open='true'] .menu-item {
-    opacity: 1;
-    transform: none;
-    transition-delay: calc(var(--i, 0) * 35ms + 40ms);
-  }
 }
 
 /* Status and error messages arrive with a short fade. The text itself always carries the meaning. */
+
 @keyframes fx-in {
   from {
     opacity: 0;
@@ -433,32 +415,22 @@ html:has(dialog[open]) {
 }
 
 /* Arrows: a small directional nudge on hover (hover devices only) and on keyboard focus. */
-.nudge svg:last-child,
+
 .card-arrow {
   transition: transform var(--motion-dur-hover) var(--motion-ease-out);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .nudge:focus-visible svg:last-child {
-    transform: translateX(3px);
-  }
-}
-
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .nudge:hover svg:last-child {
-    transform: translateX(3px);
-  }
 }
 
 /*
  * Motion. Everything below is transform or opacity (plus one clip-path), runs once or on interaction,
  * and sits inside prefers-reduced-motion: no-preference. No `will-change` is applied permanently.
  */
+
 @media (prefers-reduced-motion: no-preference) {
   /*
    * Hero entrance: headline, copy, buttons, then the picture. `backwards` fill means that if the animation
    * never runs, the element simply stays in its normal, visible state.
    */
+
   .js .enter {
     animation: enter-up var(--motion-dur-enter) var(--motion-ease-out) backwards;
     animation-delay: calc(var(--i, 0) * var(--motion-stagger));
@@ -472,67 +444,10 @@ html:has(dialog[open]) {
   }
 
   /* Hairlines above package groups and process steps draw across with their reveal. */
-  .draw-line {
-    position: relative;
-  }
-
-  .draw-line::before {
-    content: '';
-    position: absolute;
-    inset: 0 0 auto 0;
-    height: 1px;
-    background: var(--color-ink);
-    transform-origin: left;
-    transition: transform var(--motion-dur-mask) var(--motion-ease-out);
-    transition-delay: calc(var(--line-i, 0) * var(--motion-stagger) + 200ms);
-  }
-
-  .js .reveal:not(.is-visible) .draw-line::before,
-  .js .reveal.draw-line:not(.is-visible)::before {
-    transform: scaleX(0);
-  }
-
-  .draw-line:nth-child(2) {
-    --line-i: 1;
-  }
-  .draw-line:nth-child(3) {
-    --line-i: 2;
-  }
-  .draw-line:nth-child(4) {
-    --line-i: 3;
-  }
-
-  /* Signature: the featured project is unveiled by a mask while its picture settles. */
-  .js .mask-reveal {
-    clip-path: inset(0 0 0 0 round 0.5rem);
-    transition: clip-path var(--motion-dur-mask) var(--motion-ease-in-out);
-  }
-
-  .js .reveal:not(.is-visible) .mask-reveal {
-    clip-path: inset(0 0 100% 0 round 0.5rem);
-  }
-
-  .js .mask-reveal > .shot {
-    transition: transform calc(var(--motion-dur-mask) + 300ms) var(--motion-ease-out);
-  }
-
-  .js .reveal:not(.is-visible) .mask-reveal > .shot {
-    transform: scale(1.08);
-  }
 
   /* Reading progress: a thin line under the header, driven by page scroll where supported. */
-  @supports (animation-timeline: scroll()) {
-    .scroll-progress {
-      position: absolute;
-      inset: auto 0 -1px 0;
-      height: 2px;
-      background: var(--color-cobalt);
-      transform-origin: left;
-      transform: scaleX(0);
-      animation: progress-grow linear both;
-      animation-timeline: scroll(root block);
-    }
 
+  @supports (animation-timeline: scroll()) {
     @keyframes progress-grow {
       to {
         transform: scaleX(1);
@@ -545,6 +460,7 @@ html:has(dialog[open]) {
  * Project viewer. A native modal <dialog> whose picture grows from its thumbnail (animated in
  * ProjectViewerProvider with the Web Animations API). CSS only handles layout and the dimmed backdrop.
  */
+
 dialog.viewer {
   width: 100vw;
   height: 100dvh;
@@ -607,6 +523,7 @@ dialog.viewer[data-closing]::backdrop {
 }
 
 /* The picture swaps with a short fade when the preview size changes. */
+
 @media (prefers-reduced-motion: no-preference) {
   .view-in {
     animation: view-in var(--motion-dur-ui) var(--motion-ease-out) backwards;
@@ -620,6 +537,7 @@ dialog.viewer[data-closing]::backdrop {
 }
 
 /* Screenshots that open the viewer: a real button, with a marker that is visible without hovering. */
+
 .expand-trigger {
   cursor: zoom-in;
 }
@@ -662,6 +580,7 @@ dialog.viewer[data-closing]::backdrop {
 }
 
 /* Featured project: the phone capture arrives once, after the desktop picture, without moving the text. */
+
 .phone-device .expand-chip {
   display: none;
 }
@@ -674,79 +593,14 @@ dialog.viewer[data-closing]::backdrop {
   box-shadow: var(--shadow-device);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .js .phone-pop {
-    transition:
-      opacity var(--motion-dur-presentation) var(--motion-ease-out),
-      transform var(--motion-dur-presentation) var(--motion-ease-out);
-    transition-delay: 260ms;
-  }
-
-  .js .phone-pop[data-in='false'] {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-}
-
-/* Desktop navigation: one underline slides between links. Position and width are transforms. */
-.nav-underline {
-  position: absolute;
-  left: 0;
-  bottom: 2px;
-  width: 1px;
-  height: 2px;
-  border-radius: 9999px;
-  background: var(--color-cobalt);
-  transform-origin: left;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .nav-underline[data-ready='true'] {
-    transition:
-      transform var(--motion-dur-nav) var(--motion-ease-out),
-      opacity var(--motion-dur-hover) ease;
-  }
-}
-
-
 /* Project cards: a small lift, a slight zoom within the crop, and the action arrow moves with it. */
-.card-frame {
-  transition:
-    transform var(--motion-dur-ui) var(--motion-ease-out),
-    box-shadow var(--motion-dur-ui) var(--motion-ease-out),
-    border-color var(--motion-dur-ui) ease;
-}
 
 .shot-img {
   transition: transform var(--motion-dur-ui) var(--motion-ease-out);
 }
 
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .project-card:hover .card-frame {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-lift);
-    border-color: var(--color-line-strong);
-  }
-
-  .project-card:hover .shot-img {
-    transform: scale(1.03);
-  }
-
-  .project-card:hover .card-arrow,
-  .nudge-up:hover .card-arrow {
-    transform: translate(3px, -3px);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .project-card:focus-within .card-arrow,
-  .nudge-up:focus-visible .card-arrow {
-    transform: translate(3px, -3px);
-  }
-}
-
 /* Concept-demo preview: the frame is phone-shaped below 640px and desktop-shaped from there (see DemoPreview). */
+
 .demo-frame {
   --demo-ar: var(--demo-ar-narrow);
 }
@@ -761,6 +615,7 @@ dialog.viewer[data-closing]::backdrop {
  * Logo. The mark rises and the wordmark follows once on load (header only). On hover the mark lifts a touch.
  * `transform-box` keeps the transform origin on each part rather than on the whole canvas.
  */
+
 .logo-mark,
 .logo-word {
   transform-box: fill-box;
@@ -800,53 +655,21 @@ dialog.viewer[data-closing]::backdrop {
   }
 }
 
-/*
- * Hero atmosphere: a faint grid and two soft colour fields behind the first screen. The fields drift very
- * slowly (transform only). The whole layer fades out before the section edge so nothing ends in a hard line.
- */
-.hero-atmosphere {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  overflow: clip;
-  pointer-events: none;
-}
-
-/* One soft, still light behind the headline: brand blue fading into the cream, as Apple lights a product. */
-.hero-light {
-  position: absolute;
-  left: 50%;
-  top: -18rem;
-  width: min(72rem, 140vw);
-  height: 46rem;
-  translate: -50% 0;
-  border-radius: 9999px;
-  background: radial-gradient(closest-side, rgb(66 99 235 / 0.12), rgb(66 99 235 / 0.04) 55%, transparent);
-}
-
 /* The preview fades out at its foot, as Apple crops a long page: it reads as continuing, not cut off. */
-@media (min-width: 640px) {
-  .hero-figure::after {
-    content: '';
-    position: absolute;
-    inset: auto 0 0 0;
-    height: 22%;
-    background: linear-gradient(to bottom, rgb(255 255 255 / 0), #ffffff 88%);
-    pointer-events: none;
-  }
-}
 
 .hero-title {
-  font-size: clamp(2.375rem, 1.2rem + 5.8vw, 6rem);
-  font-weight: 700;
-  line-height: 1.02;
-  letter-spacing: -0.045em;
+  /* 44px on small phones, about 88px on wide screens. */
+  font-size: clamp(2.75rem, 1.55rem + 4.7vw, 5.5rem);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
 }
 
 .hero-lede {
-  font-size: clamp(1.25rem, 1.08rem + 0.75vw, 1.75rem);
-  line-height: 1.38;
-  letter-spacing: -0.02em;
+  /* 19px on phones to 24px on wide screens. */
+  font-size: clamp(1.1875rem, 1.05rem + 0.55vw, 1.5rem);
+  line-height: 1.4;
+  letter-spacing: -0.01em;
   color: var(--color-ink-2);
 }
 
@@ -854,15 +677,9 @@ dialog.viewer[data-closing]::backdrop {
  * Scroll-linked arrival, where the browser supports it: the hero picture starts a little smaller and grows to full
  * size as the page scrolls, the way Apple brings a product forward. Transform only.
  */
+
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: scroll()) {
-    .hero-figure {
-      transform-origin: 50% 0;
-      animation: hero-depth linear both;
-      animation-timeline: scroll(root block);
-      animation-range: 0 60vh;
-    }
-
     @keyframes hero-depth {
       from {
         transform: scale(0.94);
@@ -871,12 +688,8 @@ dialog.viewer[data-closing]::backdrop {
   }
 }
 
-/* A dark panel with a soft light in one corner, so it has depth without moving. */
-.panel-glow {
-  background-image: radial-gradient(30rem 14rem at 100% 0%, rgb(74 108 242 / 0.28), transparent 70%);
-}
-
 /* Phone quote bar: slides up after the first screen and out of the way at the form. */
+
 .quote-bar {
   opacity: 0;
   visibility: hidden;
@@ -903,6 +716,7 @@ dialog.viewer[data-closing]::backdrop {
 }
 
 /* The bar covers the bottom edge on phones, so anchors and focused fields stop short of it. */
+
 @media (max-width: 559.98px) {
   html {
     scroll-padding-bottom: 5rem;
@@ -913,35 +727,15 @@ dialog.viewer[data-closing]::backdrop {
  * Words. Headings arrive word by word: the hero headline on load, section headings as they scroll into view.
  * The marked word carries a drawn underline. All of it is opacity and transform.
  */
+
 .word {
   display: inline-block;
 }
 
-/* The hero's key word, set in a brand gradient (cobalt to a lighter blue), as Apple tints a product name. */
-.word-marked {
-  background: linear-gradient(100deg, #1434c4 0%, #3156f0 48%, #5b8cff 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  padding-bottom: 0.06em;
-}
-
 /* Two-tone headlines: the words after the first clause are grey. */
-.word-soft {
-  color: var(--color-ink-3);
-}
-
-.on-dark .word-soft {
-  color: #86868b;
-}
 
 @media (prefers-reduced-motion: no-preference) {
   /* Shorter and tighter than the other entrances: the headline is the first thing a visitor waits for. */
-  .js .word-enter .word {
-    animation: word-in 420ms var(--motion-ease-out) backwards;
-    animation-delay: calc(var(--w, 0) * 32ms);
-  }
-
 
   @keyframes word-in {
     from {
@@ -950,23 +744,7 @@ dialog.viewer[data-closing]::backdrop {
     }
   }
 
-  .js .word-reveal .word {
-    transition:
-      opacity var(--motion-dur-reveal) var(--motion-ease-out),
-      transform var(--motion-dur-reveal) var(--motion-ease-out);
-    transition-delay: calc(var(--w, 0) * 40ms + 60ms);
-  }
-
-  .js .reveal:not(.is-visible) .word-reveal .word {
-    opacity: 0;
-    transform: translateY(0.4em);
-  }
-
   /* Header links arrive one after another once the page has loaded. */
-  .js .nav-enter {
-    animation: nav-in var(--motion-dur-enter) var(--motion-ease-out) backwards;
-    animation-delay: calc(var(--i, 0) * 60ms + 260ms);
-  }
 
   @keyframes nav-in {
     from {
@@ -976,7 +754,7 @@ dialog.viewer[data-closing]::backdrop {
   }
 
   /* Process numbers fill in, and package icons pop, as their group is revealed. */
-  .js .step-num,
+
   .js .pkg-icon {
     transition:
       background-color var(--motion-dur-reveal) var(--motion-ease-out),
@@ -991,26 +769,14 @@ dialog.viewer[data-closing]::backdrop {
     transition-delay: calc(var(--line-i, 0) * var(--motion-stagger) + 320ms);
   }
 
-  .js .reveal:not(.is-visible) .step-num {
-    background-color: transparent;
-    color: var(--color-ink-3);
-    box-shadow: inset 0 0 0 1.5px var(--color-line-strong);
-    transform: scale(0.88);
-  }
-
   .js .reveal:not(.is-visible) .pkg-icon {
     opacity: 0;
     transform: scale(0.6) rotate(-8deg);
   }
 
   /* The featured project's phone drifts a little against the desktop picture as the section scrolls past. */
-  @supports (animation-timeline: view()) {
-    .phone-pop .phone-device {
-      animation: phone-drift linear both;
-      animation-timeline: view();
-      animation-range: cover 0% cover 100%;
-    }
 
+  @supports (animation-timeline: view()) {
     @keyframes phone-drift {
       from {
         transform: translateY(18px);
@@ -1022,6 +788,7 @@ dialog.viewer[data-closing]::backdrop {
   }
 
   /* The sent-confirmation check draws itself. */
+
   .check-draw circle {
     animation: check-stroke 520ms var(--motion-ease-in-out) backwards;
   }
@@ -1047,6 +814,7 @@ dialog.viewer[data-closing]::backdrop {
  * Scripts that are not Latin get system fonts that cover them, with no downloads, and lose the tight letter
  * spacing the Latin type relies on: negative tracking breaks Arabic-script joining and crowds Chinese characters.
  */
+
 :root:lang(fa) {
   --font-display: -apple-system, BlinkMacSystemFont, Tahoma, 'Segoe UI', 'Geeza Pro', system-ui, sans-serif;
   --font-sans: -apple-system, BlinkMacSystemFont, Tahoma, 'Segoe UI', 'Geeza Pro', system-ui, sans-serif;
@@ -1069,6 +837,7 @@ dialog.viewer[data-closing]::backdrop {
 }
 
 /* Persian and Chinese headings are set a little smaller: their glyphs are visually heavier than the Latin type. */
+
 :root:lang(fa) h1 {
   font-size: clamp(2.1rem, 1.4rem + 3.2vw, 3.75rem);
 }
@@ -1094,6 +863,7 @@ dialog.viewer[data-closing]::backdrop {
 }
 
 /* Headings and body copy read better with a little more air in these scripts. */
+
 :root:lang(fa) body,
 :root:lang(zh-Hans) body,
 :root:lang(zh-Hant) body {
@@ -1106,39 +876,14 @@ dialog.viewer[data-closing]::backdrop {
   line-height: 1.35;
 }
 
-/* Right to left: things that grow or slide from the start edge start from the right. */
-:root[dir='rtl'] .draw-line::before,
-:root[dir='rtl'] .scroll-progress {
-  transform-origin: right;
-}
-
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  :root[dir='rtl'] .nudge:hover svg:last-child {
-    transform: translateX(-3px);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  :root[dir='rtl'] .nudge:focus-visible svg:last-child {
-    transform: translateX(-3px);
-  }
-}
-
 /*
  * Page-to-page motion. Pages are separate documents (each language and each page is its own HTML file), so the
  * browser can cross-fade between them: switching language or opening a case study no longer cuts. Browsers without support simply navigate as before.
  */
+
 @media (prefers-reduced-motion: no-preference) {
   @view-transition {
     navigation: auto;
-  }
-
-  /*
-   * The brand capsule is named so the logo stays put while the rest of the page changes. Only the capsule, not
-   * the whole header: a named element is a backdrop root, and glass inside it could no longer see the page.
-   */
-  .glass-brand {
-    view-transition-name: site-brand;
   }
 
   ::view-transition-old(root),
@@ -1148,6 +893,7 @@ dialog.viewer[data-closing]::backdrop {
   }
 
   /* Lists whose items arrive one after another when the list is revealed. */
+
   .js .reveal.stagger > * {
     transition:
       opacity var(--motion-dur-reveal) var(--motion-ease-out),
@@ -1160,38 +906,30 @@ dialog.viewer[data-closing]::backdrop {
     transform: translateY(var(--motion-shift-sm));
   }
 
-  .stagger > :nth-child(1) { --n: 0; }
-  .stagger > :nth-child(2) { --n: 1; }
-  .stagger > :nth-child(3) { --n: 2; }
-  .stagger > :nth-child(4) { --n: 3; }
-  .stagger > :nth-child(5) { --n: 4; }
-  .stagger > :nth-child(6) { --n: 5; }
-  .stagger > :nth-child(n + 7) { --n: 6; }
+  .stagger > :nth-child(1) { --n: 0;
+  }
+
+  .stagger > :nth-child(2) { --n: 1;
+  }
+
+  .stagger > :nth-child(3) { --n: 2;
+  }
+
+  .stagger > :nth-child(4) { --n: 3;
+  }
+
+  .stagger > :nth-child(5) { --n: 4;
+  }
+
+  .stagger > :nth-child(6) { --n: 5;
+  }
+
+  .stagger > :nth-child(n + 7) { --n: 6;
+  }
 
   /* A blue rail through the four process steps fills in as the section scrolls into view. */
+
   @supports (animation-timeline: view()) {
-    .process-rail {
-      position: relative;
-    }
-
-    .process-rail::after {
-      content: '';
-      position: absolute;
-      inset: 0 0 auto 0;
-      height: 2px;
-      border-radius: 9999px;
-      background: var(--color-cobalt);
-      transform-origin: left;
-      animation: rail-fill linear both;
-      animation-timeline: view();
-      animation-range: entry 25% cover 55%;
-      pointer-events: none;
-    }
-
-    :root[dir='rtl'] .process-rail::after {
-      transform-origin: right;
-    }
-
     @keyframes rail-fill {
       from {
         transform: scaleX(0);
@@ -1205,6 +943,7 @@ dialog.viewer[data-closing]::backdrop {
 
 @media (prefers-reduced-motion: no-preference) {
   /* A small burst of sparks around the "request sent" check mark. */
+
   .check-burst {
     position: relative;
     display: inline-block;
@@ -1259,6 +998,7 @@ dialog.viewer[data-closing]::backdrop {
  * Printing: scroll reveals only run on screen, so show everything when the page is printed
  * and keep the sticky header from repeating on every sheet.
  */
+
 @media print {
   .js .reveal,
   .js .reveal:not(.is-visible) {
@@ -1284,19 +1024,12 @@ dialog.viewer[data-closing]::backdrop {
     transform: none !important;
   }
 
-  .draw-line::before {
-    transform: none !important;
-    transition: none !important;
-  }
-
-  .scroll-progress,
-  .hero-atmosphere,
   .quote-bar {
     display: none !important;
   }
 
   /* Glass prints as its plain tint: no frost or rim, and no open menu sheet. */
-  .glass-sheet-wrap,
+
   .lg-menu-card {
     display: none !important;
   }
@@ -1307,19 +1040,29 @@ dialog.viewer[data-closing]::backdrop {
     background-image: none !important;
   }
 
-  .hero-figure {
-    animation: none !important;
+  :is(.liquid-glass, .liquid-glass-strong, .liquid-glass-subtle, .liquid-glass-card, .liquid-glass-navigation, .glass-btn-secondary) {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: none !important;
     transform: none !important;
   }
 
+  .glass-shapes,
+  .ambient::before,
+  .liquid-glass-button::after,
+  .gallery-controls {
+    display: none !important;
+  }
+
+  .gallery-track {
+    flex-wrap: wrap;
+    overflow: visible;
+  }
+
   .word,
-  .nav-enter,
-  .step-num,
   .pkg-icon,
-  .phone-pop .phone-device,
   .check-draw circle,
   .check-draw path,
-  .process-rail::after,
   .check-spark {
     animation: none !important;
     opacity: 1 !important;
@@ -1338,12 +1081,6 @@ dialog.viewer[data-closing]::backdrop {
     visibility: visible !important;
   }
 
-  .menu-item,
-  .phone-pop {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-
   dialog.viewer {
     display: none !important;
   }
@@ -1353,31 +1090,10 @@ dialog.viewer[data-closing]::backdrop {
  * Lenis smooth scrolling (only added to <html> while the motion engine runs for a mouse user).
  * Native scroll-behavior must be off then, or the two smoothers fight.
  */
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-
-.lenis.lenis-stopped {
-  overflow: clip;
-}
-
-.lenis.lenis-smooth iframe {
-  pointer-events: none;
-}
 
 [data-parallax] {
   transition: none;
 }
-
 
 /* ==========================================================================================================
  * Liquid Glass (Glisse)
@@ -1395,17 +1111,17 @@ html.lenis body {
 :root,
 [data-theme='light'] {
   --lg-glass: rgb(255 255 255 / 0.6);
-  --lg-glass-active: rgb(236 231 221 / 0.86);
+  --lg-glass-active: rgb(232 232 237 / 0.86);
   --lg-blur: 8px;
-  --lg-glass-bend: 0.3;
-  --lg-glass-dispersion: 0.2;
-  --lg-rim-shine: 0.32;
-  --lg-fill: #173fd0;
+  --lg-glass-bend: 0.34;
+  --lg-glass-dispersion: 0.24;
+  --lg-rim-shine: 0.4;
+  --lg-fill: #0071e3;
   --lg-on: #20683f;
 
-  --lg-foreground: #131a2b;
-  --lg-muted: #4f5567;
-  --lg-ring: #173fd0;
+  --lg-foreground: #1d1d1f;
+  --lg-muted: #66666b;
+  --lg-ring: #0071e3;
   --lg-edge: rgb(19 26 43 / 0.12);
   --lg-drop: rgb(19 26 43 / 0.08);
   --lg-selection: rgb(19 26 43 / 0.08);
@@ -1436,6 +1152,7 @@ html.lenis body {
 }
 
 /* Shared sizes: every glass control is at least 44px tall, the site's touch-target size. */
+
 .glass-capsule {
   display: inline-flex;
   align-items: center;
@@ -1460,45 +1177,8 @@ html.lenis body {
   font-weight: 600;
 }
 
-.lg-button.glass-btn-sm {
-  min-height: 2.5rem;
-  padding-inline: 0.875rem;
-  font-size: 0.875rem;
-}
+/* Filled Glisse buttons (in the dialogs) are opaque, so they skip sampling the backdrop: same look, no cost per frame. */
 
-.lg-button.glass-btn-lg {
-  height: auto;
-  min-height: 3rem;
-  white-space: nowrap;
-  border-radius: 9999px;
-  padding-inline: 1.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-/* Long labels may wrap (the site-check band); the capsule grows instead of clipping. */
-.lg-button.glass-btn-wrap {
-  padding-block: 0.625rem;
-  white-space: normal;
-  line-height: 1.3;
-}
-
-.lg-button:is(.glass-btn, .glass-btn-lg) > svg {
-  width: 1.125rem;
-  height: 1.125rem;
-}
-
-.lg-button.glass-btn-sm > svg {
-  width: 1rem;
-  height: 1rem;
-}
-
-/*
- * Glass on a flat surface (the white form card, plain paper) has nothing behind it to bend or frost, so it skips
- * sampling the backdrop: it looks the same and costs nothing per frame. Filled buttons are opaque, likewise.
- * Only glass that floats over changing content (header, quote bar, hero, dialogs) keeps the live backdrop.
- */
-.lg-glass.glass-flat,
 .lg-button[data-variant='filled'] {
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
@@ -1512,20 +1192,21 @@ html.lenis body {
  * match. Glass in the dialogs, where the backdrop is still, keeps the full refraction, and the tab bar's
  * selection still bends while it is held.
  */
-.site-header .lg-glass:not(.lg-tab-lens),
-.lg-glass.glass-quote,
+
 .lg-glass.glass-frost {
   -webkit-backdrop-filter: blur(var(--lg-blur, 3px)) saturate(1.5);
   backdrop-filter: blur(var(--lg-blur, 3px)) saturate(1.5);
 }
 
 /* A filled action keeps a readable label while busy (the library dims disabled buttons to 35%). */
+
 .lg-button[data-variant='filled']:disabled {
   opacity: 0.78;
   cursor: progress;
 }
 
 /* Visible focus for every glass control, in the brand ring (white on navy). */
+
 .lg-button:focus-visible,
 .lg-tab:focus-visible,
 .lg-menu-item:focus-visible {
@@ -1537,43 +1218,13 @@ html.lenis body {
   outline-offset: -3px;
 }
 
-/* ---- Floating header ---------------------------------------------------------------------------------- */
-
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 40;
-  /* The gaps between the glass pieces let clicks through to the page underneath. */
-  pointer-events: none;
-}
-
-.site-header-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  height: 4rem;
-}
-
-.site-header-row > * {
-  pointer-events: auto;
-}
-
-@media (min-width: 1024px) {
-  .site-header-row {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-  }
-}
-
 /*
  * Lift: a soft drop shadow under floating glass. Before the rim is painted (first paint, no JavaScript) the
  * library's hairline edge is kept; once painted, the rim draws the edge itself.
  */
+
 .lg-glass.glass-lift,
-.glass-lift > .lg-tab-bar-glass,
-.glass-tabs .lg-tab-bar-glass,
-.site-header .glass-lang-menu .lg-button {
+.glass-lift > .lg-tab-bar-glass {
   box-shadow:
     inset 0 0 0 0.5px var(--lg-edge),
     var(--glass-drop);
@@ -1583,217 +1234,12 @@ html.lenis body {
 }
 
 .lg-glass.glass-lift[data-rim],
-.glass-lift > .lg-tab-bar-glass[data-rim],
-.glass-tabs .lg-tab-bar-glass[data-rim],
-.site-header .glass-lang-menu .lg-button[data-rim] {
+.glass-lift > .lg-tab-bar-glass[data-rim] {
   box-shadow: var(--glass-drop);
 }
 
-.site-header {
-  --glass-drop: 0 1px 2px rgb(19 26 43 / 0.05), 0 8px 24px -14px rgb(19 26 43 / 0.28);
-}
-
-.site-header[data-scrolled='true'] {
-  --glass-drop: 0 1px 2px rgb(19 26 43 / 0.06), 0 14px 32px -14px rgb(19 26 43 / 0.38);
-}
-
-/* Over moving page content the header frosts a little more, so its labels stay crisp. */
-.site-header {
-  --lg-blur: 12px;
-  --lg-glass: rgb(255 255 255 / 0.72);
-}
-
-.glass-brand {
-  justify-self: start;
-}
-
-.glass-brand-link {
-  display: flex;
-  align-items: center;
-  height: 2.75rem;
-  padding-inline: 0.875rem 1rem;
-  border-radius: inherit;
-}
-
-.glass-brand-link:focus-visible {
-  outline-offset: 2px;
-  border-radius: 9999px;
-}
-
-.glass-brand .brand-logo {
-  height: 1.75rem;
-  width: auto;
-}
-
-/* The tab bar: 44px tall like the other pieces, and wide enough for the longest label in each language. */
-.glass-tabs {
-  --lg-tab-height: 2.25rem;
-  --lg-tab-width: 5.25rem;
-  --lg-tab-inset: 0.25rem;
-}
-
-:root:lang(fr) .glass-tabs {
-  --lg-tab-width: 6.25rem;
-}
-
-:root:lang(fr) .glass-tabs :is(.lg-tab, .lg-tab-copy) {
-  font-size: 0.875rem;
-}
-
-:root:lang(zh-Hans) .glass-tabs,
-:root:lang(zh-Hant) .glass-tabs {
-  --lg-tab-width: 4.75rem;
-}
-
-.glass-tabs :is(.lg-tab, .lg-tab-copy) {
-  font-size: 0.9375rem;
-  font-weight: 500;
-}
-
-.glass-tabs .lg-tab {
-  color: var(--color-ink-2);
-}
-
-.glass-nav-capsule {
-  padding-block: 0.125rem;
-}
-
-/* The reading progress line runs along the top edge of the screen, above the floating pieces. */
-.site-header .scroll-progress {
-  inset: 0 0 auto 0;
-}
-
-/* Phone menu: a glass sheet under the bar. Mounted always; hidden and inert while closed. */
-.glass-sheet-wrap {
-  position: absolute;
-  top: calc(100% - 0.25rem);
-  inset-inline: 1.25rem;
-  visibility: hidden;
-  opacity: 0;
-  transform: translateY(-0.5rem) scale(0.98);
-  transform-origin: top right;
-  pointer-events: none;
-}
-
-:root[dir='rtl'] .glass-sheet-wrap {
-  transform-origin: top left;
-}
-
-@media (min-width: 560px) {
-  .glass-sheet-wrap {
-    inset-inline: auto 1.25rem;
-    width: min(24rem, calc(100% - 2.5rem));
-  }
-
-  :root[dir='rtl'] .glass-sheet-wrap {
-    inset-inline: 1.25rem auto;
-  }
-}
-
-@media (min-width: 768px) {
-  .glass-sheet-wrap {
-    inset-inline: auto 2rem;
-  }
-
-  :root[dir='rtl'] .glass-sheet-wrap {
-    inset-inline: 2rem auto;
-  }
-}
-
-.glass-sheet-wrap[data-open='true'] {
-  visibility: visible;
-  opacity: 1;
-  transform: none;
-  pointer-events: auto;
-}
-
-.glass-sheet {
-  /* Reading surface: more frost and a denser tint than the bar, so the links read over anything. */
-  --lg-glass: rgb(255 255 255 / 0.9);
-  --lg-blur: 22px;
-  --glass-drop: 0 24px 60px -24px rgb(19 26 43 / 0.45);
-  border-radius: 1.75rem;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .glass-sheet-wrap {
-    transition:
-      opacity var(--motion-dur-ui) var(--motion-ease-out),
-      transform var(--motion-dur-ui) var(--motion-ease-out),
-      visibility 0s linear var(--motion-dur-ui);
-  }
-
-  .glass-sheet-wrap[data-open='true'] {
-    transition-delay: 0s;
-  }
-
-  .glass-sheet-wrap[data-open='true'] .menu-item {
-    opacity: 1;
-    transform: none;
-    transition-delay: calc(var(--i, 0) * 35ms + 40ms);
-  }
-}
-
-/* ---- Phone quote bar ---------------------------------------------------------------------------------- */
-
-.glass-quote {
-  --glass-drop: 0 16px 40px -18px rgb(19 26 43 / 0.45);
-  display: flex;
-  padding: 0.375rem;
-  border-radius: 9999px;
-}
-
-/* ---- Hero --------------------------------------------------------------------------------------------- */
-
-/* The secondary link on clear glass. The link fills the capsule, so the whole capsule is the target. */
-.glass-cta {
-  min-height: 3rem;
-}
-
-.glass-cta-link {
-  display: flex;
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-  min-height: 3rem;
-  padding-inline: 1.5rem;
-  border-radius: inherit;
-  color: var(--color-ink);
-  font-size: 1rem;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.glass-cta:has(.glass-cta-link:active) {
-  background-color: var(--lg-glass-active);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .glass-cta:has(.glass-cta-link:hover) {
-    background-color: var(--lg-glass-active);
-  }
-}
-
-/* The hero's grid and colour reach up behind the floating header, so the glass has something to show. */
-.hero-atmosphere {
-  top: -4rem;
-}
-
-/* "View the example" floats over the preview's lower corner. */
-.hero-peek {
-  position: absolute;
-  inset-inline-end: 1.25rem;
-  bottom: 1.25rem;
-  z-index: 1;
-}
-
-.hero-peek .lg-button {
-  --lg-glass: rgb(255 255 255 / 0.7);
-}
-
-/* ---- Preview dialogs ---------------------------------------------------------------------------------- */
-
 /* Desktop / phone: a segmented control wide enough for "Ordinateur" with its icon. */
+
 .glass-segmented {
   --lg-tab-height: 2.25rem;
   --lg-tab-width: 7.25rem;
@@ -1805,6 +1251,7 @@ html.lenis body {
 }
 
 /* In the project viewer the toggle floats over the screenshot it switches. */
+
 .viewer-toggle {
   position: absolute;
   bottom: 0.75rem;
@@ -1817,6 +1264,7 @@ html.lenis body {
 }
 
 /* The phone preview's width slider floats at the top of the scrolling preview. */
+
 .phone-width-bar {
   position: sticky;
   top: 0;
@@ -1839,49 +1287,7 @@ html.lenis body {
   width: 9rem;
 }
 
-/* ---- Inquiry form fields -------------------------------------------------------------------------------- */
-
-/*
- * Fields in Apple's style: tall white boxes with a clear grey edge (3:1 against white), the label inside the box,
- * rising when the field is focused or filled. Glisse `Input`s for single lines; the textarea and select sit inside
- * `Glass`, so all of them share one surface. Focus adds the brand ring.
- */
-.lg-input.field-input,
-.lg-glass.field-glass {
-  --lg-glass: #ffffff;
-  --lg-glass-active: #ffffff;
-  --lg-rim-shine: 0;
-  display: block;
-  width: 100%;
-  max-width: none;
-  border-radius: 0.875rem;
-  box-shadow: inset 0 0 0 1px #86868b;
-  transition: box-shadow var(--motion-dur-hover) ease;
-}
-
-.lg-input.field-input {
-  display: flex;
-  height: 3.5rem;
-  padding-inline: 1rem;
-}
-
-/* 17px text, as Apple's forms use; anything under 16px makes iOS zoom the page when the field is focused. */
-.lg-input.field-input input {
-  padding-top: 1.125rem;
-  font-size: 1.0625rem;
-  color: var(--color-ink);
-}
-
 /* A placeholder (an example) only appears once the label has moved out of its way. */
-.float-field .lg-input.field-input input::placeholder {
-  color: rgb(95 101 118 / 0.75);
-  opacity: 0;
-  transition: opacity var(--motion-dur-hover) ease;
-}
-
-.float-field:focus-within .lg-input.field-input input::placeholder {
-  opacity: 1;
-}
 
 .field-textarea {
   min-height: 9rem;
@@ -1889,292 +1295,18 @@ html.lenis body {
   font-size: 1.0625rem !important;
 }
 
-.field-select {
-  height: 3.5rem;
-  padding-top: 1.25rem !important;
-  padding-bottom: 0.25rem !important;
-  font-size: 1.0625rem !important;
-}
-
-.lg-input.field-input:focus-within,
-.lg-glass.field-glass:focus-within {
-  box-shadow:
-    inset 0 0 0 1.5px var(--color-cobalt),
-    0 0 0 4px rgb(23 63 208 / 0.14);
-}
-
-.float-field[data-invalid] .lg-input.field-input,
-.float-field[data-invalid] .lg-glass.field-glass {
-  box-shadow: inset 0 0 0 1.5px var(--color-danger);
-}
-
-.float-field[data-invalid] .lg-input.field-input:focus-within,
-.float-field[data-invalid] .lg-glass.field-glass:focus-within {
-  box-shadow:
-    inset 0 0 0 1.5px var(--color-danger),
-    0 0 0 4px rgb(180 35 24 / 0.12);
-}
-
-.float-field {
-  position: relative;
-}
-
-.float-label {
-  position: absolute;
-  inset-inline-start: 1rem;
-  inset-inline-end: 1rem;
-  top: 1.0625rem;
-  overflow: hidden;
-  font-size: 1.0625rem;
-  line-height: 1.375rem;
-  color: var(--color-ink-3);
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  pointer-events: none;
-  transform-origin: 0 0;
-  transition:
-    transform var(--motion-dur-ui) var(--motion-ease-out),
-    color var(--motion-dur-hover) ease;
-}
-
-[dir='rtl'] .float-label {
-  transform-origin: 100% 0;
-}
-
-.float-optional {
-  color: var(--color-ink-3);
-  opacity: 0.8;
-}
-
-.float-field:focus-within .float-label,
-.float-field[data-filled] .float-label {
-  transform: translateY(-0.6875rem) scale(0.76);
-}
-
-/* Browser autofill fills a field before the page hears about it; raise the label for it too. */
-.float-field:has(input:-webkit-autofill) .float-label {
-  transform: translateY(-0.6875rem) scale(0.76);
-}
-
-.float-field:focus-within .float-label {
-  color: var(--color-cobalt);
-}
-
-.float-field[data-invalid] .float-label {
-  color: var(--color-danger);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .float-label {
-    transition: none;
-  }
-}
-
-/* ==========================================================================================================
- * Apple-style surfaces
- * ======================================================================================================== */
-
-/* Tiles that are links rise a touch under the pointer; the whole tile is the target. */
-.tile-link {
-  color: inherit;
-  transition:
-    transform var(--motion-dur-ui) var(--motion-ease-out),
-    box-shadow var(--motion-dur-ui) var(--motion-ease-out);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .tile-link:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 18px 40px -24px rgb(19 26 43 / 0.35);
-  }
-}
-
-.tile-link:focus-visible {
-  border-radius: 1.75rem;
-  outline-offset: 4px;
-}
-
-/* The free site check: a tile washed in the brand blue. */
-.site-check-tile {
-  background:
-    radial-gradient(60% 120% at 50% 0%, rgb(23 63 208 / 0.1), transparent 70%),
-    var(--color-cobalt-soft);
-}
-
-/* The process line sits above the four step tiles. */
-.process-rail::after {
-  inset: 0 0 auto 0;
-}
-
-/* Glass buttons share the pills' medium weight. */
-.lg-button:is(.glass-btn, .glass-btn-lg),
-.glass-cta-link {
-  font-weight: 500;
-}
-
 /* The light footer's language buttons are compact. */
+
 .site-footer [role='group'] a {
   min-height: 2.25rem;
   font-size: 0.8125rem;
-}
-
-/* ---- Dark stage (the work section) ------------------------------------------------------------------- */
-
-.on-dark .eyebrow,
-.on-dark .chevron-link {
-  color: var(--color-sky);
-}
-
-.on-dark .lede {
-  color: #a1a1a6;
-}
-
-.on-dark .tile-paper {
-  background: var(--color-night-2);
-}
-
-/* The phone's dark bezel would vanish against a dark tile, so it gets a hairline of light. */
-.on-dark .phone-device {
-  box-shadow:
-    0 0 0 1px rgb(255 255 255 / 0.14),
-    var(--shadow-device);
-}
-
-/* ---- Header over dark sections -------------------------------------------------------------------------- */
-
-.site-header[data-theme='dark'] {
-  --lg-glass: rgb(36 36 38 / 0.72);
-  --glass-drop: 0 1px 2px rgb(0 0 0 / 0.3), 0 12px 30px -14px rgb(0 0 0 / 0.6);
-}
-
-.quote-bar[data-theme='dark'] .glass-quote {
-  --lg-glass: rgb(36 36 38 / 0.72);
-  --glass-drop: 0 16px 40px -18px rgb(0 0 0 / 0.7);
-}
-
-.site-header[data-theme='dark'] .glass-tabs .lg-tab {
-  color: rgb(255 255 255 / 0.78);
-}
-
-.site-header[data-theme='dark'] .glass-brand .brand-logo {
-  color: #ffffff;
-  --logo-mark: var(--color-sky);
-}
-
-/* ---- Hero window frame ---------------------------------------------------------------------------------- */
-
-.window-bar {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  height: 2.25rem;
-  padding-inline: 1rem;
-  background: #e8e8ed;
-  border-bottom: 1px solid rgb(0 0 0 / 0.07);
-}
-
-.window-bar span {
-  width: 0.625rem;
-  height: 0.625rem;
-  border-radius: 9999px;
-  background: #c4c4ca;
-}
-
-@media (max-width: 639.98px) {
-  .window-bar {
-    height: 1.75rem;
-    padding-inline: 0.75rem;
-  }
-
-  .window-bar span {
-    width: 0.5rem;
-    height: 0.5rem;
-  }
-}
-
-/* ---- Highlights gallery ----------------------------------------------------------------------------------- */
-
-/*
- * A sideways row of tiles that snaps, aligned with the page's content but running to the screen's edges, so the
- * next tile peeks in. Native scrolling: touch, trackpad and keyboard work as usual.
- */
-.gallery-track {
-  /* The inset lines the first tile up with the content column of `.container-page`. */
-  --gallery-inset: max(1.25rem, calc((100% - 76rem) / 2 + 1.25rem));
-  /* Positioned, so pieces placed absolutely inside the tiles are clipped with them. */
-  position: relative;
-  display: flex;
-  gap: 1.25rem;
-  margin: 0;
-  padding: 0.25rem var(--gallery-inset) 0.75rem;
-  list-style: none;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  scroll-padding-inline: var(--gallery-inset);
-  scrollbar-width: none;
-}
-
-.gallery-track::-webkit-scrollbar {
-  display: none;
-}
-
-.gallery-track:focus-visible {
-  outline-offset: -3px;
-  border-radius: 1.75rem;
-}
-
-@media (min-width: 768px) {
-  .gallery-track {
-    --gallery-inset: max(2rem, calc((100% - 76rem) / 2 + 2rem));
-  }
-}
-
-.gallery-item {
-  display: flex;
-  flex: 0 0 min(86%, 26rem);
-  scroll-snap-align: start;
-}
-
-.gallery-item > * {
-  flex: 1;
-  min-width: 0;
-}
-
-@media (min-width: 768px) {
-  .gallery-item {
-    flex-basis: min(62%, 30rem);
-  }
-}
-
-/* Two tiles fill the content column on wide screens; the third peeks in beyond it. */
-@media (min-width: 1024px) {
-  .gallery-item {
-    flex-basis: calc((min(100vw, 76rem) - 4rem - 1.25rem) / 2);
-  }
-}
-
-/* Compact galleries hold portrait tiles (phone apps): three across a wide screen, the fourth peeking in. */
-.gallery[data-size='compact'] .gallery-item {
-  flex-basis: min(74%, 19rem);
-}
-
-@media (min-width: 768px) {
-  .gallery[data-size='compact'] .gallery-item {
-    flex-basis: min(42%, 21rem);
-  }
-}
-
-@media (min-width: 1024px) {
-  .gallery[data-size='compact'] .gallery-item {
-    flex-basis: calc((min(100vw, 76rem) - 4rem - 2.5rem) / 3);
-  }
 }
 
 /*
  * The stage for an app's phone: a deep surface lit from behind in the app's own colour, as Apple lights an iPhone.
  * The device stands on the stage's lower edge, so it reads large and the glow rises around it.
  */
+
 .app-stage {
   position: relative;
   display: grid;
@@ -2206,66 +1338,23 @@ html.lenis body {
     transition: transform var(--motion-dur-presentation) var(--motion-ease-out);
   }
 
-  .project-card:hover .app-phone,
   .app-phone:focus-within {
     transform: translateY(-6px) scale(1.015);
   }
 }
 
-/* Related work at the end of a case study: the picture leans in a touch on hover. */
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .related-shot {
-    transition: transform var(--motion-dur-presentation) var(--motion-ease-out);
-  }
-
-  .tile-link:hover .related-shot {
-    transform: scale(1.03);
-  }
-}
-
 /* Captions are written to follow a project name ("a site I built"); on their own line they start a sentence. */
+
 .caption-sentence::first-letter {
   text-transform: uppercase;
 }
-
-.gallery-controls {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: 1.25rem;
-}
-
-.gallery-dots {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.gallery-dots span {
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 9999px;
-  background: currentColor;
-  opacity: 0.3;
-  transition:
-    width var(--motion-dur-ui) var(--motion-ease-out),
-    opacity var(--motion-dur-ui) var(--motion-ease-out);
-}
-
-.gallery-dots span[data-current] {
-  width: 1.5rem;
-  opacity: 0.85;
-}
-
-
-/* ---- Package comparison ---------------------------------------------------------------------------------- */
 
 /*
  * Apple's "compare models" layout: the plans side by side at every width, then one row per topic. On phones and
  * tablets each topic heads its row and both answers sit beneath it; on wide screens the topic moves into its own
  * first column, so the chart reads as a table.
  */
+
 .compare {
   --compare-gap: clamp(1rem, 0.4rem + 2.6vw, 3rem);
   padding-block: clamp(1.5rem, 1rem + 2vw, 2.75rem) clamp(0.5rem, 0.25rem + 1vw, 1.25rem);
@@ -2328,7 +1417,6 @@ html.lenis body {
     grid-template-columns: minmax(11rem, 15rem) repeat(2, minmax(0, 1fr));
   }
 
-
   .compare-row:not(.compare-head) {
     border-top: 1px solid var(--color-line);
     padding-block: 1.5rem;
@@ -2342,5 +1430,2176 @@ html.lenis body {
 
   .compare-cell {
     padding: 0.375rem 0 0;
+  }
+}
+
+/* ---- Navigation: one floating capsule of Liquid Glass ------------------------------------------------------- */
+
+/*
+ * The header keeps one fixed height whether the bar is full or compact, so nothing on the page moves when the bar
+ * changes. Only the capsule inside it shrinks.
+ */
+
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  height: 3.875rem;
+  padding-top: 0.5rem;
+  /* Only the bar takes clicks; the gap around it lets them through to the page. */
+  pointer-events: none;
+}
+
+.nav-shell {
+  pointer-events: auto;
+  max-width: 100%;
+  margin-inline: auto;
+  transition:
+    max-width var(--motion-dur-expand) var(--motion-ease-out),
+    background-color var(--motion-dur-ui) var(--motion-ease-out),
+    box-shadow var(--motion-dur-ui) var(--motion-ease-out);
+}
+
+.site-nav-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 0.75rem;
+  height: 3.25rem;
+  padding-inline: 0.875rem 0.375rem;
+  transition: height var(--motion-dur-expand) var(--motion-ease-out);
+}
+
+:root[dir='rtl'] .site-nav-row {
+  padding-inline: 0.875rem 0.375rem;
+}
+
+/* Scrolled: the capsule draws in a little, frosts more and floats higher over the page. */
+
+.site-nav[data-scrolled] .site-nav-row {
+  height: 2.875rem;
+}
+
+@media (min-width: 1100px) {
+  .site-nav[data-scrolled] .nav-shell {
+    max-width: 62rem;
+  }
+}
+
+.site-nav-brand {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  min-height: 2.75rem;
+  padding-inline: 0.25rem;
+  border-radius: 9999px;
+}
+
+.site-nav-brand .brand-logo {
+  height: 1.625rem;
+}
+
+.site-nav-links {
+  display: none;
+}
+
+/* The tab bar sits on the bar's glass, so its own track is clear: only the lens shows, sliding between links. */
+
+.nav-tabs {
+  --lg-tab-height: 2.25rem;
+  --lg-tab-width: 5.5rem;
+  --lg-tab-inset: 0.1875rem;
+  --lg-glass-active: rgb(255 255 255 / 0.78);
+}
+
+.nav-tabs .lg-tab-bar-glass {
+  background-color: transparent;
+  background-image: none;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.nav-tabs :is(.lg-tab, .lg-tab-copy) {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.nav-tabs .lg-tab {
+  color: var(--color-ink-2);
+}
+
+:root:lang(fr) .nav-tabs {
+  --lg-tab-width: 7rem;
+}
+
+:root:lang(zh-Hans) .nav-tabs,
+:root:lang(zh-Hant) .nav-tabs {
+  --lg-tab-width: 4.75rem;
+}
+
+.nav-plain {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.25rem, 2.4vw, 2rem);
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-height: 2.75rem;
+  font-size: 0.875rem;
+  color: var(--color-ink-2);
+  transition: color var(--motion-dur-hover) ease;
+}
+
+.nav-link:hover,
+.nav-link[aria-current] {
+  color: var(--color-ink);
+}
+
+.site-nav-actions {
+  grid-column: 3;
+  display: flex;
+  align-items: center;
+  justify-self: end;
+  gap: 0.375rem;
+}
+
+.site-nav-lang {
+  display: none;
+}
+
+/* The language button sits on the bar's glass: clear until hovered or open. */
+
+.site-nav .glass-lang-menu .lg-button {
+  --lg-glass: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.site-nav .glass-lang-menu .lg-button:hover {
+  background-color: rgb(255 255 255 / 0.7);
+}
+
+/* On phones the quote button lives in the floating glass bar at the bottom of the screen (and in the menu). */
+
+@media (max-width: 879.98px) {
+  .site-nav-cta {
+    display: none !important;
+  }
+}
+
+@media (min-width: 880px) {
+  .site-nav-links,
+  .site-nav-lang {
+    display: block;
+  }
+
+  .site-nav-toggle {
+    display: none;
+  }
+}
+
+/* The menu button: a small lens of clear glass whose two lines turn into a cross. */
+
+.nav-toggle {
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+}
+
+.nav-toggle-lines {
+  position: relative;
+  display: block;
+  width: 1.0625rem;
+  height: 0.75rem;
+}
+
+.nav-toggle-lines::before,
+.nav-toggle-lines::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  height: 1.5px;
+  border-radius: 1px;
+  background: var(--color-ink);
+  transition:
+    transform var(--motion-dur-ui) var(--motion-ease-out),
+    top var(--motion-dur-ui) var(--motion-ease-out);
+}
+
+.nav-toggle-lines::before {
+  top: 0.125rem;
+}
+
+.nav-toggle-lines::after {
+  top: 0.5625rem;
+}
+
+.nav-toggle[aria-expanded='true'] .nav-toggle-lines::before {
+  top: 0.34375rem;
+  transform: rotate(45deg);
+}
+
+.nav-toggle[aria-expanded='true'] .nav-toggle-lines::after {
+  top: 0.34375rem;
+  transform: rotate(-45deg);
+}
+
+/* Phone menu: a sheet of glass under the bar, over a soft scrim that dims and frosts the page a little. */
+
+.site-menu {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: auto;
+}
+
+.site-menu[hidden] {
+  display: none;
+}
+
+.site-menu-scrim {
+  position: absolute;
+  inset: 0;
+  background: rgb(240 242 248 / 0.4);
+  -webkit-backdrop-filter: blur(6px) saturate(1.2);
+  backdrop-filter: blur(6px) saturate(1.2);
+}
+
+.site-menu-panel {
+  position: relative;
+  padding-top: 4.375rem;
+}
+
+.menu-sheet {
+  --glass-radius: 1.75rem;
+  max-height: calc(100dvh - 5.5rem);
+  overflow-y: auto;
+  padding: 0.75rem 1.25rem 1.25rem;
+  transform-origin: top right;
+}
+
+:root[dir='rtl'] .menu-sheet {
+  transform-origin: top left;
+}
+
+.site-menu-link {
+  display: flex;
+  align-items: center;
+  min-height: 3rem;
+  font-size: 1.625rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--color-ink);
+}
+
+.site-menu-link[aria-current] {
+  color: var(--color-accent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .site-menu[data-open] .site-menu-scrim {
+    animation: fade-in 220ms ease-out;
+  }
+
+  .site-menu[data-open] .menu-sheet {
+    animation: menu-in 420ms var(--motion-spring);
+  }
+
+  /* The links follow the sheet in, one after another. */
+
+  .site-menu[data-open] .site-menu-list > li,
+  .site-menu[data-open] .menu-sheet-foot {
+    animation: menu-item-in 380ms var(--motion-ease-out) backwards;
+    animation-delay: calc(60ms + var(--i, 0) * 35ms);
+  }
+
+  @keyframes menu-in {
+    from {
+      opacity: 0;
+      transform: translateY(-10px) scale(0.96);
+    }
+  }
+
+  @keyframes menu-item-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+}
+
+/* Secondary actions are text links in the accent blue, with a small chevron, as on Apple's pages. */
+
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-weight: 400;
+  color: var(--color-accent);
+  text-underline-offset: 0.2em;
+}
+
+.text-link:hover {
+  text-decoration: underline;
+}
+
+.text-link svg {
+  flex: none;
+}
+
+/* A link inside a sentence: the link blue with a fine underline, so it never depends on colour alone. */
+
+.text-link-inline {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-decoration-color: rgb(0 98 196 / 0.35);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: text-decoration-color var(--motion-dur-hover) ease;
+}
+
+.text-link-inline:hover {
+  text-decoration-color: currentColor;
+}
+
+/* A small heading that names a section ("Selected work") without competing with what follows. */
+
+.section-kicker {
+  font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.625rem);
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  color: var(--color-ink);
+}
+
+.project-label {
+  font-size: 0.9375rem;
+  color: var(--color-ink-3);
+}
+
+/* Screenshots: rounded corners and a hairline, no browser chrome, no heavy shadow, no badges on top. */
+
+.shot-frame {
+  overflow: hidden;
+  border-radius: 1.125rem;
+  background: var(--color-paper);
+  box-shadow: var(--shadow-device);
+}
+
+.expand-chip {
+  display: none !important;
+}
+
+.phone-device {
+  border-width: 4px;
+  border-color: #1d1d1f;
+  background: #1d1d1f;
+  border-radius: 1.5rem;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.04), 0 16px 32px -18px rgb(0 0 0 / 0.35);
+}
+
+.phone-device .phone-trigger,
+.phone-device .shot {
+  border-radius: 1.2rem;
+  overflow: hidden;
+}
+
+/* ---- Hero ----------------------------------------------------------------------------------------------- */
+
+.hero {
+  padding-top: clamp(3rem, 1.5rem + 5vw, 6rem);
+  padding-bottom: clamp(4rem, 2.5rem + 5vw, 7rem);
+}
+
+.hero-eyebrow {
+  font-size: clamp(1.0625rem, 1rem + 0.35vw, 1.3125rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+}
+
+/* Each line of the headline is kept whole where it fits; on small phones a line wraps on its own words. */
+
+.hero-line {
+  display: block;
+}
+
+.hero-price {
+  font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  color: var(--color-ink-3);
+}
+
+.hero-visual {
+  margin-top: clamp(3rem, 2rem + 4vw, 5rem);
+}
+
+.hero-caption {
+  margin-top: 1.25rem;
+  text-align: center;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--color-ink-2);
+}
+
+/*
+ * A website as a product shot: the desktop capture large and centred, the phone capture standing in front of its
+ * lower corner. The column for the phone is reserved, so nothing shifts as the pictures load. On phones only the
+ * crisp phone-sized capture is shown.
+ */
+
+.showcase {
+  position: relative;
+  max-width: 65rem;
+  margin-inline: auto;
+}
+
+.showcase-desktop {
+  overflow: hidden;
+  border-radius: clamp(0.875rem, 0.5rem + 1vw, 1.375rem);
+  background: var(--color-paper);
+  box-shadow: var(--shadow-device);
+}
+
+.showcase-phone {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  /* Room for the phone: beside the desktop picture, and a little below it, so it never covers the caption. */
+
+  .showcase {
+    padding-inline-end: 9%;
+    padding-bottom: 3%;
+  }
+
+  .showcase-phone {
+    display: block;
+    position: absolute;
+    inset-inline-end: 0;
+    bottom: 0;
+    width: 19%;
+  }
+}
+
+/* ---- Work ----------------------------------------------------------------------------------------------- */
+
+.feature-name {
+  font-size: clamp(2.5rem, 1.6rem + 3.8vw, 4.5rem);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.028em;
+}
+
+.feature-line {
+  max-width: 34rem;
+  font-size: clamp(1.1875rem, 1.05rem + 0.55vw, 1.5rem);
+  line-height: 1.4;
+  color: var(--color-ink-2);
+}
+
+/* App stages on light sections: a pale surface lit by the app's own colour. */
+
+.app-stage {
+  background:
+    radial-gradient(70% 55% at 50% 55%, color-mix(in oklab, var(--tint, #0071e3) 26%, transparent), transparent 72%),
+    var(--color-paper);
+  box-shadow: none;
+}
+
+/* ---- Inner pages ---------------------------------------------------------------------------------------- */
+
+.page-hero {
+  padding-top: 1.5rem;
+  padding-bottom: clamp(3.5rem, 2rem + 4vw, 6rem);
+}
+
+.page-title {
+  max-width: 18ch;
+  font-size: clamp(2.5rem, 1.6rem + 3.6vw, 4.5rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.028em;
+}
+
+/* ---- Pricing -------------------------------------------------------------------------------------------- */
+
+.terms {
+  text-align: center;
+}
+
+.terms-summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-height: 2.75rem;
+  cursor: pointer;
+  list-style: none;
+  color: var(--color-accent);
+}
+
+.terms-summary::-webkit-details-marker {
+  display: none;
+}
+
+.terms-summary:hover {
+  text-decoration: underline;
+}
+
+.terms[open] .terms-chevron {
+  transform: rotate(180deg);
+}
+
+.terms-chevron {
+  transition: transform var(--motion-dur-hover) ease;
+}
+
+.terms > div {
+  text-align: start;
+}
+
+/* ---- Process and About ---------------------------------------------------------------------------------- */
+
+.facts {
+  border-top: 1px solid var(--color-line);
+}
+
+.facts-row {
+  display: grid;
+  gap: 0.125rem;
+  padding-block: 1rem;
+  border-bottom: 1px solid var(--color-line);
+}
+
+@media (min-width: 640px) {
+  .facts-row {
+    grid-template-columns: 11rem 1fr;
+    gap: 1.5rem;
+    align-items: baseline;
+  }
+}
+
+/* ---- Contact form --------------------------------------------------------------------------------------- */
+
+.form-card {
+  padding: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  border: 1px solid var(--color-line);
+  border-radius: 1.375rem;
+  background: #ffffff;
+}
+
+.field-label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+/* White inputs with a clear grey edge (3:1 against white) and a strong focus ring; 17px text, so iOS never zooms. */
+
+.field {
+  display: block;
+  width: 100%;
+  min-height: 3.25rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #86868b;
+  border-radius: 0.75rem;
+  background: #ffffff;
+  color: var(--color-ink);
+  font-size: 1.0625rem;
+  line-height: 1.4;
+  transition:
+    border-color var(--motion-dur-hover) ease,
+    box-shadow var(--motion-dur-hover) ease;
+}
+
+.field::placeholder {
+  color: rgb(110 110 115 / 0.85);
+}
+
+.field:hover {
+  border-color: var(--color-ink-2);
+}
+
+.field:focus {
+  outline: none;
+  border-color: var(--color-cobalt);
+  box-shadow: 0 0 0 4px rgb(0 113 227 / 0.22);
+}
+
+.field[aria-invalid='true'] {
+  border-color: var(--color-danger);
+}
+
+.field[aria-invalid='true']:focus {
+  box-shadow: 0 0 0 4px rgb(180 35 24 / 0.16);
+}
+
+.field-textarea {
+  min-height: 9rem;
+}
+
+.disclosure-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2.75rem;
+  font-weight: 500;
+  color: var(--color-ink);
+}
+
+.disclosure-toggle:hover {
+  color: var(--color-cobalt);
+}
+
+/*
+ * Glass is placed where it has something to bend: over the website screenshots, over the coloured wash behind the
+ * form, and over the page as it scrolls under the bar. On a flat white surface glass would only look like grey.
+ */
+
+.showcase-desktop {
+  position: relative;
+}
+
+.showcase-caption {
+  position: absolute;
+  inset-inline: 0;
+  bottom: clamp(0.75rem, 0.4rem + 1.2vw, 1.5rem);
+  display: flex;
+  justify-content: center;
+  padding-inline: 0.75rem;
+  pointer-events: none;
+}
+
+.caption-glass {
+  --lg-glass: rgb(255 255 255 / 0.62);
+  --lg-blur: 10px;
+  --lg-rim-shine: 0.6;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  max-width: 100%;
+  min-height: 2.75rem;
+  padding-inline: 1.125rem 0.875rem;
+  border-radius: 9999px;
+  font-size: 0.9375rem;
+  pointer-events: auto;
+  white-space: nowrap;
+}
+
+.caption-status {
+  color: var(--color-ink-2);
+}
+
+.caption-name {
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.caption-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  color: var(--color-accent);
+}
+
+.caption-link:hover {
+  text-decoration: underline;
+}
+
+/* On small phones the status steps aside, so the capsule keeps to one line. */
+
+@media (max-width: 419px) {
+  .caption-status {
+    display: none;
+  }
+}
+
+.hero-caption {
+  margin-top: 1.25rem;
+  text-align: center;
+  font-size: 0.9375rem;
+  color: var(--color-ink-3);
+}
+
+/* A small glass label in a screenshot's top corner. */
+
+.shot-chip {
+  position: absolute;
+  inset-inline-start: 0.875rem;
+  top: 0.875rem;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.chip-glass {
+  --lg-glass: rgb(255 255 255 / 0.66);
+  --lg-blur: 8px;
+  --lg-rim-shine: 0.6;
+  --glass-drop: 0 6px 18px -10px rgb(0 0 0 / 0.35);
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.875rem;
+  padding-inline: 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+/* Pricing on phones and tablets: the plan names follow the rows on a strip of glass. */
+
+.compare-sticky {
+  position: sticky;
+  top: 4.5rem;
+  z-index: 2;
+  height: 0;
+  pointer-events: none;
+}
+
+.compare-sticky-glass {
+  --lg-glass: rgb(255 255 255 / 0.74);
+  --lg-blur: 16px;
+  --lg-rim-shine: 0.5;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var(--compare-gap);
+  padding: 0.625rem 1rem;
+  border-radius: 1rem;
+  font-size: 0.9375rem;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition:
+    opacity var(--motion-dur-ui) var(--motion-ease-out),
+    transform var(--motion-dur-ui) var(--motion-ease-out);
+}
+
+.compare-sticky[data-show] .compare-sticky-glass {
+  opacity: 1;
+  transform: none;
+}
+
+@media (min-width: 1024px) {
+  .compare-sticky {
+    display: none;
+  }
+}
+
+.contact-section {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+/* Phone quote bar: a floating capsule of glass above the screen's bottom edge. */
+
+.quote-bar {
+  position: fixed;
+  inset-inline: 0.75rem;
+  bottom: calc(0.75rem + env(safe-area-inset-bottom));
+  z-index: 40;
+}
+
+.quote-glass {
+  --lg-glass: rgb(255 255 255 / 0.66);
+  --lg-blur: 16px;
+  --lg-rim-shine: 0.5;
+  --glass-drop: 0 18px 40px -18px rgb(0 0 0 / 0.38);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.375rem 0.375rem 0.375rem 1.125rem;
+  border-radius: 9999px;
+}
+
+:root[dir='rtl'] .quote-glass {
+  padding: 0.375rem 1.125rem 0.375rem 0.375rem;
+}
+
+.quote-bar-text {
+  min-width: 0;
+  font-size: 0.875rem;
+  color: var(--color-ink-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (min-width: 880px) {
+  .quote-bar {
+    display: none;
+  }
+}
+
+/* ==========================================================================================================
+ * Liquid Glass system
+ *
+ * One family of glass surfaces, drawn in CSS, used across the whole site. Glisse (above) still draws the pieces that
+ * refract live content: the tab bar lens, the language menu, the labels over screenshots, the phone quote bar and
+ * the dialog controls. Everything else is built from these classes:
+ *
+ *   .liquid-glass             a sheet of frosted glass, lit from the top left
+ *   .liquid-glass-strong      denser and brighter: the contact panel, the phone menu, the second plan
+ *   .liquid-glass-subtle      thinner and quieter: small cards, wells inside a panel
+ *   .liquid-glass-card        a card that lifts and catches more light under the pointer
+ *   .liquid-glass-button      the site's buttons (see ui/button.ts for the hierarchy)
+ *   .liquid-glass-navigation  the floating bar at the top of every page
+ *   .liquid-glass-input       inset fields in the inquiry form
+ *
+ * Each surface is a translucent fill clipped to the padding box, a rim drawn in the transparent border by `::before`
+ * (a gradient masked to a 1px ring), a soft specular highlight in `::after`, and layered shadows. Glass nested in
+ * glass does not frost again: an inner surface would only see its parent's fill, so its backdrop filter is dropped.
+ *
+ * Glass needs light behind it, so sections that hold glass carry an ambient wash (`.ambient`), and the hero adds a few
+ * glass shapes that float slowly behind the content. Nothing moves for visitors who ask for reduced motion, the
+ * glass turns solid for those who ask for reduced transparency, and it turns into plain outlined surfaces for those
+ * who ask for more contrast or use forced colours.
+ * ======================================================================================================== */
+
+:root {
+  /* The fill: brightest where the light lands, thinnest in the middle of the sheet. */
+  --glass-fill-top: rgb(255 255 255 / 0.74);
+  --glass-fill-mid: rgb(255 255 255 / 0.48);
+  --glass-fill-end: rgb(255 255 255 / 0.62);
+  --glass-blur: 22px;
+  --glass-saturate: 1.6;
+  --glass-radius: 1.75rem;
+  /* The rim: bright at the lit corners, cooler and fainter between them. */
+  --glass-rim: linear-gradient(
+    145deg,
+    rgb(255 255 255 / 0.95) 0%,
+    rgb(255 255 255 / 0.4) 26%,
+    rgb(170 184 222 / 0.42) 58%,
+    rgb(255 255 255 / 0.9) 100%
+  );
+  --glass-inner: inset 0 1px 0 rgb(255 255 255 / 0.75), inset 0 -1px 0 rgb(255 255 255 / 0.22);
+  --glass-shadow:
+    0 1px 1px rgb(20 30 70 / 0.04), 0 8px 22px -12px rgb(20 30 70 / 0.18), 0 30px 60px -32px rgb(20 40 110 / 0.22);
+  --glass-shadow-lift:
+    0 2px 4px rgb(20 30 70 / 0.05), 0 18px 36px -16px rgb(20 30 70 / 0.24), 0 44px 80px -36px rgb(20 50 140 / 0.3);
+  --glass-sheen: 0.6;
+
+  /* A gentle spring for buttons and cards (a cubic-bezier with a little overshoot where linear() is missing). */
+  --motion-spring: cubic-bezier(0.34, 1.3, 0.64, 1);
+  --motion-dur-spring: 560ms;
+}
+
+@supports (transition-timing-function: linear(0, 1)) {
+  :root {
+    --motion-spring: linear(
+      0,
+      0.006,
+      0.025 2.8%,
+      0.101 6.1%,
+      0.539 18.9%,
+      0.721 25.3%,
+      0.849 31.5%,
+      0.937 38.1%,
+      0.968 41.8%,
+      0.991 45.7%,
+      1.006 50.1%,
+      1.015 55%,
+      1.017 63.9%,
+      1.001 85.9%,
+      1
+    );
+  }
+}
+
+/* ---- Surfaces ------------------------------------------------------------------------------------------- */
+
+.liquid-glass,
+.liquid-glass-strong,
+.liquid-glass-subtle,
+.liquid-glass-card {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid transparent;
+  border-radius: var(--glass-radius);
+  background: linear-gradient(160deg, var(--glass-fill-top), var(--glass-fill-mid) 48%, var(--glass-fill-end)) padding-box;
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  box-shadow: var(--glass-inner), var(--glass-shadow);
+}
+
+/* The rim: a gradient in the transparent border, masked to a ring so the fill stays clear. */
+
+:is(.liquid-glass, .liquid-glass-strong, .liquid-glass-subtle, .liquid-glass-card, .liquid-glass-navigation, .glass-frame)::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: 1;
+  padding: 1px;
+  border-radius: inherit;
+  background: var(--glass-rim);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* The highlight: light pooled at the top left, a softer bounce at the bottom right. */
+
+:is(.liquid-glass, .liquid-glass-strong, .liquid-glass-subtle, .liquid-glass-card)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background:
+    radial-gradient(120% 80% at 12% -12%, rgb(255 255 255 / 0.7), transparent 55%),
+    radial-gradient(70% 60% at 100% 112%, rgb(255 255 255 / 0.4), transparent 62%);
+  opacity: var(--glass-sheen);
+  pointer-events: none;
+  transition: opacity var(--motion-dur-ui) var(--motion-ease-out);
+}
+
+.liquid-glass-strong {
+  --glass-fill-top: rgb(255 255 255 / 0.86);
+  --glass-fill-mid: rgb(255 255 255 / 0.66);
+  --glass-fill-end: rgb(255 255 255 / 0.78);
+  --glass-blur: 30px;
+  --glass-saturate: 1.8;
+  --glass-shadow:
+    0 1px 2px rgb(20 30 70 / 0.05), 0 18px 40px -20px rgb(20 30 70 / 0.24), 0 56px 110px -50px rgb(20 50 140 / 0.34);
+  --glass-sheen: 0.8;
+}
+
+.liquid-glass-subtle {
+  --glass-fill-top: rgb(255 255 255 / 0.6);
+  --glass-fill-mid: rgb(255 255 255 / 0.34);
+  --glass-fill-end: rgb(255 255 255 / 0.46);
+  --glass-blur: 14px;
+  --glass-shadow: 0 1px 1px rgb(20 30 70 / 0.03), 0 10px 26px -18px rgb(20 30 70 / 0.2);
+  --glass-sheen: 0.45;
+}
+
+/* Glass nested in glass does not frost a second time: it would only see its parent's own fill. */
+
+:is(.liquid-glass, .liquid-glass-strong, .liquid-glass-subtle, .liquid-glass-card, .liquid-glass-navigation)
+  :is(.liquid-glass, .liquid-glass-strong, .liquid-glass-subtle, .liquid-glass-card, .liquid-glass-button, .liquid-glass-input) {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* ---- Cards ---------------------------------------------------------------------------------------------- */
+
+.liquid-glass-card {
+  --glass-radius: 1.75rem;
+  padding: clamp(1.5rem, 1.1rem + 1.4vw, 2.25rem);
+  transition:
+    transform var(--motion-dur-spring) var(--motion-spring),
+    box-shadow var(--motion-dur-ui) var(--motion-ease-out);
+}
+
+.liquid-glass-card:focus-within {
+  --glass-sheen: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .liquid-glass-card:hover {
+    --glass-sheen: 1;
+    box-shadow: var(--glass-inner), var(--glass-shadow-lift);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .liquid-glass-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .liquid-glass-card:hover .glass-icon {
+    transform: translateY(-2px) scale(1.06) rotate(-4deg);
+  }
+
+  .liquid-glass-card:hover .glass-icon svg {
+    transform: scale(1.08);
+  }
+
+  .liquid-glass-card:hover .card-shot img {
+    transform: scale(1.02);
+  }
+}
+
+/* An icon set in a small tile of blue glass. */
+
+.glass-icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.9375rem;
+  color: #ffffff;
+  background:
+    radial-gradient(90% 70% at 30% 10%, rgb(255 255 255 / 0.45), transparent 60%),
+    linear-gradient(160deg, #3d8ef0, #0068d6 60%, #3b5bd9);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.5),
+    inset 0 -2px 4px rgb(0 30 100 / 0.25),
+    0 10px 22px -10px rgb(0 90 210 / 0.6);
+  transition: transform var(--motion-dur-spring) var(--motion-spring);
+}
+
+.glass-icon svg {
+  transition: transform var(--motion-dur-spring) var(--motion-spring);
+}
+
+/* ---- Buttons -------------------------------------------------------------------------------------------- */
+
+.liquid-glass-button {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 0;
+  border-radius: 9999px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform var(--motion-dur-spring) var(--motion-spring),
+    box-shadow var(--motion-dur-ui) var(--motion-ease-out),
+    background-color var(--motion-dur-hover) ease,
+    color var(--motion-dur-hover) ease;
+}
+
+/* A band of light that sweeps across the glass under the pointer (and once in a while on the hero's button). */
+
+.liquid-glass-button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgb(255 255 255 / 0.42) 46%,
+    rgb(255 255 255 / 0.12) 54%,
+    transparent 68%
+  );
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+
+.liquid-glass-button:focus-visible {
+  outline: 2.5px solid var(--color-cobalt);
+  outline-offset: 3px;
+}
+
+.liquid-glass-button:disabled {
+  cursor: progress;
+  opacity: 0.8;
+}
+
+/* Primary: blue glass, deep enough for a white label at 4.5:1 or better wherever the label sits, lit along its top edge. */
+
+.glass-btn-primary {
+  color: #ffffff;
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.08), rgb(255 255 255 / 0) 42%),
+    linear-gradient(180deg, #0a6fdc, #0066d0 50%, #005bbf);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.42),
+    inset 0 -1px 1px rgb(0 30 90 / 0.28),
+    0 1px 2px rgb(0 60 160 / 0.22),
+    0 10px 24px -10px rgb(0 100 220 / 0.6);
+}
+
+.glass-btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.6), rgb(255 255 255 / 0.06) 50%, rgb(150 200 255 / 0.4));
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Secondary: clear glass with a blue label. */
+
+.glass-btn-secondary {
+  color: var(--color-accent);
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.86), rgb(255 255 255 / 0.56));
+  -webkit-backdrop-filter: blur(14px) saturate(1.6);
+  backdrop-filter: blur(14px) saturate(1.6);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.95),
+    inset 0 -1px 0 rgb(255 255 255 / 0.3),
+    0 1px 2px rgb(20 30 70 / 0.06),
+    0 10px 22px -12px rgb(20 30 70 / 0.26);
+}
+
+.glass-btn-secondary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(160deg, rgb(255 255 255 / 1), rgb(0 102 204 / 0.28) 50%, rgb(255 255 255 / 0.85));
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Sizes: the navigation's button, a card's button, a section's main action. */
+
+/* Padding above and below keeps a label that wraps (a long plan name on a small phone) clear of the lit top edge. */
+
+.glass-btn-sm {
+  min-height: 2rem;
+  padding: 0.25rem 0.9375rem;
+  font-size: 0.8125rem;
+  line-height: 1.2;
+}
+
+.glass-btn-md {
+  min-height: 2.75rem;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.9375rem;
+  line-height: 1.25;
+}
+
+.glass-btn-lg {
+  min-height: 3.125rem;
+  padding: 0.625rem 1.75rem;
+  font-size: 1.0625rem;
+  line-height: 1.25;
+}
+
+/* An icon-only button of clear glass (the menu button). */
+
+.glass-btn-icon {
+  width: 2.5rem;
+  min-height: 2.5rem;
+  padding: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .glass-btn-primary:hover {
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.5),
+      inset 0 -1px 1px rgb(0 30 90 / 0.28),
+      0 2px 4px rgb(0 60 160 / 0.22),
+      0 16px 32px -12px rgb(0 100 220 / 0.7);
+  }
+
+  .glass-btn-secondary:hover {
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 1),
+      inset 0 -1px 0 rgb(255 255 255 / 0.35),
+      0 2px 4px rgb(20 30 70 / 0.07),
+      0 16px 30px -14px rgb(20 30 70 / 0.32);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .liquid-glass-button:hover {
+    transform: translateY(-1px) scale(1.02);
+  }
+
+  .liquid-glass-button:hover::after {
+    transform: translateX(120%);
+    transition: transform 900ms var(--motion-ease-out);
+  }
+}
+
+/* Pressed: the glass gives a little and the light moves inside it. */
+
+.liquid-glass-button:active {
+  transition-duration: var(--motion-dur-press), var(--motion-dur-press), var(--motion-dur-hover), var(--motion-dur-hover);
+}
+
+.glass-btn-primary:active {
+  box-shadow:
+    inset 0 2px 6px rgb(0 20 70 / 0.35),
+    inset 0 -1px 0 rgb(255 255 255 / 0.12),
+    0 1px 2px rgb(0 60 160 / 0.2);
+}
+
+.glass-btn-secondary:active {
+  box-shadow:
+    inset 0 2px 6px rgb(20 30 70 / 0.14),
+    0 1px 2px rgb(20 30 70 / 0.06);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .liquid-glass-button:active {
+    transform: scale(0.97);
+  }
+
+  /* The hero's main action catches the light now and then. */
+
+  .hero-cta::after {
+    animation: glass-sheen 7s var(--motion-ease-in-out) 1.8s infinite;
+  }
+
+  @keyframes glass-sheen {
+    0% {
+      transform: translateX(-120%);
+    }
+
+    16%,
+    100% {
+      transform: translateX(120%);
+    }
+  }
+}
+
+/* ---- Navigation bar ------------------------------------------------------------------------------------- */
+
+.liquid-glass-navigation {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid transparent;
+  border-radius: 9999px;
+  background-color: rgb(255 255 255 / 0.58);
+  background-image: linear-gradient(180deg, rgb(255 255 255 / 0.5), rgb(255 255 255 / 0) 60%);
+  background-clip: padding-box;
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  backdrop-filter: blur(20px) saturate(1.8);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.8),
+    0 1px 2px rgb(20 30 70 / 0.04),
+    0 10px 30px -20px rgb(20 30 70 / 0.3);
+}
+
+.site-nav[data-scrolled] .liquid-glass-navigation {
+  background-color: rgb(255 255 255 / 0.72);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.9),
+    0 1px 2px rgb(20 30 70 / 0.06),
+    0 14px 36px -16px rgb(20 30 70 / 0.34);
+}
+
+/* ---- Inputs --------------------------------------------------------------------------------------------- */
+
+/* Inset into the glass: a whiter well, shaded at its top edge, with the same clear grey edge and focus ring. */
+
+.liquid-glass-input {
+  border-radius: 0.875rem;
+  background: linear-gradient(180deg, rgb(248 249 252 / 0.92), rgb(255 255 255 / 0.96));
+  box-shadow:
+    inset 0 1px 2px rgb(20 30 70 / 0.1),
+    inset 0 0 0 1px rgb(255 255 255 / 0.4),
+    0 1px 0 rgb(255 255 255 / 0.9);
+}
+
+.liquid-glass-input:focus {
+  background: #ffffff;
+  box-shadow:
+    inset 0 1px 2px rgb(20 30 70 / 0.06),
+    0 0 0 4px rgb(0 113 227 / 0.22);
+}
+
+.liquid-glass-input[aria-invalid='true']:focus {
+  box-shadow:
+    inset 0 1px 2px rgb(20 30 70 / 0.06),
+    0 0 0 4px rgb(180 35 24 / 0.16);
+}
+
+/* The inquiry form's choices: small capsules of clear glass that turn blue when picked. */
+
+.glass-choice {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding-inline: 1rem;
+  border: 1px solid #86868b;
+  border-radius: 9999px;
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.92), rgb(255 255 255 / 0.72));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.9),
+    0 1px 2px rgb(20 30 70 / 0.05);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--color-ink-2);
+  transition:
+    background-color var(--motion-dur-hover) ease,
+    border-color var(--motion-dur-hover) ease,
+    color var(--motion-dur-hover) ease,
+    box-shadow var(--motion-dur-hover) ease;
+}
+
+.glass-choice:hover {
+  border-color: var(--color-ink-2);
+}
+
+.peer:checked + .glass-choice {
+  border-color: var(--color-cobalt);
+  background: linear-gradient(180deg, #f1f7fe, #e3effc);
+  color: var(--color-ink);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.9),
+    0 0 0 1px var(--color-cobalt);
+}
+
+.peer:focus-visible + .glass-choice {
+  outline: 2.5px solid var(--color-cobalt);
+  outline-offset: 2px;
+}
+
+/* ---- Ambient light -------------------------------------------------------------------------------------- */
+
+/*
+ * Pools of soft blue, silver and lavender light behind the glass, painted once and never animated. Each section that
+ * holds glass names its own arrangement, so the page reads as one continuously lit space.
+ */
+
+.ambient {
+  position: relative;
+  isolation: isolate;
+}
+
+.ambient::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: var(--ambient-light);
+  /* The light fades out at the section's edges, so one section flows into the next without a seam. */
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 18%, #000 82%, transparent);
+  mask-image: linear-gradient(180deg, transparent, #000 18%, #000 82%, transparent);
+  pointer-events: none;
+}
+
+/* On phones the same pools cover more of the screen, so they are a little fainter. */
+
+@media (max-width: 639.98px) {
+  .ambient::before {
+    opacity: 0.75;
+  }
+}
+
+.ambient-hero::before {
+  -webkit-mask-image: linear-gradient(180deg, #000 78%, transparent);
+  mask-image: linear-gradient(180deg, #000 78%, transparent);
+}
+
+.ambient-hero {
+  --ambient-light:
+    radial-gradient(44rem 30rem at 8% 8%, rgb(0 113 227 / 0.16), transparent 70%),
+    radial-gradient(40rem 28rem at 94% 12%, rgb(150 120 255 / 0.18), transparent 70%),
+    radial-gradient(46rem 30rem at 50% 64%, rgb(90 200 250 / 0.14), transparent 70%),
+    radial-gradient(36rem 24rem at 10% 88%, rgb(170 182 210 / 0.3), transparent 70%),
+    linear-gradient(180deg, #fbfbfd, transparent 40%);
+}
+
+.ambient-work {
+  --ambient-light:
+    radial-gradient(40rem 28rem at 90% 30%, rgb(0 113 227 / 0.13), transparent 70%),
+    radial-gradient(42rem 30rem at 6% 60%, rgb(150 120 255 / 0.14), transparent 70%),
+    radial-gradient(40rem 26rem at 70% 84%, rgb(170 182 210 / 0.3), transparent 70%);
+}
+
+.ambient-cards {
+  --ambient-light:
+    radial-gradient(38rem 26rem at 18% 34%, rgb(90 200 250 / 0.16), transparent 70%),
+    radial-gradient(40rem 28rem at 86% 64%, rgb(0 113 227 / 0.14), transparent 70%),
+    radial-gradient(34rem 22rem at 46% 82%, rgb(150 120 255 / 0.12), transparent 70%);
+}
+
+.ambient-pricing {
+  --ambient-light:
+    radial-gradient(46rem 30rem at 50% 40%, rgb(0 113 227 / 0.15), transparent 70%),
+    radial-gradient(34rem 26rem at 94% 74%, rgb(150 120 255 / 0.17), transparent 70%),
+    radial-gradient(34rem 24rem at 6% 66%, rgb(90 200 250 / 0.15), transparent 70%);
+}
+
+.ambient-process {
+  --ambient-light:
+    radial-gradient(40rem 26rem at 14% 62%, rgb(0 113 227 / 0.12), transparent 70%),
+    radial-gradient(40rem 26rem at 88% 42%, rgb(150 120 255 / 0.13), transparent 70%);
+}
+
+.ambient-quiet {
+  --ambient-light:
+    radial-gradient(40rem 26rem at 84% 34%, rgb(170 182 210 / 0.32), transparent 70%),
+    radial-gradient(36rem 24rem at 10% 70%, rgb(0 113 227 / 0.09), transparent 70%);
+}
+
+.ambient-contact {
+  --ambient-light:
+    radial-gradient(40rem 30rem at 82% 28%, rgb(0 113 227 / 0.2), transparent 70%),
+    radial-gradient(36rem 26rem at 96% 80%, rgb(110 100 240 / 0.18), transparent 70%),
+    radial-gradient(34rem 24rem at 8% 76%, rgb(48 176 199 / 0.15), transparent 70%),
+    radial-gradient(30rem 22rem at 18% 22%, rgb(150 120 255 / 0.12), transparent 70%);
+}
+
+/* ---- Floating glass shapes ------------------------------------------------------------------------------ */
+
+/*
+ * Lenses, a ring and a capsule of glass behind the hero and the contact panel. They are painted gradients, not
+ * frosted glass, so moving them costs nothing; only the hero's shapes drift, slowly, and only when motion is welcome.
+ */
+
+.glass-shapes {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.glass-orb,
+.glass-ring,
+.glass-capsule-shape {
+  position: absolute;
+  display: block;
+  transform: rotate(var(--orb-rotate, 0deg));
+}
+
+.glass-orb,
+.glass-capsule-shape {
+  border: 1px solid rgb(255 255 255 / 0.75);
+  background:
+    radial-gradient(55% 45% at 32% 22%, rgb(255 255 255 / 0.95), rgb(255 255 255 / 0) 72%),
+    radial-gradient(70% 70% at 72% 80%, rgb(110 140 255 / 0.3), transparent 72%),
+    linear-gradient(150deg, rgb(255 255 255 / 0.55), rgb(206 216 255 / 0.32) 60%, rgb(230 214 255 / 0.4));
+  box-shadow:
+    inset 0 2px 1px rgb(255 255 255 / 0.9),
+    inset 0 -16px 30px -10px rgb(90 110 230 / 0.28),
+    inset 0 16px 30px -14px rgb(255 255 255 / 0.85),
+    0 34px 60px -30px rgb(50 70 170 / 0.36);
+}
+
+.glass-orb {
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
+.glass-capsule-shape {
+  aspect-ratio: 2.6;
+  border-radius: 9999px;
+}
+
+.glass-ring {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 200deg,
+    rgb(255 255 255 / 0.95),
+    rgb(170 190 255 / 0.6),
+    rgb(225 205 255 / 0.7),
+    rgb(160 220 255 / 0.55),
+    rgb(255 255 255 / 0.95)
+  );
+  -webkit-mask: radial-gradient(closest-side, transparent 64%, #000 66%, #000 98%, transparent 100%);
+  mask: radial-gradient(closest-side, transparent 64%, #000 66%, #000 98%, transparent 100%);
+}
+
+/* Hero arrangement: kept to the edges, clear of the headline and the buttons. */
+
+.hero-shapes .shape-1 {
+  top: 7rem;
+  inset-inline-start: -5rem;
+  width: clamp(9rem, 6rem + 11vw, 17rem);
+  --orb-dur: 16s;
+}
+
+.hero-shapes .shape-2 {
+  top: 6rem;
+  inset-inline-end: -3rem;
+  width: clamp(7rem, 5rem + 7vw, 11rem);
+  --orb-dur: 19s;
+  --orb-delay: -6s;
+  --orb-dy: 16px;
+}
+
+.hero-shapes .shape-3 {
+  top: clamp(16rem, 10rem + 14vw, 24rem);
+  inset-inline-end: clamp(1rem, 4vw, 5rem);
+  width: clamp(3rem, 2rem + 3vw, 5rem);
+  --orb-dur: 13s;
+  --orb-delay: -3s;
+}
+
+.hero-shapes .shape-4 {
+  top: clamp(19rem, 13rem + 16vw, 30rem);
+  inset-inline-start: clamp(0.5rem, 3vw, 4rem);
+  width: clamp(6rem, 4rem + 8vw, 12rem);
+  --orb-rotate: -22deg;
+  --orb-dur: 21s;
+  --orb-delay: -9s;
+}
+
+.hero-shapes .shape-5 {
+  top: 58%;
+  inset-inline-end: -4rem;
+  width: clamp(10rem, 6rem + 12vw, 19rem);
+  --orb-dur: 23s;
+  --orb-delay: -12s;
+  --orb-dy: 20px;
+}
+
+/* On phones the shapes keep to the margins beside the text, so nothing sits behind a line of the headline. */
+
+@media (max-width: 639.98px) {
+  .hero-shapes .shape-3,
+  .hero-shapes .shape-4 {
+    display: none;
+  }
+
+  .hero-shapes .shape-1 {
+    top: 17rem;
+    inset-inline-start: -3.75rem;
+    width: 6.5rem;
+  }
+
+  .hero-shapes .shape-2 {
+    top: 27rem;
+    inset-inline-end: -3rem;
+    width: 6.5rem;
+  }
+
+  .cards-shapes .shape-1 {
+    top: 30rem;
+    inset-inline-end: -3.5rem;
+    width: 8rem;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-shapes > span {
+    animation: orb-float var(--orb-dur, 16s) ease-in-out var(--orb-delay, 0s) infinite alternate;
+  }
+
+  @keyframes orb-float {
+    from {
+      transform: translate3d(0, 0, 0) rotate(var(--orb-rotate, 0deg));
+    }
+
+    to {
+      transform: translate3d(var(--orb-dx, 6px), var(--orb-dy, -18px), 0) rotate(calc(var(--orb-rotate, 0deg) + 8deg));
+    }
+  }
+
+  /* As the page scrolls, the shapes fall behind the content a little: depth, never movement to follow. */
+
+  @supports (animation-timeline: view()) {
+    .hero-shapes {
+      animation: shapes-depth linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 100%;
+    }
+
+    @keyframes shapes-depth {
+      to {
+        translate: 0 14%;
+      }
+    }
+  }
+}
+
+/* Behind the concept stage and the project cards, so their frost has something to blur. Still. */
+
+.cards-shapes .shape-1 {
+  top: clamp(2rem, 4vw, 5rem);
+  inset-inline-end: -3rem;
+  width: clamp(9rem, 6rem + 10vw, 17rem);
+}
+
+.cards-shapes .shape-2 {
+  top: 54%;
+  inset-inline-start: calc(50% - clamp(4rem, 2rem + 5vw, 7rem));
+  width: clamp(8rem, 4rem + 10vw, 14rem);
+}
+
+.cards-shapes .shape-3 {
+  bottom: 14%;
+  inset-inline-start: -4rem;
+  width: clamp(9rem, 6rem + 9vw, 16rem);
+  --orb-rotate: -18deg;
+}
+
+/* Behind the pricing panel's corners. Still. */
+
+.pricing-shapes .shape-1 {
+  top: clamp(16rem, 12rem + 10vw, 24rem);
+  inset-inline-start: -3rem;
+  width: clamp(8rem, 5rem + 9vw, 15rem);
+}
+
+.pricing-shapes .shape-2 {
+  top: clamp(14rem, 10rem + 9vw, 21rem);
+  inset-inline-end: clamp(-2rem, 2vw, 4rem);
+  width: clamp(6rem, 4rem + 6vw, 11rem);
+}
+
+.pricing-shapes .shape-3 {
+  bottom: clamp(10rem, 8rem + 6vw, 16rem);
+  inset-inline-end: -3rem;
+  width: clamp(9rem, 6rem + 9vw, 16rem);
+  --orb-rotate: 20deg;
+}
+
+@media (max-width: 639.98px) {
+  .cards-shapes .shape-2,
+  .pricing-shapes .shape-2 {
+    display: none;
+  }
+}
+
+/* ---- Frames for the work -------------------------------------------------------------------------------- */
+
+/* A bezel of glass around a screenshot: a thin lit sheet, so the picture reads as a pane set into glass. */
+
+.glass-frame {
+  position: relative;
+  isolation: isolate;
+  padding: clamp(0.375rem, 0.25rem + 0.5vw, 0.75rem);
+  border: 1px solid transparent;
+  border-radius: clamp(1.25rem, 0.9rem + 1.2vw, 2rem);
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.82), rgb(255 255 255 / 0.5) 50%, rgb(255 255 255 / 0.7)) padding-box;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.9),
+    0 2px 4px rgb(20 30 70 / 0.04),
+    0 30px 60px -30px rgb(20 40 110 / 0.3),
+    0 60px 120px -60px rgb(20 50 140 / 0.28);
+}
+
+.glass-frame > .showcase-desktop,
+.glass-frame > .shot-frame {
+  border-radius: clamp(0.875rem, 0.6rem + 0.9vw, 1.375rem);
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.06);
+}
+
+/* Phones: a graphite body with a glass edge catching the light. */
+
+.phone-device {
+  border: 4px solid #1d1d1f;
+  border-radius: 1.5rem;
+  background: #1d1d1f;
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.35),
+    0 0 0 1.5px rgb(120 130 160 / 0.35),
+    0 2px 4px rgb(0 0 0 / 0.08),
+    0 24px 44px -22px rgb(10 20 60 / 0.5);
+}
+
+/* ---- Hero ----------------------------------------------------------------------------------------------- */
+
+/* The hero runs up under the floating bar, so its light starts at the top of the screen. */
+
+.hero {
+  margin-top: -3.875rem;
+  padding-top: calc(3.875rem + clamp(3rem, 1.5rem + 5vw, 6rem));
+  overflow: hidden;
+}
+
+.hero .showcase-desktop {
+  box-shadow: none;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.875rem 1rem;
+}
+
+/* ---- Work ----------------------------------------------------------------------------------------------- */
+
+.feature .showcase-desktop {
+  box-shadow: none;
+}
+
+/* Project cards: the screenshot set in the card's glass, then the words. */
+
+.project-card {
+  --glass-radius: 1.75rem;
+  padding: clamp(0.5rem, 0.35rem + 0.5vw, 0.75rem);
+}
+
+.project-card .shot-frame {
+  border-radius: 1.25rem;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.06);
+}
+
+.project-card-body {
+  padding: 1.25rem clamp(0.75rem, 0.5rem + 1vw, 1.25rem) clamp(0.875rem, 0.6rem + 1vw, 1.25rem);
+}
+
+.card-shot img {
+  transition: transform var(--motion-dur-presentation) var(--motion-ease-out);
+}
+
+.app-stage {
+  border-radius: 1.25rem;
+}
+
+/* ---- Swipeable galleries --------------------------------------------------------------------------------- */
+
+/*
+ * The portfolio's sideways galleries, restored as they were before the redesign: a row of cards that snaps, aligned
+ * with the page's content but running to the screen's edges, so the next card peeks in. Native scrolling, so touch,
+ * trackpad and keyboard work as usual; a mouse can drag it (useDragScroll). The cards are glass, painted rather than
+ * frosted: frosting a whole row of cards as it slides is the one thing an iPhone would stutter on.
+ */
+
+.gallery-track {
+  /* The inset lines the first card up with the content column of `.container-page`. */
+  --gallery-inset: max(1.25rem, calc((100% - 76rem) / 2 + 1.25rem));
+  /* Positioned, so pieces placed absolutely inside the cards are clipped with them. */
+  position: relative;
+  display: flex;
+  gap: 1.25rem;
+  /* Room above and below for the cards' lift and shadow, which a scroller would otherwise clip. */
+  margin: -0.75rem 0 -2.75rem;
+  padding: 0.75rem var(--gallery-inset) 3.5rem;
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gallery-inset);
+  scrollbar-width: none;
+}
+
+.gallery-track::-webkit-scrollbar {
+  display: none;
+}
+
+.gallery-track:focus-visible {
+  outline-offset: -3px;
+  border-radius: 1.75rem;
+}
+
+@media (min-width: 768px) {
+  .gallery-track {
+    --gallery-inset: max(2rem, calc((100% - 76rem) / 2 + 2rem));
+  }
+}
+
+/* A mouse can take hold of the row. While it does, snapping waits and the cards ignore the pointer. */
+
+@media (pointer: fine) {
+  .gallery-track {
+    cursor: grab;
+  }
+}
+
+.gallery-track[data-dragging] {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.gallery-track:is([data-dragging], [data-settling]) {
+  scroll-snap-type: none;
+}
+
+.gallery-track[data-dragging] > * {
+  pointer-events: none;
+}
+
+.gallery-item {
+  display: flex;
+  flex: 0 0 min(86%, 26rem);
+  scroll-snap-align: start;
+}
+
+.gallery-item > * {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  .gallery-item {
+    flex-basis: min(62%, 30rem);
+  }
+}
+
+/* Two cards fill the content column on wide screens; the third peeks in beyond it. */
+
+@media (min-width: 1024px) {
+  .gallery-item {
+    flex-basis: calc((min(100vw, 76rem) - 4rem - 1.25rem) / 2);
+  }
+}
+
+/* Compact galleries hold portrait cards (phone apps): three across a wide screen, the fourth peeking in. */
+
+.gallery[data-size='compact'] .gallery-item {
+  flex-basis: min(74%, 19rem);
+}
+
+@media (min-width: 768px) {
+  .gallery[data-size='compact'] .gallery-item {
+    flex-basis: min(42%, 21rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .gallery[data-size='compact'] .gallery-item {
+    flex-basis: calc((min(100vw, 76rem) - 4rem - 2.5rem) / 3);
+  }
+}
+
+/* Painted glass in the galleries: a little denser, so the cards read as glass without frosting as they slide. */
+
+.gallery .liquid-glass-card {
+  --glass-fill-mid: rgb(255 255 255 / 0.62);
+  --glass-fill-end: rgb(255 255 255 / 0.72);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.gallery-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+/* Where the row is: the cards in view light up their dots. */
+
+.gallery-dots {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-ink);
+}
+
+.gallery-dots span {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: currentColor;
+  opacity: 0.25;
+  transition:
+    width var(--motion-dur-ui) var(--motion-ease-out),
+    opacity var(--motion-dur-ui) var(--motion-ease-out);
+}
+
+.gallery-dots span[data-current] {
+  width: 1.5rem;
+  opacity: 0.8;
+}
+
+/* Previous and next: small lenses of clear glass that fade back at the ends of the row. */
+
+.gallery-button {
+  width: 2.75rem;
+  min-height: 2.75rem;
+  color: var(--color-ink);
+}
+
+.gallery-button:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .gallery-button:disabled:hover {
+    transform: none;
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.95),
+      inset 0 -1px 0 rgb(255 255 255 / 0.3),
+      0 1px 2px rgb(20 30 70 / 0.06),
+      0 10px 22px -12px rgb(20 30 70 / 0.26);
+  }
+
+  .gallery-button:disabled:hover::after {
+    transform: translateX(-120%);
+    transition: none;
+  }
+}
+
+/* ---- Pricing -------------------------------------------------------------------------------------------- */
+
+/* The comparison is one panel of glass; each plan heads its column on a card of glass set into it. */
+
+.compare.liquid-glass {
+  --glass-radius: clamp(1.5rem, 1rem + 1.4vw, 2.25rem);
+  padding: clamp(0.75rem, 0.4rem + 1.4vw, 2rem);
+  padding-bottom: clamp(0.5rem, 0.25rem + 1vw, 1.25rem);
+}
+
+.compare-head {
+  align-items: stretch;
+}
+
+.plan-card {
+  --glass-radius: clamp(1.125rem, 0.9rem + 0.8vw, 1.5rem);
+  padding: clamp(0.875rem, 0.55rem + 1.3vw, 1.75rem);
+}
+
+/* The second plan carries a little more glass and a cool blue light, without any label. */
+
+.plan-card-featured {
+  --glass-rim: linear-gradient(
+    150deg,
+    rgb(255 255 255 / 1) 0%,
+    rgb(0 113 227 / 0.45) 40%,
+    rgb(150 120 255 / 0.4) 70%,
+    rgb(255 255 255 / 0.95) 100%
+  );
+  --glass-shadow:
+    0 1px 2px rgb(20 30 70 / 0.05), 0 18px 40px -18px rgb(0 80 200 / 0.3), 0 40px 80px -40px rgb(60 60 200 / 0.3);
+}
+
+.plan-card-featured::after {
+  background:
+    radial-gradient(120% 80% at 12% -12%, rgb(255 255 255 / 0.8), transparent 55%),
+    radial-gradient(90% 70% at 100% 110%, rgb(0 113 227 / 0.14), transparent 62%);
+}
+
+.compare-row:not(.compare-head) {
+  padding-inline: clamp(0.25rem, 0.1rem + 0.6vw, 0.75rem);
+}
+
+.compare .compare-topic,
+.compare-row:not(.compare-head) {
+  border-color: rgb(29 29 31 / 0.1);
+}
+
+.compare .pkg-icon {
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.95), rgb(236 240 250 / 0.8));
+  box-shadow:
+    inset 0 1px 0 #ffffff,
+    0 4px 10px -6px rgb(20 30 70 / 0.3);
+  color: var(--color-cobalt);
+}
+
+.care-card {
+  --glass-radius: 1.5rem;
+  padding: clamp(1.25rem, 0.9rem + 1.4vw, 2rem);
+}
+
+/* ---- Process -------------------------------------------------------------------------------------------- */
+
+.step-card {
+  height: 100%;
+}
+
+.step-index {
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--color-ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- About and FAQ -------------------------------------------------------------------------------------- */
+
+.facts-card {
+  --glass-radius: 1.75rem;
+  padding: 0.5rem clamp(1.25rem, 0.9rem + 1.4vw, 2rem);
+}
+
+.facts-card .facts {
+  border-top: 0;
+}
+
+.facts-card .facts-row:last-child {
+  border-bottom: 0;
+}
+
+.facts-card .facts-row {
+  border-color: rgb(29 29 31 / 0.1);
+}
+
+.faq-panel {
+  --glass-radius: 1.75rem;
+  padding-inline: clamp(1.25rem, 0.8rem + 2vw, 2.5rem);
+}
+
+.faq-panel .faq-item {
+  border-color: rgb(29 29 31 / 0.1);
+}
+
+.faq-panel .faq-item:first-child {
+  border-top: 0;
+}
+
+/* ---- Contact -------------------------------------------------------------------------------------------- */
+
+/* One large panel of glass over the lit section, with glass shapes resting behind its edges. */
+
+.contact-panel {
+  --glass-radius: clamp(1.75rem, 1.2rem + 1.8vw, 2.75rem);
+  padding: clamp(1.25rem, 0.6rem + 3vw, 3.5rem);
+}
+
+.contact-shapes .shape-1 {
+  top: clamp(1rem, 3vw, 3rem);
+  inset-inline-start: -3.5rem;
+  width: clamp(8rem, 5rem + 9vw, 14rem);
+}
+
+.contact-shapes .shape-2 {
+  bottom: clamp(2rem, 6vw, 6rem);
+  inset-inline-end: -4rem;
+  width: clamp(10rem, 6rem + 12vw, 18rem);
+}
+
+.contact-shapes .shape-3 {
+  top: clamp(5rem, 8vw, 9rem);
+  inset-inline-end: clamp(1rem, 6vw, 8rem);
+  width: clamp(4rem, 3rem + 4vw, 7rem);
+}
+
+.contact-shapes .shape-4 {
+  bottom: -2rem;
+  inset-inline-start: 18%;
+  width: clamp(7rem, 5rem + 7vw, 12rem);
+  --orb-rotate: 18deg;
+}
+
+/* The form sits in a well of thinner glass inside the panel. */
+
+.form-well {
+  --glass-radius: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+}
+
+.form-well .form-card {
+  border: 0;
+  background: transparent;
+}
+
+@media (max-width: 639.98px) {
+  .contact-panel {
+    padding: 1.25rem 1rem 1.5rem;
+  }
+
+  .form-well .form-card {
+    padding: 1.125rem;
+  }
+}
+
+/* ---- Inner pages ---------------------------------------------------------------------------------------- */
+
+.page-hero {
+  margin-top: -3.875rem;
+  padding-top: calc(3.875rem + 1.5rem);
+  overflow: hidden;
+}
+
+/* ---- When glass is unwelcome ---------------------------------------------------------------------------- */
+
+/* Browsers without backdrop filters get a denser fill, so text on glass stays as clear as on paper. */
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root {
+    --glass-fill-top: rgb(255 255 255 / 0.94);
+    --glass-fill-mid: rgb(255 255 255 / 0.86);
+    --glass-fill-end: rgb(255 255 255 / 0.9);
+  }
+
+  .liquid-glass-navigation {
+    background-color: rgb(255 255 255 / 0.94);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --glass-fill-top: rgb(255 255 255 / 0.98);
+    --glass-fill-mid: rgb(255 255 255 / 0.96);
+    --glass-fill-end: rgb(255 255 255 / 0.97);
+    --lg-glass: rgb(255 255 255 / 0.97);
+  }
+
+  :is(.liquid-glass, .liquid-glass-strong, .liquid-glass-subtle, .liquid-glass-card, .liquid-glass-navigation, .glass-btn-secondary) {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .liquid-glass-navigation,
+  .site-nav[data-scrolled] .liquid-glass-navigation {
+    background-color: rgb(255 255 255 / 0.98);
+  }
+
+  .site-menu-scrim {
+    background: rgb(240 242 248 / 0.9);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .glass-shapes {
+    display: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :is(.liquid-glass, .liquid-glass-strong, .liquid-glass-subtle, .liquid-glass-card, .liquid-glass-navigation, .glass-frame) {
+    border-color: var(--color-ink-2);
+    background: #ffffff;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  :is(.liquid-glass, .liquid-glass-strong, .liquid-glass-subtle, .liquid-glass-card, .liquid-glass-navigation, .glass-frame, .liquid-glass-button)::before,
+  :is(.liquid-glass, .liquid-glass-strong, .liquid-glass-subtle, .liquid-glass-card, .liquid-glass-button)::after,
+  .glass-shapes {
+    display: none;
+  }
+
+  .glass-btn-primary {
+    background: #0058b0;
+  }
+
+  .glass-btn-secondary {
+    background: #ffffff;
+    box-shadow: inset 0 0 0 1.5px var(--color-accent);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (forced-colors: active) {
+  :is(.liquid-glass, .liquid-glass-strong, .liquid-glass-subtle, .liquid-glass-card, .liquid-glass-navigation, .glass-frame, .liquid-glass-button) {
+    border-color: CanvasText;
+    background: Canvas;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .liquid-glass-button {
+    border: 1px solid ButtonText;
+  }
+
+  .glass-btn-primary {
+    background: ButtonFace;
+    color: ButtonText;
+  }
+
+  :is(.liquid-glass, .liquid-glass-strong, .liquid-glass-subtle, .liquid-glass-card, .liquid-glass-navigation, .glass-frame, .liquid-glass-button)::before,
+  :is(.liquid-glass, .liquid-glass-strong, .liquid-glass-subtle, .liquid-glass-card, .liquid-glass-button)::after,
+  .glass-shapes,
+  .ambient::before {
+    display: none;
   }
 }

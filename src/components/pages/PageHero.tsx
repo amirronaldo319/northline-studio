@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { ArrowRight } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
 import { CONTACT_SECTION_ID } from '@/content/navigation'
 import { useCopy } from '@/i18n/context'
 import { enterStep } from '@/lib/reveal'
@@ -13,53 +13,50 @@ type Props = {
   eyebrow: string
   headline: string
   intro: string
-  /** Extra content under the buttons, such as a status line. */
-  /** Replaces the default "See my work" button beside the main action. */
+  /** Replaces the default "See the work" link beside the main action. */
   secondary?: ReactNode
   showWorkLink?: boolean
+  /** Leaves out the quote button, for pages whose job is to show the work. */
+  showQuote?: boolean
 }
 
-/** The top of every landing page: breadcrumb, label, headline, intro, and the two standard actions. */
-export function PageHero({ crumbs, eyebrow, headline, intro, secondary, showWorkLink = true }: Props) {
+/** The top of every inner page, in the same soft light as the home page: breadcrumb, label, headline, intro and two glass actions. */
+export function PageHero({ crumbs, eyebrow, headline, intro, secondary, showWorkLink = true, showQuote = true }: Props) {
   const homeAnchor = useHomeAnchor()
   const t = useCopy()
+  const link =
+    secondary ??
+    (showWorkLink && (
+      <a href={homeAnchor('work')} className={buttonClasses('secondary', 'lg')}>
+        {t.hero.seeWork}
+        <ChevronRight aria-hidden="true" size={18} className="-me-1 rtl:-scale-x-100" />
+      </a>
+    ))
 
   return (
-    <section aria-labelledby="page-title" className="relative isolate pt-8 pb-16 sm:pt-12 sm:pb-20 lg:pt-14 lg:pb-24">
-      <div className="hero-atmosphere" aria-hidden="true">
-        <div className="hero-light" />
-      </div>
+    <section aria-labelledby="page-title" className="page-hero ambient ambient-hero">
       <div className="container-page">
         <Breadcrumb items={crumbs} />
-        {/* Centred, as the home page and Apple's product pages open. */}
-        <div className="mx-auto mt-10 max-w-[56rem] text-center sm:mt-14">
-          <p className="eyebrow enter" style={enterStep(1)}>
+        <div className="mx-auto mt-10 max-w-[52rem] text-center sm:mt-14">
+          <p className="hero-eyebrow enter" style={enterStep(0)}>
             {eyebrow}
           </p>
-          <h1
-            id="page-title"
-            className="word-enter mx-auto mt-3 max-w-[18ch] text-[clamp(2.5rem,1.5rem+4.2vw,4.75rem)] font-bold leading-[1.03] tracking-[-0.042em] sm:max-w-4xl"
-          >
+          <h1 id="page-title" className="page-title enter mx-auto mt-3" style={enterStep(0)}>
             <Words text={headline} />
           </h1>
-          <p className="lede enter mx-auto mt-6 max-w-[40rem]" style={enterStep(2)}>
+          <p className="lede enter mx-auto mt-5 max-w-[40rem]" style={enterStep(1)}>
             {intro}
           </p>
-          <div
-            className="enter mt-9 flex flex-col items-stretch justify-center gap-3 min-[420px]:flex-row min-[420px]:items-center"
-            style={enterStep(3)}
-          >
-            <a href={`#${CONTACT_SECTION_ID}`} className={buttonClasses('primary', 'lg', 'nudge')}>
-              {t.common.requestQuote}
-              <ArrowRight aria-hidden="true" size={18} className="rtl:-scale-x-100" />
-            </a>
-            {secondary ??
-              (showWorkLink && (
-                <a href={homeAnchor('work')} className={buttonClasses('secondary', 'lg')}>
-                  {t.common.seeMyWork}
+          {(showQuote || link) && (
+            <div className="hero-actions enter mt-8" style={enterStep(2)}>
+              {showQuote && (
+                <a href={`#${CONTACT_SECTION_ID}`} className={buttonClasses('primary', 'lg')}>
+                  {t.common.requestQuote}
                 </a>
-              ))}
-          </div>
+              )}
+              {link}
+            </div>
+          )}
         </div>
       </div>
     </section>

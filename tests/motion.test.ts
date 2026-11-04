@@ -87,8 +87,8 @@ describe('motion system', () => {
     expect(css).not.toMatch(/^\s*will-change\s*:/m)
   })
 
-  test('page transitions and the process rail only run when motion is welcome', () => {
-    for (const name of ['@view-transition', 'rail-fill', 'view-transition-name']) {
+  test('page transitions only run when motion is welcome', () => {
+    for (const name of ['@view-transition']) {
       expect(css).toContain(name)
       expect(outsideSafeBlocks, `${name} must sit inside a safe block`).not.toContain(name)
     }
@@ -109,7 +109,7 @@ describe('motion system', () => {
 describe('motion is neutralised when printing', () => {
   const printBlock = css.slice(css.lastIndexOf('@media print'))
 
-  for (const selector of ['.enter', '.fx-in', '.mask-reveal', '.draw-line::before', '.scroll-progress', '.disclosure', '.menu-item']) {
+  for (const selector of ['.enter', '.fx-in', '.mask-reveal', '.disclosure', '.quote-bar']) {
     test(selector, () => expect(printBlock).toContain(selector))
   }
 })

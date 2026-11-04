@@ -11,7 +11,7 @@ describe('allPages', () => {
 
   test('lists the English home page first, then every page in every language that is switched on', () => {
     expect(pages[0].path).toBe('')
-    const perLanguage = 1 + TRADES.length + PROJECT_DATA.length + GUIDES.length
+    const perLanguage = 2 + TRADES.length + PROJECT_DATA.length + GUIDES.length
     expect(pages).toHaveLength(perLanguage * enabledLocales().length)
   })
 

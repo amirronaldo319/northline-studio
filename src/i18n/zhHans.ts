@@ -12,11 +12,14 @@ export const zhHans: Copy = {
     homeTitle: 'SitePilot | 加拿大本地商家的专属网站',
     homeDescription: '为加拿大各地的本地服务型商家制作专属单页网站。查看网站案例，并索取报价。',
     caseTitle: (name, status) => `${name}：${{ live: '我制作的在线网站', concept: '概念项目', personal: '个人项目' }[status]} | SitePilot`,
+    workTitle: '全部项目：网站、概念与应用 | SitePilot',
+    workDescription: 'Amir 设计并制作的在线网站、概念项目和个人应用，每一个都标明了它是什么。打开任一项目查看详情。',
   },
 
   common: {
     skipToContent: '跳到内容',
     requestQuote: '索取报价',
+    fromPrice: 'CA$299 起',
     seeMyWork: '查看我的作品',
     openMenu: '打开菜单',
     closeMenu: '关闭菜单',
@@ -36,13 +39,15 @@ export const zhHans: Copy = {
     opensNewTab: (name) => `：${name}（在新标签页打开）`,
   },
 
-  nav: { work: '作品', package: '服务内容', process: '流程', about: '关于', faq: '常见问题' },
+  nav: { work: '作品', package: '价格', process: '流程', about: '关于', faq: '常见问题' },
 
   hero: {
-    headline: '为加拿大本地服务型商家 量身定制的网站。',
-    markedWords: [],
-    lede: '展示您的作品，说明您的服务，让客户轻松索取报价。',
-    facts: ['先出书面报价，再开始工作', '由我亲自设计和制作', '加拿大各地'],
+    headline: ['您的生意。', '优雅上线。'],
+    lede: '为加拿大各地的服务型商家打造网站。',
+    priceLine: '单页套餐 CA$299 起。',
+    explore: '查看套餐',
+    seeWork: '查看作品',
+    visualCaption: (name, caption) => `${name}：${caption}。`,
     conceptCaption: (name, businessType) => `概念演示：${name}，为一家虚构的${businessType}商家所做的设计。`,
     viewExample: '查看示例',
   },
@@ -61,11 +66,20 @@ export const zhHans: Copy = {
     sitesLabel: '网站',
     appsHeading: '应用和工具。',
     appsLede: '我为自己设计和制作的东西：网页应用、手机原型，以及一套开发者工具包。',
+    viewProject: '查看项目',
+    allProjects: '浏览全部项目',
+    demosHeading: '设计演示。',
+    demosLede: '为虚构商家做的概念设计，每一个都标明是演示。',
     readCaseStudy: '阅读案例详情',
     conceptDemo: '概念演示',
     viewExample: '查看示例',
     openLarger: (name) => `打开较大预览：${name}`,
     openPhone: (name) => `打开手机预览：${name}`,
+  },
+  workPage: {
+    eyebrow: '作品',
+    heading: '全部项目。',
+    lede: '在线网站、概念项目和我自己的应用，每一个都标明了它是什么。',
   },
 
   projects: {
@@ -235,37 +249,19 @@ export const zhHans: Copy = {
     eyebrow: '您的网站套餐',
     heading: '一个专注的页面，为您的业务而建。',
     lede: '它回答客户在致电之前会问的问题：您做什么、您的作品是什么样子，以及如何联系您。',
-    groups: ['设计', '内容', '咨询', '上线'], included: '包含内容',
-    quoteLead: '先给您书面报价。',
-    quoteBody:
-      '开始工作之前，报价会明确费用、工作范围、时间安排、主机和域名的安排，以及任何持续费用。超出单页的内容，例如额外的页面或功能，将另行报价。',
-    factors: [
-      { title: '已准备好的内容', text: '您的服务、照片和联系方式。' },
-      { title: '超出一页的内容', text: '额外的页面或功能，单独列项报价。' },
-      { title: '主机和域名', text: '您已经拥有什么，以及希望由我安排什么。' },
-      { title: '时间', text: '您的资料何时准备好，以及您希望何时上线。' },
-    ],
+    groups: ['设计', '内容', '咨询', '上线'], included: '包含内容', termsSummary: '范围、费用和条款',
   },
 
   process: {
     eyebrow: '流程',
     heading: '我们如何合作。',
     steps: [
-      { title: '介绍您的业务。', text: '告诉我您做什么、服务哪些客户，以及希望网站起到什么作用。' },
-      { title: '提供您的内容。', text: '服务项目、照片、联系方式，以及您已有的品牌素材。' },
-      { title: '查看您的网站。', text: '在最终版本确认之前，先审阅设计和内容。' },
-      { title: '确认并安排上线。', text: '确认最终网站，并安排发布方式。' },
+      { title: '介绍您的业务。', text: '告诉我您做什么、希望网站帮您实现什么。我会回复一份书面报价，在您批准之前不会开始任何工作。' },
+      { title: '审阅设计。', text: '发送您的文案、照片和品牌素材。我设计并制作页面，上线前由您审阅。' },
+      { title: '批准并上线。', text: '确认最终网站，我们一起安排上线方式。' },
     ],
   },
 
-  audience: {
-    eyebrow: '我为谁服务',
-    heading: '为本地服务型商家而做。',
-    lede: '如果客户通过搜索、打听或手机上的一个链接找到您，一个清晰的页面能让下一步一目了然。请选择最接近您业务的一项。',
-    readPage: '阅读该页面',
-    forName: (name) => `：${name}`,
-    guidesLead: '正在计划做网站？两篇简短指南：',
-  },
 
   about: {
     eyebrow: '关于',
@@ -276,11 +272,7 @@ export const zhHans: Copy = {
       { label: '开始工作之前', value: '一份由您确认的书面报价' },
       { label: '沟通方式', value: '通过电子邮件，用简明的语言' },
     ],
-    paragraphs: [
-      '我是 Amir。每一个网站都由我亲自设计和制作，所以您发来消息时，对面就是实际做事的人。',
-      '近期的作品包括：为温哥华一家私人游泳教学商家制作的单页网站；为一家车辆托管服务制作的、带交互式估算器的落地页；以及一个带有住宅塔楼交互式 3D 模型的双语概念网站。我也制作自己的应用，从可离线使用的波斯历，到带有公开战绩记录的 UFC 比赛预测应用。',
-      '我专注于为加拿大各地的本地服务型商家制作实用的网站，范围保持简单、语言保持平实，让您清楚知道会得到什么，以及接下来会发生什么。',
-    ],
+    paragraphs: ['我是 Amir。每一个网站都由我亲自设计和制作，所以您发来消息时，对面就是实际做事的人。'],
   },
 
   faq: {
@@ -317,22 +309,15 @@ export const zhHans: Copy = {
 
   siteCheck: {
     eyebrow: '已经有网站了？',
-    heading: '先从免费的网站检查开始。',
-    text: '把您的网址发给我，我会回复我首先会修改的地方。您不需要新网站也可以来问，没有您的确认，不会开始任何工作。',
     button: '申请网站检查',
     starterMessage: '请看一下我现有的网站，并告诉我您首先会修改什么。',
   },
 
   contact: {
     eyebrow: '开始吧',
-    heading: '索取报价。',
-    lede: '告诉我您的业务和您的需求。我会回复您，一起讨论范围和下一步。',
-    nextTitle: '接下来会怎样',
-    nextSteps: [
-      '您发来一条消息，写多写少都可以。',
-      '我阅读后通过电子邮件回复，一起讨论您的需求。',
-      '如果合适，我会发送一份书面报价。在您确认之前，不会开始任何工作。',
-    ],
+    heading: '一起打造您的网站。',
+    lede: '告诉我您的业务。我会通过电子邮件回复下一步。',
+    reassurance: '在您批准书面报价之前，不会开始任何工作。',
     preferEmail: '更喜欢发邮件？',
     copyEmail: '复制邮箱地址',
     copied: '已复制',
