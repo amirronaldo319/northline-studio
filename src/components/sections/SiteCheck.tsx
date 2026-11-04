@@ -15,20 +15,20 @@ export function SiteCheck() {
   }
 
   return (
-    <section id="site-check" aria-labelledby="site-check-title" className="py-6 sm:py-10">
+    <section id="site-check" aria-labelledby="site-check-title" className="section-pad bg-paper">
       <div className="container-page">
-        <div className="reveal flex flex-col gap-6 rounded-2xl border border-cobalt/15 bg-cobalt-soft/70 p-6 sm:p-9 md:flex-row md:items-center md:justify-between md:gap-10">
-          <div className="max-w-2xl">
+        <div className="tile site-check-tile reveal flex flex-col items-center gap-8 !py-[clamp(2.5rem,1.5rem+4vw,5rem)] text-center">
+          <div className="max-w-[44rem]">
             <p className="eyebrow">{t.siteCheck.eyebrow}</p>
             <h2 id="site-check-title" className="h-section word-reveal mt-3">
               <Words text={t.siteCheck.heading} />
             </h2>
-            <p className="mt-3 text-[1.0625rem] leading-relaxed text-ink-2">{t.siteCheck.text}</p>
+            <p className="lede mt-5">{t.siteCheck.text}</p>
           </div>
           <Button
             variant="filled"
             onClick={start}
-            className="glass-btn-lg glass-btn-wrap nudge max-w-full shrink-0 self-start text-center md:self-auto"
+            className="glass-btn-lg glass-btn-wrap nudge max-w-full shrink-0 text-center"
           >
             {t.siteCheck.button}
             <ArrowRight aria-hidden="true" className="rtl:-scale-x-100" />

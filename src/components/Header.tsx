@@ -11,7 +11,6 @@ import { BrandMark } from './BrandMark'
 import { LanguageMenu } from './LanguageMenu'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { PageContext, useHomeAnchor, useHomeTop } from './pageContext'
-import Magnet from './reactbits/Magnet'
 import { buttonClasses } from './ui/button'
 
 /**
@@ -226,11 +225,9 @@ export function Header() {
               <LanguageMenu />
             </div>
             <div className="hidden min-[560px]:block">
-              <Magnet padding={50} magnetStrength={6} maxOffset={8}>
-                <a href={`#${CONTACT_SECTION_ID}`} className={buttonClasses('primary', 'md')}>
-                  {t.common.requestQuote}
-                </a>
-              </Magnet>
+              <a href={`#${CONTACT_SECTION_ID}`} className={buttonClasses('primary', 'md')}>
+                {t.common.requestQuote}
+              </a>
             </div>
             <div className="lg:hidden">
               <Button

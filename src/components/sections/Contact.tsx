@@ -11,16 +11,16 @@ export function Contact() {
   const t = useCopy()
 
   return (
-    <section id={CONTACT_SECTION_ID} aria-labelledby="contact-title" className="border-t border-line bg-paper-2 py-12 sm:py-20 lg:py-24">
-      <div className="container-page grid gap-10 lg:grid-cols-12 lg:gap-14">
+    <section id={CONTACT_SECTION_ID} aria-labelledby="contact-title" className="section-pad bg-card">
+      <div className="container-page grid gap-12 lg:grid-cols-12 lg:gap-16">
         <div className="reveal lg:col-span-5">
           <p className="eyebrow">{t.contact.eyebrow}</p>
           <h2 id="contact-title" className="h-section word-reveal mt-3">
             <Words text={t.contact.heading} />
           </h2>
-          <p className="lede mt-4">{t.contact.lede}</p>
+          <p className="lede mt-5">{t.contact.lede}</p>
 
-          <h3 className="mt-6 text-sm font-semibold">{t.contact.nextTitle}</h3>
+          <h3 className="mt-8 text-[0.9375rem] font-semibold">{t.contact.nextTitle}</h3>
           <ol className="mt-2 space-y-2 text-[0.9375rem] leading-relaxed text-ink-2">
             {t.contact.nextSteps.map((step, index) => (
               <li key={step} className="flex gap-3">
@@ -48,7 +48,7 @@ export function Contact() {
             <CopyEmailButton />
           </div>
 
-          <div id="privacy" className="anchor-target mt-8 border-t border-line-strong pt-5">
+          <div id="privacy" className="anchor-target mt-8 border-t border-ink/10 pt-5">
             <h3 className="text-sm font-semibold">{t.contact.privacyTitle}</h3>
             <p className="mt-1.5 text-sm leading-relaxed text-ink-3">
               {formEndpoint ? t.contact.privacyForm : t.contact.privacyMailto} {t.contact.privacyDelete}

@@ -16,14 +16,14 @@ export function Faq({ items, heading, label }: Props) {
   const entries = items ?? t.faq.items
 
   return (
-    <section id="faq" aria-labelledby="faq-title" className="py-12 sm:py-20 lg:py-24">
-      <div className="container-page grid gap-10 lg:grid-cols-12 lg:gap-14">
-        <div className="reveal lg:col-span-4">
+    <section id="faq" aria-labelledby="faq-title" className="section-pad bg-paper pb-0">
+      <div className="container-page">
+        <div className="section-intro reveal">
           <p className="eyebrow">{label ?? t.faq.eyebrow}</p>
           <h2 id="faq-title" className="h-section word-reveal mt-3">
             <Words text={heading ?? t.faq.heading} />
           </h2>
-          <p className="mt-4 text-ink-2">
+          <p className="lede mt-5">
             {t.faq.moreLead}
             <a href={`#${CONTACT_SECTION_ID}`} className="font-medium text-cobalt underline underline-offset-4">
               {t.faq.askInForm}
@@ -36,19 +36,19 @@ export function Faq({ items, heading, label }: Props) {
           </p>
         </div>
 
-        <div className="reveal border-b border-line lg:col-span-8">
+        <div className="reveal mx-auto mt-14 max-w-[52rem] border-b border-ink/10 lg:mt-16">
           {entries.map((item) => (
-            <details key={item.question} className="faq-item group border-t border-line">
-              <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-6 py-5 text-start font-display text-[1.125rem] font-semibold tracking-[-0.01em] transition-colors hover:text-cobalt sm:text-[1.1875rem]">
+            <details key={item.question} className="faq-item group border-t border-ink/10">
+              <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-6 py-6 text-start font-display text-[1.1875rem] font-semibold tracking-[-0.02em] transition-colors hover:text-cobalt sm:text-[1.375rem]">
                 {item.question}
                 <span
                   aria-hidden="true"
-                  className="faq-icon grid size-8 shrink-0 place-items-center rounded-full border border-line-strong text-ink-2 transition-transform duration-300 group-hover:border-cobalt group-hover:text-cobalt"
+                  className="faq-icon grid size-9 shrink-0 place-items-center rounded-full bg-ink/[0.06] text-ink-2 transition-transform duration-300 group-hover:text-cobalt"
                 >
                   <Plus size={16} />
                 </span>
               </summary>
-              <p className="max-w-[42rem] pb-6 text-[0.98rem] leading-relaxed text-ink-2">{item.answer}</p>
+              <p className="max-w-[44rem] pb-7 text-[1.0625rem] leading-relaxed text-ink-2">{item.answer}</p>
             </details>
           ))}
         </div>

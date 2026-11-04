@@ -35,8 +35,12 @@
   --color-danger: #b42318;
   --color-success: #20683f;
 
-  --font-display: 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, sans-serif;
-  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  /*
+   * Type: the device's own system font on Apple devices (San Francisco, through -apple-system), and Inter, a close
+   * match, everywhere else. Headings and text share the family, as on Apple's own pages; size and weight set them apart.
+   */
+  --font-display: -apple-system, BlinkMacSystemFont, 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
 
   --shadow-soft: 0 1px 2px rgb(19 26 43 / 0.04), 0 8px 24px -12px rgb(19 26 43 / 0.12);
   --shadow-lift: 0 2px 4px rgb(19 26 43 / 0.05), 0 24px 48px -24px rgb(19 26 43 / 0.28);
@@ -88,7 +92,8 @@
     color: var(--color-ink);
     font-family: var(--font-sans);
     font-size: 1.0625rem;
-    line-height: 1.6;
+    line-height: 1.55;
+    letter-spacing: -0.012em;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
@@ -98,8 +103,8 @@
   h3,
   h4 {
     font-family: var(--font-display);
-    letter-spacing: -0.02em;
-    line-height: 1.1;
+    letter-spacing: -0.022em;
+    line-height: 1.12;
     text-wrap: balance;
   }
 
@@ -149,37 +154,91 @@
     }
   }
 
+  /* Section label: a short line in brand blue above the headline, as on Apple's product pages. */
   .eyebrow {
     font-family: var(--font-sans);
-    font-size: 0.8125rem;
+    font-size: clamp(1rem, 0.94rem + 0.3vw, 1.1875rem);
     font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    letter-spacing: -0.01em;
     color: var(--color-cobalt);
   }
 
-  /* A short rule before each section label. It draws in with the section (see the reveal rules). */
-  .eyebrow::before {
-    content: '';
-    display: inline-block;
-    width: 1.5rem;
-    height: 2px;
-    margin-inline-end: 0.6rem;
-    vertical-align: middle;
-    border-radius: 9999px;
-    background: currentColor;
-    transform-origin: left;
-  }
-
   .h-section {
-    font-size: clamp(1.875rem, 1.35rem + 2.2vw, 3rem);
-    font-weight: 650;
+    font-size: clamp(2.25rem, 1.35rem + 3.6vw, 4rem);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
   }
 
   .lede {
-    font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
+    font-size: clamp(1.1875rem, 1.06rem + 0.55vw, 1.5rem);
     color: var(--color-ink-2);
-    line-height: 1.6;
+    line-height: 1.45;
+    letter-spacing: -0.016em;
+  }
+
+  /* Section rhythm: generous space above and below every section. */
+  .section-pad {
+    padding-block: clamp(4.5rem, 2.5rem + 7vw, 9rem);
+  }
+
+  /* A centred section intro: label, headline and lede, then the content below. */
+  .section-intro {
+    max-width: 50rem;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .section-intro .lede {
+    max-width: 40rem;
+    margin-inline: auto;
+  }
+
+  /*
+   * Tiles: large, borderless, rounded surfaces that hold one idea each. A tile is a step lighter or darker than
+   * the section it sits in (`tile` on cream sections, `tile-paper` on white ones), never outlined.
+   */
+  .tile,
+  .tile-paper,
+  .tile-dark {
+    border-radius: 1.75rem;
+    padding: clamp(1.5rem, 1rem + 1.6vw, 2.5rem);
+  }
+
+  .tile {
+    background: var(--color-card);
+  }
+
+  .tile-paper {
+    background: var(--color-paper);
+  }
+
+  .tile-dark {
+    background: var(--color-night);
+    color: #ffffff;
+  }
+
+  /* Apple-style text link: brand blue, a chevron after it, an underline only on hover. */
+  .chevron-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.125rem;
+    min-height: 2.75rem;
+    color: var(--color-cobalt);
+    font-weight: 500;
+    text-underline-offset: 0.2em;
+  }
+
+  .chevron-link:hover {
+    text-decoration: underline;
+  }
+
+  .chevron-link > svg {
+    flex: none;
+  }
+
+  :root[dir='rtl'] .chevron-link > svg {
+    transform: scaleX(-1);
   }
 }
 
@@ -200,13 +259,6 @@
     transition-delay: calc(var(--reveal-step, 0) * var(--motion-stagger));
   }
 
-  .js .reveal .eyebrow::before {
-    transition: transform var(--motion-dur-mask) var(--motion-ease-out) 120ms;
-  }
-
-  .js .reveal:not(.is-visible) .eyebrow::before {
-    transform: scaleX(0);
-  }
 }
 
 /*
@@ -747,117 +799,62 @@ dialog.viewer[data-closing]::backdrop {
   z-index: -1;
   overflow: clip;
   pointer-events: none;
-  mask-image: linear-gradient(to bottom, #000 55%, transparent);
 }
 
-.hero-grid {
+/* One soft, still light behind the headline: brand blue fading into the cream, as Apple lights a product. */
+.hero-light {
   position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(var(--color-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
-  background-size: 56px 56px;
-  opacity: 0.55;
-  mask-image: radial-gradient(ellipse at 78% 38%, #000 6%, transparent 68%);
-}
-
-.hero-orb {
-  position: absolute;
-  border-radius: 9999px;
-}
-
-.hero-orb-blue {
-  width: 46rem;
+  left: 50%;
+  top: -18rem;
+  width: min(72rem, 140vw);
   height: 46rem;
-  right: -14rem;
-  top: -16rem;
-  background: radial-gradient(closest-side, rgb(23 63 208 / 0.15), transparent);
+  translate: -50% 0;
+  border-radius: 9999px;
+  background: radial-gradient(closest-side, rgb(66 99 235 / 0.12), rgb(66 99 235 / 0.04) 55%, transparent);
 }
 
-.hero-orb-sand {
-  width: 38rem;
-  height: 38rem;
-  left: -15rem;
-  bottom: -14rem;
-  background: radial-gradient(closest-side, rgb(217 204 180 / 0.65), transparent);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .hero-orb-blue {
-    animation: orb-drift-a 26s ease-in-out infinite alternate;
-  }
-
-  .hero-orb-sand {
-    animation: orb-drift-b 32s ease-in-out infinite alternate;
-  }
-
-  @keyframes orb-drift-a {
-    to {
-      transform: translate3d(-4rem, 3rem, 0) scale(1.08);
-    }
-  }
-
-  @keyframes orb-drift-b {
-    to {
-      transform: translate3d(5rem, -2.5rem, 0) scale(1.1);
-    }
-  }
-}
-
-/*
- * Primary buttons get a single light sweep on hover (mouse users only). It runs when the pointer arrives
- * and is a decoration; the button's state changes (colour, shadow) carry the feedback.
- */
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .shine {
-    position: relative;
-    overflow: hidden;
-    isolation: isolate;
-  }
-
-  .shine::after {
+/* The preview fades out at its foot, as Apple crops a long page: it reads as continuing, not cut off. */
+@media (min-width: 640px) {
+  .hero-figure::after {
     content: '';
     position: absolute;
-    inset: 0 auto 0 0;
-    width: 55%;
+    inset: auto 0 0 0;
+    height: 22%;
+    background: linear-gradient(to bottom, rgb(255 255 255 / 0), #ffffff 88%);
     pointer-events: none;
-    background: linear-gradient(105deg, transparent, rgb(255 255 255 / 0.3), transparent);
-    transform: translateX(-140%) skewX(-18deg);
-  }
-
-  .shine:hover::after {
-    transform: translateX(300%) skewX(-18deg);
-    transition: transform 720ms var(--motion-ease-out);
   }
 }
 
+.hero-title {
+  font-size: clamp(2.375rem, 1.2rem + 5.8vw, 6rem);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+}
+
+.hero-lede {
+  font-size: clamp(1.25rem, 1.08rem + 0.75vw, 1.75rem);
+  line-height: 1.38;
+  letter-spacing: -0.02em;
+  color: var(--color-ink-2);
+}
+
 /*
- * Scroll-linked depth, where the browser supports it: the hero picture drifts up and settles back a little
- * as the page leaves the first screen, so it reads as sitting in front of the background. Transform only.
+ * Scroll-linked arrival, where the browser supports it: the hero picture starts a little smaller and grows to full
+ * size as the page scrolls, the way Apple brings a product forward. Transform only.
  */
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: scroll()) {
     .hero-figure {
+      transform-origin: 50% 0;
       animation: hero-depth linear both;
       animation-timeline: scroll(root block);
-      animation-range: 0 70vh;
+      animation-range: 0 60vh;
     }
 
     @keyframes hero-depth {
-      to {
-        transform: translateY(-28px) scale(0.985);
-      }
-    }
-
-    .hero-atmosphere .hero-grid {
-      animation: grid-drift linear both;
-      animation-timeline: scroll(root block);
-      animation-range: 0 100vh;
-    }
-
-    @keyframes grid-drift {
-      to {
-        transform: translateY(40px);
+      from {
+        transform: scale(0.94);
       }
     }
   }
@@ -899,16 +896,6 @@ dialog.viewer[data-closing]::backdrop {
   html {
     scroll-padding-bottom: 5rem;
   }
-}
-
-/* Footer: a quiet glow in the corner, so the navy has some depth. */
-.footer-glow {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  overflow: clip;
-  pointer-events: none;
-  background: radial-gradient(38rem 20rem at 100% 0%, rgb(23 63 208 / 0.28), transparent 70%);
 }
 
 /*
@@ -1057,8 +1044,8 @@ dialog.viewer[data-closing]::backdrop {
  * spacing the Latin type relies on: negative tracking breaks Arabic-script joining and crowds Chinese characters.
  */
 :root:lang(fa) {
-  --font-display: Tahoma, 'Segoe UI', 'Geeza Pro', system-ui, sans-serif;
-  --font-sans: Tahoma, 'Segoe UI', 'Geeza Pro', system-ui, sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, Tahoma, 'Segoe UI', 'Geeza Pro', system-ui, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, Tahoma, 'Segoe UI', 'Geeza Pro', system-ui, sans-serif;
 }
 
 :root:lang(zh-Hans) {
@@ -1079,21 +1066,21 @@ dialog.viewer[data-closing]::backdrop {
 
 /* Persian and Chinese headings are set a little smaller: their glyphs are visually heavier than the Latin type. */
 :root:lang(fa) h1 {
-  font-size: clamp(1.85rem, 1.35rem + 2.2vw, 2.9rem);
+  font-size: clamp(2.1rem, 1.4rem + 3.2vw, 3.75rem);
 }
 
 :root:lang(zh-Hans) h1,
 :root:lang(zh-Hant) h1 {
-  font-size: clamp(1.9rem, 1.4rem + 2.3vw, 3.1rem);
+  font-size: clamp(2.2rem, 1.45rem + 3.4vw, 4rem);
 }
 
 :root:lang(fa) .h-section {
-  font-size: clamp(1.55rem, 1.2rem + 1.6vw, 2.3rem);
+  font-size: clamp(1.75rem, 1.25rem + 2.2vw, 2.9rem);
 }
 
 :root:lang(zh-Hans) .h-section,
 :root:lang(zh-Hant) .h-section {
-  font-size: clamp(1.6rem, 1.25rem + 1.8vw, 2.5rem);
+  font-size: clamp(1.85rem, 1.3rem + 2.4vw, 3.1rem);
 }
 
 /* Headings and body copy read better with a little more air in these scripts. */
@@ -1110,7 +1097,6 @@ dialog.viewer[data-closing]::backdrop {
 }
 
 /* Right to left: things that grow or slide from the start edge start from the right. */
-:root[dir='rtl'] .eyebrow::before,
 :root[dir='rtl'] .draw-line::before,
 :root[dir='rtl'] .scroll-progress,
 :root[dir='rtl'] .word-marked::after {
@@ -1214,10 +1200,8 @@ dialog.viewer[data-closing]::backdrop {
  */
 .trade-ticker {
   overflow: hidden;
-  border-block: 1px solid var(--color-line);
-  background: color-mix(in srgb, var(--color-card) 70%, transparent);
-  padding-block: 0.85rem;
-  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  padding-block: 0.5rem 2.5rem;
+  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
 }
 
 .trade-ticker-track {
@@ -1231,13 +1215,14 @@ dialog.viewer[data-closing]::backdrop {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.5rem 1.75rem;
+  gap: 0.5rem 2.5rem;
   margin: 0;
-  padding: 0 1rem;
+  padding: 0 1.25rem;
   list-style: none;
-  font-size: 0.9375rem;
+  font-size: 1.0625rem;
   font-weight: 500;
-  color: var(--color-ink-2);
+  letter-spacing: -0.015em;
+  color: var(--color-ink-3);
 }
 
 .trade-ticker-group li {
@@ -1248,10 +1233,11 @@ dialog.viewer[data-closing]::backdrop {
 }
 
 .trade-ticker-dot {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
   border-radius: 9999px;
-  background: var(--color-cobalt);
+  background: var(--color-ink-3);
+  opacity: 0.6;
 }
 
 /* The second copy only exists to make the loop seamless. */
@@ -1345,50 +1331,6 @@ dialog.viewer[data-closing]::backdrop {
 }
 
 /*
- * Trade cards: a point of light travels around the border while the card is hovered or focused.
- * It is a hover state, so it needs a fine pointer; the angle is an animatable custom property.
- */
-@property --glow-angle {
-  syntax: '<angle>';
-  initial-value: 0deg;
-  inherits: false;
-}
-
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .glow-card {
-    position: relative;
-  }
-
-  .glow-card::before {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    border-radius: inherit;
-    padding: 1.5px;
-    background: conic-gradient(from var(--glow-angle), transparent 0 62%, var(--color-cobalt) 82%, transparent 100%);
-    mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    mask-composite: exclude;
-    -webkit-mask-composite: xor;
-    opacity: 0;
-    transition: opacity var(--motion-dur-ui) ease;
-    pointer-events: none;
-  }
-
-  .glow-card:hover::before {
-    opacity: 1;
-    animation: glow-spin 2.6s linear infinite;
-  }
-
-  @keyframes glow-spin {
-    to {
-      --glow-angle: 360deg;
-    }
-  }
-}
-
-/*
  * Printing: scroll reveals only run on screen, so show everything when the page is printed
  * and keep the sticky header from repeating on every sheet.
  */
@@ -1425,7 +1367,6 @@ dialog.viewer[data-closing]::backdrop {
   .scroll-progress,
   .trade-ticker,
   .hero-atmosphere,
-  .footer-glow,
   .quote-bar {
     display: none !important;
   }
@@ -1442,8 +1383,7 @@ dialog.viewer[data-closing]::backdrop {
     background-image: none !important;
   }
 
-  .hero-figure,
-  .hero-grid {
+  .hero-figure {
     animation: none !important;
     transform: none !important;
   }
@@ -1458,8 +1398,7 @@ dialog.viewer[data-closing]::backdrop {
   .check-draw path,
   .process-rail::after,
   .trade-ticker-track,
-  .check-spark,
-  .glow-card::before {
+  .check-spark {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
@@ -1513,43 +1452,10 @@ html.lenis body {
   pointer-events: none;
 }
 
-/* Vanta network behind the hero. It fades in once running and the static grid steps back. */
-.hero-vanta {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity var(--motion-dur-mask) var(--motion-ease-out);
-  mask-image: radial-gradient(ellipse at 74% 40%, #000 8%, transparent 72%);
-}
-
-.hero-atmosphere[data-vanta] .hero-vanta {
-  opacity: 0.55;
-}
-
-.hero-atmosphere[data-vanta] .hero-grid {
-  opacity: 0.18;
-}
-
-.hero-vanta canvas {
-  display: block;
-}
-
 [data-parallax] {
   transition: none;
 }
 
-/* A soft light that trails the pointer across the hero (moved by the motion engine; invisible until it runs). */
-.hero-pointer-glow {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 30rem;
-  height: 30rem;
-  margin: -15rem 0 0 -15rem;
-  border-radius: 9999px;
-  background: radial-gradient(closest-side, rgb(23 63 208 / 0.11), transparent);
-  opacity: 0;
-}
 
 /* ==========================================================================================================
  * Liquid Glass (Glisse)
@@ -1954,8 +1860,8 @@ html.lenis body {
 /* "View the example" floats over the preview's lower corner. */
 .hero-peek {
   position: absolute;
-  inset-inline-end: 0.75rem;
-  bottom: 0.75rem;
+  inset-inline-end: 1.25rem;
+  bottom: 1.25rem;
   z-index: 1;
 }
 
@@ -2071,3 +1977,52 @@ html.lenis body {
     inset 0 0 0 1.5px var(--color-danger),
     0 0 0 4px rgb(180 35 24 / 0.12);
 }
+
+/* ==========================================================================================================
+ * Apple-style surfaces
+ * ======================================================================================================== */
+
+/* Tiles that are links rise a touch under the pointer; the whole tile is the target. */
+.tile-link {
+  color: inherit;
+  transition:
+    transform var(--motion-dur-ui) var(--motion-ease-out),
+    box-shadow var(--motion-dur-ui) var(--motion-ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tile-link:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 40px -24px rgb(19 26 43 / 0.35);
+  }
+}
+
+.tile-link:focus-visible {
+  border-radius: 1.75rem;
+  outline-offset: 4px;
+}
+
+/* The free site check: a tile washed in the brand blue. */
+.site-check-tile {
+  background:
+    radial-gradient(60% 120% at 50% 0%, rgb(23 63 208 / 0.1), transparent 70%),
+    var(--color-cobalt-soft);
+}
+
+/* The process line sits above the four step tiles. */
+.process-rail::after {
+  inset: 0 0 auto 0;
+}
+
+/* Glass buttons share the pills' medium weight. */
+.lg-button:is(.glass-btn, .glass-btn-lg),
+.glass-cta-link {
+  font-weight: 500;
+}
+
+/* The light footer's language buttons are compact. */
+.site-footer [role='group'] a {
+  min-height: 2.25rem;
+  font-size: 0.8125rem;
+}
+

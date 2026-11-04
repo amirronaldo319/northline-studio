@@ -1,4 +1,4 @@
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight, ChevronRight } from 'lucide-react'
 import { Button } from 'glisse'
 import { EXAMPLES, HERO_EXAMPLE, type ExampleSite } from '@/content/examples'
 import { CONCEPT_PROJECT, FEATURED_PROJECT, MEND_PROJECT, SECONDARY_PROJECT, type Project } from '@/content/projects'
@@ -12,12 +12,12 @@ import { ProjectTrigger } from '../ProjectTrigger'
 import { buttonClasses } from '../ui/button'
 import { Words } from '../Words'
 
-const frameClasses = 'card-frame overflow-hidden rounded-lg border border-line-strong/60 bg-white shadow-soft'
+const frameClasses = 'card-frame overflow-hidden rounded-[1rem] bg-white shadow-soft'
 
 /** Section ids from earlier versions of the page. Links shared with these still land on this section. */
 const LEGACY_IDS = ['examples'] as const
 
-const labelClasses = 'text-xs font-semibold tracking-[0.08em] text-cobalt uppercase'
+const labelClasses = 'text-[0.875rem] font-semibold text-cobalt'
 
 /** Text block for a real project: what it is, what I did, and the decisions worth noting. */
 function ProjectText({ project, titleId }: { project: Project; titleId: string }) {
@@ -30,10 +30,10 @@ function ProjectText({ project, titleId }: { project: Project; titleId: string }
       <p className={labelClasses}>
         {project.status === 'live' ? t.work.statusLive : t.work.statusConcept} <span aria-hidden="true">·</span> {text.type}
       </p>
-      <h3 id={titleId} className="mt-2 text-[1.5rem] font-semibold">
+      <h3 id={titleId} className="mt-2 text-[1.75rem] font-bold tracking-[-0.03em]">
         <bdi>{project.name}</bdi>
       </h3>
-      <p className="mt-2 text-[1.0625rem] leading-relaxed text-ink">{text.summary}</p>
+      <p className="mt-3 text-[1.0625rem] leading-relaxed text-ink">{text.summary}</p>
       <p className="mt-3 text-[0.9375rem] leading-relaxed text-ink-2">
         <strong className="font-semibold text-ink">{t.work.contribution}</strong> {text.contribution}
       </p>
@@ -45,7 +45,7 @@ function ProjectText({ project, titleId }: { project: Project; titleId: string }
           </li>
         ))}
       </ul>
-      <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2">
+      <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2">
         <a
           href={project.liveUrl}
           target="_blank"
@@ -56,12 +56,10 @@ function ProjectText({ project, titleId }: { project: Project; titleId: string }
           <span className="sr-only">{t.common.opensNewTab(project.name)}</span>
           <ArrowUpRight aria-hidden="true" size={17} className="card-arrow" />
         </a>
-        <a
-          href={localHref(`work/${project.id}/`)}
-          className="inline-flex min-h-11 items-center font-semibold text-cobalt underline-offset-4 hover:underline"
-        >
+        <a href={localHref(`work/${project.id}/`)} className="chevron-link">
           {t.work.readCaseStudy}
           <span className="sr-only">: {project.name}</span>
+          <ChevronRight aria-hidden="true" size={18} />
         </a>
       </div>
     </>
@@ -78,7 +76,7 @@ function FeaturedProject({ project }: { project: Project }) {
   const { ref, hasEntered } = useInViewOnce<HTMLDivElement>(0.3)
 
   return (
-    <article aria-labelledby={titleId} className="project-card grid gap-6 lg:grid-cols-12 lg:items-center lg:gap-10">
+    <article aria-labelledby={titleId} className="project-card tile-paper grid gap-8 lg:grid-cols-12 lg:items-center lg:gap-12">
       {/* The phone sits beside the desktop picture with only a hairline of overlap, so it never covers content.
           Its column is reserved up front (the right padding), so nothing shifts when it arrives. */}
       <div ref={ref} className="reveal relative sm:pe-[15%] lg:col-span-8">
@@ -103,13 +101,11 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
   const titleId = `project-${project.id}-title`
 
   return (
-    <article aria-labelledby={titleId} className="project-card reveal" style={revealDelay(index)}>
-      <div data-card-tilt="">
-        <div className={frameClasses}>
-          <ProjectTrigger project={project} />
-        </div>
+    <article aria-labelledby={titleId} className="project-card tile-paper reveal" style={revealDelay(index)}>
+      <div className={frameClasses}>
+        <ProjectTrigger project={project} />
       </div>
-      <div className="mt-5">
+      <div className="mt-7">
         <ProjectText project={project} titleId={titleId} />
       </div>
     </article>
@@ -124,8 +120,8 @@ function ConceptCard({ example, index }: { example: ExampleSite; index: number }
   const titleId = `example-${example.id}-title`
 
   return (
-    <article aria-labelledby={titleId} className="project-card reveal" style={revealDelay(index)}>
-      <div className="relative" data-card-tilt="">
+    <article aria-labelledby={titleId} className="project-card tile-paper reveal" style={revealDelay(index)}>
+      <div className="relative">
         <div className={frameClasses}>
           <DemoPreview example={example} />
         </div>
@@ -135,14 +131,14 @@ function ConceptCard({ example, index }: { example: ExampleSite; index: number }
           tabIndex={-1}
           aria-hidden="true"
           onClick={() => open(example)}
-          className="absolute inset-0 cursor-pointer rounded-lg"
+          className="absolute inset-0 cursor-pointer rounded-[1rem]"
         />
       </div>
-      <div className="mt-5">
+      <div className="mt-7">
         <p className={labelClasses}>
           {t.work.conceptDemo} <span aria-hidden="true">·</span> {text.businessType}
         </p>
-        <h3 id={titleId} className="mt-2 text-[1.375rem] font-semibold">
+        <h3 id={titleId} className="mt-2 text-[1.75rem] font-bold tracking-[-0.03em]">
           {example.name}
         </h3>
         <p className="mt-2 text-[1.0625rem] leading-relaxed text-ink">{text.intent}</p>
@@ -161,23 +157,23 @@ export function Work() {
   const t = useCopy()
 
   return (
-    <section id="work" aria-labelledby="work-title" className="relative border-t border-line py-12 sm:py-20 lg:py-24">
+    <section id="work" aria-labelledby="work-title" className="section-pad relative bg-card">
       <LegacyAnchors ids={LEGACY_IDS} />
 
       <div className="container-page">
-        <div className="reveal max-w-2xl">
+        <div className="section-intro reveal">
           <p className="eyebrow">{t.work.eyebrow}</p>
           <h2 id="work-title" className="h-section word-reveal mt-3">
             <Words text={t.work.heading} />
           </h2>
-          <p className="lede mt-4">{t.work.lede}</p>
+          <p className="lede mt-5">{t.work.lede}</p>
         </div>
 
-        <div className="mt-8 lg:mt-12">
+        <div className="mt-14 lg:mt-20">
           <FeaturedProject project={FEATURED_PROJECT} />
         </div>
 
-        <div className="mt-10 grid gap-9 md:mt-12 md:grid-cols-2 md:gap-8 lg:mt-16 lg:gap-12">
+        <div className="mt-5 grid gap-5 md:grid-cols-2">
           <ProjectCard project={SECONDARY_PROJECT} index={0} />
           <ProjectCard project={CONCEPT_PROJECT} index={1} />
           <ProjectCard project={MEND_PROJECT} index={2} />
