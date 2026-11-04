@@ -5,9 +5,9 @@ import {
   APP_PROJECTS,
   CONCEPT_PROJECT,
   FEATURED_PROJECT,
-  GALLERY_WEBSITES,
+  HERO_PROJECT,
   PROJECTS,
-  SECONDARY_PROJECT,
+  SUPPORTING_PROJECTS,
   STATUS_LABEL,
   WEBSITE_PROJECTS,
 } from './projects'
@@ -57,12 +57,27 @@ describe('portfolio projects', () => {
     expect(new Set(APP_PROJECTS.map((project) => project.tint)).size).toBe(APP_PROJECTS.length)
   })
 
-  test('the home page shows every project exactly once: featured, the websites gallery, or the apps gallery', () => {
-    const shown = [FEATURED_PROJECT, ...GALLERY_WEBSITES, ...APP_PROJECTS].map((project) => project.id)
-    expect(new Set(shown).size).toBe(shown.length)
-    expect([...shown].sort()).toEqual(PROJECTS.map((project) => project.id).sort())
-    for (const project of GALLERY_WEBSITES) expect(project.kind).toBe('website')
+  test('the home page leads with live work, then two different website concepts, each shown once', () => {
+    const home = [HERO_PROJECT, FEATURED_PROJECT, ...SUPPORTING_PROJECTS]
+    expect(new Set(home.map((project) => project.id)).size).toBe(4)
+    expect([HERO_PROJECT.status, FEATURED_PROJECT.status]).toEqual(['live', 'live'])
+    for (const project of SUPPORTING_PROJECTS) {
+      expect(project.kind).toBe('website')
+      expect(project.status).not.toBe('personal')
+    }
+  })
+
+  test('the work page lists every project exactly once: websites, then apps and tools', () => {
+    const listed = [...WEBSITE_PROJECTS, ...APP_PROJECTS].map((project) => project.id)
+    expect(new Set(listed).size).toBe(listed.length)
+    expect([...listed].sort()).toEqual(PROJECTS.map((project) => project.id).sort())
     expect(WEBSITE_PROJECTS.every((project) => project.kind === 'website')).toBe(true)
+  })
+
+  test('projects shown large on the home page have a sharp 2x capture', () => {
+    for (const project of [HERO_PROJECT, FEATURED_PROJECT, ...SUPPORTING_PROJECTS]) {
+      expect(project.desktop2x?.width, project.id).toBe(project.desktop.width * 2)
+    }
   })
 
   test('screenshots have dimensions and alternative text', () => {
@@ -85,10 +100,10 @@ describe('portfolio projects', () => {
   })
 
   test('the hero and the featured work are live websites, and the concept project is labelled as a concept', () => {
-    expect(SECONDARY_PROJECT.status).toBe('live')
+    expect(HERO_PROJECT.status).toBe('live')
     expect(FEATURED_PROJECT.status).toBe('live')
     expect(CONCEPT_PROJECT.status).toBe('concept')
-    expect(new Set([SECONDARY_PROJECT.id, FEATURED_PROJECT.id, CONCEPT_PROJECT.id]).size).toBe(3)
+    expect(new Set([HERO_PROJECT.id, FEATURED_PROJECT.id, CONCEPT_PROJECT.id]).size).toBe(3)
   })
 
   test('captions read as a sentence fragment after the project name', () => {

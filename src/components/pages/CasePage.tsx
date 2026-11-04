@@ -3,7 +3,6 @@ import { PROJECTS, type Project } from '@/content/projects'
 import { useCopy, useLocalHref } from '@/i18n/context'
 import { linkLabel, statusLabel } from '@/i18n/projectStatus'
 import { Contact } from '../sections/Contact'
-import { SiteCheck } from '../sections/SiteCheck'
 import { ProjectTrigger } from '../ProjectTrigger'
 import { Words } from '../Words'
 import { buttonClasses } from '../ui/button'
@@ -69,8 +68,8 @@ export function CasePage({ project }: { project: Project }) {
         <div className="container-page grid gap-10 lg:grid-cols-12 lg:gap-14">
           <div className="reveal lg:col-span-5">
             <p className="eyebrow">{t.casePage.whatIDid}</p>
-            <h2 id="case-did" className="h-section word-reveal mt-3">
-              <Words text={t.casePage.myPart} twoTone />
+            <h2 id="case-did" className="h-section mt-3">
+              <Words text={t.casePage.myPart} />
             </h2>
             <p className="lede mt-5">{text.contribution}</p>
           </div>
@@ -136,7 +135,6 @@ export function CasePage({ project }: { project: Project }) {
         </div>
       </section>
 
-      <SiteCheck />
       <Contact />
     </>
   )

@@ -1,6 +1,6 @@
 // Captures the portfolio screenshots in src/assets/projects/ from the live project sites.
 //
-// Usage:  node scripts/capture-project-screenshots.mjs [projectId ...]
+// Usage:  node scripts/capture-project-screenshots.mjs [--hidpi] [projectId ...]
 // Needs Google Chrome (set CHROME_PATH if it is not in the default macOS location). Uses Chrome's DevTools
 // protocol over the global WebSocket in Node 22+, so there are no extra dependencies.
 //
@@ -20,6 +20,9 @@ const PORT = 9333
 // 1200px keeps the desktop layouts while making text inside a scaled preview about 20% larger than at 1440px.
 const DESKTOP = { width: 1200, height: 778, deviceScaleFactor: 1, mobile: false }
 const PHONE = { width: 390, height: 760, deviceScaleFactor: 2, mobile: true }
+/** With `--hidpi`, the desktop frame is also captured at twice the density, for pictures shown large (a 2x source). */
+const DESKTOP_2X = { ...DESKTOP, deviceScaleFactor: 2 }
+const hidpi = process.argv.includes('--hidpi')
 
 // Projects with a private repository and no public page have `url: null`. Capture them from a local copy by
 // passing `id=url`, for example `node scripts/capture-project-screenshots.mjs stayin=file:///path/web/index.html`.
@@ -149,7 +152,7 @@ async function capture(target, kind, viewport) {
 
 // Each argument is a project id, or `id=url` to capture that project from another address (a local copy).
 const overrides = new Map(
-  process.argv.slice(2).map((arg) => {
+  process.argv.slice(2).filter((arg) => !arg.startsWith('--')).map((arg) => {
     const [id, ...rest] = arg.split('=')
     return [id, rest.length ? rest.join('=') : null]
   }),
@@ -185,6 +188,7 @@ try {
   await waitForChrome()
   for (const target of targets) {
     await capture(target, 'desktop', DESKTOP)
+    if (hidpi) await capture(target, 'desktop-2x', DESKTOP_2X)
     await capture(target, 'mobile', PHONE)
   }
 } finally {

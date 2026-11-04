@@ -11,6 +11,8 @@ import { TRADES } from './trades.ts'
  */
 export type PageRef =
   | { kind: 'home'; locale: Locale }
+  /** Every project, grouped: websites, apps and tools, and design demos. */
+  | { kind: 'work'; locale: Locale }
   | { kind: 'trade'; locale: Locale; slug: string }
   | { kind: 'case'; locale: Locale; id: string }
   | { kind: 'guide'; locale: Locale; slug: string }
@@ -22,6 +24,8 @@ export function relativePath(ref: PageRef): string {
       return `${ref.slug}/`
     case 'guide':
       return `guides/${ref.slug}/`
+    case 'work':
+      return 'work/'
     case 'case':
       return `work/${ref.id}/`
     default:
@@ -44,6 +48,7 @@ export function knownPages(): PageRef[] {
   const refs: PageRef[] = []
   for (const locale of enabledLocales()) {
     refs.push({ kind: 'home', locale })
+    refs.push({ kind: 'work', locale })
     for (const trade of TRADES) refs.push({ kind: 'trade', locale, slug: trade.slug })
     for (const project of PROJECT_DATA) refs.push({ kind: 'case', locale, id: project.id })
     for (const guide of GUIDES) refs.push({ kind: 'guide', locale, slug: guide.slug })

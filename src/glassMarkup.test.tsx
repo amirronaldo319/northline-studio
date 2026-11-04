@@ -5,20 +5,35 @@ import { render } from './entry-server'
 describe('glass markup without JavaScript', async () => {
   const html = await render({ kind: 'home', locale: 'en' })
 
-  test('the glass tab bar is real navigation: plain links to each section', () => {
+  test('the glass tab bar is real navigation: plain links to Work, Pricing and About', () => {
     expect(html).toMatch(/role="navigation"[^>]*aria-label="Main"|aria-label="Main"[^>]*role="navigation"/)
-    for (const id of ['work', 'package', 'process', 'about', 'faq']) expect(html).toMatch(new RegExp(`<a href="#${id}" class="lg-tab"`))
+    for (const id of ['work', 'package', 'about']) expect(html).toMatch(new RegExp(`<a href="#${id}" class="lg-tab"`))
   })
 
-  test('glass inputs keep their names, labels and autocomplete', () => {
+  test('the whole bar is one surface of glass, not a row of separate capsules', () => {
+    expect(html.match(/class="lg-glass nav-glass/g)).toHaveLength(1)
+    expect(html).not.toContain('glass-brand')
+  })
+
+  test('form fields stay plain and readable inside the glass card, with their names, labels and autocomplete', () => {
+    expect(html).toMatch(/class="lg-glass form-glass/)
     expect(html).toMatch(/<label for="inquiry-name"/)
-    expect(html).toMatch(/<input[^>]*id="inquiry-name"[^>]*name="name"[^>]*autoComplete="name"|<input[^>]*autocomplete="name"/i)
-    expect(html).toMatch(/class="lg-glass lg-input field-input[^"]*"/)
+    expect(html).toMatch(/<input[^>]*autoComplete="name"|<input[^>]*autocomplete="name"/i)
+    expect(html).not.toMatch(/class="lg-glass lg-input/)
+  })
+
+  test('screenshots carry glass labels, and the hero screenshot a glass caption with a real link', () => {
+    expect(html).toMatch(/class="lg-glass caption-glass[^"]*"[^]*?<a href="\/work\/farsh-aquatics\/"/)
+    expect(html.match(/class="lg-glass chip-glass/g)?.length).toBeGreaterThanOrEqual(2)
+  })
+
+  test('the phone quote bar starts hidden and out of reach', () => {
+    expect(html).toMatch(/<div class="quote-bar" data-visible="false" inert=""/)
   })
 
   test('Persian keeps a right-to-left nav it can read in order', async () => {
     const fa = await render({ kind: 'home', locale: 'fa' })
     expect(fa).not.toContain('class="lg-tab-bar')
-    expect(fa).toContain('nav-underline')
+    expect(fa).toContain('class="nav-plain"')
   })
 })

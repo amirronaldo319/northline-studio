@@ -230,7 +230,6 @@ export function ProjectViewerProvider({ children }: { children: ReactNode }) {
     <ProjectViewerContext.Provider value={api}>
       {children}
       <dialog
-        data-lenis-prevent=""
         ref={dialogRef}
         className="viewer"
         aria-labelledby="project-viewer-title"

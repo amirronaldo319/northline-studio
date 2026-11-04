@@ -1,24 +1,27 @@
 import { ArrowUp } from 'lucide-react'
 import { mailtoHref, site } from '@/config/site'
-import { NAV_LINKS } from '@/content/navigation'
+import { MENU_LINKS } from '@/content/navigation'
 import { useCopy, useLocalHref } from '@/i18n/context'
 import { BrandMark } from './BrandMark'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { useHomeAnchor } from './pageContext'
 
 const CURRENT_YEAR = new Date().getFullYear()
-const footerLink = 'inline-flex min-h-9 items-center text-ink-2 hover:text-ink hover:underline'
+const footerLink = 'inline-flex min-h-8 items-center text-ink-2 hover:text-ink hover:underline'
 const columnTitle = 'text-[0.8125rem] font-semibold text-ink'
 
-/** A quiet, light footer in Apple's manner: small type, columns of plain links, a hairline above the fine print. */
+/**
+ * A compact footer in Apple's manner: small type, short columns of plain links (every section, all projects, the
+ * industry pages and the guides), and a hairline above the fine print.
+ */
 export function Footer() {
   const homeAnchor = useHomeAnchor()
   const localHref = useLocalHref()
   const t = useCopy()
 
   return (
-    <footer className="site-footer bg-paper-2 text-[0.8125rem] text-ink-3">
-      <div className="container-page flex flex-col gap-10 pt-14 pb-10 md:flex-row md:items-start md:justify-between">
+    <footer id="site-footer" className="site-footer bg-paper text-[0.8125rem] text-ink-3">
+      <div className="container-page flex flex-col gap-8 border-t border-line pt-10 pb-8 md:flex-row md:items-start md:justify-between">
         <div className="max-w-xs">
           <BrandMark />
           <p className="mt-4 leading-relaxed">{t.footer.tagline(site.serviceArea.label)}</p>
@@ -27,17 +30,22 @@ export function Footer() {
           </a>
         </div>
 
-        <div className="flex flex-wrap gap-x-14 gap-y-8">
+        <div className="flex flex-wrap gap-x-12 gap-y-8">
           <nav aria-label={t.common.footerNav}>
             <p className={columnTitle}>{site.brand.name}</p>
             <ul className="mt-2 grid grid-cols-2 gap-x-10 md:grid-cols-1">
-              {NAV_LINKS.map((link) => (
+              {MENU_LINKS.map((link) => (
                 <li key={link.id}>
                   <a href={homeAnchor(link.id)} className={footerLink}>
                     {t.nav[link.id]}
                   </a>
                 </li>
               ))}
+              <li>
+                <a href={localHref('work/')} className={footerLink}>
+                  {t.work.allProjects}
+                </a>
+              </li>
               <li>
                 <a href="#privacy" className={footerLink}>
                   {t.common.privacy}
@@ -75,7 +83,7 @@ export function Footer() {
       </div>
 
       <div className="container-page">
-        <div className="flex flex-col gap-4 border-t border-ink/10 py-5 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-4 border-t border-line py-5 sm:flex-row sm:items-center sm:justify-between">
           <p>{t.footer.copyright(CURRENT_YEAR, site.brand.name)}</p>
           <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
             <LanguageSwitcher />

@@ -12,11 +12,14 @@ export const zhHant: Copy = {
     homeTitle: 'SitePilot | 加拿大本地商家的專屬網站',
     homeDescription: '為加拿大各地的本地服務型商家制作專屬單頁網站。查看網站案例，並索取報價。',
     caseTitle: (name, status) => `${name}：${{ live: '我製作的在線網站', concept: '概念項目', personal: '個人項目' }[status]} | SitePilot`,
+    workTitle: '全部項目：網站、概念與應用 | SitePilot',
+    workDescription: 'Amir 設計並製作的在線網站、概念項目和個人應用，每一個都標明了它是什麼。打開任一項目查看詳情。',
   },
 
   common: {
     skipToContent: '跳到內容',
     requestQuote: '索取報價',
+    fromPrice: 'CA$299 起',
     seeMyWork: '查看我的作品',
     openMenu: '打開菜單',
     closeMenu: '關閉菜單',
@@ -36,13 +39,15 @@ export const zhHant: Copy = {
     opensNewTab: (name) => `：${name}（在新標籤頁打開）`,
   },
 
-  nav: { work: '作品', package: '服務內容', process: '流程', about: '關於', faq: '常見問題' },
+  nav: { work: '作品', package: '價格', process: '流程', about: '關於', faq: '常見問題' },
 
   hero: {
-    headline: '為加拿大本地服務型商家 量身定製的網站。',
-    markedWords: [],
-    lede: '展示您的作品，說明您的服務，讓客戶輕鬆索取報價。',
-    facts: ['先出書面報價，再開始工作', '由我親自設計和製作', '加拿大各地'],
+    headline: ['您的生意。', '優雅上線。'],
+    lede: '為加拿大各地的服務型商家打造網站。',
+    priceLine: '單頁套餐 CA$299 起。',
+    explore: '查看套餐',
+    seeWork: '查看作品',
+    visualCaption: (name, caption) => `${name}：${caption}。`,
     conceptCaption: (name, businessType) => `概念演示：${name}，為一家虛構的${businessType}商家所做的設計。`,
     viewExample: '查看示例',
   },
@@ -61,11 +66,20 @@ export const zhHant: Copy = {
     sitesLabel: '網站',
     appsHeading: '應用和工具。',
     appsLede: '我為自己設計和製作的東西：網頁應用、手機原型，以及一套開發者工具包。',
+    viewProject: '查看項目',
+    allProjects: '瀏覽全部項目',
+    demosHeading: '設計演示。',
+    demosLede: '為虛構商家做的概念設計，每一個都標明是演示。',
     readCaseStudy: '閱讀案例詳情',
     conceptDemo: '概念演示',
     viewExample: '查看示例',
     openLarger: (name) => `打開較大預覽：${name}`,
     openPhone: (name) => `打開手機預覽：${name}`,
+  },
+  workPage: {
+    eyebrow: '作品',
+    heading: '全部項目。',
+    lede: '在線網站、概念項目和我自己的應用，每一個都標明了它是什麼。',
   },
 
   projects: {
@@ -235,37 +249,19 @@ export const zhHant: Copy = {
     eyebrow: '您的網站套餐',
     heading: '一個專注的頁面，為您的業務而建。',
     lede: '它回答客戶在致電之前會問的問題：您做什麼、您的作品是什麼樣子，以及如何聯繫您。',
-    groups: ['設計', '內容', '諮詢', '上線'], included: '包含內容',
-    quoteLead: '先給您書面報價。',
-    quoteBody:
-      '開始工作之前，報價會明確費用、工作範圍、時間安排、主機和域名的安排，以及任何持續費用。超出單頁的內容，例如額外的頁面或功能，將另行報價。',
-    factors: [
-      { title: '已準備好的內容', text: '您的服務、照片和聯繫方式。' },
-      { title: '超出一頁的內容', text: '額外的頁面或功能，單獨列項報價。' },
-      { title: '主機和域名', text: '您已經擁有什麼，以及希望由我安排什麼。' },
-      { title: '時間', text: '您的資料何時準備好，以及您希望何時上線。' },
-    ],
+    groups: ['設計', '內容', '諮詢', '上線'], included: '包含內容', termsSummary: '範圍、費用和條款',
   },
 
   process: {
     eyebrow: '流程',
     heading: '我們如何合作。',
     steps: [
-      { title: '介紹您的業務。', text: '告訴我您做什麼、服務哪些客戶，以及希望網站起到什麼作用。' },
-      { title: '提供您的內容。', text: '服務項目、照片、聯繫方式，以及您已有的品牌素材。' },
-      { title: '查看您的網站。', text: '在最終版本確認之前，先審閱設計和內容。' },
-      { title: '確認並安排上線。', text: '確認最終網站，並安排發佈方式。' },
+      { title: '介紹您的業務。', text: '告訴我您做什麼、希望網站幫您實現什麼。我會回覆一份書面報價，在您批准之前不會開始任何工作。' },
+      { title: '審閱設計。', text: '發送您的文案、照片和品牌素材。我設計並製作頁面，上線前由您審閱。' },
+      { title: '批准並上線。', text: '確認最終網站，我們一起安排上線方式。' },
     ],
   },
 
-  audience: {
-    eyebrow: '我為誰服務',
-    heading: '為本地服務型商家而做。',
-    lede: '如果客戶通過搜索、打聽或手機上的一個鏈接找到您，一個清晰的頁面能讓下一步一目瞭然。請選擇最接近您業務的一項。',
-    readPage: '閱讀該頁面',
-    forName: (name) => `：${name}`,
-    guidesLead: '正在計劃做網站？兩篇簡短指南：',
-  },
 
   about: {
     eyebrow: '關於',
@@ -276,11 +272,7 @@ export const zhHant: Copy = {
       { label: '開始工作之前', value: '一份由您確認的書面報價' },
       { label: '溝通方式', value: '通過電子郵件，用簡明的語言' },
     ],
-    paragraphs: [
-      '我是 Amir。每一個網站都由我親自設計和製作，所以您發來消息時，對面就是實際做事的人。',
-      '近期的作品包括：為溫哥華一傢俬人游泳教學商家制作的單頁網站；為一家車輛託管服務製作的、帶交互式估算器的落地頁；以及一個帶有住宅塔樓交互式 3D 模型的雙語概念網站。我也製作自己的應用，從可離線使用的波斯歷，到帶有公開戰績記錄的 UFC 比賽預測應用。',
-      '我專注於為加拿大各地的本地服務型商家制作實用的網站，範圍保持簡單、語言保持平實，讓您清楚知道會得到什麼，以及接下來會發生什麼。',
-    ],
+    paragraphs: ['我是 Amir。每一個網站都由我親自設計和製作，所以您發來消息時，對面就是實際做事的人。'],
   },
 
   faq: {
@@ -317,22 +309,15 @@ export const zhHant: Copy = {
 
   siteCheck: {
     eyebrow: '已經有網站了？',
-    heading: '先從免費的網站檢查開始。',
-    text: '把您的網址發給我，我會回覆我首先會修改的地方。您不需要新網站也可以來問，沒有您的確認，不會開始任何工作。',
     button: '申請網站檢查',
     starterMessage: '請看一下我現有的網站，並告訴我您首先會修改什麼。',
   },
 
   contact: {
     eyebrow: '開始吧',
-    heading: '索取報價。',
-    lede: '告訴我您的業務和您的需求。我會回覆您，一起討論範圍和下一步。',
-    nextTitle: '接下來會怎樣',
-    nextSteps: [
-      '您發來一條消息，寫多寫少都可以。',
-      '我閱讀後通過電子郵件回覆，一起討論您的需求。',
-      '如果合適，我會發送一份書面報價。在您確認之前，不會開始任何工作。',
-    ],
+    heading: '一起打造您的網站。',
+    lede: '告訴我您的業務。我會通過電子郵件回覆下一步。',
+    reassurance: '在您批准書面報價之前，不會開始任何工作。',
     preferEmail: '更喜歡發郵件？',
     copyEmail: '複製郵箱地址',
     copied: '已複製',

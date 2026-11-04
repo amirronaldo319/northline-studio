@@ -29,11 +29,14 @@ export const en: Copy = {
       'One-page websites from CA$299 for businesses across Canada. Compare Starter and CA$599 Standard packages. Optional care from CA$29/month.',
     caseTitle: (name, status) =>
       `${name}: ${{ live: 'a live website I built', concept: 'a concept project', personal: 'a personal project' }[status]} | SitePilot`,
+    workTitle: 'All projects: websites, concepts and apps | SitePilot',
+    workDescription: `Live websites, concept projects and personal apps designed and built by ${site.brand.owner}, each labelled for what it is. Open any project for the details.`,
   },
 
   common: {
     skipToContent: 'Skip to content',
     requestQuote: 'Request a quote',
+    fromPrice: 'From CA$299',
     seeMyWork: 'See my work',
     openMenu: 'Open menu',
     closeMenu: 'Close menu',
@@ -53,13 +56,15 @@ export const en: Copy = {
     opensNewTab: (name) => `: ${name} (opens in a new tab)`,
   },
 
-  nav: { work: 'Work', package: 'Package', process: 'Process', about: 'About', faq: 'FAQ' },
+  nav: { work: 'Work', package: 'Pricing', process: 'Process', about: 'About', faq: 'FAQ' },
 
   hero: {
-    headline: 'Custom websites for service businesses across Canada.',
-    markedWords: [6],
-    lede: 'Show your work, explain your services, and make requesting a quote easy.',
-    facts: ['Written quote before any work', 'Designed and built by me', 'Serving all of Canada'],
+    headline: ['Your business.', 'Beautifully online.'],
+    lede: 'Websites for service businesses across Canada.',
+    priceLine: 'One-page packages from CA$299.',
+    explore: 'Explore packages',
+    seeWork: 'See the work',
+    visualCaption: (name, caption) => `${name}, ${caption}.`,
     conceptCaption: (name, businessType) =>
       `Concept demo: ${name}, a design for a fictional ${businessType.toLowerCase()} business.`,
     viewExample: 'View example',
@@ -79,11 +84,20 @@ export const en: Copy = {
     sitesLabel: 'Websites',
     appsHeading: 'Apps and tools.',
     appsLede: 'Things I designed and built for myself: web apps, phone prototypes, and a developer kit.',
+    viewProject: 'View project',
+    allProjects: 'Explore all projects',
+    demosHeading: 'Design demos.',
+    demosLede: 'Concept designs for fictional businesses, each labelled as a demo.',
     readCaseStudy: 'Read the case study',
     conceptDemo: 'Concept demo',
     viewExample: 'View example',
     openLarger: (name) => `Open larger preview: ${name}`,
     openPhone: (name) => `Open phone preview: ${name}`,
+  },
+  workPage: {
+    eyebrow: 'Work',
+    heading: 'All projects.',
+    lede: 'Live websites, concept projects and my own apps, each labelled for what it is.',
   },
 
   projects,
@@ -107,37 +121,19 @@ export const en: Copy = {
     eyebrow: 'Your website package',
     heading: 'One focused page, built around your business.',
     lede: 'It answers the questions customers ask before they call: what you do, what your work looks like, and how to reach you.',
-    groups: ['Design', 'Content', 'Inquiries', 'Launch basics'], included: 'What’s included',
-    quoteLead: 'A written quote comes first.',
-    quoteBody:
-      'Before work begins, it confirms the cost, scope, schedule, hosting and domain arrangements, and any ongoing costs. Anything beyond the single page, such as extra pages or features, is quoted separately.',
-    factors: [
-      { title: 'What’s ready', text: 'Your services, photos, and contact details.' },
-      { title: 'Beyond one page', text: 'Extra pages or features, quoted as separate lines.' },
-      { title: 'Hosting and domain', text: 'What you already have, and what you’d like arranged.' },
-      { title: 'Timing', text: 'When your details are ready and when you’d like it live.' },
-    ],
+    groups: ['Design', 'Content', 'Inquiries', 'Launch basics'], included: 'What’s included', termsSummary: 'Scope, costs and terms',
   },
 
   process: {
     eyebrow: 'Process',
     heading: 'How we’ll work together.',
     steps: [
-      { title: 'Tell me about your business.', text: 'Share what you do, who you serve, and what you want the website to help with.' },
-      { title: 'Share your content.', text: 'Send your services, photos, contact details, and any branding you already have.' },
-      { title: 'Review your website.', text: 'Look over the design and content before the final version is approved.' },
-      { title: 'Approve and arrange launch.', text: 'Confirm the final website and how it will go live.' },
+      { title: 'Tell me about your business.', text: 'Share what you do and what the site should help with. I reply with a written quote, and nothing starts until you approve it.' },
+      { title: 'Review the design.', text: 'Send your text, photos and branding. I design and build the page, and you review it before it goes live.' },
+      { title: 'Approve and launch.', text: 'Confirm the final website, and we arrange how it goes live.' },
     ],
   },
 
-  audience: {
-    eyebrow: 'Who I build for',
-    heading: 'Made for local service businesses.',
-    lede: 'If customers find you by searching, asking around, or opening a link on their phone, a clear page makes the next step obvious. Pick the one closest to your business.',
-    readPage: 'Read the page',
-    forName: (name) => ` for ${name}`,
-    guidesLead: 'Planning a site? Two short guides:',
-  },
 
   about: {
     eyebrow: 'About',
@@ -148,11 +144,7 @@ export const en: Copy = {
       { label: 'Before work starts', value: 'A written quote you approve' },
       { label: 'How we talk', value: 'By email, in plain language' },
     ],
-    paragraphs: [
-      `I’m ${site.brand.owner}. I design and build every website myself, so when you send a message you’re talking to the person doing the work.`,
-      'Recent builds include a one-page site for a Vancouver private swim-lesson business, a landing page with an interactive estimator for a car-hosting service, and a bilingual concept site with interactive 3D models of a residential tower. I also build apps of my own, from an offline Persian calendar to a UFC forecast app with a public track record.',
-      `I focus on practical sites for service businesses across ${site.serviceArea.label}, and I keep the scope simple and the language plain, so you know what you’re getting and what comes next.`,
-    ],
+    paragraphs: [`I’m ${site.brand.owner}. I design and build every website myself, so when you send a message you’re talking to the person doing the work.`],
   },
 
   faq: {
@@ -167,22 +159,15 @@ export const en: Copy = {
 
   siteCheck: {
     eyebrow: 'Already have a website?',
-    heading: 'Start with a free site check.',
-    text: 'Send me your web address and I’ll reply with what I’d change first. You don’t need a new site to ask, and nothing starts without your approval.',
     button: 'Ask for a site check',
     starterMessage: 'Please take a look at my current website and tell me what you would change first.',
   },
 
   contact: {
     eyebrow: 'Get started',
-    heading: 'Request a quote.',
-    lede: 'Tell me about your business and what you need. I’ll reply to talk through the scope and next steps.',
-    nextTitle: 'What happens next',
-    nextSteps: [
-      'You send a message, with as much or as little as you like.',
-      'I read it and reply by email to talk through what you need.',
-      'If it’s a fit, I send a written quote. Nothing starts until you approve it.',
-    ],
+    heading: 'Let’s build your website.',
+    lede: 'Tell me about your business. I’ll reply by email with the next steps.',
+    reassurance: 'Nothing starts until you approve the written quote.',
     preferEmail: 'Prefer email?',
     copyEmail: 'Copy email address',
     copied: 'Copied',

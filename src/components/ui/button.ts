@@ -1,5 +1,5 @@
 export type ButtonVariant = 'primary' | 'secondary' | 'outlineLight' | 'inverse' | 'quiet'
-export type ButtonSize = 'md' | 'lg'
+export type ButtonSize = 'sm' | 'md' | 'lg'
 
 const base =
   'inline-flex items-center justify-center gap-2 rounded-full font-medium whitespace-nowrap select-none ' +
@@ -11,7 +11,7 @@ const base =
  * light sweeps. The label carries the weight, not effects.
  */
 const variants: Record<ButtonVariant, string> = {
-  primary: 'bg-cobalt text-white hover:bg-[#2a51de] active:bg-cobalt-deep',
+  primary: 'bg-cobalt text-white hover:bg-[#0077ed] active:bg-cobalt-deep',
   secondary: 'border border-cobalt text-cobalt hover:bg-cobalt hover:text-white',
   /** The outline pill on dark surfaces. */
   outlineLight: 'border border-white/45 text-white hover:border-white hover:bg-white hover:text-night',
@@ -20,6 +20,8 @@ const variants: Record<ButtonVariant, string> = {
 }
 
 const sizes: Record<ButtonSize, string> = {
+  /** The header's button: small, as Apple's navigation buttons are, and still a 32px target. */
+  sm: 'min-h-8 px-3.5 text-[0.8125rem]',
   md: 'min-h-11 px-5 text-[0.9375rem]',
   lg: 'min-h-12 px-7 text-[1.0625rem]',
 }

@@ -12,15 +12,24 @@ describe('server render', async () => {
 
   test('contains the headline, every section, and the contact form', () => {
     expect(html).toContain('Canada')
-    for (const id of ['work', 'package', 'process', 'about', 'faq', 'site-check', 'contact']) {
+    for (const id of ['work', 'package', 'process', 'about', 'faq', 'contact', 'site-check']) {
       expect(html).toContain(`id="${id}"`)
     }
     expect(html).toContain('Request a quote')
     expect(html).toContain('name="email"')
   })
 
-  test('keeps the concept demo labelled as a concept', () => {
-    expect(text).toContain('Concept demo: Tidewell Cleaning')
+  test('leads with the new headline and the starting price', () => {
+    expect(text).toContain('Your business.')
+    expect(text).toContain('Beautifully online.')
+    expect(text).toContain('One-page packages from CA$299.')
+  })
+
+  test('keeps the design demos, labelled as demos, on the work page', async () => {
+    const work = (await render({ kind: 'work', locale: 'en' })).replace(/<!-- -->/g, '')
+    expect(work).toContain('Tidewell Cleaning')
+    expect(work).toContain('Concept demo')
+    expect(work).toContain('id="apps-title"')
   })
 
   test('renders exactly one h1', () => {
@@ -28,7 +37,7 @@ describe('server render', async () => {
   })
 
   test('does not render the phone quote bar as visible', () => {
-    expect(html).toMatch(/<div data-visible="false"[^>]*class="quote-bar/)
+    expect(html).toMatch(/class="quote-bar" data-visible="false"/)
   })
 
   test('contains no inline scripts, which the Content-Security-Policy would block', () => {

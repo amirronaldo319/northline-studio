@@ -1,255 +1,125 @@
-import type { CSSProperties } from 'react'
-import { ArrowUpRight, ChevronRight, Lock } from 'lucide-react'
-import { Button } from 'glisse'
-import { EXAMPLES, HERO_EXAMPLE, type ExampleSite } from '@/content/examples'
-import { APP_PROJECTS, FEATURED_PROJECT, GALLERY_WEBSITES, type Project } from '@/content/projects'
-import { useInViewOnce } from '@/hooks/useInViewOnce'
+import { ChevronRight } from 'lucide-react'
+import { FEATURED_PROJECT, SUPPORTING_PROJECTS, type Project } from '@/content/projects'
 import { useCopy, useLocalHref } from '@/i18n/context'
-import { linkLabel, statusLabel } from '@/i18n/projectStatus'
-import { DemoPreview } from '../DemoPreview'
-import { useExampleDialog } from '../exampleDialogContext'
+import { statusLabel } from '@/i18n/projectStatus'
 import { LegacyAnchors } from '../LegacyAnchors'
 import { ProjectTrigger } from '../ProjectTrigger'
-import { buttonClasses } from '../ui/button'
-import { Gallery } from '../ui/Gallery'
-import { Words } from '../Words'
-
-const frameClasses = 'card-frame overflow-hidden rounded-[1rem] bg-white shadow-soft'
+import { ShotChip } from '../ShotChip'
 
 /** Section ids from earlier versions of the page. Links shared with these still land on this section. */
 const LEGACY_IDS = ['examples'] as const
 
-const labelClasses = 'text-[0.875rem] font-semibold text-sky'
+/** A small factual label: what kind of work it is (live, concept or personal) and what it is for. */
+function ProjectLabel({ project }: { project: Project }) {
+  const t = useCopy()
+  return (
+    <p className="project-label">
+      {statusLabel(t.work, project.status)}
+      <span aria-hidden="true"> · </span>
+      {t.projects[project.id].type}
+    </p>
+  )
+}
 
-/**
- * Text block for a real project. The featured project tells the whole story: what it is, what I did, and the
- * decisions worth noting. A gallery tile is a highlight, as on Apple's cards: the label, the name, one line, and
- * the way in; the rest waits on the case study.
- */
-function ProjectText({ project, titleId, brief = false }: { project: Project; titleId: string; brief?: boolean }) {
+function ViewProject({ project, className = '' }: { project: Project; className?: string }) {
   const t = useCopy()
   const localHref = useLocalHref()
-  const text = t.projects[project.id]
-
   return (
-    <>
-      <p className={labelClasses}>
-        {statusLabel(t.work, project.status)}
-        {!brief && (
-          <>
-            {' '}
-            <span aria-hidden="true">·</span> {text.type}
-          </>
-        )}
-      </p>
-      <h3 id={titleId} className="mt-2 text-[1.75rem] font-bold tracking-[-0.03em]">
-        <bdi>{project.name}</bdi>
-      </h3>
-      {brief ? (
-        <p className="caption-sentence mt-2 text-[1.0625rem] leading-snug text-white/75">{text.caption}</p>
-      ) : (
-        <>
-          <p className="mt-3 text-[1.0625rem] leading-relaxed text-white/90">{text.summary}</p>
-          <p className="mt-3 text-[0.9375rem] leading-relaxed text-white/65">
-            <strong className="font-semibold text-white/90">{t.work.contribution}</strong> {text.contribution}
-          </p>
-          <ul className="mt-3 space-y-2 text-[0.9375rem] leading-relaxed text-white/65">
-            {text.decisions.map((decision, index) => (
-              <li key={decision} className={`gap-3 ${index === 0 ? 'flex' : 'hidden sm:flex'}`}>
-                <span aria-hidden="true" className="mt-2.5 size-1.5 shrink-0 rounded-full bg-sky" />
-                {decision}
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
-      <div className={`${brief ? 'mt-auto pt-5' : 'mt-6'} flex flex-wrap items-center gap-x-6 gap-y-2`}>
-        {project.liveUrl ? (
-          <a
-            href={project.liveUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={buttonClasses('outlineLight', 'md')}
-          >
-            {linkLabel(t.work, project.status)}
-            <span className="sr-only">{t.common.opensNewTab(project.name)}</span>
-            <ArrowUpRight aria-hidden="true" size={17} className="card-arrow" />
-          </a>
-        ) : (
-          <p className="inline-flex items-center gap-2 text-[0.9375rem] text-white/60">
-            <Lock aria-hidden="true" size={15} />
-            {t.work.noPublicLink}
-          </p>
-        )}
-        <a href={localHref(`work/${project.id}/`)} className="chevron-link">
-          {t.work.readCaseStudy}
-          <span className="sr-only">: {project.name}</span>
-          <ChevronRight aria-hidden="true" size={18} />
-        </a>
-      </div>
-    </>
+    <a href={localHref(`work/${project.id}/`)} className={`text-link ${className}`}>
+      {t.work.viewProject}
+      <span className="sr-only">: {project.name}</span>
+      <ChevronRight aria-hidden="true" size={18} className="rtl:-scale-x-100" />
+    </a>
   )
 }
 
 /**
- * The featured live project: the real desktop screenshot is the anchor, with the real phone screenshot
- * arriving beside it once. Only the media moves; the text and buttons stay put. On small screens the
- * single phone capture is shown instead of two unreadably small pictures.
+ * The best project, presented as Apple presents a product: a label, the name set large, one sentence, one link,
+ * and the work itself below at full width, the desktop capture with its phone capture beside it.
  */
 function FeaturedProject({ project }: { project: Project }) {
+  const t = useCopy()
   const titleId = `project-${project.id}-title`
-  const { ref, hasEntered } = useInViewOnce<HTMLDivElement>(0.3)
 
   return (
-    <article aria-labelledby={titleId} className="project-card tile-paper grid gap-8 lg:grid-cols-12 lg:items-center lg:gap-12">
-      {/* The phone sits beside the desktop picture with only a hairline of overlap, so it never covers content.
-          Its column is reserved up front (the right padding), so nothing shifts when it arrives. */}
-      <div ref={ref} className="reveal relative sm:pe-[15%] lg:col-span-8">
-        <div className={`mask-reveal ${frameClasses}`}>
-          <ProjectTrigger project={project} />
+    <article aria-labelledby={titleId} className="feature">
+      <div className="reveal mx-auto max-w-[46rem] text-center">
+        <ProjectLabel project={project} />
+        <h3 id={titleId} className="feature-name mt-2">
+          <bdi>{project.name}</bdi>
+        </h3>
+        <p className="feature-line caption-sentence mx-auto mt-4">{t.projects[project.id].caption}</p>
+        <ViewProject project={project} className="mt-5 text-[1.0625rem]" />
+      </div>
+      <div className="reveal showcase mt-12 sm:mt-16">
+        <div className="showcase-desktop">
+          <ProjectTrigger project={project} sizes="(min-width: 1216px) 1040px, 86vw" />
         </div>
-        <div className="phone-pop absolute end-0 bottom-0 hidden w-[17%] sm:block" data-in={hasEntered}>
-          <div className="phone-device">
-            <ProjectTrigger project={project} view="phone" className="phone-trigger" />
-          </div>
-        </div>
-      </div>
-      <div className="lg:col-span-4">
-        <ProjectText project={project} titleId={titleId} />
-      </div>
-    </article>
-  )
-}
-
-/** A real website as a gallery tile, in the same shape as a concept demo tile. */
-function ProjectCard({ project }: { project: Project }) {
-  const titleId = `project-${project.id}-title`
-
-  return (
-    <article aria-labelledby={titleId} className="project-card tile-paper flex h-full flex-col">
-      <div className={frameClasses}>
-        <ProjectTrigger project={project} />
-      </div>
-      <div className="mt-7 flex flex-1 flex-col">
-        <ProjectText project={project} titleId={titleId} brief />
-      </div>
-    </article>
-  )
-}
-
-/**
- * An app as a portrait tile: its real phone capture in a device, lit from behind in the app's own colour, as
- * Apple stages an iPhone. The phone is the button that opens the larger preview.
- */
-function AppCard({ project }: { project: Project }) {
-  const titleId = `project-${project.id}-title`
-
-  return (
-    <article aria-labelledby={titleId} className="project-card tile-paper flex h-full flex-col">
-      <div className="app-stage" style={{ '--tint': project.tint } as CSSProperties}>
-        <div className="app-phone phone-device">
+        <div className="showcase-phone phone-device">
           <ProjectTrigger project={project} view="phone" className="phone-trigger" />
         </div>
       </div>
-      <div className="mt-7 flex flex-1 flex-col">
-        <ProjectText project={project} titleId={titleId} brief />
-      </div>
     </article>
   )
 }
 
-/** A concept demo for a fictional business, opened in the preview dialog. */
-function ConceptCard({ example }: { example: ExampleSite }) {
-  const { open } = useExampleDialog()
+/** A supporting project: the picture first, then the label, the name, one sentence and the link. */
+function SupportingProject({ project }: { project: Project }) {
   const t = useCopy()
-  const text = t.examples[example.id]
-  const titleId = `example-${example.id}-title`
+  const titleId = `project-${project.id}-title`
 
   return (
-    <article aria-labelledby={titleId} className="project-card tile-paper flex h-full flex-col">
-      <div className="relative">
-        <div className={frameClasses}>
-          <DemoPreview example={example} />
-        </div>
-        {/* Mouse-only convenience; the labelled button below is the accessible control. */}
-        <button
-          type="button"
-          tabIndex={-1}
-          aria-hidden="true"
-          onClick={() => open(example)}
-          className="absolute inset-0 cursor-pointer rounded-[1rem]"
-        />
+    <article aria-labelledby={titleId} className="reveal">
+      <div className="shot-frame relative">
+        <ProjectTrigger project={project} sizes="(min-width: 1216px) 560px, (min-width: 768px) 46vw, 92vw" />
+        <ShotChip>{statusLabel(t.work, project.status)}</ShotChip>
       </div>
-      <div className="mt-7 flex flex-1 flex-col">
-        <p className={labelClasses}>
-          {t.work.conceptDemo} <span aria-hidden="true">·</span> {text.businessType}
-        </p>
-        <h3 id={titleId} className="mt-2 text-[1.75rem] font-bold tracking-[-0.03em]">
-          {example.name}
+      <div className="mt-6">
+        <p className="project-label">{t.projects[project.id].type}</p>
+        <h3 id={titleId} className="mt-1.5 text-[1.75rem] leading-tight font-semibold tracking-[-0.02em]">
+          <bdi>{project.name}</bdi>
         </h3>
-        <p className="mt-2 text-[1.0625rem] leading-snug text-white/75">{text.intent}</p>
-        <div className="mt-auto pt-5">
-          <Button onClick={() => open(example)} className="glass-btn glass-flat">
-            {t.work.viewExample}
-            <span className="sr-only">: {example.name}</span>
-            <ArrowUpRight aria-hidden="true" className="card-arrow" />
-          </Button>
-        </div>
+        <p className="caption-sentence mt-2 text-[1.0625rem] leading-snug text-ink-2">{t.projects[project.id].caption}</p>
+        <ViewProject project={project} className="mt-3" />
       </div>
     </article>
   )
 }
 
+/** Selected work: one live website at full width, two concepts beside each other, and a way to every project. */
 export function Work() {
   const t = useCopy()
+  const localHref = useLocalHref()
 
   return (
-    // Apple stages its pro products on black; the work gets the same stage. The header turns dark over it.
-    <section id="work" aria-labelledby="work-title" data-theme="dark" data-surface="dark" className="on-dark section-pad relative bg-night text-white">
+    <section id="work" aria-labelledby="work-title">
       <LegacyAnchors ids={LEGACY_IDS} />
 
-      <div className="container-page">
-        <div className="section-intro reveal">
-          <p className="eyebrow">{t.work.eyebrow}</p>
-          <h2 id="work-title" className="h-section word-reveal mt-3">
-            <Words text={t.work.heading} twoTone />
+      <div className="section-pad bg-paper">
+        <div className="container-page">
+          <h2 id="work-title" className="section-kicker reveal text-center">
+            {t.work.eyebrow}
           </h2>
-          <p className="lede mt-5">{t.work.lede}</p>
-        </div>
-
-        <div className="mt-14 lg:mt-20">
-          <FeaturedProject project={FEATURED_PROJECT} />
-        </div>
-
-      </div>
-
-      {/* The rest of the websites as a sideways gallery, as Apple shows its highlights; the next tile peeks in. */}
-      <div className="reveal mt-5">
-        <Gallery label={t.work.sitesLabel}>
-          {GALLERY_WEBSITES.map((project) => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
-          {EXAMPLES.filter((example) => example.id !== HERO_EXAMPLE.id).map((example) => (
-            <ConceptCard key={example.id} example={example} />
-          ))}
-        </Gallery>
-      </div>
-
-      {/* My own apps and tools get their own row, so they are never mistaken for work for a business. */}
-      <div className="container-page mt-20 lg:mt-28">
-        <div className="section-intro reveal">
-          <h3 id="apps-title" className="h-subsection word-reveal">
-            <Words text={t.work.appsHeading} twoTone />
-          </h3>
-          <p className="lede mt-4">{t.work.appsLede}</p>
+          <div className="mt-6">
+            <FeaturedProject project={FEATURED_PROJECT} />
+          </div>
         </div>
       </div>
-      <div className="reveal mt-10 lg:mt-12">
-        <Gallery label={t.work.appsHeading.replace(/[.。]$/u, '')} size="compact">
-          {APP_PROJECTS.map((project) => (
-            <AppCard key={project.id} project={project} />
-          ))}
-        </Gallery>
+
+      <div className="section-pad">
+        <div className="container-page">
+          <div className="grid gap-14 md:grid-cols-2 md:gap-8 lg:gap-12">
+            {SUPPORTING_PROJECTS.map((project) => (
+              <SupportingProject key={project.id} project={project} />
+            ))}
+          </div>
+          <p className="reveal mt-14 text-center sm:mt-16">
+            <a href={localHref('work/')} className="text-link text-[1.0625rem]">
+              {t.work.allProjects}
+              <ChevronRight aria-hidden="true" size={18} className="rtl:-scale-x-100" />
+            </a>
+          </p>
+        </div>
       </div>
     </section>
   )

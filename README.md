@@ -17,15 +17,18 @@ npm run og-image   # re-render public/og-image.png (needs Google Chrome)
 
 ## Page structure
 
-Hero → Work → Your website package → Process → About → FAQ → Request a quote → Footer.
+Home: Hero → Selected work (one featured live site, two website concepts, a link to every project) → Pricing →
+Process (three steps) → About → FAQ → Contact → Footer. Every project is on the work page (`/work/`, in each
+language): websites, apps and tools, and the design demos.
 
 | Section | File |
 | --- | --- |
-| Hero (headline, CTAs, featured preview) | `src/components/sections/Hero.tsx` |
-| Work (live sites, website concepts, apps and tools, concept demos) | `src/components/sections/Work.tsx`; real projects in `src/content/projects.ts`, concept demos in `src/content/examples.ts` |
-| Package (deliverables and written-quote note) | `src/components/sections/Package.tsx`, items in `src/config/site.ts` |
+| Hero (headline, price line, one action and one link, a real website shown large) | `src/components/sections/Hero.tsx` |
+| Selected work | `src/components/sections/Work.tsx`; projects in `src/content/projects.ts` (`HERO_PROJECT`, `FEATURED_PROJECT`, `SUPPORTING_PROJECTS`) |
+| All projects | `src/components/pages/WorkPage.tsx`; design demos in `src/content/examples.ts` |
+| Pricing (comparison, visible essentials, optional care, full terms in a disclosure) | `src/components/sections/Package.tsx`, copy in `src/content/offers.ts` |
 | Process, About, FAQ | `Process.tsx`, `About.tsx`, `Faq.tsx`; FAQ text in `src/content/faq.ts` |
-| Inquiry form | `src/components/sections/Contact.tsx`, `src/components/contact/InquiryForm.tsx`, logic in `src/lib/inquiry.ts` |
+| Contact and inquiry form | `src/components/sections/Contact.tsx`, `src/components/contact/InquiryForm.tsx`, logic in `src/lib/inquiry.ts` |
 
 ## Where to change things
 
@@ -37,7 +40,7 @@ Hero → Work → Your website package → Process → About → FAQ → Request
 | Page title and description | `src/config/seo.ts` **and** the matching tags in `index.html` |
 | Colours, fonts, shadows | `@theme` block at the top of `src/index.css` |
 | Type, section spacing, tiles, chevron links | `.h-section`, `.lede`, `.section-pad`, `.section-intro`, `.tile` / `.tile-paper` / `.tile-dark`, `.chevron-link` in `src/index.css` |
-| Liquid Glass look (tint, frost, bend, rim, accent) | The `--lg-*` block under "Liquid Glass (Glisse)" at the end of `src/index.css` |
+| Liquid Glass look (tint, frost, bend, rim, accent) | The `--lg-*` block under "Liquid Glass (Glisse)" in `src/index.css`, plus the per-surface rules near the end |
 | Navigation and the primary button label | `src/content/navigation.ts` |
 | Unconfirmed commercial terms (kept off the page) | `pendingTerms` in `src/config/site.ts` |
 
@@ -47,82 +50,54 @@ section. See `LegacyAnchors` and `tests/anchors.test.ts`.
 **No price is shown on the site.** To publish one, add it to `site.package`, render it in `Package.tsx`, update the
 meta description, and adjust the price rule in `tests/content-rules.test.ts`.
 
-## Motion and interactive libraries
+## Motion
 
-The site keeps its own CSS motion system (tokens at the top of `src/index.css`, tested in `tests/motion.test.ts`) and adds two libraries on top. Both are optional enhancements: the page is complete and fast without them.
-
-| Library | Used for | Where | Runs when |
-| --- | --- | --- | --- |
-| [Lenis](https://lenis.darkroom.engineering/) | Smooth wheel scrolling and gliding in-page links | `src/motion/engine.ts` | Mouse or trackpad, no reduced motion. Touch screens keep native scrolling |
-| [GSAP](https://gsap.com) + ScrollTrigger + SplitText | Parallax screenshots, hero text drift, word-by-word scrubbed About text, staggered package cards, panel grow, step-number pop. Each is opt-in by a `data-*` attribute (listed at the top of `src/motion/effects.ts`) | `src/motion/effects.ts` | No reduced motion. Lenis drives ScrollTrigger so there is one scroll controller |
-
-Everything is downloaded on demand, never in the first paint. The Apple-style passes removed the Vanta.js network (and three.js), the React Bits magnet buttons and spotlight cards, the pointer tilt and light, and the scrolling band of trades: they competed with the work. They can be restored from git history (before the "Apple-style design pass" commit).
+Motion is CSS only and kept small: content rises 12px and fades in over about half a second as it scrolls into view,
+the hero arrives in three short steps, menus and disclosures take about 0.2s, and cross-page transitions are a quick
+fade. Nothing animates word by word, nothing hijacks scrolling, and everything is shown at once under reduced motion
+(`tests/motion.test.ts`). Lenis, GSAP and the Inter web font were removed in the 2026-11 redesign; the system font is used.
 
 ## Design language
 
-The site follows Apple's product-page conventions while keeping the SitePilot brand (logo, cobalt):
+Apple-inspired, with SitePilot's own logo and copy:
 
-- **Type:** one family for headings and text: the device's system font on Apple devices (San Francisco, via
-  `-apple-system`) and Inter elsewhere. Headlines are large, bold and tightly tracked; body text is 17px.
-  Section headlines are two-tone (`<Words twoTone />`): the words after the first clause turn grey, as in
-  "A small start. *Room to grow.*" (`softFrom` in `src/lib/words.ts`). The hero's key word is in a cobalt gradient.
-- **Palette:** Apple's neutral white (`bg-card`) and light grey (`bg-paper`, #f5f5f7), alternating by section,
-  with near-black text (#1d1d1f). Cobalt stays the one accent; `sky` is cobalt lifted for text on black.
-- **Rhythm:** generous section padding (`.section-pad`), centred intros (`.section-intro`: label, headline, lede),
-  and content in borderless rounded tiles (`.tile` on grey, `.tile-paper` on white, `.tile-dark`). The process title
-  stays pinned while its steps scroll past on wide screens.
-- **Black stage:** the work section is near-black (`data-surface="dark"`, `.on-dark`, `data-theme="dark"`), as
-  Apple stages pro products. The floating header and the phone quote bar turn to dark glass while over it
-  (`src/hooks/useOverDarkSurface.ts`); add `data-surface="dark"` to any new dark section for the same behaviour.
-- **Actions:** flat blue pills for main actions, outline pills beside them (`outlineLight` on dark), and blue text
-  links with a chevron (`.chevron-link`) for "read more".
-- **Highlights gallery:** the work after the featured project sits in a sideways, snapping gallery
-  (`src/components/ui/Gallery.tsx`), as in Apple's "Get the highlights": the next tile peeks in, glass buttons
-  step through it, and dots mark the tiles in view. It is a native scroller with every tile in reading order;
-  nothing moves on its own. Right-to-left pages scroll the other way (`galleryEdges` in `src/lib/gallery.ts`).
-- **Hero:** the brand name as a product label, a centred headline, and the preview in a plain window frame that
-  fades at its foot and grows to full size as the page scrolls.
-- **Footer:** light and small, in columns of plain links.
+- **Type:** the device's system font (`-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif`).
+  Hero 44px on phones to about 88px wide; section headings 32–56px; intro text 19–24px; body 17px. Headings are one
+  colour, near-black, with moderate negative tracking on large sizes only.
+- **Palette:** white and #f5f5f7 sections, #1d1d1f text, #424245 and #6e6e73 for secondary text, and one accent,
+  #0071e3, for actions and links.
+- **Composition:** one idea per section; centred intros; the work shown large with a hairline and the faintest
+  shadow, no browser chrome; text links with a chevron for secondary actions; blue pills for the main ones.
+- **Pricing:** Starter and Standard side by side at every width, one row per topic, the essential costs always
+  visible, optional care as a separate offer, the full terms in a disclosure.
 
 ## Liquid Glass (Glisse)
 
-The interface uses [Glisse](https://glisse.kelvinzhang.ca) (`glisse`, pinned to 0.5.0 because the brand styling
-targets its class names), Kelvin Zhang's React implementation of Apple's Liquid Glass. Only its documented exports
-are used (`tests/glass.test.ts` checks this).
+The interface uses [Glisse](https://glisse.kelvinzhang.ca) (`glisse`, pinned to 0.5.0 because the styling targets its
+class names), Kelvin Zhang's React implementation of Apple's Liquid Glass. Only its documented exports are used
+(`tests/glass.test.ts` checks this). Glass goes where it has something to bend: over the work, over the colour wash
+behind the form, and over the page as it scrolls under the bar. Form fields stay plain white for reading.
 
 | Where | Glisse component |
 | --- | --- |
-| Floating header: brand capsule, section tabs, language, phone menu button | `Glass`, `TabBar` (links, so it is real navigation), `Menu`, `Button` (`src/components/Header.tsx`, `LanguageMenu.tsx`) |
-| Phone menu sheet, phone quote bar, hero "See my work" | `Glass` |
-| Hero "View the example", work and form actions, copy email | `Button` (`glass`; `filled` for the primary form, site-check and dialog actions) |
-| Inquiry form | `Input` for single-line fields, `Glass` around the textarea and select (`InquiryForm.tsx`) |
-| Concept-demo dialog | `SegmentedControl` (desktop / phone), `Slider` (phone width 320–430 px), `Button` |
-| Project viewer | `SegmentedControl` floating over the screenshot, `Button` (dark glass) |
+| Navigation: one floating bar, the links as a tab bar with a sliding lens, the language menu, the phone menu button | `Glass`, `TabBar` (links, so it is real navigation), `Menu`, `Button` (`Header.tsx`, `LanguageMenu.tsx`) |
+| Phone menu sheet, phone quote bar (`QuoteBar.tsx`), pricing strip on phones | `Glass` |
+| Captions and labels over screenshots (hero caption, `ShotChip.tsx`) | `Glass` |
+| Contact form card over a soft colour wash | `Glass` (the inputs inside are plain controls) |
+| Concept-demo dialog and project viewer | `SegmentedControl`, `Slider`, `Button` |
 
-Not used: `Switch` and `SearchField`. Nothing on the site is an on/off setting or long enough to need searching, so
-they were left out rather than invented. `--lg-on` (the switch colour) is still set to the brand green.
+**How it is tuned.** All `--lg-*` variables are set once for the light page (`:root, [data-theme='light']` in
+`src/index.css`) and per surface where needed (`.nav-glass`, `.caption-glass`, `.chip-glass`, `.form-glass`, …).
+`<body data-theme="light">` pins the theme.
 
-**How it is tuned.** All `--lg-*` variables (`--lg-glass`, `--lg-glass-active`, `--lg-blur`, `--lg-glass-bend`,
-`--lg-glass-dispersion`, `--lg-rim-shine`, `--lg-fill`, `--lg-on`, plus text, ring and edge colours) are set once for
-the light page and once for `[data-theme='dark']`. `<body data-theme="light">` pins the theme: without it the glass
-would follow the device's dark mode onto this light page. Navy surfaces put `data-theme="dark"` on a wrapper.
-
-**Where glass bends, frosts, or neither** (measured; see the comments in `src/index.css`):
-
-- *Bends* (full refraction): the dialogs' controls, whose backdrop is still, and the tab bar's selection while held.
-  The project viewer's screenshot is marked `data-glisse-backdrop`, so the toggle over it bends it in every browser.
-- *Frosts* (blur and lit rim, no bend): the header pieces, the phone quote bar and the two hero pieces
-  (`.glass-frost`). Their backdrop moves on every scroll or animates, and re-bending it each frame cost about half the
-  frame rate on desktop in testing. This is also what Safari and Firefox show for glass over arbitrary content.
-- *Neither* (`.glass-flat`, and filled buttons): glass on the white form card or plain paper has nothing behind it,
-  so it skips the backdrop and looks the same.
+**Bend or frost.** Glass over a backdrop that moves on every scroll (the bar, the menu sheet, the quote bar, the
+pricing strip, the form card) frosts with a lit rim but does not bend (`.glass-frost`): re-bending a moving backdrop
+each frame is costly. Small glass over still pictures (captions, chips) and the dialogs' controls bend fully.
 
 **Things to know when editing.** Glisse's stylesheet is unlayered, so it beats Tailwind utilities on its own
-elements: put breakpoint and display classes on a wrapper, not on a Glisse component (a test checks this). Glisse
-injects its CSS from JavaScript; `src/index.css` also imports it so the prerendered page is styled at first paint.
-A `view-transition-name`, `opacity` below 1, `filter` or `mask` on an ancestor of glass hides the page from it, which
-is why only the brand capsule is named for page transitions. Persian keeps the underline nav inside a glass capsule:
-Glisse's tab bar positions its selection from the left edge only.
+elements: put breakpoint and display classes on a wrapper (a test checks this). A `view-transition-name`, `opacity`
+below 1, `filter` or `mask` on an ancestor of glass hides the page from it. Persian uses plain links in the bar:
+Glisse's tab bar positions its lens from the left edge only.
 
 ## Inquiry form
 

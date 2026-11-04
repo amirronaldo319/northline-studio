@@ -1,21 +1,19 @@
-import { useEffect } from 'react'
-import { StickyQuoteBar } from './components/StickyQuoteBar'
 import { ExampleDialogProvider } from './components/ExampleDialogProvider'
 import { ProjectViewerProvider } from './components/ProjectViewerProvider'
 import { Footer } from './components/Footer'
+import { QuoteBar } from './components/QuoteBar'
 import { Header } from './components/Header'
 import { PageContext } from './components/pageContext'
 import { CasePage } from './components/pages/CasePage'
 import { GuidePage } from './components/pages/GuidePage'
 import { TradePage } from './components/pages/TradePage'
+import { WorkPage } from './components/pages/WorkPage'
 import { About } from './components/sections/About'
-import { Audience } from './components/sections/Audience'
 import { Contact } from './components/sections/Contact'
 import { Faq } from './components/sections/Faq'
 import { Hero } from './components/sections/Hero'
 import { Package } from './components/sections/Package'
 import { Process } from './components/sections/Process'
-import { SiteCheck } from './components/sections/SiteCheck'
 import { Work } from './components/sections/Work'
 import type { PageRef } from './content/pages'
 import { PROJECTS } from './content/projects'
@@ -23,7 +21,6 @@ import { CopyContext, useCopy } from './i18n/context'
 import type { Copy } from './i18n/types'
 import { useHashScroll } from './hooks/useHashScroll'
 import { useReveal } from './hooks/useReveal'
-import { startMotionEngine } from './motion/engine'
 
 function HomeSections() {
   return (
@@ -32,10 +29,8 @@ function HomeSections() {
       <Work />
       <Package />
       <Process />
-      <Audience />
       <About />
       <Faq />
-      <SiteCheck />
       <Contact />
     </>
   )
@@ -49,6 +44,7 @@ function PageContent({ page }: { page: PageRef }) {
     const trade = copy.trades.find((candidate) => candidate.slug === page.slug)
     if (trade) return <TradePage trade={trade} />
   }
+  if (page.kind === 'work') return <WorkPage />
   if (page.kind === 'case') {
     const project = PROJECTS.find((candidate) => candidate.id === page.id)
     if (project) return <CasePage project={project} />
@@ -65,7 +61,6 @@ const ENGLISH_HOME: PageRef = { kind: 'home', locale: 'en' }
 export default function App({ page = ENGLISH_HOME, copy }: { page?: PageRef; copy: Copy }) {
   useReveal()
   useHashScroll()
-  useEffect(() => startMotionEngine(), [])
 
   return (
     <CopyContext.Provider value={copy}>
@@ -84,7 +79,7 @@ export default function App({ page = ENGLISH_HOME, copy }: { page?: PageRef; cop
               <PageContent page={page} />
             </main>
             <Footer />
-            <StickyQuoteBar />
+            <QuoteBar />
           </ProjectViewerProvider>
         </ExampleDialogProvider>
       </PageContext.Provider>

@@ -94,7 +94,7 @@ describe('dictionaries', () => {
 
   test('Simplified and Traditional Chinese are different texts', () => {
     expect(getCopy('zh-hans').contact.heading).not.toBe(getCopy('zh-hant').contact.heading)
-    expect(getCopy('zh-hant').hero.headline).toMatch(/網站/)
-    expect(getCopy('zh-hans').hero.headline).toMatch(/网站/)
+    expect(getCopy('zh-hant').hero.lede).toMatch(/網站/)
+    expect(getCopy('zh-hans').hero.lede).toMatch(/网站/)
   })
 })

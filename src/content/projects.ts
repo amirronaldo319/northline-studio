@@ -22,6 +22,10 @@ import stayinDesktop from '@/assets/projects/stayin-desktop.webp'
 import stayinMobile from '@/assets/projects/stayin-mobile.webp'
 import motionKitDesktop from '@/assets/projects/motion-kit-desktop.webp'
 import motionKitMobile from '@/assets/projects/motion-kit-mobile.webp'
+import farsh2x from '@/assets/projects/farsh-aquatics-desktop-2x.webp'
+import k604Desktop2x from '@/assets/projects/604kars-desktop-2x.webp'
+import storage2x from '@/assets/projects/storage4666-desktop-2x.webp'
+import maidNew2x from '@/assets/projects/maid-new-desktop-2x.webp'
 import { PROJECT_DATA, type ProjectData, type ProjectKind, type ProjectStatus } from './projectsData'
 
 export type { ProjectKind, ProjectStatus }
@@ -34,6 +38,8 @@ export interface ProjectImage {
 
 export interface Project extends ProjectData {
   desktop: ProjectImage
+  /** The desktop capture at twice the density, for projects shown large on the home page. */
+  desktop2x?: ProjectImage
   mobile: ProjectImage
   /** The project's own key colour, taken from its interface: the glow behind its phone in the apps gallery. */
   tint: string
@@ -56,12 +62,14 @@ export const STATUS_LABEL: Record<ProjectStatus, string> = {
 }
 
 /** Captures of each project (see src/assets/projects/SOURCES.md). */
-const IMAGES: Record<string, Pick<Project, 'desktop' | 'mobile'>> = {
+const IMAGES: Record<string, Pick<Project, 'desktop' | 'desktop2x' | 'mobile'>> = {
   'farsh-aquatics': {
+    desktop2x: { src: farsh2x, width: 2400, height: 1556 },
     desktop: { src: farshDesktop, width: 1200, height: 778 },
     mobile: { src: farshMobile, width: 780, height: 1520 },
   },
   '604kars': {
+    desktop2x: { src: k604Desktop2x, width: 2400, height: 1556 },
     desktop: { src: k604Desktop, width: 1200, height: 778 },
     mobile: { src: k604Mobile, width: 780, height: 1520 },
   },
@@ -74,10 +82,12 @@ const IMAGES: Record<string, Pick<Project, 'desktop' | 'mobile'>> = {
     mobile: { src: mendMobile, width: 780, height: 1520 },
   },
   storage4666: {
+    desktop2x: { src: storage2x, width: 2400, height: 1556 },
     desktop: { src: storageDesktop, width: 1200, height: 778 },
     mobile: { src: storageMobile, width: 780, height: 1520 },
   },
   'maid-new': {
+    desktop2x: { src: maidNew2x, width: 2400, height: 1556 },
     desktop: { src: maidNewDesktop, width: 1200, height: 778 },
     mobile: { src: maidNewMobile, width: 780, height: 1520 },
   },
@@ -120,7 +130,7 @@ function requireProject(id: string): Project {
 }
 
 /** The live website shown in the hero: a one-page local service site, which is the core offer. */
-export const SECONDARY_PROJECT: Project = requireProject('farsh-aquatics')
+export const HERO_PROJECT: Project = requireProject('farsh-aquatics')
 
 /** The live website shown large at the top of the portfolio, in a different style from the hero. */
 export const FEATURED_PROJECT: Project = requireProject('604kars')
@@ -128,13 +138,8 @@ export const FEATURED_PROJECT: Project = requireProject('604kars')
 /** A website concept, kept distinct from the live work in tests and copy. */
 export const CONCEPT_PROJECT: Project = requireProject('ganjineh-ofogh')
 
-const FEATURED_IDS = new Set([SECONDARY_PROJECT.id, FEATURED_PROJECT.id])
-
-/** The websites shown in the portfolio gallery, in order, after the featured project. */
-export const GALLERY_WEBSITES: readonly Project[] = [
-  SECONDARY_PROJECT,
-  ...PROJECTS.filter((project) => project.kind === 'website' && !FEATURED_IDS.has(project.id)),
-]
+/** The two projects shown after the featured one on the home page: the strongest website concepts, labelled as such. */
+export const SUPPORTING_PROJECTS: readonly [Project, Project] = [requireProject('storage4666'), requireProject('maid-new')]
 
 /** Apps and tools I built for myself, shown in their own gallery. */
 export const APP_PROJECTS: readonly Project[] = PROJECTS.filter((project) => project.kind === 'app')

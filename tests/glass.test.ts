@@ -56,22 +56,34 @@ describe('Liquid Glass (Glisse) integration', () => {
   })
 
   test('the header is not a backdrop root, so its glass can see the page', () => {
-    // A view-transition-name on an ancestor of the glass would hide the page from it.
+    // A view-transition-name, filter, opacity or backdrop filter on an ancestor of the glass would hide the page from it.
     const plain = css.replace(/\/\*[\s\S]*?\*\//g, '')
-    const named = [...plain.matchAll(/([^{}]+){[^}]*view-transition-name\s*:/g)].map((match) => match[1].trim())
-    expect(named).toEqual(['.glass-brand'])
+    expect(plain).not.toMatch(/view-transition-name\s*:/)
+    const header = plain.match(/\n\.site-nav\s*{([^}]*)}/)?.[1]
+    expect(header, 'header rule').toBeDefined()
+    expect(header).not.toMatch(/(^|[\s;])(filter|opacity|backdrop-filter|-webkit-backdrop-filter)\s*:/)
   })
 
   test('glass over moving content frosts without the costly per-frame bend', () => {
-    const rule = css.match(/\.site-header \.lg-glass:not\(\.lg-tab-lens\),[^{]*{([^}]*)}/)
+    const rule = css.match(/\.lg-glass\.glass-frost\s*{([^}]*)}/)
     expect(rule, 'frost rule').not.toBeNull()
     expect(rule?.[1]).toMatch(/backdrop-filter:\s*blur\(/)
     expect(rule?.[1]).not.toMatch(/url\(/)
-    expect(read('src/components/sections/Hero.tsx').match(/glass-frost/g)?.length).toBe(2)
+    // The bar and its phone sheet, the phone quote bar, the form card and the pricing strip all frost.
+    expect(read('src/components/Header.tsx').match(/glass-frost/g)?.length).toBe(2)
+    expect(read('src/components/QuoteBar.tsx')).toContain('glass-frost')
+    expect(read('src/components/sections/Contact.tsx')).toContain('glass-frost')
+    expect(read('src/components/sections/Package.tsx')).toContain('glass-frost')
+  })
+
+  test('form fields are plain controls, never glass, so they read clearly', () => {
+    const form = read('src/components/contact/InquiryForm.tsx')
+    expect(form).not.toMatch(/from 'glisse'/)
+    expect(css).toMatch(/\.field\s*{[^}]*border:\s*1px solid #86868b/)
   })
 
   test('field text is at least 16px, so iOS does not zoom when a field is focused', () => {
-    const size = css.match(/\.lg-input\.field-input input\s*{[^}]*font-size:\s*([\d.]+)rem/)?.[1]
+    const size = css.match(/\n\.field\s*{[^}]*font-size:\s*([\d.]+)rem/)?.[1]
     expect(Number(size)).toBeGreaterThanOrEqual(1)
   })
 })

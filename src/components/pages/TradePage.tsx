@@ -6,7 +6,6 @@ import { statusLabel } from '@/i18n/projectStatus'
 import { revealDelay } from '@/lib/reveal'
 import { Contact } from '../sections/Contact'
 import { Faq } from '../sections/Faq'
-import { SiteCheck } from '../sections/SiteCheck'
 import { Words } from '../Words'
 import { PageHero } from './PageHero'
 import { useHomeAnchor } from '../pageContext'
@@ -30,8 +29,8 @@ export function TradePage({ trade }: { trade: Trade }) {
         <div className="container-page">
           <div className="section-intro reveal">
             <p className="eyebrow">{t.tradePage.customersEyebrow}</p>
-            <h2 id="checks-title" className="h-section word-reveal mt-3">
-              <Words text={t.tradePage.checksHeading(trade.noun)} twoTone />
+            <h2 id="checks-title" className="h-section mt-3">
+              <Words text={t.tradePage.checksHeading(trade.noun)} />
             </h2>
           </div>
           <ul className="reveal mt-12 grid gap-5 sm:grid-cols-2">
@@ -49,8 +48,8 @@ export function TradePage({ trade }: { trade: Trade }) {
         <div className="container-page grid gap-10 lg:grid-cols-12 lg:gap-14">
           <div className="reveal lg:col-span-5">
             <p className="eyebrow">{t.tradePage.includesEyebrow}</p>
-            <h2 id="includes-title" className="h-section word-reveal mt-3">
-              <Words text={t.tradePage.includesHeading} twoTone />
+            <h2 id="includes-title" className="h-section mt-3">
+              <Words text={t.tradePage.includesHeading} />
             </h2>
             <p className="lede mt-4">{t.tradePage.includesLede}</p>
           </div>
@@ -69,8 +68,8 @@ export function TradePage({ trade }: { trade: Trade }) {
         <div className="container-page">
           <div className="section-intro reveal">
             <p className="eyebrow">{t.tradePage.recentEyebrow}</p>
-            <h2 id="proof-title" className="h-section word-reveal mt-3">
-              <Words text={t.tradePage.recentHeading} twoTone />
+            <h2 id="proof-title" className="h-section mt-3">
+              <Words text={t.tradePage.recentHeading} />
             </h2>
             <p className="lede mt-5">{t.tradePage.recentLede}</p>
           </div>
@@ -101,7 +100,6 @@ export function TradePage({ trade }: { trade: Trade }) {
         heading={t.tradePage.faqHeading(trade.name)}
         label={t.tradePage.faqLabel}
       />
-      <SiteCheck />
       <Contact />
     </>
   )
