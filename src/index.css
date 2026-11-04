@@ -1842,62 +1842,132 @@ html.lenis body {
 /* ---- Inquiry form fields -------------------------------------------------------------------------------- */
 
 /*
- * Every field is glass: Glisse `Input`s for single lines, and the textarea and select inside `Glass`. On the
- * white form card a faint tint and a 1px line keep each field's edge visible; focus adds the brand ring.
+ * Fields in Apple's style: tall white boxes with a clear grey edge (3:1 against white), the label inside the box,
+ * rising when the field is focused or filled. Glisse `Input`s for single lines; the textarea and select sit inside
+ * `Glass`, so all of them share one surface. Focus adds the brand ring.
  */
 .lg-input.field-input,
 .lg-glass.field-glass {
-  --lg-glass: rgb(19 26 43 / 0.035);
+  --lg-glass: #ffffff;
   --lg-glass-active: #ffffff;
   --lg-rim-shine: 0;
   display: block;
   width: 100%;
   max-width: none;
   border-radius: 0.875rem;
-  box-shadow: inset 0 0 0 1px rgb(19 26 43 / 0.22);
-  transition:
-    background-color var(--motion-dur-hover) ease,
-    box-shadow var(--motion-dur-hover) ease;
+  box-shadow: inset 0 0 0 1px #86868b;
+  transition: box-shadow var(--motion-dur-hover) ease;
 }
 
 .lg-input.field-input {
   display: flex;
-  height: 3rem;
+  height: 3.5rem;
   padding-inline: 1rem;
 }
 
-/* 16px text: anything smaller makes iOS zoom the page when the field is focused. */
+/* 17px text, as Apple's forms use; anything under 16px makes iOS zoom the page when the field is focused. */
 .lg-input.field-input input {
-  font-size: 1rem;
+  padding-top: 1.125rem;
+  font-size: 1.0625rem;
   color: var(--color-ink);
 }
 
-.lg-input.field-input input::placeholder {
+/* A placeholder (an example) only appears once the label has moved out of its way. */
+.float-field .lg-input.field-input input::placeholder {
   color: rgb(95 101 118 / 0.75);
+  opacity: 0;
+  transition: opacity var(--motion-dur-hover) ease;
+}
+
+.float-field:focus-within .lg-input.field-input input::placeholder {
+  opacity: 1;
 }
 
 .field-textarea {
-  min-height: 8.5rem;
+  min-height: 9rem;
+  padding-top: 1.75rem !important;
+  font-size: 1.0625rem !important;
+}
+
+.field-select {
+  height: 3.5rem;
+  padding-top: 1.25rem !important;
+  padding-bottom: 0.25rem !important;
+  font-size: 1.0625rem !important;
 }
 
 .lg-input.field-input:focus-within,
 .lg-glass.field-glass:focus-within {
-  background-color: #ffffff;
   box-shadow:
     inset 0 0 0 1.5px var(--color-cobalt),
     0 0 0 4px rgb(23 63 208 / 0.14);
 }
 
-.lg-input.field-input:has([aria-invalid='true']),
-.lg-glass.field-glass:has([aria-invalid='true']) {
+.float-field[data-invalid] .lg-input.field-input,
+.float-field[data-invalid] .lg-glass.field-glass {
   box-shadow: inset 0 0 0 1.5px var(--color-danger);
 }
 
-.lg-input.field-input:has([aria-invalid='true']):focus-within,
-.lg-glass.field-glass:has([aria-invalid='true']):focus-within {
+.float-field[data-invalid] .lg-input.field-input:focus-within,
+.float-field[data-invalid] .lg-glass.field-glass:focus-within {
   box-shadow:
     inset 0 0 0 1.5px var(--color-danger),
     0 0 0 4px rgb(180 35 24 / 0.12);
+}
+
+.float-field {
+  position: relative;
+}
+
+.float-label {
+  position: absolute;
+  inset-inline-start: 1rem;
+  inset-inline-end: 1rem;
+  top: 1.0625rem;
+  overflow: hidden;
+  font-size: 1.0625rem;
+  line-height: 1.375rem;
+  color: var(--color-ink-3);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  pointer-events: none;
+  transform-origin: 0 0;
+  transition:
+    transform var(--motion-dur-ui) var(--motion-ease-out),
+    color var(--motion-dur-hover) ease;
+}
+
+[dir='rtl'] .float-label {
+  transform-origin: 100% 0;
+}
+
+.float-optional {
+  color: var(--color-ink-3);
+  opacity: 0.8;
+}
+
+.float-field:focus-within .float-label,
+.float-field[data-filled] .float-label {
+  transform: translateY(-0.6875rem) scale(0.76);
+}
+
+/* Browser autofill fills a field before the page hears about it; raise the label for it too. */
+.float-field:has(input:-webkit-autofill) .float-label {
+  transform: translateY(-0.6875rem) scale(0.76);
+}
+
+.float-field:focus-within .float-label {
+  color: var(--color-cobalt);
+}
+
+.float-field[data-invalid] .float-label {
+  color: var(--color-danger);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .float-label {
+    transition: none;
+  }
 }
 
 /* ==========================================================================================================

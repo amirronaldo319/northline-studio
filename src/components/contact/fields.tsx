@@ -7,28 +7,39 @@ type FieldProps = {
   isOptional?: boolean
   error?: string
   hint?: string
+  /** The field holds a value (or, like a select, always shows one), so its label stays raised. */
+  isFilled?: boolean
+  /** A multi-line field: the label rests at the top instead of the middle. */
+  isMultiline?: boolean
   className?: string
   children: ReactNode
 }
 
-/** Visible label + control + hint/error, with ids wired for aria-describedby. */
-export function Field({ id, label, isOptional = false, error, hint, className = '', children }: FieldProps) {
+/**
+ * A field in Apple's style: the label sits inside the box like a placeholder and slides up, smaller, when the field
+ * is focused or filled, so it is always visible. It stays a real <label for>, and hint and error ids are wired for
+ * aria-describedby. The label comes after the control so it paints above it; it ignores the pointer, so a click
+ * lands on the control.
+ */
+export function Field({ id, label, isOptional = false, error, hint, isFilled = false, isMultiline = false, className = '', children }: FieldProps) {
   const t = useCopy()
 
   return (
     <div className={className}>
-      <label htmlFor={id} className="mb-1.5 flex items-baseline gap-1.5 text-[0.9375rem] font-semibold text-ink">
-        {label}
-        {isOptional && <span className="text-sm font-normal text-ink-3">{t.form.optional}</span>}
-      </label>
-      {children}
+      <div className="float-field" data-filled={isFilled || undefined} data-multiline={isMultiline || undefined} data-invalid={error ? true : undefined}>
+        {children}
+        <label htmlFor={id} className="float-label">
+          {label}
+          {isOptional && <span className="float-optional"> {t.form.optional}</span>}
+        </label>
+      </div>
       {hint && !error && (
-        <p id={`${id}-hint`} className="mt-1.5 text-sm text-ink-3">
+        <p id={`${id}-hint`} className="mt-1.5 px-1 text-sm text-ink-3">
           {hint}
         </p>
       )}
       {error && (
-        <p id={`${id}-error`} className="fx-in mt-1.5 text-sm font-medium text-danger">
+        <p id={`${id}-error`} className="fx-in mt-1.5 px-1 text-sm font-medium text-danger">
           {error}
         </p>
       )}

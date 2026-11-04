@@ -182,11 +182,11 @@ export function InquiryForm() {
       aria-labelledby="contact-title"
       className="tile-paper relative"
     >
-      <div className="grid gap-5 sm:grid-cols-2">
-        <Field id="inquiry-name" label={t.form.name} error={errors.name}>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <Field id="inquiry-name" label={t.form.name} error={errors.name} isFilled={values.name !== ''}>
           <Input {...inputProps('name')} type="text" autoComplete="name" required />
         </Field>
-        <Field id="inquiry-email" label={t.form.email} error={errors.email}>
+        <Field id="inquiry-email" label={t.form.email} error={errors.email} isFilled={values.email !== ''}>
           <Input {...inputProps('email')} dir="ltr" type="email" autoComplete="email" inputMode="email" required />
         </Field>
       </div>
@@ -196,7 +196,9 @@ export function InquiryForm() {
         label={t.form.message}
         error={errors.message}
         hint={t.form.messageHint}
-        className="mt-5"
+        isFilled={values.message !== ''}
+        isMultiline
+        className="mt-4"
       >
         <Glass className="field-glass glass-flat">
           <textarea {...fieldProps('message', true)} rows={5} required className={`${fieldControlClasses} field-textarea resize-y`} />
@@ -224,13 +226,13 @@ export function InquiryForm() {
           <div className="disclosure-inner">
 
             <div className="mt-3 space-y-5">
-              <div className="grid gap-5 sm:grid-cols-2">
-                <Field id="inquiry-business" label={t.form.businessName} isOptional>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <Field id="inquiry-business" label={t.form.businessName} isOptional isFilled={values.business !== ''}>
                   <Input {...inputProps('business')} type="text" autoComplete="organization" />
                 </Field>
-                <Field id="inquiry-businessType" label={t.form.businessType} isOptional>
+                <Field id="inquiry-businessType" label={t.form.businessType} isOptional isFilled>
                   <Glass className="field-glass glass-flat relative">
-                    <select {...fieldProps('businessType')} className={`${fieldControlClasses} appearance-none pe-10`}>
+                    <select {...fieldProps('businessType')} className={`${fieldControlClasses} field-select appearance-none pe-10`}>
                       <option value="">{t.form.chooseOne}</option>
                       {t.form.businessTypes.map((type) => (
                         <option key={type.value} value={type.value}>
@@ -241,10 +243,10 @@ export function InquiryForm() {
                     <ChevronDown aria-hidden="true" size={18} className="pointer-events-none absolute end-3.5 top-1/2 -translate-y-1/2 text-ink-3" />
                   </Glass>
                 </Field>
-                <Field id="inquiry-phone" label={t.form.phone} isOptional error={errors.phone}>
+                <Field id="inquiry-phone" label={t.form.phone} isOptional error={errors.phone} isFilled={values.phone !== ''}>
                   <Input {...inputProps('phone')} dir="ltr" type="tel" autoComplete="tel" inputMode="tel" />
                 </Field>
-                <Field id="inquiry-website" label={t.form.existingWebsite} isOptional error={errors.website}>
+                <Field id="inquiry-website" label={t.form.existingWebsite} isOptional error={errors.website} isFilled={values.website !== ''}>
                   <Input
                     {...inputProps('website')}
                     dir="ltr"
