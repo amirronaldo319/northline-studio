@@ -71,6 +71,7 @@ describe('Liquid Glass (Glisse) integration', () => {
   })
 
   test('field text is at least 16px, so iOS does not zoom when a field is focused', () => {
-    expect(css).toMatch(/\.lg-input\.field-input input\s*{[^}]*font-size:\s*1rem/)
+    const size = css.match(/\.lg-input\.field-input input\s*{[^}]*font-size:\s*([\d.]+)rem/)?.[1]
+    expect(Number(size)).toBeGreaterThanOrEqual(1)
   })
 })
