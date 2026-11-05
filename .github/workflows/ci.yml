@@ -19,3 +19,15 @@ jobs:
       - run: npm run lint
       - run: npm test
       - run: npm run build
+      # Browser tests run on the built site. The form endpoint is a dummy, and every test mocks the form service, so nothing is ever sent.
+      - name: Browser tests
+        run: |
+          VITE_FORM_ENDPOINT=https://formspree.io/f/e2e-test npm run build
+          npx playwright test
+      - name: Upload browser test traces
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-traces
+          path: test-results/
+          retention-days: 7

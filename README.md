@@ -12,7 +12,14 @@ npm run lint       # oxlint
 npm test           # form logic and public-copy rules (no price, no unverifiable claims)
 npm run build      # production build into dist/
 npm run preview    # serve dist/ locally
+npm run test:e2e   # browser tests in Chrome on the built site (build first, see below)
 npm run og-image   # re-render public/og-image.png (needs Google Chrome)
+```
+
+Browser tests (Playwright, desktop and phone) cover every language's home page, the contact form (sent and failed, with the form service mocked so nothing is ever sent), the project carousel and the phone menu. Build with a dummy form endpoint first:
+
+```bash
+VITE_FORM_ENDPOINT=https://formspree.io/f/e2e-test npm run build && npm run test:e2e
 ```
 
 ## Page structure
