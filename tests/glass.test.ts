@@ -101,14 +101,28 @@ describe('Apple design system', () => {
   }
   const token = (name: string) => css.match(new RegExp(`--color-${name}:\\s*(#[0-9a-f]{6})`, 'i'))?.[1] ?? ''
 
-  test('every button is an Apple pill: flat blue for the main action, a blue outline beside it', () => {
+  test('every button is an Apple pill in glass: blue glass for the main action, clear glass beside it', () => {
     const button = read('src/components/ui/button.ts')
     expect(button).toMatch(/\['button', variants\[variant\], sizes\[size\], extra\]/)
     expect(rule(/\.button/)).toMatch(/border-radius:\s*980px/)
     expect(rule(/\.button-primary/)).toMatch(/background-color:\s*#0071e3/)
-    expect(rule(/\.button-secondary/)).toMatch(/border-color:\s*#0071e3/)
-    // No gloss, sheen or movement on buttons.
+    expect(rule(/\.button-secondary/)).toMatch(/-webkit-backdrop-filter:\s*var\(--glass-filter\)/)
+    // Buttons never jump under the pointer; they only give a little when pressed.
     expect(plain).not.toMatch(/\.button[^{]*:hover[^{]*{[^}]*transform/)
+  })
+
+  test('the light on the blue glass never sits behind the label', () => {
+    const primary = rule(/\.button-primary/)
+    const top = Number(primary.match(/rgb\(255 255 255 \/ ([\d.]+)\),\s*rgb\(255 255 255 \/ 0\) (\d+)%/)?.[1])
+    const fade = Number(primary.match(/rgb\(255 255 255 \/ [\d.]+\),\s*rgb\(255 255 255 \/ 0\) (\d+)%/)?.[1])
+    expect(top).toBeLessThanOrEqual(0.1)
+    expect(fade).toBeLessThanOrEqual(40)
+  })
+
+  test('the controls are glass: rim, blur with the WebKit property, and glass in glass never frosts twice', () => {
+    expect(plain).toMatch(/:is\(\.liquid-glass-navigation, \.glass-control[^)]*\)::before\s*{[^}]*mask-composite:\s*exclude[^}]*pointer-events:\s*none/)
+    expect(plain).toMatch(/\.liquid-glass-navigation,\s*\.glass-control,[^{]*{[^}]*-webkit-backdrop-filter:\s*var\(--glass-filter\)[^}]*(^|[\s;])backdrop-filter:\s*var\(--glass-filter\)/)
+    expect(plain).toMatch(/\.liquid-glass-navigation :is\(\.glass-control, \.button, \.lang-pill\)\s*{[^}]*backdrop-filter:\s*none/)
   })
 
   test('the blue keeps its white label, and links and secondary text keep 4.5:1, on white and on Apple grey', () => {
@@ -119,14 +133,12 @@ describe('Apple design system', () => {
     }
   })
 
-  test('the top bar is Apple\'s material, with the WebKit property for Safari', () => {
-    const material = rule(/\.liquid-glass-navigation/)
-    expect(material).toMatch(/-webkit-backdrop-filter:\s*saturate\(180%\) blur\(20px\)/)
-    expect(material).toMatch(/(^|[\s;])backdrop-filter:\s*saturate\(180%\) blur\(20px\)/)
+  test('the capsule is a denser glass, Apple\'s blur and saturation', () => {
+    expect(rule(/\.liquid-glass-navigation/)).toMatch(/--glass-filter:\s*blur\(20px\) saturate\(180%\)/)
   })
 
-  test('the top bar keeps one height, so nothing on the page shifts as it changes', () => {
-    expect(rule(/\.site-nav-row/)).toMatch(/height:\s*3\.25rem/)
+  test('the header keeps one height, so nothing on the page shifts as the capsule changes', () => {
+    expect(rule(/\.site-nav/)).toMatch(/height:\s*3\.75rem/)
     expect(plain).not.toMatch(/\[data-scrolled\][^{]*\.site-nav-row[^{]*{[^}]*height/)
   })
 
@@ -145,7 +157,7 @@ describe('Apple design system', () => {
     for (const query of ['prefers-reduced-transparency: reduce', 'prefers-contrast: more', 'forced-colors: active']) {
       const at = plain.indexOf(`@media (${query})`)
       expect(at, query).toBeGreaterThan(-1)
-      expect(plain.slice(at, at + 900), query).toMatch(/\.liquid-glass-navigation[^{]*{[^}]*backdrop-filter:\s*none/)
+      expect(plain.slice(at, at + 1400), query).toMatch(/\.liquid-glass-navigation[^{]*{[^}]*backdrop-filter:\s*none/)
     }
   })
 })

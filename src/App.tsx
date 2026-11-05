@@ -2,6 +2,7 @@ import { ExampleDialogProvider } from './components/ExampleDialogProvider'
 import { ProjectViewerProvider } from './components/ProjectViewerProvider'
 import { Footer } from './components/Footer'
 import { Header } from './components/Header'
+import { QuoteBar } from './components/QuoteBar'
 import { PageContext } from './components/pageContext'
 import { CasePage } from './components/pages/CasePage'
 import { GuidePage } from './components/pages/GuidePage'
@@ -78,6 +79,7 @@ export default function App({ page = ENGLISH_HOME, copy }: { page?: PageRef; cop
               <PageContent page={page} />
             </main>
             <Footer />
+            <QuoteBar />
           </ProjectViewerProvider>
         </ExampleDialogProvider>
       </PageContext.Provider>

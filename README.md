@@ -24,9 +24,9 @@ language): websites, apps and tools, and the design demos.
 
 | Section | File |
 | --- | --- |
-| Hero (headline, price line, a blue button and an outline one, a real website shown large) | `src/components/sections/Hero.tsx` |
+| Hero (headline, price line, a blue glass button and a clear glass one, a real website shown large) | `src/components/sections/Hero.tsx` |
 | Selected work | `src/components/sections/Work.tsx`; projects in `src/content/projects.ts` (`HERO_PROJECT`, `FEATURED_PROJECT`, `GALLERY_WEBSITES`, `APP_PROJECTS`) |
-| Swipeable galleries | `src/components/ui/Gallery.tsx` (native snap scrolling, grey paddles, position dots on a frosted pill), mouse dragging in `src/hooks/useDragScroll.ts`, edge and resting rules in `src/lib/gallery.ts`; the cards are shared with the work page (`src/components/work/ProjectCards.tsx`) |
+| Swipeable galleries | `src/components/ui/Gallery.tsx` (native snap scrolling, glass paddles, position dots on a glass pill), mouse dragging in `src/hooks/useDragScroll.ts`, edge and resting rules in `src/lib/gallery.ts`; the cards are shared with the work page (`src/components/work/ProjectCards.tsx`) |
 | All projects | `src/components/pages/WorkPage.tsx`; design demos in `src/content/examples.ts` |
 | Pricing (comparison, visible essentials, optional care, full terms in a disclosure) | `src/components/sections/Package.tsx`, copy in `src/content/offers.ts` |
 | Process, About, FAQ | `Process.tsx`, `About.tsx`, `Faq.tsx`; FAQ text in `src/content/faq.ts` |
@@ -42,8 +42,8 @@ language): websites, apps and tools, and the design demos.
 | Page title and description | `src/config/seo.ts` **and** the matching tags in `index.html` |
 | Colours, fonts, shadows | `@theme` block at the top of `src/index.css` |
 | Type, section spacing, links | `.h-section`, `.lede`, `.section-pad`, `.section-intro`, `.text-link`, `.text-link-inline`, `.chevron-link` in `src/index.css` |
-| Apple look (buttons, cards, bar material, galleries) | "Apple design system" at the end of `src/index.css`; tiles (`.tile`, `.tile-paper`) in its component layer; Glisse's `--lg-*` block under "Liquid Glass (Glisse)" |
-| Buttons | `buttonClasses()` in `src/components/ui/button.ts` (primary blue or secondary outline; sm, md or lg) |
+| Apple look and Liquid Glass (buttons, glass controls, cards, galleries) | "Apple design system" at the end of `src/index.css` (the `--glass-*` tokens are under "Liquid Glass" there); tiles (`.tile`, `.tile-paper`) in its component layer; Glisse's `--lg-*` block under "Liquid Glass (Glisse)" |
+| Buttons | `buttonClasses()` in `src/components/ui/button.ts` (primary blue glass or secondary clear glass; sm, md or lg) |
 | Navigation and the primary button label | `src/content/navigation.ts` |
 | Unconfirmed commercial terms (kept off the page) | `pendingTerms` in `src/config/site.ts` |
 
@@ -57,9 +57,10 @@ meta description, and adjust the price rule in `tests/content-rules.test.ts`.
 
 Motion is CSS only and kept small: content rises 12px and fades in over about half a second as it scrolls into view,
 the hero arrives in three short steps, menus and disclosures take about 0.2s, and cross-page transitions are a quick
-fade. Buttons only change colour under the pointer, as Apple's do; project cards grow a hair (1%) and their shadow
-deepens, as in the Apple Store. Nothing hijacks scrolling, nothing follows the pointer, nothing moves on its own, and
-everything is shown at once, still, under reduced motion (`tests/motion.test.ts`).
+fade. Glass buttons and controls gather a little more light under the pointer and give a little when pressed, on a
+gentle spring (`--motion-spring`); the navigation capsule draws in once the page moves; project cards grow a hair (1%)
+and their shadow deepens, as in the Apple Store. Nothing hijacks scrolling, nothing follows the pointer, nothing moves
+on its own, and everything is shown at once, still, under reduced motion (`tests/motion.test.ts`).
 
 **Galleries.** The portfolio's sideways galleries are native scrollers that snap to each card, so a finger, a trackpad
 and the arrow keys move them as the device always does, and vertical scrolling passes through to the page. A mouse
@@ -81,21 +82,31 @@ Apple's own website is the reference, with SitePilot's own logo and copy:
 - **Composition:** one idea per section; centred intros; the work shown large with no browser chrome. Tiles hold one
   idea each, a step lighter or darker than their section, with no border or shadow (`.tile`, `.tile-paper`, 28px
   corners). Project cards are the Apple Store's: white, 18px corners, a soft shadow (`.card`).
-- **Buttons:** Apple's pills (`.button`): flat #0071e3 with a white label for the main action, a blue outline for
-  the one beside it, and a small blue "Buy"-style button in the top bar. No gloss, sheen or movement.
-- **Navigation:** Apple's product bar: 52px of frosted material across the top (`.liquid-glass-navigation`), the name
-  on the left, small links, the language menu and the quote button on the right; a hairline appears once the page
-  moves. On phones the links drop down in a sheet from a chevron; the quote button stays in the bar.
+- **Buttons:** Apple's pills in Liquid Glass (`.button`): tinted blue glass (#0071e3, white label at 4.7:1) for the
+  main action, clear glass with a blue label beside it, and a small blue glass button in the navigation.
+- **Navigation:** one floating capsule of glass (`.nav-capsule.liquid-glass-navigation`) that the page scrolls under:
+  the name, three links with a sliding glass lens (Glisse `TabBar`; plain links in Persian), the language menu and the
+  quote button. It draws in a little once the page moves; the header keeps one height, so nothing shifts. On phones a
+  glass button opens a glass sheet with the links, and the quote button floats in a glass bar at the bottom.
 - **Pricing:** Starter and Standard side by side at every width, one row per topic, flat on the page as Apple
   compares models, with their buttons aligned. The essential costs are always visible, optional care is a separate
   offer, and the full terms are in a disclosure.
 
-## Frosted material
+## Liquid Glass
 
-Frosted material (Liquid Glass) is used only where Apple uses it: the top bar and its phone menu (`saturate(180%)
-blur(20px)` over near-white), the gallery's position pill, and the small labels over screenshots. It turns solid for
-visitors who ask for reduced transparency, plain white with a drawn edge for those who ask for more contrast, and
-outlined in forced colours; `tests/glass.test.ts` checks these rules and the Apple tokens.
+Liquid Glass is used the way Apple uses it: as the layer of controls and navigation that floats above the content,
+never as the content. The navigation capsule and its phone sheet, the phone's bottom bar, every button, the gallery's
+paddles and position pill, the form's choices and the language pills are glass; sections, tiles and cards stay plain.
+
+Light glass is a thin white fill that blurs and saturates what is behind it (`--glass-fill`, `--glass-filter`), a
+specular rim brightest at the top left and bottom right (a gradient masked to a ring in `::before`), a bright line
+along the top edge inside, and a hairline and soft shadow outside. Glass inside glass drops its own blur (it would
+only see its parent's fill). The blue glass keeps its light along the top edge and its shade at the bottom, never
+behind the label.
+
+It turns solid for visitors who ask for reduced transparency, plain white with a drawn edge for those who ask for more
+contrast, outlined in forced colours, and denser where backdrop filters are missing. `tests/glass.test.ts` checks
+these rules and the Apple tokens.
 
 ### Glisse
 
@@ -103,8 +114,8 @@ Only Glisse's documented exports are used (`tests/glass.test.ts` checks this).
 
 | Where | Glisse component |
 | --- | --- |
-| The language menu in the bar | `Menu` (`LanguageMenu.tsx`) |
-| Pricing strip on phones | `Glass` (frosted: `.glass-frost`) |
+| The links in the capsule, as a tab bar with a sliding lens; the language menu | `TabBar` (links, so it is real navigation), `Menu` (`Header.tsx`, `LanguageMenu.tsx`) |
+| Phone quote bar (`QuoteBar.tsx`), pricing strip on phones | `Glass` (frosted: `.glass-frost`) |
 | Captions and labels over screenshots (hero caption, `ShotChip.tsx`) | `Glass` (refracting the picture beneath) |
 | Concept-demo dialog and project viewer | `SegmentedControl`, `Slider`, `Button` |
 
@@ -112,7 +123,7 @@ All `--lg-*` variables are set once for the light page (`:root, [data-theme='lig
 `<body data-theme="light">` pins the theme. Glisse's stylesheet is unlayered, so it beats Tailwind utilities on its own
 elements: put breakpoint and display classes on a wrapper (a test checks this). A `view-transition-name`, `opacity`
 below 1, `filter`, `mask` or `backdrop-filter` on an ancestor of glass makes that ancestor the backdrop the glass
-sees.
+sees. Persian uses plain links in the capsule: Glisse's tab bar positions its lens from the left edge only.
 
 ## Inquiry form
 
@@ -230,7 +241,8 @@ use commercially. No stock photography is bundled.
     do the same as they scroll in (`Words`, `.word`). Header links arrive in turn on load.
   - Process numbers fill in and package icons pop as their group is revealed; the featured project's phone drifts
     against the desktop picture while scrolling; the "request sent" check draws itself.
-  - Phones: the "Request a quote" button stays in the top bar, as Apple keeps its Buy button.
+  - Phones: a glass bar with "Request a quote" floats at the bottom after the first screen and steps aside at the
+    form and the footer (`QuoteBar`).
   - Sections: groups fade up once as they enter view (`.reveal`); if the observer never reports, `useReveal` shows
     everything, and hash links reveal their destination immediately (`useHashScroll`).
   - Projects: cards grow by 1% and their shadow deepens under the pointer, as in the Apple Store. The featured
@@ -245,9 +257,10 @@ use commercially. No stock photography is bundled.
   - Featured project: the real desktop capture is the anchor and the real phone capture arrives beside it once
     (450 ms, 24 px, only when it enters view). Its column is reserved up front, the text never moves, and small
     screens show the single phone capture instead of two tiny ones.
-  - Navigation: the link for the section being read turns grey, as Apple marks the page you are on.
-  - Optional form fields use one disclosure pattern (`.disclosure`). The phone menu drops from the bar; focus moves
-    into it, and it closes on Escape, a link, or a tap outside it, returning focus to the chevron.
+  - Navigation: a lens of glass slides to the link for the section being read (Glisse `TabBar`); a link the visitor
+    picks is held while the page glides there, so the lens does not bounce through the sections in between.
+  - Optional form fields use one disclosure pattern (`.disclosure`). The phone menu is a glass sheet under the
+    capsule; focus moves into it, and it closes on Escape, a link, or a tap outside it, returning focus to the button.
   - Dialog: a short entrance and exit; closing is timer-driven so a stalled animation can never leave an overlay.
   - Form: errors and status messages fade in, with text carrying the meaning.
 - **Performance:** the three demo sites are code-split and mounted only as they approach the viewport.

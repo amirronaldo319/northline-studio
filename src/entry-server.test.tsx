@@ -36,9 +36,9 @@ describe('server render', async () => {
     expect(html.match(/<h1[\s>]/g)).toHaveLength(1)
   })
 
-  test('keeps the quote button in the top bar at every width, as Apple keeps its Buy button', () => {
+  test('has the quote button in the capsule, and a phone glass bar that starts hidden', () => {
     expect(html).toMatch(/<a href="#contact" class="button button-primary button-sm site-nav-cta">Request a quote<\/a>/)
-    expect(html).not.toContain('quote-bar')
+    expect(html).toMatch(/class="quote-bar" data-visible="false"/)
   })
 
   test('contains no inline scripts, which the Content-Security-Policy would block', () => {

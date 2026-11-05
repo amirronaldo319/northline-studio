@@ -5,18 +5,21 @@ import { render } from './entry-server'
 describe('glass markup without JavaScript', async () => {
   const html = await render({ kind: 'home', locale: 'en' })
 
-  test('the bar is real navigation: plain links to Work, Pricing and About', () => {
-    expect(html).toMatch(/<nav aria-label="Main" class="site-nav-links">/)
-    for (const id of ['work', 'package', 'about']) expect(html).toMatch(new RegExp(`<a href="#${id}" class="nav-link"`))
-    expect(html).not.toContain('class="lg-tab-bar')
+  test('the glass tab bar is real navigation: plain links to Work, Pricing and About', () => {
+    expect(html).toMatch(/role="navigation"[^>]*aria-label="Main"|aria-label="Main"[^>]*role="navigation"/)
+    for (const id of ['work', 'package', 'about']) expect(html).toMatch(new RegExp(`<a href="#${id}" class="lg-tab"`))
   })
 
-  test('the bar is one strip of frosted material, as on Apple\'s product pages', () => {
-    expect(html.match(/class="nav-bar liquid-glass-navigation"/g)).toHaveLength(1)
+  test('the navigation is one floating capsule of glass', () => {
+    expect(html.match(/class="nav-capsule liquid-glass-navigation"/g)).toHaveLength(1)
   })
 
-  test('the menu button is a real button that says what it does and what it controls', () => {
-    expect(html).toMatch(/<button type="button" class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu"/)
+  test('the menu button is a real button of glass that says what it does and what it controls', () => {
+    expect(html).toMatch(/<button type="button" class="nav-toggle glass-control" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu"/)
+  })
+
+  test('the phone glass bar starts hidden and out of reach', () => {
+    expect(html).toMatch(/<div class="quote-bar" data-visible="false" inert=""/)
   })
 
   test('the contact form sits in one large tile, with real inputs, labels and autocomplete', () => {
@@ -55,7 +58,7 @@ describe('glass markup without JavaScript', async () => {
   })
 
   test('each gallery has labelled previous and next buttons, and starts with previous disabled', () => {
-    const buttons = [...html.matchAll(/<button type="button" class="gallery-paddle" aria-label="(Previous|Next)"( disabled="")?/g)]
+    const buttons = [...html.matchAll(/<button type="button" class="gallery-paddle glass-control" aria-label="(Previous|Next)"( disabled="")?/g)]
     expect(buttons.map((match) => `${match[1]}${match[2] ? ' (disabled)' : ''}`)).toEqual(['Previous (disabled)', 'Next', 'Previous (disabled)', 'Next'])
   })
 
