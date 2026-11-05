@@ -17,16 +17,16 @@ npm run og-image   # re-render public/og-image.png (needs Google Chrome)
 
 ## Page structure
 
-Home: Hero → Selected work (one featured live site, then two swipeable galleries of glass cards: the other websites and
+Home: Hero → Selected work (one featured live site, then two swipeable galleries of cards: the other websites and
 the design demos, then my own apps and tools; a link to every project) → Pricing → Process (three steps) → About → FAQ
 → Contact → Footer. Every project is on the work page (`/work/`, in each
 language): websites, apps and tools, and the design demos.
 
 | Section | File |
 | --- | --- |
-| Hero (headline, price line, a blue and a clear glass action, a real website shown large in a glass bezel) | `src/components/sections/Hero.tsx` |
+| Hero (headline, price line, a blue button and an outline one, a real website shown large) | `src/components/sections/Hero.tsx` |
 | Selected work | `src/components/sections/Work.tsx`; projects in `src/content/projects.ts` (`HERO_PROJECT`, `FEATURED_PROJECT`, `GALLERY_WEBSITES`, `APP_PROJECTS`) |
-| Swipeable galleries | `src/components/ui/Gallery.tsx` (native snap scrolling, glass buttons, position dots), mouse dragging in `src/hooks/useDragScroll.ts`, edge and resting rules in `src/lib/gallery.ts`; the cards are shared with the work page (`src/components/work/ProjectCards.tsx`) |
+| Swipeable galleries | `src/components/ui/Gallery.tsx` (native snap scrolling, grey paddles, position dots on a frosted pill), mouse dragging in `src/hooks/useDragScroll.ts`, edge and resting rules in `src/lib/gallery.ts`; the cards are shared with the work page (`src/components/work/ProjectCards.tsx`) |
 | All projects | `src/components/pages/WorkPage.tsx`; design demos in `src/content/examples.ts` |
 | Pricing (comparison, visible essentials, optional care, full terms in a disclosure) | `src/components/sections/Package.tsx`, copy in `src/content/offers.ts` |
 | Process, About, FAQ | `Process.tsx`, `About.tsx`, `Faq.tsx`; FAQ text in `src/content/faq.ts` |
@@ -42,9 +42,8 @@ language): websites, apps and tools, and the design demos.
 | Page title and description | `src/config/seo.ts` **and** the matching tags in `index.html` |
 | Colours, fonts, shadows | `@theme` block at the top of `src/index.css` |
 | Type, section spacing, links | `.h-section`, `.lede`, `.section-pad`, `.section-intro`, `.text-link`, `.text-link-inline`, `.chevron-link` in `src/index.css` |
-| Liquid Glass look | The `--glass-*` tokens and classes under "Liquid Glass system" at the end of `src/index.css`; Glisse's `--lg-*` block under "Liquid Glass (Glisse)" |
-| Buttons | `buttonClasses()` in `src/components/ui/button.ts` (primary or secondary glass; sm, md or lg) |
-| Background light and glass shapes | `.ambient-*` arrangements and `.*-shapes` positions in `src/index.css`; `src/components/glass/GlassShapes.tsx` |
+| Apple look (buttons, cards, bar material, galleries) | "Apple design system" at the end of `src/index.css`; tiles (`.tile`, `.tile-paper`) in its component layer; Glisse's `--lg-*` block under "Liquid Glass (Glisse)" |
+| Buttons | `buttonClasses()` in `src/components/ui/button.ts` (primary blue or secondary outline; sm, md or lg) |
 | Navigation and the primary button label | `src/content/navigation.ts` |
 | Unconfirmed commercial terms (kept off the page) | `pendingTerms` in `src/config/site.ts` |
 
@@ -58,69 +57,45 @@ meta description, and adjust the price rule in `tests/content-rules.test.ts`.
 
 Motion is CSS only and kept small: content rises 12px and fades in over about half a second as it scrolls into view,
 the hero arrives in three short steps, menus and disclosures take about 0.2s, and cross-page transitions are a quick
-fade. Glass buttons and cards answer the pointer on a gentle spring (`--motion-spring`, a `linear()` curve with a
-cubic-bezier fallback): buttons rise 1px and catch a sweep of light, cards rise 4px and brighten, and both give a
-little when pressed. The hero's glass shapes drift slowly and fall behind the content a little as the page scrolls
-(where scroll timelines exist); the hero's main button catches the light every few seconds. The shapes behind frosted
-panels never move, so the frost never has to be recomputed. Nothing hijacks scrolling, nothing follows the pointer,
-and everything is shown at once, still, under reduced motion (`tests/motion.test.ts`).
+fade. Buttons only change colour under the pointer, as Apple's do; project cards grow a hair (1%) and their shadow
+deepens, as in the Apple Store. Nothing hijacks scrolling, nothing follows the pointer, nothing moves on its own, and
+everything is shown at once, still, under reduced motion (`tests/motion.test.ts`).
 
 **Galleries.** The portfolio's sideways galleries are native scrollers that snap to each card, so a finger, a trackpad
 and the arrow keys move them as the device always does, and vertical scrolling passes through to the page. A mouse
 can drag them: a press becomes a drag after 6px, the row follows the pointer with snapping paused, and on release it
 glides on a little in the direction of the throw and settles on the nearest card; the click at the end of a drag is
-swallowed, so letting go over a screenshot or a link never opens it. The glass buttons step one card at a time and
-fade back at the ends; nothing moves on its own. Lenis, GSAP and the Inter web font were removed in the 2026-11 redesign; the system font is used.
+swallowed, so letting go over a screenshot or a link never opens it. The paddles step one card at a time and fade back
+at the ends; nothing moves on its own. Lenis, GSAP and the Inter web font were removed in the 2026-11 redesign; the system font is used.
 
 ## Design language
 
-Apple-inspired, with SitePilot's own logo and copy:
+Apple's own website is the reference, with SitePilot's own logo and copy:
 
-- **Type:** the device's system font (`-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif`).
-  Hero 44px on phones to about 88px wide; section headings 32–56px; intro text 19–24px; body 17px. Headings are one
-  colour, near-black, with moderate negative tracking on large sizes only.
-- **Palette:** a cool off-white canvas (#f7f8fa) lit by soft pools of blue, silver and lavender; #1d1d1f text, #424245
-  and #6e6e73 for secondary text; #0071e3 for actions and icons, and the darker #0066cc for links and blue labels
-  (5.6:1 on white).
-- **Composition:** one idea per section; centred intros; the work shown large in a bezel of glass, no browser chrome;
-  primary actions in blue glass, secondary ones in clear glass, text links with a chevron inside cards.
-- **Pricing:** Starter and Standard side by side at every width, one row per topic, on one panel of glass. Each plan
-  heads its column on a glass card; Standard's card has a little more glass and a cool blue light, and no label. The
-  essential costs are always visible, optional care is a separate card, and the full terms are in a disclosure.
+- **Type:** the device's system font (`-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif`), so
+  Apple devices get SF Pro. Hero 44px on phones to 80px wide; section headings 32–56px; intro text 19–24px; body
+  17px. Apple's tracking for SF Pro: -0.015em at hero size, -0.005em for section headings, -0.022em for body text
+  (reset to 0 for Persian and Chinese).
+- **Palette:** white and #f5f5f7 sections in turn; #1d1d1f text, #424245 and #6e6e73 for secondary text; #0071e3 for
+  buttons and icons, #0066cc for links and blue labels (5.6:1 on white, 5.1:1 on grey).
+- **Composition:** one idea per section; centred intros; the work shown large with no browser chrome. Tiles hold one
+  idea each, a step lighter or darker than their section, with no border or shadow (`.tile`, `.tile-paper`, 28px
+  corners). Project cards are the Apple Store's: white, 18px corners, a soft shadow (`.card`).
+- **Buttons:** Apple's pills (`.button`): flat #0071e3 with a white label for the main action, a blue outline for
+  the one beside it, and a small blue "Buy"-style button in the top bar. No gloss, sheen or movement.
+- **Navigation:** Apple's product bar: 52px of frosted material across the top (`.liquid-glass-navigation`), the name
+  on the left, small links, the language menu and the quote button on the right; a hairline appears once the page
+  moves. On phones the links drop down in a sheet from a chevron; the quote button stays in the bar.
+- **Pricing:** Starter and Standard side by side at every width, one row per topic, flat on the page as Apple
+  compares models, with their buttons aligned. The essential costs are always visible, optional care is a separate
+  offer, and the full terms are in a disclosure.
 
-## Liquid Glass
+## Frosted material
 
-Two layers work together: a CSS glass system for every surface, and [Glisse](https://glisse.kelvinzhang.ca)
-(`glisse`, pinned to 0.5.0 because the styling targets its class names) for the pieces that refract live content.
-
-### The CSS system (`src/index.css`, "Liquid Glass system")
-
-| Class | Use |
-| --- | --- |
-| `.liquid-glass` | A sheet of frosted glass: the pricing panel, the FAQ, the About facts, trade-page cards |
-| `.liquid-glass-strong` | Denser and brighter: the contact panel, the phone menu sheet, the concept stage, the Standard plan |
-| `.liquid-glass-subtle` | Thinner: the Starter plan, the care card, the form's well inside the contact panel |
-| `.liquid-glass-card` | A card that lifts and brightens under the pointer: project cards, process steps, related work |
-| `.liquid-glass-button` | Every button (see `ui/button.ts`): `glass-btn-primary` (blue glass) or `glass-btn-secondary` (clear), in `glass-btn-sm` (bar), `-md` (cards) or `-lg` (main actions, the form's send button) |
-| `.liquid-glass-navigation` | The floating capsule at the top; it draws in and frosts more once the page scrolls (the header keeps one height, so nothing shifts) |
-| `.liquid-glass-input` | The inquiry form's inset fields (with `.field`, which keeps the 3:1 grey edge and 17px text) |
-
-Each surface is a translucent fill clipped to the padding box inside a clear 1px border, a rim drawn in that border by
-`::before` (a gradient masked to a ring), a soft highlight in `::after`, and layered shadows. Tune them with the
-`--glass-*` tokens (fill, blur, saturation, radius, rim, shadows, sheen); a surface can override any of them.
-
-**Light.** Glass needs something behind it. Sections that hold glass carry `.ambient` plus an arrangement
-(`.ambient-hero`, `-work`, `-cards`, `-pricing`, `-process`, `-quiet`, `-contact`): pools of light painted once, faded
-at the section's edges so sections flow into each other. `GlassShapes` adds painted glass lenses, rings and capsules
-behind the hero, the project cards, the pricing panel and the contact panel; only the hero's set moves.
-
-**Performance.** Nothing that moves is frosted, and nothing frosted sits over something that moves: the drifting shapes
-are gradients, and the shapes behind frosted panels are still. Glass nested in glass drops its own backdrop filter
-(it would only see its parent's fill). `tests/glass.test.ts` checks these rules.
-
-**When glass is unwelcome.** Reduced transparency makes every surface nearly opaque, drops the frost and hides the
-shapes; more contrast turns the glass into plain white surfaces with a drawn edge; forced colours uses system colours
-with outlines; browsers without backdrop filters get a denser fill; print drops it all.
+Frosted material (Liquid Glass) is used only where Apple uses it: the top bar and its phone menu (`saturate(180%)
+blur(20px)` over near-white), the gallery's position pill, and the small labels over screenshots. It turns solid for
+visitors who ask for reduced transparency, plain white with a drawn edge for those who ask for more contrast, and
+outlined in forced colours; `tests/glass.test.ts` checks these rules and the Apple tokens.
 
 ### Glisse
 
@@ -128,8 +103,8 @@ Only Glisse's documented exports are used (`tests/glass.test.ts` checks this).
 
 | Where | Glisse component |
 | --- | --- |
-| The links in the bar, as a tab bar with a sliding lens; the language menu | `TabBar` (links, so it is real navigation), `Menu` (`Header.tsx`, `LanguageMenu.tsx`) |
-| Phone quote bar (`QuoteBar.tsx`), pricing strip on phones | `Glass` (frosted: `.glass-frost`) |
+| The language menu in the bar | `Menu` (`LanguageMenu.tsx`) |
+| Pricing strip on phones | `Glass` (frosted: `.glass-frost`) |
 | Captions and labels over screenshots (hero caption, `ShotChip.tsx`) | `Glass` (refracting the picture beneath) |
 | Concept-demo dialog and project viewer | `SegmentedControl`, `Slider`, `Button` |
 
@@ -137,7 +112,7 @@ All `--lg-*` variables are set once for the light page (`:root, [data-theme='lig
 `<body data-theme="light">` pins the theme. Glisse's stylesheet is unlayered, so it beats Tailwind utilities on its own
 elements: put breakpoint and display classes on a wrapper (a test checks this). A `view-transition-name`, `opacity`
 below 1, `filter`, `mask` or `backdrop-filter` on an ancestor of glass makes that ancestor the backdrop the glass
-sees. Persian uses plain links in the bar: Glisse's tab bar positions its lens from the left edge only.
+sees.
 
 ## Inquiry form
 
@@ -255,12 +230,11 @@ use commercially. No stock photography is bundled.
     do the same as they scroll in (`Words`, `.word`). Header links arrive in turn on load.
   - Process numbers fill in and package icons pop as their group is revealed; the featured project's phone drifts
     against the desktop picture while scrolling; the "request sent" check draws itself.
-  - Phones: a "Request a quote" bar slides up after the first screen and leaves at the form (`StickyQuoteBar`,
-    rule in `src/lib/quoteBar.ts`).
+  - Phones: the "Request a quote" button stays in the top bar, as Apple keeps its Buy button.
   - Sections: groups fade up once as they enter view (`.reveal`); if the observer never reports, `useReveal` shows
     everything, and hash links reveal their destination immediately (`useHashScroll`).
-  - Projects: cards lift 3 px, the picture zooms to 1.03 within its crop, and the action arrow moves with it. The
-    featured project is unveiled by a mask (`.mask-reveal`).
+  - Projects: cards grow by 1% and their shadow deepens under the pointer, as in the Apple Store. The featured
+    project is unveiled by a mask (`.mask-reveal`).
   - Project viewer: every real project screenshot is a button that opens a larger preview
     (`ProjectViewerProvider`). The picture grows from its thumbnail in about 300 ms (a shared-element transition
     using the Web Animations API, so it does not depend on view-transition support) and returns to wherever it
@@ -271,13 +245,9 @@ use commercially. No stock photography is bundled.
   - Featured project: the real desktop capture is the anchor and the real phone capture arrives beside it once
     (450 ms, 24 px, only when it enters view). Its column is reserved up front, the text never moves, and small
     screens show the single phone capture instead of two tiny ones.
-  - Navigation: from 1024px a glass tab bar (Glisse `TabBar`) follows the section being read; a tab the visitor picks
-    is held while the page glides there (`src/lib/navSelection.ts`), so the selection does not bounce through the
-    sections in between. Persian keeps the sliding underline (transform only, 180 ms), which hover and keyboard focus
-    borrow; it re-measures on resize and when fonts load.
-  - Optional form fields use one disclosure pattern (`.disclosure`), and the phone menu a glass sheet
-    (`.glass-sheet-wrap`) that follows the same rules: always mounted, `inert` when closed, so they animate smoothly,
-    keep entered values, and stay out of the tab order. The sheet also closes on Escape or a tap outside it.
+  - Navigation: the link for the section being read turns grey, as Apple marks the page you are on.
+  - Optional form fields use one disclosure pattern (`.disclosure`). The phone menu drops from the bar; focus moves
+    into it, and it closes on Escape, a link, or a tap outside it, returning focus to the chevron.
   - Dialog: a short entrance and exit; closing is timer-driven so a stalled animation can never leave an overlay.
   - Form: errors and status messages fade in, with text carrying the meaning.
 - **Performance:** the three demo sites are code-split and mounted only as they approach the viewport.

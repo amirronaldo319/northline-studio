@@ -10,7 +10,8 @@ import { ProjectTrigger } from '../ProjectTrigger'
 import { ShotChip } from '../ShotChip'
 
 /*
- * Project cards of glass, shared by the home page's swipeable galleries and the work page's grid. Each card fills the
+ * Project cards in the manner of the Apple Store's: white, rounded, a soft shadow that deepens under the pointer, the
+ * picture across the top. Shared by the home page's swipeable galleries and the work page's grid. Each card fills the
  * height it is given, so a row or a gallery of cards lines up, with the links resting on the card's foot.
  */
 
@@ -50,11 +51,11 @@ function CardText({ project }: { project: Project }) {
   )
 }
 
-/** A website: its screenshot set in a card of glass, with its status, name, one line and its links. */
+/** A website: its screenshot across the top of a card, with its status, name, one line and its links. */
 export function WebsiteCard({ project }: { project: Project }) {
   const t = useCopy()
   return (
-    <article aria-labelledby={`project-${project.id}-title`} className="project-card liquid-glass-card flex h-full flex-col">
+    <article aria-labelledby={`project-${project.id}-title`} className="project-card card flex h-full flex-col">
       <div className="shot-frame card-shot relative">
         <ProjectTrigger project={project} sizes="(min-width: 1216px) 540px, (min-width: 768px) 44vw, 90vw" />
         <ShotChip>{statusLabel(t.work, project.status)}</ShotChip>
@@ -68,7 +69,7 @@ export function WebsiteCard({ project }: { project: Project }) {
 export function AppCard({ project }: { project: Project }) {
   const t = useCopy()
   return (
-    <article aria-labelledby={`project-${project.id}-title`} className="project-card liquid-glass-card flex h-full flex-col">
+    <article aria-labelledby={`project-${project.id}-title`} className="project-card card flex h-full flex-col">
       <div className="app-stage" style={{ '--tint': project.tint } as CSSProperties}>
         <ShotChip>{statusLabel(t.work, project.status)}</ShotChip>
         <div className="app-phone phone-device">
@@ -88,7 +89,7 @@ export function DemoCard({ example }: { example: ExampleSite }) {
   const titleId = `example-${example.id}-title`
 
   return (
-    <article aria-labelledby={titleId} className="project-card liquid-glass-card flex h-full flex-col">
+    <article aria-labelledby={titleId} className="project-card card flex h-full flex-col">
       <div className="shot-frame card-shot relative">
         <DemoPreview example={example} />
         <ShotChip>{t.work.conceptDemo}</ShotChip>

@@ -109,7 +109,7 @@ describe('motion system', () => {
 describe('motion is neutralised when printing', () => {
   const printBlock = css.slice(css.lastIndexOf('@media print'))
 
-  for (const selector of ['.enter', '.fx-in', '.mask-reveal', '.disclosure', '.quote-bar']) {
+  for (const selector of ['.enter', '.fx-in', '.mask-reveal', '.disclosure', '.gallery-controls']) {
     test(selector, () => expect(printBlock).toContain(selector))
   }
 })

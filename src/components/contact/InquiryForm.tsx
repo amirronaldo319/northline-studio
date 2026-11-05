@@ -261,7 +261,7 @@ export function InquiryForm() {
                         onChange={update('need')}
                         className="peer sr-only"
                       />
-                      <span className="glass-choice">
+                      <span className="choice-pill">
                         {option.label}
                       </span>
                     </label>

@@ -36,8 +36,9 @@ describe('server render', async () => {
     expect(html.match(/<h1[\s>]/g)).toHaveLength(1)
   })
 
-  test('does not render the phone quote bar as visible', () => {
-    expect(html).toMatch(/class="quote-bar" data-visible="false"/)
+  test('keeps the quote button in the top bar at every width, as Apple keeps its Buy button', () => {
+    expect(html).toMatch(/<a href="#contact" class="button button-primary button-sm site-nav-cta">Request a quote<\/a>/)
+    expect(html).not.toContain('quote-bar')
   })
 
   test('contains no inline scripts, which the Content-Security-Policy would block', () => {
