@@ -62,8 +62,8 @@ export function LanguageSwitcher({ className = '', tone = 'light' }: Props) {
                       ? 'border-white bg-white text-night'
                       : 'border-night-line text-white/85 hover:border-white/60 hover:text-white'
                     : isCurrent
-                      ? 'border-ink bg-ink text-white'
-                      : 'border-line-strong bg-card text-ink-2 hover:border-ink/40 hover:text-ink'
+                      ? 'lang-pill lang-pill-current'
+                      : 'lang-pill text-ink-2 hover:text-ink'
                 }`}
               >
                 {info.shortLabel}

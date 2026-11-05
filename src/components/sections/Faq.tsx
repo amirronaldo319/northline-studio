@@ -16,7 +16,7 @@ export function Faq({ items, heading, label }: Props) {
   const entries = items ?? t.faq.items
 
   return (
-    <section id="faq" aria-labelledby="faq-title" className="section-pad ambient ambient-cards">
+    <section id="faq" aria-labelledby="faq-title" className="section-pad bg-paper">
       <div className="container-page">
         <div className="section-intro reveal">
           <p className="eyebrow">{label ?? t.faq.eyebrow}</p>
@@ -36,7 +36,7 @@ export function Faq({ items, heading, label }: Props) {
           </p>
         </div>
 
-        <div className="faq-panel liquid-glass reveal mx-auto mt-12 max-w-[52rem] lg:mt-14">
+        <div className="reveal mx-auto mt-12 max-w-[52rem] border-b border-line lg:mt-14">
           {entries.map((item) => (
             <details key={item.question} className="faq-item group border-t border-line">
               <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-6 py-5 text-start text-[1.125rem] font-semibold tracking-[-0.01em] transition-colors hover:text-accent sm:text-[1.25rem]">

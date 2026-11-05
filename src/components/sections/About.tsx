@@ -1,12 +1,12 @@
 import { useCopy } from '@/i18n/context'
 import { Words } from '../Words'
 
-/** A short, personal introduction: who builds the site, and four plain facts about working together on a card of glass. */
+/** A short, personal introduction: who builds the site, and four plain facts about working together on a grey tile. */
 export function About() {
   const t = useCopy()
 
   return (
-    <section id="about" aria-labelledby="about-title" className="section-pad ambient ambient-quiet">
+    <section id="about" aria-labelledby="about-title" className="section-pad">
       <div className="container-page grid items-start gap-10 lg:grid-cols-12 lg:gap-16">
         <div className="reveal lg:col-span-6">
           <p className="eyebrow">{t.about.eyebrow}</p>
@@ -17,7 +17,7 @@ export function About() {
         </div>
 
         <div className="reveal lg:col-span-6 lg:pt-3">
-          <dl className="facts facts-card liquid-glass">
+          <dl className="facts facts-card tile-paper">
             {t.about.glance.map((row) => (
               <div key={row.label} className="facts-row">
                 <dt className="text-[0.9375rem] text-ink-3">{row.label}</dt>

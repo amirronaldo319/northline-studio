@@ -10,7 +10,7 @@ import { LanguageSwitcher } from './LanguageSwitcher'
 import { PageContext, useHomeAnchor, useHomeTop } from './pageContext'
 import { buttonClasses } from './ui/button'
 
-/** Where the full row of links replaces the phone menu. */
+/** Where the row of links replaces the phone menu. */
 const DESKTOP_QUERY = '(min-width: 880px)'
 const sectionIds = MENU_LINKS.map((link) => link.id)
 /** How long a picked tab is held while the page glides to it, so the lens does not bounce through other sections. */
@@ -20,9 +20,9 @@ const PICK_HOLD_MS = 1200
 const BEHIND_MENU = ['main', 'site-footer']
 
 /**
- * The links as a Liquid Glass tab bar: plain text with one lens of glass that slides to the section being read (and
- * stretches as it moves). They are real links, so they work without JavaScript. Glisse measures the lens from the
- * left only, so right-to-left pages keep plain links.
+ * The links as a Liquid Glass tab bar, as in iOS: plain text with one lens of glass that slides to the section being
+ * read. They are real links, so they work without JavaScript. Glisse measures the lens from the left only, so
+ * right-to-left pages keep plain links.
  */
 function GlassLinks({ active }: { active: string | null }) {
   const t = useCopy()
@@ -67,10 +67,11 @@ function PlainLinks({ active }: { active: string | null }) {
 }
 
 /**
- * One floating capsule of Liquid Glass: the wordmark, three links with a sliding lens, the language menu and the quote
- * button, all on a single frosted surface that the page scrolls under. Once the page scrolls, the capsule draws in a
- * little and frosts more. On phones the links open in a glass sheet: focus moves into it, Escape or a link closes it,
- * focus returns to the button, and the page behind is out of reach.
+ * The navigation as Apple draws it with Liquid Glass: one capsule of glass floating at the top, which the page scrolls
+ * under. It holds the name, three links with a sliding lens, the language menu and a small blue glass button; once the
+ * page moves, the capsule draws in a little. On phones the links open in a glass sheet that drops from the capsule
+ * (the quote button lives in a glass bar at the bottom of the screen instead): focus moves into the sheet, Escape or a
+ * link closes it, focus returns to the button, and the page behind is out of reach.
  */
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -82,11 +83,11 @@ export function Header() {
   const homeTop = useHomeTop()
   const { isHome, page } = useContext(PageContext)
   const t = useCopy()
-  const isRtl = LOCALES[page.locale].dir === 'rtl'
   const current = isHome ? active : null
+  const isRtl = LOCALES[page.locale].dir === 'rtl'
 
   useEffect(() => {
-    const onScroll = () => setIsScrolled(window.scrollY > 4)
+    const onScroll = () => setIsScrolled(window.scrollY > 8)
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
@@ -120,47 +121,44 @@ export function Header() {
   const closeMenu = () => setIsMenuOpen(false)
 
   return (
-    <header className="site-nav" data-scrolled={isScrolled || isMenuOpen || undefined} data-open={isMenuOpen || undefined}>
+    <header className="site-nav" data-scrolled={isScrolled || undefined} data-open={isMenuOpen || undefined}>
       <div className="container-page">
-        <div className="nav-shell liquid-glass-navigation">
+        <div className="nav-capsule liquid-glass-navigation">
           <div className="site-nav-row">
             <a href={homeTop} className="site-nav-brand" onClick={closeMenu}>
               <BrandMark />
             </a>
 
-            {/* Wrappers carry the breakpoints: Glisse's own (unlayered) display rules win over utility classes. */}
-            <div className="site-nav-links">{isRtl ? <PlainLinks active={current} /> : <GlassLinks active={current} />}</div>
-
             <div className="site-nav-actions">
+              {/* Wrappers carry the breakpoints: Glisse's own (unlayered) display rules win over utility classes. */}
+              <div className="site-nav-links">{isRtl ? <PlainLinks active={current} /> : <GlassLinks active={current} />}</div>
               <div className="site-nav-lang">
                 <LanguageMenu />
               </div>
               <a href={`#${CONTACT_SECTION_ID}`} className={buttonClasses('primary', 'sm', 'site-nav-cta')}>
                 {t.common.requestQuote}
               </a>
-              <div className="site-nav-toggle">
-                <button
-                  ref={toggleRef}
-                  type="button"
-                  className="liquid-glass-button glass-btn-secondary glass-btn-icon nav-toggle"
-                  aria-label={isMenuOpen ? t.common.closeMenu : t.common.openMenu}
-                  aria-expanded={isMenuOpen}
-                  aria-controls="mobile-menu"
-                  onClick={() => setIsMenuOpen((open) => !open)}
-                >
-                  <span aria-hidden="true" className="nav-toggle-lines" />
-                </button>
-              </div>
+              <button
+                ref={toggleRef}
+                type="button"
+                className="nav-toggle glass-control"
+                aria-label={isMenuOpen ? t.common.closeMenu : t.common.openMenu}
+                aria-expanded={isMenuOpen}
+                aria-controls="mobile-menu"
+                onClick={() => setIsMenuOpen((open) => !open)}
+              >
+                <span aria-hidden="true" className="nav-toggle-lines" />
+              </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* The phone menu: a glass sheet over a soft scrim. A tap on the scrim closes it. */}
+      {/* The phone menu: a sheet of glass under the capsule, over a soft curtain. A tap on the curtain closes it. */}
       <div id="mobile-menu" className="site-menu" data-open={isMenuOpen || undefined} hidden={!isMenuOpen}>
         <div className="site-menu-scrim" aria-hidden="true" onClick={closeMenu} />
-        <div ref={sheetRef} className="container-page site-menu-panel">
-          <div className="menu-sheet liquid-glass-strong">
+        <div className="container-page site-menu-panel">
+          <div ref={sheetRef} className="menu-sheet liquid-glass-navigation">
             <nav aria-label={t.common.mobileNav}>
               <ul className="site-menu-list">
                 {MENU_LINKS.map((link, index) => (
@@ -176,13 +174,8 @@ export function Header() {
                   </li>
                 ))}
               </ul>
-              <div className="menu-sheet-foot" style={{ '--i': MENU_LINKS.length } as CSSProperties}>
-                <div className="mt-6">
-                  <LanguageSwitcher />
-                </div>
-                <a href={`#${CONTACT_SECTION_ID}`} onClick={closeMenu} className={buttonClasses('primary', 'lg', 'mt-6 w-full')}>
-                  {t.common.requestQuote}
-                </a>
+              <div className="menu-sheet-foot mt-6" style={{ '--i': MENU_LINKS.length } as CSSProperties}>
+                <LanguageSwitcher />
               </div>
             </nav>
           </div>

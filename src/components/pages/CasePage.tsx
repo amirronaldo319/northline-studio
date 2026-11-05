@@ -49,14 +49,12 @@ export function CasePage({ project }: { project: Project }) {
         }
       />
 
-      <section aria-label={t.casePage.screenshots(project.name)} className="section-pad ambient ambient-work">
+      <section aria-label={t.casePage.screenshots(project.name)} className="section-pad bg-paper">
         <div className="container-page grid items-start gap-6 lg:grid-cols-12 lg:gap-10">
           <div className="reveal lg:col-span-9">
-            <div className="glass-frame">
-              <div className="shot-frame">
-                <div className="mask-reveal">
-                  <ProjectTrigger project={project} isEager />
-                </div>
+            <div className="shot-frame">
+              <div className="mask-reveal">
+                <ProjectTrigger project={project} isEager />
               </div>
             </div>
           </div>
@@ -68,7 +66,7 @@ export function CasePage({ project }: { project: Project }) {
         </div>
       </section>
 
-      <section aria-labelledby="case-did" className="section-pad ambient ambient-quiet">
+      <section aria-labelledby="case-did" className="section-pad">
         <div className="container-page grid gap-10 lg:grid-cols-12 lg:gap-14">
           <div className="reveal lg:col-span-5">
             <p className="eyebrow">{t.casePage.whatIDid}</p>
@@ -88,7 +86,7 @@ export function CasePage({ project }: { project: Project }) {
               ))}
             </ul>
             {text.note && (
-              <p className="liquid-glass-subtle mt-8 p-5 text-[0.9375rem] leading-relaxed text-ink-2 [--glass-radius:1.25rem]">
+              <p className="tile-paper mt-8 !p-5 text-[0.9375rem] leading-relaxed text-ink-2">
                 <strong className="font-semibold text-ink">{t.casePage.worthKnowing}</strong> {text.note}
               </p>
             )}
@@ -96,7 +94,7 @@ export function CasePage({ project }: { project: Project }) {
         </div>
       </section>
 
-      <section aria-labelledby="case-more" className="section-pad ambient ambient-cards">
+      <section aria-labelledby="case-more" className="section-pad bg-paper">
         <div className="container-page">
           <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
             <h2 id="case-more" className="text-[1.75rem] font-bold tracking-[-0.03em]">
@@ -110,8 +108,8 @@ export function CasePage({ project }: { project: Project }) {
           <ul className="mt-8 grid gap-5 md:grid-cols-3">
             {related.map((other) => (
               <li key={other.id}>
-                <a href={localHref(`work/${other.id}/`)} className="project-card liquid-glass-card group block h-full">
-                  <span className="card-shot block aspect-[1200/778] overflow-hidden rounded-[1.25rem] bg-paper-2">
+                <a href={localHref(`work/${other.id}/`)} className="card card-link group block h-full">
+                  <span className="card-shot block aspect-[1200/778] overflow-hidden bg-paper-2">
                     <img
                       src={other.desktop.src}
                       width={other.desktop.width}

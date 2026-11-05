@@ -21,7 +21,7 @@ export function WorkPage() {
         showWorkLink={false}
       />
 
-      <section aria-labelledby="sites-title" className="section-pad ambient ambient-work">
+      <section aria-labelledby="sites-title" className="section-pad bg-paper">
         <div className="container-page">
           <h2 id="sites-title" className="h-subsection reveal">
             {t.work.sitesLabel}
@@ -36,7 +36,7 @@ export function WorkPage() {
         </div>
       </section>
 
-      <section aria-labelledby="apps-title" className="section-pad ambient ambient-cards">
+      <section aria-labelledby="apps-title" className="section-pad">
         <div className="container-page">
           <div className="reveal max-w-[44rem]">
             <h2 id="apps-title" className="h-subsection">
@@ -54,7 +54,7 @@ export function WorkPage() {
         </div>
       </section>
 
-      <section aria-labelledby="demos-title" className="section-pad ambient ambient-pricing">
+      <section aria-labelledby="demos-title" className="section-pad bg-paper">
         <div className="container-page">
           <div className="reveal max-w-[44rem]">
             <h2 id="demos-title" className="h-subsection">

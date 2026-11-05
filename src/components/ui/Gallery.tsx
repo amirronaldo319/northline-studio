@@ -19,7 +19,7 @@ type Props = {
  * can drag it too; every tile stays in the page and in reading order, and nothing moves on its own.
  *
  * Restored from the portfolio as it was before the 2026-11 redesign (same structure, sizes, snapping, dots and
- * buttons), now drawn in Liquid Glass.
+ * buttons), drawn as Apple draws its galleries: grey round paddles and the position dots on a small pill of glass.
  */
 export function Gallery({ label, children, size = 'wide' }: Props) {
   const t = useCopy()
@@ -92,7 +92,7 @@ export function Gallery({ label, children, size = 'wide' }: Props) {
         <div className="flex gap-3">
           <button
             type="button"
-            className="liquid-glass-button glass-btn-secondary glass-btn-icon gallery-button"
+            className="gallery-paddle glass-control"
             aria-label={t.common.previous}
             disabled={edges.atStart}
             onClick={() => step(-1)}
@@ -101,7 +101,7 @@ export function Gallery({ label, children, size = 'wide' }: Props) {
           </button>
           <button
             type="button"
-            className="liquid-glass-button glass-btn-secondary glass-btn-icon gallery-button"
+            className="gallery-paddle glass-control"
             aria-label={t.common.next}
             disabled={edges.atEnd}
             onClick={() => step(1)}

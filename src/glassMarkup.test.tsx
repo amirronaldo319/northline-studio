@@ -10,30 +10,33 @@ describe('glass markup without JavaScript', async () => {
     for (const id of ['work', 'package', 'about']) expect(html).toMatch(new RegExp(`<a href="#${id}" class="lg-tab"`))
   })
 
-  test('the whole bar is one capsule of glass, not a row of separate capsules', () => {
-    expect(html.match(/class="nav-shell liquid-glass-navigation"/g)).toHaveLength(1)
-    expect(html).not.toContain('glass-brand')
+  test('the navigation is one floating capsule of glass', () => {
+    expect(html.match(/class="nav-capsule liquid-glass-navigation"/g)).toHaveLength(1)
   })
 
-  test('the menu button is a real button that says what it does and what it controls', () => {
-    expect(html).toMatch(/<button type="button" class="liquid-glass-button[^"]*nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu"/)
+  test('the menu button is a real button of glass that says what it does and what it controls', () => {
+    expect(html).toMatch(/<button type="button" class="nav-toggle glass-control" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu"/)
   })
 
-  test('the contact form sits in one large glass panel, with real inputs, labels and autocomplete', () => {
-    expect(html).toMatch(/class="contact-panel liquid-glass-strong[^"]*"[^]*?class="form-well liquid-glass-subtle"/)
+  test('the phone glass bar starts hidden and out of reach', () => {
+    expect(html).toMatch(/<div class="quote-bar" data-visible="false" inert=""/)
+  })
+
+  test('the contact form sits in one large tile, with real inputs, labels and autocomplete', () => {
+    expect(html).toMatch(/class="contact-panel tile-paper[^"]*"[^]*?class="form-well"/)
     expect(html).toMatch(/<label for="inquiry-name"/)
-    expect(html).toMatch(/<input[^>]*autoComplete="name"[^>]*class="field liquid-glass-input"|<input[^>]*class="field liquid-glass-input"[^>]*autoComplete="name"/i)
+    expect(html).toMatch(/<input[^>]*autoComplete="name"[^>]*class="field"|<input[^>]*class="field"[^>]*autoComplete="name"/i)
     expect(html).not.toMatch(/class="lg-glass lg-input/)
   })
 
-  test('the glass shapes behind the hero, the work, the pricing and the contact panel are decoration only', () => {
-    const sets = [...html.matchAll(/<div class="glass-shapes ([a-z]+)-shapes"([^>]*)>/g)]
-    expect(sets.map((match) => match[1])).toEqual(['hero', 'cards', 'pricing', 'contact'])
-    for (const match of sets) expect(match[2]).toContain('aria-hidden="true"')
+  test('no decorative shapes or colour washes: sections alternate white and Apple grey', () => {
+    expect(html).not.toMatch(/glass-shapes|glass-orb|ambient/)
+    const backgrounds = [...html.matchAll(/<section[^>]*class="([^"]*)"/g)].map((match) => (match[1].includes('bg-paper') ? 'grey' : 'white'))
+    expect(backgrounds.slice(0, 7)).toEqual(['white', 'grey', 'white', 'grey', 'white', 'grey', 'white'])
   })
 
-  test('both plans head their columns on glass, and neither carries a label such as "most popular"', () => {
-    expect(html.match(/role="columnheader" class="compare-plan plan-card liquid-glass-(subtle|strong)/g)).toHaveLength(2)
+  test('both plans head their columns alike, and neither carries a label such as "most popular"', () => {
+    expect(html.match(/role="columnheader" class="compare-plan"/g)).toHaveLength(2)
     expect(html).not.toMatch(/most popular|recommended|best value/i)
   })
 
@@ -55,7 +58,7 @@ describe('glass markup without JavaScript', async () => {
   })
 
   test('each gallery has labelled previous and next buttons, and starts with previous disabled', () => {
-    const buttons = [...html.matchAll(/<button type="button" class="liquid-glass-button glass-btn-secondary glass-btn-icon gallery-button" aria-label="(Previous|Next)"( disabled="")?/g)]
+    const buttons = [...html.matchAll(/<button type="button" class="gallery-paddle glass-control" aria-label="(Previous|Next)"( disabled="")?/g)]
     expect(buttons.map((match) => `${match[1]}${match[2] ? ' (disabled)' : ''}`)).toEqual(['Previous (disabled)', 'Next', 'Previous (disabled)', 'Next'])
   })
 
@@ -66,10 +69,6 @@ describe('glass markup without JavaScript', async () => {
   test('screenshots carry glass labels, and the hero screenshot a glass caption with a real link', () => {
     expect(html).toMatch(/class="lg-glass caption-glass[^"]*"[^]*?<a href="\/work\/farsh-aquatics\/"/)
     expect(html.match(/class="lg-glass chip-glass/g)?.length).toBeGreaterThanOrEqual(2)
-  })
-
-  test('the phone quote bar starts hidden and out of reach', () => {
-    expect(html).toMatch(/<div class="quote-bar" data-visible="false" inert=""/)
   })
 
   test('Persian keeps a right-to-left nav it can read in order', async () => {

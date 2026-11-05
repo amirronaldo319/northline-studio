@@ -5,7 +5,6 @@ import { CONTACT_SECTION_ID } from '@/content/navigation'
 import { useCopy } from '@/i18n/context'
 import { SITE_CHECK_EVENT } from '@/lib/siteCheck'
 import { CopyEmailButton } from '../CopyEmailButton'
-import { GlassShapes } from '../glass/GlassShapes'
 import { LegacyAnchors } from '../LegacyAnchors'
 import { InquiryForm } from '../contact/InquiryForm'
 import { Words } from '../Words'
@@ -14,9 +13,9 @@ import { Words } from '../Words'
 const LEGACY_IDS = ['site-check'] as const
 
 /**
- * Contact: one large panel of glass over a lit section, with glass shapes resting behind its edges. Inside it, a short
- * introduction on the left and the form on the right, in a well of thinner glass. On phones the form follows the
- * introduction straight away; the email address and the privacy note come after it.
+ * Contact: one large grey tile on the white section, with white fields inside it: a short introduction on the left and
+ * the form on the right. On phones the form follows the introduction straight away; the email address and the privacy
+ * note come after it.
  */
 export function Contact() {
   const t = useCopy()
@@ -24,12 +23,10 @@ export function Contact() {
   const startSiteCheck = () => window.dispatchEvent(new Event(SITE_CHECK_EVENT))
 
   return (
-    <section id={CONTACT_SECTION_ID} aria-labelledby="contact-title" className="contact-section section-pad ambient ambient-contact">
+    <section id={CONTACT_SECTION_ID} aria-labelledby="contact-title" className="section-pad">
       <LegacyAnchors ids={LEGACY_IDS} />
-      {/* Glass shapes behind the panel. Decorative only, and still, so the panel's frost never has to follow them. */}
-      <GlassShapes set="contact" />
       <div className="container-page">
-        <div className="contact-panel liquid-glass-strong reveal">
+        <div className="contact-panel tile-paper reveal">
           <div className="grid gap-10 lg:grid-cols-12 lg:gap-x-14 lg:gap-y-10">
             <div className="lg:col-span-5 lg:row-start-1">
               <p className="eyebrow">{t.contact.eyebrow}</p>
@@ -47,7 +44,7 @@ export function Contact() {
             </div>
 
             <div className="lg:col-span-7 lg:col-start-6 lg:row-span-2 lg:row-start-1">
-              <div className="form-well liquid-glass-subtle">
+              <div className="form-well">
                 <InquiryForm />
               </div>
             </div>

@@ -3,10 +3,8 @@ import { EXAMPLES } from '@/content/examples'
 import { APP_PROJECTS, FEATURED_PROJECT, GALLERY_WEBSITES, type Project } from '@/content/projects'
 import { useCopy, useLocalHref } from '@/i18n/context'
 import { statusLabel } from '@/i18n/projectStatus'
-import { GlassShapes } from '../glass/GlassShapes'
 import { LegacyAnchors } from '../LegacyAnchors'
 import { ProjectTrigger } from '../ProjectTrigger'
-import { buttonClasses } from '../ui/button'
 import { Gallery } from '../ui/Gallery'
 import { AppCard, DemoCard, WebsiteCard } from '../work/ProjectCards'
 import { Words } from '../Words'
@@ -40,7 +38,7 @@ function ViewProject({ project, className = '' }: { project: Project; className?
 
 /**
  * The best project, presented as Apple presents a product: a label, the name set large, one sentence, one link,
- * and the work itself below at full width, set in a bezel of glass, with its phone capture beside it.
+ * and the work itself below at full width, with its phone capture beside it.
  */
 function FeaturedProject({ project }: { project: Project }) {
   const t = useCopy()
@@ -57,10 +55,8 @@ function FeaturedProject({ project }: { project: Project }) {
         <ViewProject project={project} className="mt-5 text-[1.0625rem]" />
       </div>
       <div className="reveal showcase mt-12 sm:mt-16">
-        <div className="glass-frame">
-          <div className="showcase-desktop">
-            <ProjectTrigger project={project} sizes="(min-width: 1216px) 1040px, 86vw" />
-          </div>
+        <div className="showcase-desktop">
+          <ProjectTrigger project={project} sizes="(min-width: 1216px) 1040px, 86vw" />
         </div>
         <div className="showcase-phone phone-device">
           <ProjectTrigger project={project} view="phone" className="phone-trigger" />
@@ -72,18 +68,18 @@ function FeaturedProject({ project }: { project: Project }) {
 
 /**
  * Selected work: one live website at full width, then the rest of the websites and the design demos as a sideways
- * gallery of glass cards that the visitor swipes, drags or steps through, then my own apps and tools in their own
- * gallery, and a way to every project. Soft light behind each part gives the glass something to hold.
+ * gallery of cards that the visitor swipes, drags or steps through, then my own apps and tools in their own gallery,
+ * and a way to every project.
  */
 export function Work() {
   const t = useCopy()
   const localHref = useLocalHref()
 
   return (
-    <section id="work" aria-labelledby="work-title">
+    <section id="work" aria-labelledby="work-title" className="bg-paper">
       <LegacyAnchors ids={LEGACY_IDS} />
 
-      <div className="section-pad ambient ambient-work">
+      <div className="section-pad">
         <div className="container-page">
           <h2 id="work-title" className="section-kicker reveal text-center">
             {t.work.eyebrow}
@@ -94,8 +90,7 @@ export function Work() {
         </div>
       </div>
 
-      <div className="work-galleries section-pad ambient ambient-cards">
-        <GlassShapes set="cards" />
+      <div className="work-galleries section-pad !pt-0">
 
         {/* The rest of the websites as a sideways gallery, as Apple shows its highlights; the next card peeks in. */}
         <div className="reveal">
@@ -127,9 +122,9 @@ export function Work() {
         </div>
 
         <p className="reveal container-page mt-14 text-center sm:mt-16">
-          <a href={localHref('work/')} className={buttonClasses('secondary', 'md')}>
+          <a href={localHref('work/')} className="text-link text-[1.0625rem]">
             {t.work.allProjects}
-            <ChevronRight aria-hidden="true" size={17} className="-me-1 rtl:-scale-x-100" />
+            <ChevronRight aria-hidden="true" size={18} className="rtl:-scale-x-100" />
           </a>
         </p>
       </div>

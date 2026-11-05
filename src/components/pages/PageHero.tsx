@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react'
-import { ChevronRight } from 'lucide-react'
 import { CONTACT_SECTION_ID } from '@/content/navigation'
 import { useCopy } from '@/i18n/context'
 import { enterStep } from '@/lib/reveal'
@@ -20,7 +19,7 @@ type Props = {
   showQuote?: boolean
 }
 
-/** The top of every inner page, in the same soft light as the home page: breadcrumb, label, headline, intro and two glass actions. */
+/** The top of every inner page: breadcrumb, label, headline, intro, a blue button and an outline one. */
 export function PageHero({ crumbs, eyebrow, headline, intro, secondary, showWorkLink = true, showQuote = true }: Props) {
   const homeAnchor = useHomeAnchor()
   const t = useCopy()
@@ -29,12 +28,11 @@ export function PageHero({ crumbs, eyebrow, headline, intro, secondary, showWork
     (showWorkLink && (
       <a href={homeAnchor('work')} className={buttonClasses('secondary', 'lg')}>
         {t.hero.seeWork}
-        <ChevronRight aria-hidden="true" size={18} className="-me-1 rtl:-scale-x-100" />
       </a>
     ))
 
   return (
-    <section aria-labelledby="page-title" className="page-hero ambient ambient-hero">
+    <section aria-labelledby="page-title" className="page-hero">
       <div className="container-page">
         <Breadcrumb items={crumbs} />
         <div className="mx-auto mt-10 max-w-[52rem] text-center sm:mt-14">

@@ -6,12 +6,12 @@ import { Words } from '../Words'
 /** One icon per step, in the same order as the copy: tell me, review the design, go live. */
 const STEP_ICONS: readonly LucideIcon[] = [MessageSquareText, PencilRuler, Rocket]
 
-/** Three steps across, each on a card of glass: its icon, its number, one line of title and a short explanation. */
+/** Three steps across, each on a white tile: its icon, its number, one line of title and a short explanation. */
 export function Process() {
   const t = useCopy()
 
   return (
-    <section id="process" aria-labelledby="process-title" className="section-pad ambient ambient-process">
+    <section id="process" aria-labelledby="process-title" className="section-pad bg-paper">
       <div className="container-page">
         <div className="section-intro reveal">
           <p className="eyebrow">{t.process.eyebrow}</p>
@@ -25,11 +25,9 @@ export function Process() {
             const Icon = STEP_ICONS[index] ?? MessageSquareText
             return (
               <li key={step.title} className="reveal" style={revealDelay(index)}>
-                <div className="step-card liquid-glass-card">
+                <div className="step-card tile">
                   <div className="flex items-center justify-between">
-                    <span aria-hidden="true" className="glass-icon">
-                      <Icon size={22} strokeWidth={1.75} />
-                    </span>
+                    <Icon aria-hidden="true" size={32} strokeWidth={1.5} className="step-icon" />
                     <span aria-hidden="true" className="step-index">
                       {String(index + 1).padStart(2, '0')}
                     </span>

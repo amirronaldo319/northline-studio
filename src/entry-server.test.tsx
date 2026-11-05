@@ -36,7 +36,8 @@ describe('server render', async () => {
     expect(html.match(/<h1[\s>]/g)).toHaveLength(1)
   })
 
-  test('does not render the phone quote bar as visible', () => {
+  test('has the quote button in the capsule, and a phone glass bar that starts hidden', () => {
+    expect(html).toMatch(/<a href="#contact" class="button button-primary button-sm site-nav-cta">Request a quote<\/a>/)
     expect(html).toMatch(/class="quote-bar" data-visible="false"/)
   })
 
