@@ -30,7 +30,9 @@ export function seoPlugin(options: SeoOptions): Plugin {
 
   return {
     name: 'amir-seo',
-    transformIndexHtml() {
+    transformIndexHtml(_html, ctx) {
+      // Only the sales site's own page carries its business data. Other entry pages (the Bubble UI study) do not.
+      if (ctx && ctx.path !== '/index.html') return []
       const tags: HtmlTagDescriptor[] = []
 
       const structuredData: Record<string, unknown> = {

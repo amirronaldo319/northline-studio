@@ -125,6 +125,22 @@ elements: put breakpoint and display classes on a wrapper (a test checks this). 
 below 1, `filter`, `mask` or `backdrop-filter` on an ancestor of glass makes that ancestor the backdrop the glass
 sees. Persian uses plain links in the capsule: Glisse's tab bar positions its lens from the left edge only.
 
+## Bubble UI study page
+
+`/bubble-ui/` is a separate page (its own entry, `bubble-ui/index.html`) showing ReactDrops' Bubble UI: soap-film
+buttons, a menu, search field, switch and slider that refract and mirror what is behind them. It is not linked from the
+site, is `noindex`, and is not in the sitemap. The sales site's glass stays Glisse.
+
+- **Component:** `src/components/soap-bubble/` is the ReactDrops `soap-bubble` registry item, byte for byte, licence
+  header included (ReactDrops Component License 1.0, section 4 requires keeping it). Do not run
+  `npx shadcn add` over it: the installer strips the header and mangles strings (for example `' '` becomes `''`, which
+  breaks Space on the switch). To update, take the file contents straight from
+  `https://reactdrops.dev/r/soap-bubble.json`. `.oxlintrc.json` skips this folder.
+- **Material:** `src/bubble-ui/lightGlass.ts` holds the approved Light glass settings for light pages (the site is
+  light-only). `lightGlass.test.ts` checks them against the component's defaults.
+- **Backdrop:** the page element is passed as `backdrop`; its paint (`.bubble-art` in `page.css`) is what the glass bends.
+- **Build:** `vite.config.ts` lists both HTML entries; `vite-seo-plugin.ts` adds the business data to the main page only.
+
 ## Inquiry form
 
 Copy `.env.example` to `.env` and set (both values are public, so never put a private key here):

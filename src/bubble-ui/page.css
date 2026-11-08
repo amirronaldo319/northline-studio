@@ -1,0 +1,89 @@
+/* Layout for the Bubble UI study page only. The glass itself is styled by components/soap-bubble. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: #f7f7f8;
+  color: #1b1d22;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.bubble-page {
+  position: relative;
+  min-height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/*
+ * Something for the glass to bend: soft colour for the film to pick up, and fine lines that visibly kink where a
+ * bubble sits over them. Paint only, no text, so the page stays calm and the title stays readable.
+ */
+.bubble-art {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    repeating-linear-gradient(90deg, rgb(27 29 34 / 0.07) 0 1px, transparent 1px 44px),
+    radial-gradient(42% 36% at 16% 20%, #ffc48a 0%, transparent 70%),
+    radial-gradient(40% 40% at 86% 16%, #9dbcff 0%, transparent 70%),
+    radial-gradient(46% 42% at 82% 88%, #ffa3bf 0%, transparent 70%),
+    radial-gradient(42% 42% at 10% 86%, #86e8c8 0%, transparent 70%),
+    #f7f7f8;
+  pointer-events: none;
+}
+
+.bubble-back {
+  position: absolute;
+  inset-block-start: 1rem;
+  inset-inline-start: 1rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.78);
+  color: #1b1d22;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.bubble-back:focus-visible {
+  outline: 2px solid #0071e3;
+  outline-offset: 2px;
+}
+
+.bubble-main {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 0.5rem;
+  min-height: 100svh;
+  padding: 4.5rem 1.25rem 3rem;
+}
+
+.bubble-main > h1,
+.bubble-main > p {
+  width: min(100%, 25rem);
+}
+
+.bubble-title {
+  margin: 0;
+  font-size: clamp(2rem, 6vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+.bubble-lede {
+  margin: 0 0 1.25rem;
+  color: #1b1d22;
+  font-size: 1.05rem;
+  line-height: 1.4;
+  text-align: center;
+  text-wrap: balance;
+}

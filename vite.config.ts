@@ -37,6 +37,15 @@ export default defineConfig(({ mode }) => {
         analyticsToken: (env.VITE_CF_ANALYTICS_TOKEN ?? '').trim(),
       }),
     ],
+    build: {
+      // The sales site, plus one study page (/bubble-ui/) that is not linked from it and not in the sitemap.
+      rolldownOptions: {
+        input: {
+          main: path.resolve(import.meta.dirname, 'index.html'),
+          'bubble-ui': path.resolve(import.meta.dirname, 'bubble-ui/index.html'),
+        },
+      },
+    },
     resolve: {
       alias: {
         '@': path.resolve(import.meta.dirname, './src'),
