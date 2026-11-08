@@ -1522,64 +1522,115 @@ dialog.viewer[data-closing]::backdrop {
   display: none;
 }
 
-/* The tab bar sits on the capsule's glass, so its own track is clear: only the lens shows, sliding between links. */
+/*
+ * The links in the capsule: real links in slots of one fixed width (per language), so the row is the same size whichever
+ * link is active. One marker slides under the active link by a CSS transform alone: a pale pill in the first paint, and
+ * once the page is idle Bubble UI's soap-bubble material is drawn in it (see components/nav). The marker is a picture and
+ * never takes a tap; the active link is also marked with aria-current and its colour.
+ */
 
-.nav-tabs {
-  --lg-tab-height: 2.25rem;
-  --lg-tab-width: 5rem;
-  --lg-tab-inset: 0.1875rem;
-  --lg-glass-active: rgb(255 255 255 / 0.85);
-}
-
-.nav-tabs .lg-tab-bar-glass {
-  background-color: transparent;
-  background-image: none;
-  box-shadow: none;
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-}
-
-.nav-tabs :is(.lg-tab, .lg-tab-copy) {
-  font-size: 0.8125rem;
-  font-weight: 400;
-  letter-spacing: -0.01em;
-}
-
-.nav-tabs .lg-tab {
-  color: rgb(29 29 31 / 0.88);
-}
-
-:root:lang(fr) .nav-tabs {
-  --lg-tab-width: 6.5rem;
-}
-
-:root:lang(zh-Hans) .nav-tabs,
-:root:lang(zh-Hant) .nav-tabs {
-  --lg-tab-width: 4.5rem;
-}
-
-.nav-plain {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
+.bubble-nav {
+  --tab-width: 5rem;
+  --tab-height: 2.25rem;
+  --tab-dir: 1;
+  position: relative;
   margin-inline-end: 0.75rem;
 }
 
-.nav-link {
-  display: inline-flex;
+:root:lang(fr) .bubble-nav {
+  --tab-width: 6.5rem;
+}
+
+:root:lang(zh-Hans) .bubble-nav,
+:root:lang(zh-Hant) .bubble-nav {
+  --tab-width: 4.5rem;
+}
+
+:root[dir='rtl'] .bubble-nav {
+  --tab-dir: -1;
+}
+
+.bubble-nav-list {
+  display: flex;
   align-items: center;
-  min-height: 2.75rem;
+}
+
+.bubble-nav-link {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tab-width);
+  height: var(--tab-height);
+  border-radius: 9999px;
   font-size: 0.8125rem;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
   color: rgb(29 29 31 / 0.88);
   transition: color var(--motion-dur-hover) ease;
 }
 
-.nav-link:hover {
+.bubble-nav-link:hover {
   color: var(--color-accent);
 }
 
-.nav-link[aria-current] {
-  color: var(--color-ink-3);
+/* The active link is darker, never bolder or larger: its slot, and so the whole row, must not change size. */
+.bubble-nav-link[aria-current] {
+  color: var(--color-ink);
+}
+
+.bubble-nav-link:focus-visible {
+  outline: 2.5px solid var(--color-cobalt);
+  outline-offset: -3px;
+}
+
+.bubble-nav-marker {
+  position: absolute;
+  top: 0;
+  inset-inline-start: 0;
+  z-index: 0;
+  width: var(--tab-width);
+  height: var(--tab-height);
+  border-radius: 9999px;
+  pointer-events: none;
+  opacity: 0;
+  background: rgb(255 255 255 / 0.9);
+  box-shadow:
+    0 1px 3px rgb(0 0 0 / 0.1),
+    inset 0 0 0 1px rgb(0 0 0 / 0.05);
+  transform: translateX(calc(var(--tab-width) * var(--tab-index, 0) * var(--tab-dir))) scale(0.92);
+  transition:
+    transform 520ms var(--motion-ease-out),
+    opacity 200ms ease,
+    background-color 300ms ease,
+    box-shadow 300ms ease;
+}
+
+.bubble-nav-marker[data-visible] {
+  opacity: 1;
+  transform: translateX(calc(var(--tab-width) * var(--tab-index, 0) * var(--tab-dir))) scale(1);
+}
+
+/* Once the bubble is drawn, it is the marker; the pale pill steps aside. */
+.bubble-nav[data-live] .bubble-nav-marker {
+  background: transparent;
+  box-shadow: none;
+}
+
+.bubble-nav-marker .nav-bubble {
+  /* The bubble's radius is in em, set for a 16px type size: keep it, whatever the nav's own type size. The extra class
+     keeps this ahead of the bubble stylesheet, which loads later. */
+  position: absolute;
+  inset: 0;
+  font-size: 16px;
+  --soap-bubble-shadow: 0 6px 10px -6px rgb(0 0 0 / 0.2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bubble-nav-marker {
+    transition: none;
+  }
 }
 
 /* The language button sits on the capsule's glass: clear until hovered or open. */

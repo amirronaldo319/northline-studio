@@ -8,7 +8,7 @@ import {
   SoapBubbleSlider,
   SoapBubbleToggle,
 } from '@/components/soap-bubble'
-import { LIGHT_GLASS } from './lightGlass'
+import { LIGHT_GLASS } from '@/lib/lightGlass'
 
 /**
  * Bubble UI on a light page. The page element is the backdrop: the glass captures it and bends and mirrors it, so the

@@ -85,8 +85,8 @@ Apple's own website is the reference, with SitePilot's own logo and copy:
 - **Buttons:** Apple's pills in Liquid Glass (`.button`): tinted blue glass (#0071e3, white label at 4.7:1) for the
   main action, clear glass with a blue label beside it, and a small blue glass button in the navigation.
 - **Navigation:** one floating capsule of glass (`.nav-capsule.liquid-glass-navigation`) that the page scrolls under:
-  the name, three links with a sliding glass lens (Glisse `TabBar`; plain links in Persian), the language menu and the
-  quote button. It draws in a little once the page moves; the header keeps one height, so nothing shifts. On phones a
+  the name, three links with a Bubble UI bubble under the one for the section being read (`components/nav`; plain links in
+  every language, Persian included), the language menu and the quote button. It draws in a little once the page moves; the header keeps one height, so nothing shifts. On phones a
   glass button opens a glass sheet with the links, and the quote button floats in a glass bar at the bottom.
 - **Pricing:** Starter and Standard side by side at every width, one row per topic, flat on the page as Apple
   compares models, with their buttons aligned. The essential costs are always visible, optional care is a separate
@@ -114,7 +114,7 @@ Only Glisse's documented exports are used (`tests/glass.test.ts` checks this).
 
 | Where | Glisse component |
 | --- | --- |
-| The links in the capsule, as a tab bar with a sliding lens; the language menu | `TabBar` (links, so it is real navigation), `Menu` (`Header.tsx`, `LanguageMenu.tsx`) |
+| The language menu | `Menu` (`LanguageMenu.tsx`) |
 | Phone quote bar (`QuoteBar.tsx`), pricing strip on phones | `Glass` (frosted: `.glass-frost`) |
 | Captions and labels over screenshots (hero caption, `ShotChip.tsx`) | `Glass` (refracting the picture beneath) |
 | Concept-demo dialog and project viewer | `SegmentedControl`, `Slider`, `Button` |
@@ -289,8 +289,9 @@ use commercially. No stock photography is bundled.
   - Featured project: the real desktop capture is the anchor and the real phone capture arrives beside it once
     (450 ms, 24 px, only when it enters view). Its column is reserved up front, the text never moves, and small
     screens show the single phone capture instead of two tiny ones.
-  - Navigation: a lens of glass slides to the link for the section being read (Glisse `TabBar`); a link the visitor
-    picks is held while the page glides there, so the lens does not bounce through the sections in between.
+  - Navigation: a bubble (Bubble UI's soap-bubble material, drawn once the page is idle; a pale pill until then) slides
+    to the link for the section being read; a link the visitor picks is held while the page glides there, so the bubble
+    does not bounce through the sections in between. The links are plain, fixed-width, labelled links with `aria-current`.
   - Optional form fields use one disclosure pattern (`.disclosure`). The phone menu is a glass sheet under the
     capsule; focus moves into it, and it closes on Escape, a link, or a tap outside it, returning focus to the button.
   - Dialog: a short entrance and exit; closing is timer-driven so a stalled animation can never leave an overlay.

@@ -5,9 +5,13 @@ import { render } from './entry-server'
 describe('glass markup without JavaScript', async () => {
   const html = await render({ kind: 'home', locale: 'en' })
 
-  test('the glass tab bar is real navigation: plain links to Work, Pricing and About', () => {
-    expect(html).toMatch(/role="navigation"[^>]*aria-label="Main"|aria-label="Main"[^>]*role="navigation"/)
-    for (const id of ['work', 'package', 'about']) expect(html).toMatch(new RegExp(`<a href="#${id}" class="lg-tab"`))
+  test('the desktop links are real navigation: plain links to Work, Pricing and About, with the bubble marker beside them', () => {
+    expect(html).toMatch(/<nav aria-label="Main" class="bubble-nav"/)
+    for (const id of ['work', 'package', 'about']) expect(html).toMatch(new RegExp(`<a href="#${id}" class="bubble-nav-link"`))
+    // The marker is a picture: hidden from assistive technology, and empty until the bubble is drawn in the browser.
+    expect(html).toMatch(/<span class="bubble-nav-marker" aria-hidden="true"><\/span>/)
+    // Before any script runs no link is marked current (nothing has been scrolled to), and the row has no bubble yet.
+    expect(html).not.toMatch(/class="bubble-nav-link"[^>]*aria-current|aria-current[^>]*class="bubble-nav-link"/)
   })
 
   test('the navigation is one floating capsule of glass', () => {
@@ -71,9 +75,9 @@ describe('glass markup without JavaScript', async () => {
     expect(html.match(/class="lg-glass chip-glass/g)?.length).toBeGreaterThanOrEqual(2)
   })
 
-  test('Persian keeps a right-to-left nav it can read in order', async () => {
+  test('Persian keeps a right-to-left nav it can read in order, with the same bubble row', async () => {
     const fa = await render({ kind: 'home', locale: 'fa' })
-    expect(fa).not.toContain('class="lg-tab-bar')
-    expect(fa).toContain('class="nav-plain"')
+    expect(fa).toContain('class="bubble-nav"')
+    expect(fa.match(/class="bubble-nav-link"/g)).toHaveLength(3)
   })
 })
