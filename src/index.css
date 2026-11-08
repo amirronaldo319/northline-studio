@@ -1917,7 +1917,8 @@ dialog.viewer[data-closing]::backdrop {
 /*
  * Topographic contours behind the hero. A still contour map (an SVG drawn once, see scripts/generate-hero-contours.py)
  * is part of the first paint; the animated Topographic Flow is drawn over it once the page is idle, and the still map
- * then fades away. Both are faint, fade out around the headline and buttons so that area stays calm, and fade out at
+ * then fades away. Both are faint, are masked clear behind the eyebrow, headline, lede, price and buttons (measured: text
+ * contrast stays at the page's own, see tests/hero-contrast notes in the README), and fade out at
  * the foot so the hero does not end on a hard edge. The layer never takes a tap or a click.
  */
 
@@ -1928,11 +1929,11 @@ dialog.viewer[data-closing]::backdrop {
   overflow: hidden;
   pointer-events: none;
   -webkit-mask-image:
-    radial-gradient(ellipse 52% 40% at 50% 36%, transparent 0%, transparent 46%, #000 100%),
+    radial-gradient(ellipse 560px 340px at 50% 330px, transparent 0%, transparent 72%, #000 100%),
     linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
   -webkit-mask-composite: source-in;
   mask-image:
-    radial-gradient(ellipse 52% 40% at 50% 36%, transparent 0%, transparent 46%, #000 100%),
+    radial-gradient(ellipse 560px 340px at 50% 330px, transparent 0%, transparent 72%, #000 100%),
     linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
   mask-composite: intersect;
 }
@@ -1949,19 +1950,29 @@ dialog.viewer[data-closing]::backdrop {
   opacity: 0;
 }
 
+/*
+ * The animated contours are drawn on a canvas that is a fraction of the hero's width and height (0.5 on screens at 2x or
+ * more, 0.75 otherwise; the component sets --hero-topo-render, see heroTopography.ts) and stretched back up. Fewer pixels
+ * to fill every frame is the saving, and they are faint background lines, so the softer edge is not noticeable.
+ */
 .hero-topo .topographic-flow {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: calc(100% * var(--hero-topo-render, 0.5));
+  height: calc(100% * var(--hero-topo-render, 0.5));
+  transform: scale(calc(1 / var(--hero-topo-render, 0.5)));
+  transform-origin: 0 0;
   background: transparent;
 }
 
 @media (max-width: 719px) {
   .hero-topo {
     -webkit-mask-image:
-      radial-gradient(ellipse 80% 34% at 50% 30%, transparent 0%, transparent 52%, #000 100%),
+      radial-gradient(ellipse 300px 300px at 50% 295px, transparent 0%, transparent 72%, #000 100%),
       linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
     mask-image:
-      radial-gradient(ellipse 80% 34% at 50% 30%, transparent 0%, transparent 52%, #000 100%),
+      radial-gradient(ellipse 300px 300px at 50% 295px, transparent 0%, transparent 72%, #000 100%),
       linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
   }
 }
@@ -1997,12 +2008,27 @@ dialog.viewer[data-closing]::backdrop {
   /* The glass's own width: its letters at 1.28em each, in the glass's 0.62em type (see heroAccent.ts). */
   min-width: calc(var(--accent-letters) * 1.28 * 0.62em);
   text-align: center;
+  /* The plain word is set as tracked capitals to fill the glass's slot, so the line looks the same before the glass
+     arrives and nothing shifts when it does. */
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.15em;
 }
 
 .hero-accent-text {
+  /* Balances the space the last letter's tracking leaves, so the word sits centred in its slot. */
+  padding-inline-start: 0.15em;
   transition: color 500ms var(--motion-ease-out);
+}
+
+/* If the glass cannot load or draw, the word is just the headline's own word again, at its natural width. */
+.hero-accent[data-state='failed'] {
+  min-width: 0;
+  text-transform: none;
+  letter-spacing: inherit;
+}
+
+.hero-accent[data-state='failed'] .hero-accent-text {
+  padding-inline-start: 0;
 }
 
 .hero-accent[data-state='glass'] .hero-accent-text {

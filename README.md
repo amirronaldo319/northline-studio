@@ -157,6 +157,41 @@ The component files are the registry's content byte for byte, licence headers in
 for the whole site (`vite-security-plugin.ts`, checked in `tests/security.test.ts`). To update a component, take the
 files from `https://reactdrops.dev/r/<id>.json` rather than running `npx shadcn add` (see the Bubble UI section).
 
+## Homepage effects (hero contours and the glass word)
+
+Three ReactDrops components are used on the real homepage as well as on their study pages. Each is decoration added on
+top of plain HTML and CSS that already works, so the page is complete if any of them is slow, blocked or unsupported.
+
+| Effect | Where | Files | If it cannot run |
+| --- | --- | --- | --- |
+| Topographic Flow | Behind the hero, masked clear behind the text and buttons, faded out at the foot | `components/hero/HeroTopography.tsx`, `heroTopography.ts`, `frameWatch.ts`; `.hero-topo*` in `index.css` | The still contour map (`assets/brand/hero-contours.svg`, drawn by `scripts/generate-hero-contours.py`) stays |
+| Refracted Text | One word of the headline (`headlineAccent` in `i18n/types.ts`, set in `en.ts` and `fr.ts`) | `components/hero/HeroAccent.tsx`, `heroAccent.ts`; `.hero-accent*` in `index.css` | The word stays ordinary headline text |
+| Bubble UI | The bubble under the active desktop nav link | `components/nav/` | A pale pill under the active link |
+
+- **Nothing waits for them.** The first paint has the still contours, the plain headline word and the pale pill. Each
+  effect is loaded once the page is idle (`requestIdleCallback`, with a timeout), inside an error boundary; a load or
+  draw failure leaves the plain version. Visitors who asked to save data keep the still contours and download nothing
+  more.
+- **Accessibility.** The headline is one real `<h1>`; the glass copy of the word is a decorative layer hidden from
+  assistive technology, with its own `role` and `aria-label` removed, so the headline is read once. The contour layer
+  is `aria-hidden` and `pointer-events: none`. With reduced motion the contours and the glass word draw once and stop;
+  forced-colors mode shows plain text and no decoration.
+- **Contrast.** The contour layer is masked clear behind the text and kept faint. Measured across the animation, text
+  contrast stays at the page's own (the check is repeatable with a headless browser sampling the text's pixels behind each frame).
+- **Cost.** The contours are a fragment shader over the hero, so cost follows pixel count. The canvas is drawn at 0.5
+  of the hero's size on 2x screens and 0.75 on 1x screens and stretched by CSS (`--hero-topo-render`; the numbers and the
+  matching speed correction are in `heroTopography.ts`), which is 1.95M pixels a frame instead of 7.8M on a retina
+  desktop. It pauses when the hero is off screen or the tab is hidden. `frameWatch.ts` also watches the page's frame
+  rate: if it stays under 20 frames a second for three one-second windows in a row (after a two-second warm-up), the
+  animation is removed and the still map comes back (`data-fallback="slow"` on `.hero-topo`). Phones use fewer, slower,
+  finer lines.
+- **To check by hand:** block the `topographic-flow-*`, `refracted-text-*` and `NavBubble` chunks in DevTools and reload
+  (the page should look complete), turn on "Emulate CSS prefers-reduced-motion: reduce", and open `/#work` directly (the
+  heading clears the sticky header).
+
+The component files themselves are the registry's, byte for byte, with their licence headers (see the study pages
+section). Tune the look in `heroTopography.ts` (lines, speed, opacity) and `heroAccent.ts` (the glass).
+
 ## Inquiry form
 
 Copy `.env.example` to `.env` and set (both values are public, so never put a private key here):
