@@ -60,6 +60,7 @@ export const en: Copy = {
 
   hero: {
     headline: ['Your business.', 'Beautifully online.'],
+    headlineAccent: 'online',
     lede: 'Websites for service businesses across Canada.',
     priceLine: 'One-page packages from CA$299.',
     explore: 'Explore packages',

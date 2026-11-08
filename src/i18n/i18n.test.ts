@@ -24,10 +24,24 @@ describe('dictionaries', () => {
   test.each(others)('%s has the same structure as English', (locale) => {
     const copy = getCopy(locale) as Copy
     // The two dictionaries may differ in which projects carry a note, so compare without notes.
-    // Which words carry the drawn underline is a per-language choice, so it is not part of the shape.
-    const comparable = (value: Copy) => ({ ...value, projects: undefined, hero: { ...value.hero, markedWords: undefined } })
+    // Which words carry the drawn underline, and which headline word is drawn as glass, are per-language choices
+    // (the glass face is Latin only), so neither is part of the shape.
+    const comparable = (value: Copy) => ({
+      ...value,
+      projects: undefined,
+      hero: { ...value.hero, markedWords: undefined, headlineAccent: undefined },
+    })
     expect(shape(comparable(copy))).toEqual(shape(comparable(english)))
     expect(Object.keys(copy.projects).sort()).toEqual(Object.keys(english.projects).sort())
+  })
+
+  test.each(ALL_LOCALES)('%s: the glass headline word, where there is one, is a short Latin phrase inside the headline', (locale) => {
+    const { headline, headlineAccent } = (getCopy(locale) as Copy).hero
+    if (headlineAccent === undefined) return
+    expect(headline[1]).toContain(headlineAccent)
+    // The effect's display face has Latin glyphs only, and a long phrase would not fit a phone.
+    expect(headlineAccent).toMatch(/^[A-Za-zÀ-ÿ' ]+$/)
+    expect(Array.from(headlineAccent).length).toBeLessThanOrEqual(10)
   })
 
   test.each(others)('%s has no empty text and no leftover English sentences in headings', (locale) => {

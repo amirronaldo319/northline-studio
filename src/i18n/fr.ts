@@ -18,6 +18,7 @@ export const fr: Copy = {
   nav: { work: 'Réalisations', package: 'Tarifs', process: 'Étapes', about: 'À propos', faq: 'FAQ' },
   hero: {
     headline: ['Votre entreprise.', 'Superbement en ligne.'],
+    headlineAccent: 'en ligne',
     lede: 'Des sites web pour les entreprises de services partout au Canada.',
     priceLine: 'Forfaits d’une page dès 299 $ CA.',
     explore: 'Voir les forfaits',

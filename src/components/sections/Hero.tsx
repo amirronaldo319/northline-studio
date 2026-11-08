@@ -6,7 +6,22 @@ import { useCopy, useLocalHref } from '@/i18n/context'
 import { statusLabel } from '@/i18n/projectStatus'
 import { enterStep } from '@/lib/reveal'
 import { ProjectTrigger } from '../ProjectTrigger'
+import { HeroAccent } from '../hero/HeroAccent'
+import { HeroTopography } from '../hero/HeroTopography'
 import { buttonClasses } from '../ui/button'
+
+/** A headline line, with its accent word (if the language has one) drawn as glass. The words and order are unchanged. */
+function HeadlineLine({ text, accent }: { text: string; accent?: string }) {
+  const at = accent ? text.indexOf(accent) : -1
+  if (!accent || at < 0) return <>{text}</>
+  return (
+    <>
+      {text.slice(0, at)}
+      <HeroAccent text={accent} />
+      {text.slice(at + accent.length)}
+    </>
+  )
+}
 
 /**
  * The first screen, as Apple opens a product page: the name, a two-line headline, what it is and what it costs, a blue
@@ -21,6 +36,7 @@ export function Hero() {
 
   return (
     <section aria-labelledby="hero-title" className="hero">
+      <HeroTopography />
       <div className="container-page">
         <div className="mx-auto max-w-[60rem] text-center">
           <p className="hero-eyebrow enter" style={enterStep(0)}>
@@ -28,7 +44,10 @@ export function Hero() {
           </p>
           <h1 id="hero-title" className="hero-title enter mt-3" style={enterStep(0)}>
             <bdi>
-              <span className="hero-line">{first}</span> <span className="hero-line">{second}</span>
+              <span className="hero-line">{first}</span>{' '}
+              <span className="hero-line">
+                <HeadlineLine text={second} accent={t.hero.headlineAccent} />
+              </span>
             </bdi>
           </h1>
           <p className="hero-lede enter mx-auto mt-5" style={enterStep(1)}>

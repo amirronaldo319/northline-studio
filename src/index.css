@@ -1856,8 +1856,69 @@ dialog.viewer[data-closing]::backdrop {
 /* ---- Hero ----------------------------------------------------------------------------------------------- */
 
 .hero {
+  /* The background layer sits behind everything in the hero and never leaves it. */
+  position: relative;
+  isolation: isolate;
   padding-top: clamp(3rem, 1.5rem + 5vw, 6rem);
   padding-bottom: clamp(4rem, 2.5rem + 5vw, 7rem);
+}
+
+/*
+ * Topographic contours behind the hero. A still contour map (an SVG drawn once, see scripts/generate-hero-contours.py)
+ * is part of the first paint; the animated Topographic Flow is drawn over it once the page is idle, and the still map
+ * then fades away. Both are faint, fade out around the headline and buttons so that area stays calm, and fade out at
+ * the foot so the hero does not end on a hard edge. The layer never takes a tap or a click.
+ */
+
+.hero-topo {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image:
+    radial-gradient(ellipse 52% 40% at 50% 36%, transparent 0%, transparent 46%, #000 100%),
+    linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    radial-gradient(ellipse 52% 40% at 50% 36%, transparent 0%, transparent 46%, #000 100%),
+    linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
+  mask-composite: intersect;
+}
+
+.hero-topo-still {
+  position: absolute;
+  inset: 0;
+  background: url('./assets/brand/hero-contours.svg') center / cover no-repeat;
+  opacity: 0.55;
+  transition: opacity 900ms var(--motion-ease-out) 250ms;
+}
+
+.hero-topo[data-live] .hero-topo-still {
+  opacity: 0;
+}
+
+.hero-topo .topographic-flow {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+}
+
+@media (max-width: 719px) {
+  .hero-topo {
+    -webkit-mask-image:
+      radial-gradient(ellipse 80% 34% at 50% 30%, transparent 0%, transparent 52%, #000 100%),
+      linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
+    mask-image:
+      radial-gradient(ellipse 80% 34% at 50% 30%, transparent 0%, transparent 52%, #000 100%),
+      linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-topo-still {
+    transition: none;
+  }
 }
 
 .hero-eyebrow {
@@ -1871,6 +1932,51 @@ dialog.viewer[data-closing]::backdrop {
 
 .hero-line {
   display: block;
+}
+
+/*
+ * The one headline word drawn as refracted glass. The plain word is real text and sets the size of the slot, so the
+ * line is laid out the same whether or not the glass ever loads. The glass is laid exactly over it and fades in once it
+ * has drawn; the plain letters then go clear but keep their place (and stay selectable and readable to assistive
+ * technology). The layer never takes a tap, a click or a hover.
+ */
+.hero-accent {
+  position: relative;
+  display: inline-block;
+  /* The glass's own width: its letters at 1.28em each, in the glass's 0.62em type (see heroAccent.ts). */
+  min-width: calc(var(--accent-letters) * 1.28 * 0.62em);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.hero-accent-text {
+  transition: color 500ms var(--motion-ease-out);
+}
+
+.hero-accent[data-state='glass'] .hero-accent-text {
+  color: transparent;
+}
+
+.hero-accent-layer {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 500ms var(--motion-ease-out);
+}
+
+.hero-accent[data-state='glass'] .hero-accent-layer {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-accent-text,
+  .hero-accent-layer {
+    transition: none;
+  }
 }
 
 .hero-price {
@@ -2969,6 +3075,16 @@ dialog.viewer[data-closing]::backdrop {
   }
 
   :is(.liquid-glass-navigation, .glass-control, .gallery-dots, .choice-pill, .lang-pill, .button)::before {
+    display: none;
+  }
+
+  /* The glass's own colours do not survive forced colours; keep the plain headline word, which the system draws. */
+  .hero-accent[data-state='glass'] .hero-accent-text {
+    color: inherit;
+  }
+
+  .hero-accent-layer,
+  .hero-topo {
     display: none;
   }
 }

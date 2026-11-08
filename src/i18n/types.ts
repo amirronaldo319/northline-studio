@@ -90,6 +90,11 @@ export interface Copy {
   hero: {
     /** Two lines, each set on its own line where the screen allows. */
     headline: readonly [string, string]
+    /**
+     * One short word or phrase of the second headline line that is also drawn as refracted glass. It must appear in
+     * that line exactly. Latin script only (the effect's display face has no other glyphs), so some languages omit it.
+     */
+    headlineAccent?: string
     lede: string
     /** The starting price, on its own line under the lede. */
     priceLine: string

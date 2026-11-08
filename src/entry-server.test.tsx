@@ -20,9 +20,21 @@ describe('server render', async () => {
   })
 
   test('leads with the new headline and the starting price', () => {
+    // One word of the headline is drawn as glass, so it sits in its own span; the heading still reads as one sentence.
+    const heading = text.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1].replace(/<[^>]+>/g, '') ?? ''
+    expect(heading).toBe('Your business. Beautifully online.')
     expect(text).toContain('Your business.')
-    expect(text).toContain('Beautifully online.')
     expect(text).toContain('One-page packages from CA$299.')
+  })
+
+  test('the glass headline word is real text, announced once, with its decorative layers hidden', () => {
+    const hero = text.match(/<section[^>]*class="hero"[\s\S]*?<\/section>/)?.[0] ?? ''
+    // The word is plain text in the heading until (and unless) the glass loads.
+    expect(hero).toContain('<span class="hero-accent-text">online</span>')
+    // Nothing in the server-rendered hero is an image or a duplicate of the word: the glass only mounts in the browser.
+    expect(hero).not.toMatch(/role="img"[^>]*aria-label="online"/i)
+    // The contour layer is decoration, hidden from assistive technology, and does not take taps.
+    expect(hero).toContain('class="hero-topo" aria-hidden="true"')
   })
 
   test('keeps the design demos, labelled as demos, on the work page', async () => {
