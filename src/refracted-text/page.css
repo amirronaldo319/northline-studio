@@ -1,0 +1,56 @@
+/* Layout for the Refracted Text study page only. The glass letters are drawn by components/refracted-text. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: #050505;
+  color: #b4b4bb;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.refract-page {
+  position: relative;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  min-height: 100svh;
+  padding: 4.5rem 0 2rem;
+  overflow: hidden;
+}
+
+.refract-back {
+  position: absolute;
+  inset-block-start: 1rem;
+  inset-inline-start: 1rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.1);
+  color: #f2f2f5;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.refract-back:focus-visible {
+  outline: 2px solid #7593ff;
+  outline-offset: 2px;
+}
+
+.refract-title {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* The wrapper's own width is what the component's container sizing measures, so it must not collapse. */
+.refract-stage {
+  width: 100%;
+}

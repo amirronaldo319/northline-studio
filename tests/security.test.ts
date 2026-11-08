@@ -18,6 +18,12 @@ describe('buildCsp', () => {
     expect(csp).not.toMatch(/connect-src[^;]*https:(?!\/\/)/)
   })
 
+  test('fonts come from the page itself or from data URIs, never from another origin', () => {
+    const csp = buildCsp({ scriptHashes: [], connectOrigins: [] })
+    expect(csp).toContain("font-src 'self' data:")
+    expect(csp).not.toMatch(/font-src[^;]*https?:/)
+  })
+
   test('meta policies leave out directives browsers ignore in a meta tag', () => {
     expect(buildCsp({ scriptHashes: [], connectOrigins: [], forMeta: true })).not.toContain('frame-ancestors')
     expect(buildCsp({ scriptHashes: [], connectOrigins: [] })).toContain("frame-ancestors 'none'")

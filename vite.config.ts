@@ -38,11 +38,14 @@ export default defineConfig(({ mode }) => {
       }),
     ],
     build: {
-      // The sales site, plus one study page (/bubble-ui/) that is not linked from it and not in the sitemap.
+      // The sales site, plus study pages (/bubble-ui/, /topographic-flow/, /refracted-text/) that are not linked from it
+      // and not in the sitemap.
       rolldownOptions: {
         input: {
           main: path.resolve(import.meta.dirname, 'index.html'),
           'bubble-ui': path.resolve(import.meta.dirname, 'bubble-ui/index.html'),
+          'topographic-flow': path.resolve(import.meta.dirname, 'topographic-flow/index.html'),
+          'refracted-text': path.resolve(import.meta.dirname, 'refracted-text/index.html'),
         },
       },
     },

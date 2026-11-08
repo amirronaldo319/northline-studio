@@ -1,6 +1,10 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "ignorePatterns": ["src/components/soap-bubble/**"],
+  "ignorePatterns": [
+    "src/components/soap-bubble/**",
+    "src/components/topographic-*",
+    "src/components/refracted-*"
+  ],
   "plugins": [
     "react",
     "typescript",

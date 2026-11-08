@@ -31,7 +31,8 @@ export function buildCsp({ scriptHashes, connectOrigins, scriptOrigins = [], for
     // React sets inline style attributes (for example the scroll reveal delays), so styles allow inline.
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data:",
-    "font-src 'self'",
+    // `data:` because the Refracted Text study page ships its two fonts inside its stylesheet as data URIs.
+    "font-src 'self' data:",
     `connect-src 'self'${connectOrigins.map((origin) => ` ${origin}`).join('')}`,
     "form-action 'self'",
     "base-uri 'self'",

@@ -141,6 +141,22 @@ site, is `noindex`, and is not in the sitemap. The sales site's glass stays Glis
 - **Backdrop:** the page element is passed as `backdrop`; its paint (`.bubble-art` in `page.css`) is what the glass bends.
 - **Build:** `vite.config.ts` lists both HTML entries; `vite-seo-plugin.ts` adds the business data to the main page only.
 
+## Topographic Flow and Refracted Text study pages
+
+Two more ReactDrops components, each on its own page built the same way as Bubble UI (own HTML entry, `noindex`, not in
+the sitemap, not linked from the site):
+
+- `/topographic-flow/`: `src/components/topographic-*` (and `topographic-flow.css`) drawn full screen; the settings are
+  in `src/topographic-flow/config.ts`.
+- `/refracted-text/`: `src/components/refracted-*` (and `refracted-text.css`); the settings are in
+  `src/refracted-text/config.ts`.
+
+The component files are the registry's content byte for byte, licence headers included (ReactDrops Component License
+1.0, section 4), and `.oxlintrc.json` skips them. Refracted Text carries its two fonts inside its stylesheet as
+`data:` URIs (SIL Open Font License text kept in the CSS), so the Content-Security-Policy allows `font-src 'self' data:`
+for the whole site (`vite-security-plugin.ts`, checked in `tests/security.test.ts`). To update a component, take the
+files from `https://reactdrops.dev/r/<id>.json` rather than running `npx shadcn add` (see the Bubble UI section).
+
 ## Inquiry form
 
 Copy `.env.example` to `.env` and set (both values are public, so never put a private key here):
