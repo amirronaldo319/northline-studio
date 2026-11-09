@@ -2,6 +2,7 @@ import { Component, useEffect, useLayoutEffect, useRef, useState, type Component
 import type { RefractedTextProps } from '@/components/refracted-text'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { HERO_ACCENT } from './heroAccent'
+import { installPremultipliedGlass } from './premultipliedGlass'
 
 type Glass = ComponentType<RefractedTextProps>
 
@@ -61,6 +62,7 @@ export function HeroAccent({ text }: { text: string }) {
     if (typeof document === 'undefined') return
     let cancelled = false
     const load = () => {
+      installPremultipliedGlass()
       import('@/components/refracted-text')
         .then((module) => {
           if (!cancelled) setGlass(() => module.RefractedText)
