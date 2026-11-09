@@ -84,7 +84,7 @@ export function Package() {
                   <p className="mt-3 text-[0.9375rem] leading-snug text-ink-2 sm:text-[1.0625rem]">{plan.summary}</p>
                   <a
                     href={`#${CONTACT_SECTION_ID}`}
-                    className={buttonClasses('primary', 'md', 'plan-cta max-w-full !whitespace-normal text-center max-sm:min-h-10 max-sm:px-3 max-sm:text-[0.875rem]')}
+                    className={buttonClasses('primary', 'md', 'plan-cta max-w-full !whitespace-normal text-center max-sm:min-h-10 max-sm:w-full max-sm:px-3 max-sm:text-[0.875rem]')}
                     onClick={() =>
                       window.dispatchEvent(new CustomEvent(PACKAGE_EVENT, { detail: `${offer.choose} ${plan.name} (${plan.price})` }))
                     }

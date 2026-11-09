@@ -71,9 +71,11 @@ export function Hero() {
 
         <div className="hero-visual enter" style={enterStep(3)}>
           <div className="showcase">
-            <div className="showcase-desktop">
-              <ProjectTrigger project={project} isEager sizes="(min-width: 1216px) 1040px, 86vw" />
-              {/* Liquid Glass over the work itself: it bends the website's own colours beneath it. */}
+            <div className="showcase-stage">
+              <div className="showcase-desktop">
+                <ProjectTrigger project={project} isEager sizes="(min-width: 1216px) 1040px, 86vw" />
+              </div>
+              {/* Liquid Glass on the picture's lower edge: it bends the website's colours without covering them. */}
               <div className="showcase-caption">
                 <Glass className="caption-glass glass-lift">
                   <span className="caption-status">{statusLabel(t.work, project.status)}</span>

@@ -2317,14 +2317,39 @@ dialog.viewer[data-closing]::backdrop {
   position: relative;
 }
 
+/*
+ * The caption capsule straddles the picture's lower edge: half on the website, half on the page. It still has colour
+ * to bend, and it no longer covers the website's own words and badges. The stage has no clipping, so it can hang out;
+ * the rounded clip belongs to .showcase-desktop.
+ */
+
+.showcase-stage {
+  position: relative;
+}
+
 .showcase-caption {
   position: absolute;
   inset-inline: 0;
-  bottom: clamp(0.75rem, 0.4rem + 1.2vw, 1.5rem);
+  bottom: 0;
   display: flex;
   justify-content: center;
   padding-inline: 0.75rem;
+  transform: translateY(50%);
   pointer-events: none;
+}
+
+/* On phones nothing sits below the picture, so the caption line steps down by the capsule's overhang. */
+
+@media (max-width: 639px) {
+  .showcase {
+    padding-bottom: 1.75rem;
+  }
+
+  /* The phone-sized capture ends just under its tagline, so the capsule hangs lower to keep clear of it. */
+
+  .showcase-caption {
+    transform: translateY(62%);
+  }
 }
 
 .caption-glass {

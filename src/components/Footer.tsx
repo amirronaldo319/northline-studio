@@ -21,64 +21,66 @@ export function Footer() {
 
   return (
     <footer id="site-footer" className="site-footer bg-paper text-[0.8125rem] text-ink-3">
-      <div className="container-page flex flex-col gap-8 border-t border-line pt-10 pb-8 md:flex-row md:items-start md:justify-between">
-        <div className="max-w-xs">
-          <BrandMark />
-          <p className="mt-4 leading-relaxed">{t.footer.tagline(site.serviceArea.label)}</p>
-          <a href={mailtoHref} dir="ltr" className="mt-3 inline-block font-medium [overflow-wrap:anywhere] text-accent hover:underline">
-            {site.contact.email}
-          </a>
-        </div>
+      <div className="container-page">
+        <div className="flex flex-col gap-8 border-t border-line pt-10 pb-8 md:flex-row md:items-start md:justify-between">
+          <div className="max-w-xs">
+            <BrandMark />
+            <p className="mt-4 leading-relaxed">{t.footer.tagline(site.serviceArea.label)}</p>
+            <a href={mailtoHref} dir="ltr" className="mt-3 inline-block font-medium [overflow-wrap:anywhere] text-accent hover:underline">
+              {site.contact.email}
+            </a>
+          </div>
 
-        <div className="flex flex-wrap gap-x-12 gap-y-8">
-          <nav aria-label={t.common.footerNav}>
-            <p className={columnTitle}>{site.brand.name}</p>
-            <ul className="mt-2 grid grid-cols-2 gap-x-10 md:grid-cols-1">
-              {MENU_LINKS.map((link) => (
-                <li key={link.id}>
-                  <a href={homeAnchor(link.id)} className={footerLink}>
-                    {t.nav[link.id]}
+          <div className="flex flex-wrap gap-x-12 gap-y-8">
+            <nav aria-label={t.common.footerNav}>
+              <p className={columnTitle}>{site.brand.name}</p>
+              <ul className="mt-2 grid grid-cols-2 gap-x-10 md:grid-cols-1">
+                {MENU_LINKS.map((link) => (
+                  <li key={link.id}>
+                    <a href={homeAnchor(link.id)} className={footerLink}>
+                      {t.nav[link.id]}
+                    </a>
+                  </li>
+                ))}
+                <li>
+                  <a href={localHref('work/')} className={footerLink}>
+                    {t.work.allProjects}
                   </a>
                 </li>
-              ))}
-              <li>
-                <a href={localHref('work/')} className={footerLink}>
-                  {t.work.allProjects}
-                </a>
-              </li>
-              <li>
-                <a href="#privacy" className={footerLink}>
-                  {t.common.privacy}
-                </a>
-              </li>
-            </ul>
-          </nav>
-
-          <nav aria-label={t.footer.websitesFor}>
-            <p className={columnTitle}>{t.footer.websitesFor}</p>
-            <ul className="mt-2">
-              {t.trades.map((trade) => (
-                <li key={trade.slug}>
-                  <a href={localHref(`${trade.slug}/`)} className={footerLink}>
-                    {trade.name.charAt(0).toUpperCase() + trade.name.slice(1)}
+                <li>
+                  <a href="#privacy" className={footerLink}>
+                    {t.common.privacy}
                   </a>
                 </li>
-              ))}
-            </ul>
-          </nav>
+              </ul>
+            </nav>
 
-          <nav aria-label={t.footer.guides}>
-            <p className={columnTitle}>{t.footer.guides}</p>
-            <ul className="mt-2">
-              {t.guides.map((guide) => (
-                <li key={guide.slug}>
-                  <a href={localHref(`guides/${guide.slug}/`)} className={`${footerLink} max-w-[16rem]`}>
-                    {guide.headline.replace(/[.。]$/, '')}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
+            <nav aria-label={t.footer.websitesFor}>
+              <p className={columnTitle}>{t.footer.websitesFor}</p>
+              <ul className="mt-2">
+                {t.trades.map((trade) => (
+                  <li key={trade.slug}>
+                    <a href={localHref(`${trade.slug}/`)} className={footerLink}>
+                      {trade.name.charAt(0).toUpperCase() + trade.name.slice(1)}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            <nav aria-label={t.footer.guides}>
+              <p className={columnTitle}>{t.footer.guides}</p>
+              <ul className="mt-2">
+                {t.guides.map((guide) => (
+                  <li key={guide.slug}>
+                    <a href={localHref(`guides/${guide.slug}/`)} className={`${footerLink} max-w-[16rem]`}>
+                      {guide.headline.replace(/[.。]$/, '')}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
         </div>
       </div>
 
