@@ -3,7 +3,9 @@
   "ignorePatterns": [
     "src/components/soap-bubble/**",
     "src/components/topographic-*",
-    "src/components/refracted-*"
+    "src/components/refracted-*",
+    "src/components/fan-*",
+    "src/components/viewport-playback.ts"
   ],
   "plugins": [
     "react",

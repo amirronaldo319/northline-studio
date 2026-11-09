@@ -124,6 +124,10 @@ export interface Copy {
     appsLede: string
     viewProject: string
     allProjects: string
+    /** The fan of every project: its heading, the line under it, and the name of the gallery region. */
+    fanHeading: string
+    fanLede: string
+    fanLabel: string
     demosHeading: string
     demosLede: string
     readCaseStudy: string

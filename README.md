@@ -198,6 +198,29 @@ top of plain HTML and CSS that already works, so the page is complete if any of 
 The component files themselves are the registry's, byte for byte, with their licence headers (see the study pages
 section). Tune the look in `heroTopography.ts` (lines, speed, opacity) and `heroAccent.ts` (the glass).
 
+## Every project in a fan (Fan Gallery)
+
+The ReactDrops "Fan Gallery" (`fan-gallery` registry item, version 2.0.1) shows all twelve projects as overlapping cards at
+the foot of the homepage's Work section, above the "Explore all projects" link. A card opens that project's page.
+
+- **Component:** `src/components/fan-gallery.tsx`, `fan-gallery.css`, `fan-layout.ts`, `fan-motion.ts`, `fan-playback.ts`
+  and `viewport-playback.ts`, byte for byte from `https://reactdrops.dev/r/fan-gallery.json`, licence headers included
+  (ReactDrops Component License 1.0). `.oxlintrc.json` skips them. Update them from the registry, not with `npx shadcn add`.
+- **Settings:** `components/work/fanConfig.ts` (the values given with the component: `stack` entrance from the left, started
+  by scrolling to 75% of the screen, `once`). **Cards:** `components/work/ProjectFan.tsx` builds one link per project in
+  `PROJECTS` order, named "Project · what it is" in the page's language.
+- **Pictures:** `src/assets/projects/fan/<id>.webp`, the top of each phone capture cropped to the 4:5 card at 360x450
+  (about 20 KB each). Made by `python3 scripts/generate-fan-thumbnails.py`; re-run it after a capture changes.
+  `src/content/projectFan.ts` maps project ids to them, and `ProjectFan.test.tsx` fails if a project has none.
+- **Loading:** `ProjectFanSlot.tsx` loads the fan as its own chunk (about 6.5 KB gzipped) when the block is 600px from the
+  screen. If the chunk fails, the heading and fan are left out and the galleries above still list every project. With
+  script off the block is hidden (`html:not(.js) .project-fan-slot`).
+- **Page layout:** the fan is as wide as the screen (twelve cards need it), always left to right (`dir="ltr"`, also on the
+  Persian page), and clipped sideways at the screen edge (`.project-fan` in `index.css`) because the component lets the end
+  cards reach past its box while one is hovered, which would otherwise widen the page.
+- **Behaviour kept from the component:** hover or focus lifts a card and parts the fan, arrow keys, Home, End and Escape work,
+  reduced motion draws the open fan at once, and the cards refit when the width changes.
+
 ## Inquiry form
 
 Copy `.env.example` to `.env` and set (both values are public, so never put a private key here):

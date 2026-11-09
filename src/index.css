@@ -2162,6 +2162,42 @@ dialog.viewer[data-closing]::backdrop {
   box-shadow: none;
 }
 
+/*
+ * Every project in a fan (ReactDrops Fan Gallery). The component brings no shadow, so the cards that overlap in the
+ * fan get a hairline and the faintest lift, as the page's other pictures do. Without script the whole block is left
+ * out, and while the fan is loading its place is held so the page below does not move.
+ */
+
+html:not(.js) .project-fan-slot {
+  display: none;
+}
+
+.project-fan-mount {
+  min-height: 13rem;
+}
+
+@media (min-width: 640px) {
+  .project-fan-mount {
+    min-height: 23.25rem;
+  }
+}
+
+/*
+ * While a card is hovered the component lets the cards at the ends reach past its box, which would widen the page and
+ * give it a sideways scrollbar. The fan is as wide as the screen, so the sides are clipped there (clip, not hidden, so
+ * the fan is not made a scroll container and the lifted card still rises above it).
+ */
+
+.project-fan {
+  overflow-x: clip;
+}
+
+.project-fan .fan-gallery-card {
+  box-shadow:
+    0 0 0 1px rgb(0 0 0 / 0.06),
+    0 14px 28px -16px rgb(0 0 0 / 0.4);
+}
+
 /* ---- Inner pages ---------------------------------------------------------------------------------------- */
 
 .page-hero {

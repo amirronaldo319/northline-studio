@@ -7,6 +7,7 @@ import { LegacyAnchors } from '../LegacyAnchors'
 import { ProjectTrigger } from '../ProjectTrigger'
 import { Gallery } from '../ui/Gallery'
 import { AppCard, DemoCard, WebsiteCard } from '../work/ProjectCards'
+import { ProjectFanSlot } from '../work/ProjectFanSlot'
 import { Words } from '../Words'
 
 /** Section ids from earlier versions of the page. Links shared with these still land on this section. */
@@ -69,7 +70,7 @@ function FeaturedProject({ project }: { project: Project }) {
 /**
  * Selected work: one live website at full width, then the rest of the websites and the design demos as a sideways
  * gallery of cards that the visitor swipes, drags or steps through, then my own apps and tools in their own gallery,
- * and a way to every project.
+ * every project together in a fan, and a way to every project.
  */
 export function Work() {
   const t = useCopy()
@@ -120,6 +121,9 @@ export function Work() {
             ))}
           </Gallery>
         </div>
+
+        {/* Every project at once, in the ReactDrops Fan Gallery. */}
+        <ProjectFanSlot />
 
         <p className="reveal container-page mt-14 text-center sm:mt-16">
           <a href={localHref('work/')} className="text-link text-[1.0625rem]">

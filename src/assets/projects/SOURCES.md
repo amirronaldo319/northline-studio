@@ -54,3 +54,5 @@ Notes
 - OctaIQ, Shamsi Calendar, the Mend app prototype, Jarvis, STAYIN, and Motion Kit are the owner's own projects.
 
 Re-confirm with any third party before adding another project that is not entirely your own work.
+
+The `fan/` folder holds 360x450 crops of the phone captures above (top of the page), made by `scripts/generate-fan-thumbnails.py` for the homepage fan.
