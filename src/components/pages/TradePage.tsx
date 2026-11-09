@@ -1,19 +1,18 @@
-import { ArrowUpRight, Check } from 'lucide-react'
-import { PROJECT_DATA } from '@/content/projectsData'
+import { Check } from 'lucide-react'
+import { WEBSITE_PROJECTS } from '@/content/projects'
 import type { Trade } from '@/content/trades'
-import { useCopy, useLocalHref } from '@/i18n/context'
-import { statusLabel } from '@/i18n/projectStatus'
+import { useCopy } from '@/i18n/context'
 import { revealDelay } from '@/lib/reveal'
 import { Contact } from '../sections/Contact'
 import { Faq } from '../sections/Faq'
 import { Words } from '../Words'
 import { PageHero } from './PageHero'
+import { ProjectLinkCard } from '../work/ProjectLinkCard'
 import { useHomeAnchor } from '../pageContext'
 
 /** A landing page for one kind of business: what its customers look for, and what a page for it would hold. */
 export function TradePage({ trade }: { trade: Trade }) {
   const homeAnchor = useHomeAnchor()
-  const localHref = useLocalHref()
   const t = useCopy()
 
   return (
@@ -78,18 +77,9 @@ export function TradePage({ trade }: { trade: Trade }) {
             <p className="lede mt-5">{t.tradePage.recentLede}</p>
           </div>
           <ul className="reveal mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {PROJECT_DATA.filter((project) => project.kind === 'website').map((project) => (
+            {WEBSITE_PROJECTS.map((project) => (
               <li key={project.id}>
-                <a href={localHref(`work/${project.id}/`)} className="card card-link group block h-full p-6">
-                  <p className="text-footnote font-semibold text-accent">
-                    {statusLabel(t.work, project.status)}
-                  </p>
-                  <h3 className="mt-2 flex items-center gap-1.5 text-lead font-semibold">
-                    <bdi>{project.name}</bdi>
-                    <ArrowUpRight aria-hidden="true" size={16} className="card-arrow shrink-0" />
-                  </h3>
-                  <p className="mt-2 text-footnote leading-relaxed text-ink-2">{t.projects[project.id].type}</p>
-                </a>
+                <ProjectLinkCard project={project} />
               </li>
             ))}
           </ul>

@@ -64,6 +64,8 @@ export const zhHant: Copy = {
     openLivePreview: '打開在線預覽',
     noPublicLink: '私有倉庫，沒有公開鏈接',
     sitesLabel: '網站',
+    sitesHeading: '網站。',
+    sitesLede: '在線運營的企業網站、重新設計概念和一個產品頁面，每一個都標明了它是什麼。',
     appsHeading: '應用和工具。',
     appsLede: '我為自己設計和製作的東西：網頁應用、手機原型，以及一套開發者工具包。',
     viewProject: '查看項目',

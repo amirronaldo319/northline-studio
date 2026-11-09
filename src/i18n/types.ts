@@ -120,6 +120,9 @@ export interface Copy {
     noPublicLink: string
     /** Label for the gallery of websites. */
     sitesLabel: string
+    /** The Work page's websites section: its heading and the line under it. */
+    sitesHeading: string
+    sitesLede: string
     appsHeading: string
     appsLede: string
     viewProject: string

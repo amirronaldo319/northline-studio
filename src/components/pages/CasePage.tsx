@@ -1,6 +1,6 @@
 import { ArrowUpRight, ChevronRight, Lock } from 'lucide-react'
 import { PROJECTS, type Project } from '@/content/projects'
-import { useCopy, useLocalHref } from '@/i18n/context'
+import { useCopy } from '@/i18n/context'
 import { linkLabel, statusLabel } from '@/i18n/projectStatus'
 import { Contact } from '../sections/Contact'
 import { ProjectTrigger } from '../ProjectTrigger'
@@ -8,11 +8,11 @@ import { Words } from '../Words'
 import { buttonClasses } from '../ui/button'
 import { useHomeAnchor } from '../pageContext'
 import { PageHero } from './PageHero'
+import { ProjectLinkCard } from '../work/ProjectLinkCard'
 
 /** A closer look at one project: what it is, what I did, and the decisions behind it. */
 export function CasePage({ project }: { project: Project }) {
   const homeAnchor = useHomeAnchor()
-  const localHref = useLocalHref()
   const t = useCopy()
   const text = t.projects[project.id]
   // Three more, as Apple ends a page with a few related products: the same kind of work first, then the rest.
@@ -108,26 +108,7 @@ export function CasePage({ project }: { project: Project }) {
           <ul className="mt-8 grid gap-5 md:grid-cols-3">
             {related.map((other) => (
               <li key={other.id}>
-                <a href={localHref(`work/${other.id}/`)} className="card card-link group block h-full">
-                  <span className="card-shot block aspect-[1200/778] overflow-hidden bg-paper-2">
-                    <img
-                      src={other.desktop.src}
-                      width={other.desktop.width}
-                      height={other.desktop.height}
-                      alt=""
-                      loading="lazy"
-                      decoding="async"
-                      className="related-shot h-full w-full object-cover object-top"
-                    />
-                  </span>
-                  <span className="project-card-body block">
-                    <span className="block text-footnote font-semibold text-accent">{statusLabel(t.work, other.status)}</span>
-                    <span className="mt-2 block text-lead font-semibold">
-                      <bdi>{other.name}</bdi>
-                    </span>
-                    <span className="mt-1 block text-footnote text-ink-2">{t.projects[other.id].type}</span>
-                  </span>
-                </a>
+                <ProjectLinkCard project={other} />
               </li>
             ))}
           </ul>

@@ -83,6 +83,8 @@ export const en: Copy = {
     openLivePreview: 'Open live preview',
     noPublicLink: 'Private repository, no public link',
     sitesLabel: 'Websites',
+    sitesHeading: 'Websites.',
+    sitesLede: 'Live business websites, redesign concepts and a product page, each labelled for what it is.',
     appsHeading: 'Apps and tools.',
     appsLede: 'Things I designed and built for myself: web apps, phone prototypes, and a developer kit.',
     viewProject: 'View project',

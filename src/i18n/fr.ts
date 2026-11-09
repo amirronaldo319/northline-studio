@@ -32,6 +32,7 @@ export const fr: Copy = {
     lede: 'Deux sites en ligne, trois concepts de sites, mes propres produits et outils, et des exemples pour des entreprises fictives, tous clairement identifiés.',
     statusLive: 'Site en ligne', statusConcept: 'Projet conceptuel', statusPersonal: 'Projet personnel', contribution: 'Ma contribution :', visitLive: 'Visiter le site',
     openLivePreview: 'Ouvrir l’aperçu du site', noPublicLink: 'Dépôt privé, aucun lien public', sitesLabel: 'Sites web',
+    sitesHeading: 'Sites web.', sitesLede: 'Des sites d’entreprises en ligne, des concepts de refonte et une page produit, chacun indiqué pour ce qu’il est.',
     appsHeading: 'Applications et outils.', appsLede: 'Ce que j’ai conçu et réalisé pour moi-même : des applications web, des prototypes mobiles et une trousse pour développeurs.', viewProject: 'Voir le projet', allProjects: 'Explorer tous les projets',
     fanHeading: 'Tout ce que j’ai réalisé.', fanLede: 'Des sites web pour des entreprises, et mes propres applications et outils. Survolez une carte pour la faire passer devant, puis ouvrez le projet.', fanLabel: 'Tous les projets',
     demosHeading: 'Démos de conception.', demosLede: 'Des concepts pour des entreprises fictives, chacun identifié comme une démo.',

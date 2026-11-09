@@ -64,6 +64,8 @@ export const zhHans: Copy = {
     openLivePreview: '打开在线预览',
     noPublicLink: '私有仓库，没有公开链接',
     sitesLabel: '网站',
+    sitesHeading: '网站。',
+    sitesLede: '在线运营的企业网站、重新设计概念和一个产品页面，每一个都标明了它是什么。',
     appsHeading: '应用和工具。',
     appsLede: '我为自己设计和制作的东西：网页应用、手机原型，以及一套开发者工具包。',
     viewProject: '查看项目',

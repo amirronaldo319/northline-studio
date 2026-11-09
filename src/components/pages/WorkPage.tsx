@@ -23,9 +23,12 @@ export function WorkPage() {
 
       <section aria-labelledby="sites-title" className="section-pad bg-paper">
         <div className="container-page">
-          <h2 id="sites-title" className="h-subsection reveal">
-            {t.work.sitesLabel}
-          </h2>
+          <div className="reveal max-w-[44rem]">
+            <h2 id="sites-title" className="h-subsection">
+              {t.work.sitesHeading}
+            </h2>
+            <p className="mt-3 text-body leading-relaxed text-ink-2">{t.work.sitesLede}</p>
+          </div>
           <div className="mt-10 grid gap-8 md:grid-cols-2 lg:gap-10">
             {WEBSITE_PROJECTS.map((project) => (
               <div key={project.id} className="reveal">
