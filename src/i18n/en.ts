@@ -90,7 +90,7 @@ export const en: Copy = {
     viewProject: 'View project',
     allProjects: 'Explore all projects',
     fanHeading: 'Everything I’ve built.',
-    fanLede: 'Websites for businesses, and apps and tools of my own. Point at a card to bring it forward, then open the project.',
+    fanLede: 'Websites for businesses, and apps and tools of my own. Pick a card to open the project.',
     fanLabel: 'All projects',
     demosHeading: 'Design demos.',
     demosLede: 'Concept designs for fictional businesses, each labelled as a demo.',

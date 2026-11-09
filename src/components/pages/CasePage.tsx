@@ -55,7 +55,7 @@ export function CasePage({ project }: { project: Project }) {
           </div>
           <div className="reveal mx-auto w-[min(14rem,60%)] lg:col-span-3 lg:w-full">
             <div className="phone-device">
-              <ProjectTrigger project={project} view="phone" className="phone-trigger" />
+              <ProjectTrigger project={project} view="phone" className="phone-trigger" sizes="250px" />
             </div>
           </div>
         </div>

@@ -71,7 +71,7 @@ export const zhHans: Copy = {
     viewProject: '查看项目',
     allProjects: '浏览全部项目',
     fanHeading: '我做过的所有作品。',
-    fanLede: '为企业制作的网站，以及我自己的应用和工具。将指针移到卡片上即可把它提到前面，再打开项目。',
+    fanLede: '为企业制作的网站，以及我自己的应用和工具。选择一张卡片即可打开项目。',
     fanLabel: '全部项目',
     demosHeading: '设计演示。',
     demosLede: '为虚构商家做的概念设计，每一个都标明是演示。',

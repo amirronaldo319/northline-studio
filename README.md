@@ -175,6 +175,23 @@ files from `https://reactdrops.dev/r/<id>.json` rather than running `npx shadcn 
 - **Rules.** Headings and prices are semibold (600), never bold; tracking tightens as size grows; form fields stay at
   17px so iOS does not zoom (checked in `tests/glass.test.ts`); step numbers use tabular figures.
 
+## Performance notes
+
+Measured with Lighthouse, axe-core and Chrome's CPU profiler (2026-11). The sandbox has no GPU, so WebGL and canvas
+painting times there are inflated; JavaScript and download figures are not.
+
+- **The nav bubble rests.** An unpaused Bubble UI surface redraws 30 times a second for as long as the page is open, and
+  each frame copies its WebGL buffer into the marker's canvas: about 28% of the main thread while simply reading a
+  section on desktop. `NavBubble.tsx` pauses the film 2.4s after the bubble lands on a link (about 1% busy), and wakes it
+  when the active link changes. The component still answers the pointer while paused.
+- **Right-sized captures.** `content/projectShots.ts` gives every project a 600px desktop capture, a 390px phone capture
+  and a 780x880 crop of the top of the phone capture (`src/assets/projects/sized/`, made by
+  `scripts/generate-fan-thumbnails.py`). `ProjectShot` and `ProjectLinkCard` offer them through `srcset`/`sizes`, so a
+  phone frame drawn 200px wide no longer loads a 780x1520 capture. Home page project pictures: 842 to 531 KB on a 1x
+  desktop, 638 to 429 KB on a 1.75x phone, 737 to 603 KB on a 3x phone. Pass `sizes` when a slot is unusually wide.
+- **Hosting limit.** GitHub Pages serves every file with a 10-minute cache lifetime, which Lighthouse reports and which
+  cannot be changed there; hashed assets would be cached for a year behind a CDN such as Cloudflare.
+
 ## Homepage effects (hero contours and the glass word)
 
 Three ReactDrops components are used on the real homepage as well as on their study pages. Each is decoration added on
@@ -238,6 +255,9 @@ the foot of the homepage's Work section, above the "Explore all projects" link. 
   cards reach past its box while one is hovered, which would otherwise widen the page.
 - **Behaviour kept from the component:** hover or focus lifts a card and parts the fan, arrow keys, Home, End and Escape work,
   reduced motion draws the open fan at once, and the cards refit when the width changes.
+- **Phones:** below 640px the twelve cards are dealt into two fans of six (websites, then apps and tools) with a 104px
+  card (`fanGroups.ts`, `FAN_CONFIG_PHONE`). One fan of twelve left each card a 21px strip, under the 24px WCAG 2.2 asks
+  of a tap target; two fans give 25px on a 320px phone and about 39px on a 390px one. Every project is still shown.
 
 ## Inquiry form
 

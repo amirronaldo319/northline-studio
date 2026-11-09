@@ -10,7 +10,7 @@ type Props = {
   view?: ViewerView
   isEager?: boolean
   className?: string
-  /** How wide the picture is drawn, so high-density screens get the sharp capture. */
+  /** How wide the picture is drawn, so the browser loads the capture that fits the slot and the screen's density. */
   sizes?: string
 }
 

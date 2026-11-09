@@ -56,3 +56,5 @@ Notes
 Re-confirm with any third party before adding another project that is not entirely your own work.
 
 The `fan/` folder holds 360x450 crops of the phone captures above (top of the page), made by `scripts/generate-fan-thumbnails.py` for the homepage fan.
+
+The `sized/` folder holds right-sized versions of the captures above (600px desktop, 390px phone, and a 780x880 crop of the top of the phone capture), made by the same script and loaded through `srcset` so a small slot does not download a full capture.

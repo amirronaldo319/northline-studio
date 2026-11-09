@@ -22,9 +22,12 @@ export function BubbleUiPage() {
   return (
     <div ref={page} className="bubble-page" data-theme="light" style={{ background: '#f7f7f8', color: '#1b1d22' }}>
       <div className="bubble-art" aria-hidden="true" />
-      <a className="bubble-back" href="../">
-        ← SitePilot
-      </a>
+      {/* In a header, so the way back is inside a landmark like the rest of the page. */}
+      <header>
+        <a className="bubble-back" href="../">
+          ← SitePilot
+        </a>
+      </header>
       <main className="bubble-main">
         <h1 className="bubble-title">Bubble UI</h1>
         <p className="bubble-lede">Controls made of soap film. Press, drag and toggle: they bend what is behind them.</p>

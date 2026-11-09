@@ -2306,8 +2306,16 @@ html:not(.js) .project-fan-slot {
   display: none;
 }
 
+/* A phone shows two fans of six (fanGroups.ts), drawn a little closer than their own lift room would put them. */
+
 .project-fan-mount {
-  min-height: 13rem;
+  min-height: 31.5rem;
+}
+
+@media (max-width: 639px) {
+  .project-fan .fan-gallery + .fan-gallery {
+    margin-top: -3rem;
+  }
 }
 
 @media (min-width: 640px) {
@@ -2685,7 +2693,7 @@ html:not(.js) .showcase-dark {
 }
 
 .disclosure-toggle:hover {
-  color: var(--color-cobalt);
+  color: var(--color-accent);
 }
 
 /*

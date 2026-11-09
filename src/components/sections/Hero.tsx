@@ -91,7 +91,7 @@ export function Hero() {
               </div>
             </div>
             <div className="showcase-phone phone-device">
-              <ProjectTrigger project={project} view="phone" className="phone-trigger" />
+              <ProjectTrigger project={project} view="phone" className="phone-trigger" sizes="(min-width: 1024px) 190px, 130px" />
             </div>
           </div>
           <p className="hero-caption">{t.hero.visualCaption(project.name, text.caption)}</p>

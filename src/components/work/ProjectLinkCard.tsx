@@ -1,4 +1,5 @@
 import type { Project } from '@/content/projects'
+import { sizedShots } from '@/content/projectShots'
 import { useCopy, useLocalHref } from '@/i18n/context'
 import { statusLabel } from '@/i18n/projectStatus'
 
@@ -9,11 +10,14 @@ import { statusLabel } from '@/i18n/projectStatus'
 export function ProjectLinkCard({ project }: { project: Project }) {
   const t = useCopy()
   const localHref = useLocalHref()
+  const small = sizedShots(project.id).desktopSmall
   return (
     <a href={localHref(`work/${project.id}/`)} className="card card-link group block h-full">
       <span className="card-shot block aspect-[1200/778] overflow-hidden bg-paper-2">
         <img
           src={project.desktop.src}
+          srcSet={`${small.src} ${small.width}w, ${project.desktop.src} ${project.desktop.width}w`}
+          sizes="(min-width: 1024px) 371px, (min-width: 640px) 46vw, 92vw"
           width={project.desktop.width}
           height={project.desktop.height}
           alt=""

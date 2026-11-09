@@ -27,3 +27,10 @@ export const FAN_CONFIG = {
   once: true,
   showTitle: false,
 } satisfies Omit<FanGalleryProps, 'items' | 'ariaLabel'>
+
+/**
+ * On a phone the two fans of six use a narrower card. Measured: each card shows a strip of about
+ * (screen width - 1.84 x card width) / 5. At the full 162px that is under 30px on most phones; at 104px it is 40px on
+ * a 390px phone and still 25px on a 320px one, above the 24px a finger needs (WCAG 2.2 target size).
+ */
+export const FAN_CONFIG_PHONE = { ...FAN_CONFIG, cardWidth: 104 } satisfies Omit<FanGalleryProps, 'items' | 'ariaLabel'>

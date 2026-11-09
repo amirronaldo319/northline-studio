@@ -23,7 +23,7 @@ describe('glass markup without JavaScript', async () => {
   })
 
   test('the phone glass bar starts hidden and out of reach', () => {
-    expect(html).toMatch(/<div class="quote-bar" data-visible="false" inert=""/)
+    expect(html).toMatch(/<aside class="quote-bar" data-visible="false" inert="" aria-label="Request a quote"/)
   })
 
   test('the contact form sits in one large tile, with real inputs, labels and autocomplete', () => {

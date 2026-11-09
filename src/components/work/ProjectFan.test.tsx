@@ -6,6 +6,7 @@ import { CopyContext } from '@/i18n/context'
 import { en } from '@/i18n/en'
 import { fa } from '@/i18n/fa'
 import { FAN_CONFIG } from './fanConfig'
+import { fanGroups } from './fanGroups'
 import { ProjectFan } from './ProjectFan'
 
 const html = (copy: typeof en) =>
@@ -37,6 +38,17 @@ describe('the fan of every project', () => {
     const page = html(fa)
     expect(page).toMatch(/^<div dir="ltr" class="project-fan"/)
     expect(page).toContain('href="/fa/work/farsh-aquatics/"')
+  })
+
+  test('on a phone the projects are dealt into two fans of at most six, and none is left out', () => {
+    const groups = fanGroups(true, en)
+    expect(groups).toHaveLength(2)
+    for (const group of groups) expect(group.projects.length).toBeLessThanOrEqual(6)
+    expect(groups.flatMap((group) => group.projects.map((project) => project.id)).sort()).toEqual(
+      PROJECTS.map((project) => project.id).sort(),
+    )
+    expect(new Set(groups.map((group) => group.label)).size).toBe(2)
+    expect(fanGroups(false, en)).toHaveLength(1)
   })
 
   test('the settings are the ones given with the component', () => {
