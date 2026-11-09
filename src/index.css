@@ -1996,6 +1996,11 @@ dialog.viewer[data-closing]::backdrop {
   display: block;
 }
 
+/* The glass word and the full stop after it stay together when the line wraps. */
+.hero-nowrap {
+  white-space: nowrap;
+}
+
 /*
  * The one headline word drawn as refracted glass. The plain word is real text and sets the size of the slot, so the
  * line is laid out the same whether or not the glass ever loads. The glass is laid exactly over it and fades in once it
@@ -2012,6 +2017,20 @@ dialog.viewer[data-closing]::backdrop {
      arrives and nothing shifts when it does. */
   text-transform: uppercase;
   letter-spacing: 0.15em;
+  /* Draws the full stop a little in toward the word, which the glass lettering leaves room beside. */
+  margin-inline-end: -0.03em;
+}
+
+/*
+ * On a narrow screen the word wraps onto a line of its own, so it can be larger: it is the one thing on that line.
+ * (Above this width it shares the line with "Beautifully" and stays smaller; see the wrap check in the README.)
+ */
+@media (max-width: 599px) {
+  .hero-accent {
+    /* A quarter larger, but never wider than the screen's text column: the slot is 0.7936em per letter (see above). */
+    font-size: min(1.25em, calc((100vw - 3rem) / (var(--accent-letters) * 0.7936 + 0.3)));
+    line-height: 1;
+  }
 }
 
 .hero-accent-text {

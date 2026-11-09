@@ -17,8 +17,11 @@ function HeadlineLine({ text, accent }: { text: string; accent?: string }) {
   return (
     <>
       {text.slice(0, at)}
-      <HeroAccent text={accent} />
-      {text.slice(at + accent.length)}
+      {/* The word and the punctuation after it never come apart: if the line is too long, they wrap together. */}
+      <span className="hero-nowrap">
+        <HeroAccent text={accent} />
+        {text.slice(at + accent.length)}
+      </span>
     </>
   )
 }
