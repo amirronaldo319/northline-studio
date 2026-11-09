@@ -69,22 +69,22 @@ export function Package() {
         <div ref={chartRef} role="table" aria-label={offer.compare} className="compare reveal mt-14 lg:mt-20">
           <div role="rowgroup" ref={headRef}>
             <div role="row" className="compare-row compare-head">
-              <span role="columnheader" className="sr-only lg:not-sr-only lg:pt-1.5 lg:text-[1.0625rem] lg:font-semibold lg:text-ink-3">
+              <span role="columnheader" className="sr-only lg:not-sr-only lg:pt-1.5 lg:text-body lg:font-semibold lg:text-ink-3">
                 {t.package.included}
               </span>
               {offer.plans.map((plan) => (
                 <div key={plan.name} role="columnheader" className="compare-plan">
-                  <h3 className="text-[clamp(1.25rem,1.05rem+0.9vw,1.75rem)] font-semibold">{plan.name}</h3>
+                  <h3 className="text-title3 sm:text-title2 lg:text-title1">{plan.name}</h3>
                   <p className="mt-3 flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
-                    <bdi className="font-display text-[clamp(1.625rem,0.9rem+3.6vw,3.5rem)] leading-none font-bold tracking-[-0.04em]">
+                    <bdi className="plan-price">
                       {plan.price}
                     </bdi>
-                    <span className="text-[0.875rem] text-ink-3">{offer.once}</span>
+                    <span className="text-footnote text-ink-3">{offer.once}</span>
                   </p>
-                  <p className="mt-3 text-[0.9375rem] leading-snug text-ink-2 sm:text-[1.0625rem]">{plan.summary}</p>
+                  <p className="mt-3 text-callout leading-snug text-ink-2 sm:text-body">{plan.summary}</p>
                   <a
                     href={`#${CONTACT_SECTION_ID}`}
-                    className={buttonClasses('primary', 'md', 'plan-cta max-w-full !whitespace-normal text-center max-sm:min-h-10 max-sm:w-full max-sm:px-3 max-sm:text-[0.875rem]')}
+                    className={buttonClasses('primary', 'md', 'plan-cta max-w-full !whitespace-normal text-center max-sm:min-h-10 max-sm:w-full max-sm:px-3 max-sm:text-footnote')}
                     onClick={() =>
                       window.dispatchEvent(new CustomEvent(PACKAGE_EVENT, { detail: `${offer.choose} ${plan.name} (${plan.price})` }))
                     }
@@ -130,11 +130,11 @@ export function Package() {
             })}
           </div>
         </div>
-        <p className="reveal mx-auto mt-6 max-w-[46rem] text-center text-[0.9375rem] leading-relaxed text-ink-3">{offer.essentials}</p>
+        <p className="reveal mx-auto mt-6 max-w-[46rem] text-center text-callout leading-relaxed text-ink-3">{offer.essentials}</p>
 
         {/* Optional care: a separate, quieter offer, not a third column. */}
         <div className="reveal mx-auto mt-14 max-w-[46rem] border-t border-line pt-10 text-center">
-          <h3 id="care-title" className="text-[1.375rem] font-semibold">
+          <h3 id="care-title" className="text-title3">
             {offer.careTitle}
           </h3>
           <p className="mt-3 leading-relaxed text-ink-2">{offer.care}</p>
@@ -146,7 +146,7 @@ export function Package() {
             {t.package.termsSummary}
             <ChevronDown aria-hidden="true" size={17} className="terms-chevron" />
           </summary>
-          <div className="mt-4 space-y-3 text-[0.9375rem] leading-relaxed text-ink-2">
+          <div className="mt-4 space-y-3 text-callout leading-relaxed text-ink-2">
             <p>{offer.terms}</p>
             <p>{offer.exclusions}</p>
           </div>

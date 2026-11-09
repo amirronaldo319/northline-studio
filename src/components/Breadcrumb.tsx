@@ -13,7 +13,7 @@ export function Breadcrumb({ items }: { items: readonly Crumb[] }) {
   const t = useCopy()
 
   return (
-    <nav aria-label={t.common.breadcrumb} className="enter text-sm text-ink-3" style={{ '--i': 0 } as React.CSSProperties}>
+    <nav aria-label={t.common.breadcrumb} className="enter text-footnote text-ink-3" style={{ '--i': 0 } as React.CSSProperties}>
       <ol className="flex flex-wrap items-center gap-1.5">
         {items.map((item, index) => (
           <Fragment key={item.label}>

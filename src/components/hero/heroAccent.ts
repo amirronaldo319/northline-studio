@@ -17,8 +17,9 @@ export const HERO_ACCENT_BOTTOM = '#0a3fa8'
  * measures the word and gives the box the shape that keeps the letters undistorted (`glassAspect.ts`).
  */
 export const HERO_ACCENT_TYPE = {
-  /** The same stack as `--font-sans` in index.css, so the glass word and the headline are one typeface on every device. */
-  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif",
+  /** The glass word is drawn in the page's --font-display (read in HeroAccent), so it and the headline are one typeface. */
+  // Used only if the page's own family cannot be read; HeroAccent passes the page's --font-display (SF or Inter).
+  fontFamily: "'Inter Variable', 'Segoe UI', system-ui, sans-serif",
   fontWeight: 900,
   letterSpacing: '-0.015em',
   extraBold: 0.4,

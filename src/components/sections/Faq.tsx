@@ -39,11 +39,11 @@ export function Faq({ items, heading, label }: Props) {
         <div className="reveal mx-auto mt-12 max-w-[52rem] border-b border-line lg:mt-14">
           {entries.map((item) => (
             <details key={item.question} className="faq-item group border-t border-line">
-              <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-6 py-5 text-start text-[1.125rem] font-semibold tracking-[-0.01em] transition-colors hover:text-accent sm:text-[1.25rem]">
+              <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-6 py-5 text-start text-body font-semibold transition-colors hover:text-accent sm:text-lead lg:text-title3">
                 {item.question}
                 <Plus aria-hidden="true" size={18} className="faq-icon shrink-0 text-ink-3 transition-transform duration-200 group-hover:text-accent" />
               </summary>
-              <p className="max-w-[44rem] pb-6 text-[1.0625rem] leading-relaxed text-ink-2">{item.answer}</p>
+              <p className="max-w-[44rem] pb-6 text-body leading-relaxed text-ink-2">{item.answer}</p>
             </details>
           ))}
         </div>

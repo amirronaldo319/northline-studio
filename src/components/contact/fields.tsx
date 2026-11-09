@@ -23,12 +23,12 @@ export function Field({ id, label, isOptional = false, error, hint, className = 
       </label>
       {children}
       {hint && !error && (
-        <p id={`${id}-hint`} className="mt-1.5 text-sm text-ink-3">
+        <p id={`${id}-hint`} className="mt-1.5 text-footnote text-ink-3">
           {hint}
         </p>
       )}
       {error && (
-        <p id={`${id}-error`} className="fx-in mt-1.5 text-sm font-medium text-danger">
+        <p id={`${id}-error`} className="fx-in mt-1.5 text-footnote font-medium text-danger">
           {error}
         </p>
       )}

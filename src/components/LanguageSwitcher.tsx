@@ -56,7 +56,7 @@ export function LanguageSwitcher({ className = '', tone = 'light' }: Props) {
                   // Keep the visitor's place: the twin page has the same section ids.
                   if (window.location.hash) event.currentTarget.hash = window.location.hash
                 }}
-                className={`inline-flex min-h-9 min-w-9 items-center justify-center rounded-full border px-3 text-sm font-semibold transition-colors ${
+                className={`inline-flex min-h-9 min-w-9 items-center justify-center rounded-full border px-3 text-footnote font-semibold transition-colors ${
                   tone === 'dark'
                     ? isCurrent
                       ? 'border-white bg-white text-night'

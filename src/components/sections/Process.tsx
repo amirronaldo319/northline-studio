@@ -32,7 +32,7 @@ export function Process() {
                       {String(index + 1).padStart(2, '0')}
                     </span>
                   </div>
-                  <h3 className="mt-6 text-[1.3125rem] leading-snug font-semibold tracking-[-0.012em]">{step.title}</h3>
+                  <h3 className="mt-6 text-title3">{step.title}</h3>
                   <p className="mt-2 leading-relaxed text-ink-2">{step.text}</p>
                 </div>
               </li>

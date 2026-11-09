@@ -24,7 +24,7 @@ function CardText({ project }: { project: Project }) {
   return (
     <div className="project-card-body flex flex-1 flex-col">
       <p className="project-label">{t.projects[project.id].type}</p>
-      <h3 id={titleId} className="mt-1.5 text-[1.5rem] leading-tight font-semibold tracking-[-0.018em]">
+      <h3 id={titleId} className="mt-1.5 text-title2">
         <bdi>{project.name}</bdi>
       </h3>
       <p className="caption-sentence mt-1.5 leading-snug text-ink-2">{t.projects[project.id].caption}</p>
@@ -41,7 +41,7 @@ function CardText({ project }: { project: Project }) {
             <ArrowUpRight aria-hidden="true" size={16} />
           </a>
         ) : (
-          <span className="inline-flex items-center gap-1.5 text-[0.9375rem] text-ink-3">
+          <span className="inline-flex items-center gap-1.5 text-callout text-ink-3">
             <Lock aria-hidden="true" size={14} />
             {t.work.noPublicLink}
           </span>
@@ -98,7 +98,7 @@ export function DemoCard({ example }: { example: ExampleSite }) {
       </div>
       <div className="project-card-body flex flex-1 flex-col">
         <p className="project-label">{text.businessType}</p>
-        <h3 id={titleId} className="mt-1.5 text-[1.5rem] leading-tight font-semibold tracking-[-0.018em]">
+        <h3 id={titleId} className="mt-1.5 text-title2">
           {example.name}
         </h3>
         <p className="mt-1.5 leading-snug text-ink-2">{text.intent}</p>

@@ -31,18 +31,18 @@ export function GuidePage({ guide }: { guide: Guide }) {
           <div className="max-w-2xl space-y-10">
             {guide.sections.map((section, sectionIndex) => (
               <section key={section.heading} className="reveal" aria-labelledby={`g-${sectionIndex}`}>
-                <h2 id={`g-${sectionIndex}`} className="text-[1.75rem] font-bold tracking-[-0.03em]">
+                <h2 id={`g-${sectionIndex}`} className="text-title1">
                   <Words text={section.heading} />
                 </h2>
                 {section.paragraphs?.map((paragraph) => (
-                  <p key={paragraph} className="mt-3 text-[1.1875rem] leading-relaxed text-ink-2">
+                  <p key={paragraph} className="mt-3 text-lead leading-relaxed text-ink-2">
                     {paragraph}
                   </p>
                 ))}
                 {section.items && (
                   <ul className="mt-4 space-y-2.5">
                     {section.items.map((item) => (
-                      <li key={item} className="flex gap-3 text-[1.1875rem] leading-relaxed text-ink-2">
+                      <li key={item} className="flex gap-3 text-lead leading-relaxed text-ink-2">
                         <span aria-hidden="true" className="mt-3 size-1.5 shrink-0 rounded-full bg-cobalt" />
                         {item}
                       </li>
@@ -54,7 +54,7 @@ export function GuidePage({ guide }: { guide: Guide }) {
           </div>
 
           {next && (
-            <p className="mt-12 max-w-2xl border-t border-ink/10 pt-6 text-[1.0625rem] text-ink-2">
+            <p className="mt-12 max-w-2xl border-t border-ink/10 pt-6 text-body text-ink-2">
               {t.guidePage.next}{' '}
               <a href={localHref(`guides/${next.slug}/`)} className="font-semibold text-accent underline underline-offset-4">
                 {next.headline.replace(/[.。]$/, '')}

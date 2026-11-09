@@ -53,7 +53,7 @@ function FeaturedProject({ project }: { project: Project }) {
           <bdi>{project.name}</bdi>
         </h3>
         <p className="feature-line caption-sentence mx-auto mt-4">{t.projects[project.id].caption}</p>
-        <ViewProject project={project} className="mt-5 text-[1.0625rem]" />
+        <ViewProject project={project} className="mt-5 text-body" />
       </div>
       <div className="reveal showcase mt-12 sm:mt-16">
         <div className="showcase-desktop">
@@ -126,7 +126,7 @@ export function Work() {
         <ProjectFanSlot />
 
         <p className="reveal container-page mt-14 text-center sm:mt-16">
-          <a href={localHref('work/')} className="text-link text-[1.0625rem]">
+          <a href={localHref('work/')} className="text-link text-body">
             {t.work.allProjects}
             <ChevronRight aria-hidden="true" size={18} className="rtl:-scale-x-100" />
           </a>

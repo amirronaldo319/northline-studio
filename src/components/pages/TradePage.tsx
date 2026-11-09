@@ -40,8 +40,8 @@ export function TradePage({ trade }: { trade: Trade }) {
                 className="tile-paper"
                 style={{ '--line-i': index % 2 } as React.CSSProperties}
               >
-                <h3 className="text-[1.25rem] font-semibold">{check.title}</h3>
-                <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-2">{check.text}</p>
+                <h3 className="text-title3">{check.title}</h3>
+                <p className="mt-2 text-callout leading-relaxed text-ink-2">{check.text}</p>
               </li>
             ))}
           </ul>
@@ -59,7 +59,7 @@ export function TradePage({ trade }: { trade: Trade }) {
           </div>
           <ul className="reveal stagger space-y-3 lg:col-span-7" style={revealDelay(1)}>
             {trade.includes.map((item) => (
-              <li key={item} className="flex gap-3 rounded-2xl bg-card px-5 py-4 text-[1.0625rem] text-ink">
+              <li key={item} className="flex gap-3 rounded-2xl bg-card px-5 py-4 text-body text-ink">
                 <Check aria-hidden="true" size={18} className="mt-1 shrink-0 text-cobalt" />
                 {item}
               </li>
@@ -81,14 +81,14 @@ export function TradePage({ trade }: { trade: Trade }) {
             {PROJECT_DATA.filter((project) => project.kind === 'website').map((project) => (
               <li key={project.id}>
                 <a href={localHref(`work/${project.id}/`)} className="card card-link group block h-full p-6">
-                  <p className="text-[0.875rem] font-semibold text-accent">
+                  <p className="text-footnote font-semibold text-accent">
                     {statusLabel(t.work, project.status)}
                   </p>
-                  <h3 className="mt-2 flex items-center gap-1.5 text-[1.125rem] font-semibold">
+                  <h3 className="mt-2 flex items-center gap-1.5 text-lead font-semibold">
                     <bdi>{project.name}</bdi>
                     <ArrowUpRight aria-hidden="true" size={16} className="card-arrow shrink-0" />
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-ink-2">{t.projects[project.id].type}</p>
+                  <p className="mt-2 text-footnote leading-relaxed text-ink-2">{t.projects[project.id].type}</p>
                 </a>
               </li>
             ))}

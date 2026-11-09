@@ -8,7 +8,7 @@ import { useHomeAnchor } from './pageContext'
 
 const CURRENT_YEAR = new Date().getFullYear()
 const footerLink = 'inline-flex min-h-8 items-center text-ink-2 hover:text-ink hover:underline'
-const columnTitle = 'text-[0.8125rem] font-semibold text-ink'
+const columnTitle = 'text-caption font-semibold text-ink'
 
 /**
  * A compact footer in Apple's manner: small type, short columns of plain links (every section, all projects, the
@@ -20,7 +20,7 @@ export function Footer() {
   const t = useCopy()
 
   return (
-    <footer id="site-footer" className="site-footer bg-paper text-[0.8125rem] text-ink-3">
+    <footer id="site-footer" className="site-footer bg-paper text-caption text-ink-3">
       <div className="container-page">
         <div className="flex flex-col gap-8 border-t border-line pt-10 pb-8 md:flex-row md:items-start md:justify-between">
           <div className="max-w-xs">

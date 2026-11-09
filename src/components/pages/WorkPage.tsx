@@ -42,7 +42,7 @@ export function WorkPage() {
             <h2 id="apps-title" className="h-subsection">
               {t.work.appsHeading}
             </h2>
-            <p className="mt-3 text-[1.0625rem] leading-relaxed text-ink-2">{t.work.appsLede}</p>
+            <p className="mt-3 text-body leading-relaxed text-ink-2">{t.work.appsLede}</p>
           </div>
           <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {APP_PROJECTS.map((project) => (
@@ -60,7 +60,7 @@ export function WorkPage() {
             <h2 id="demos-title" className="h-subsection">
               {t.work.demosHeading}
             </h2>
-            <p className="mt-3 text-[1.0625rem] leading-relaxed text-ink-2">{t.work.demosLede}</p>
+            <p className="mt-3 text-body leading-relaxed text-ink-2">{t.work.demosLede}</p>
           </div>
           <div className="mt-10 grid gap-8 md:grid-cols-2 lg:gap-10">
             {EXAMPLES.map((example) => (

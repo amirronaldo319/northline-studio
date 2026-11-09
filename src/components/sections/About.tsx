@@ -20,8 +20,8 @@ export function About() {
           <dl className="facts facts-card tile-paper">
             {t.about.glance.map((row) => (
               <div key={row.label} className="facts-row">
-                <dt className="text-[0.9375rem] text-ink-3">{row.label}</dt>
-                <dd className="text-[1.0625rem] font-medium text-ink">{row.value}</dd>
+                <dt className="text-callout text-ink-3">{row.label}</dt>
+                <dd className="text-body font-medium text-ink">{row.value}</dd>
               </div>
             ))}
           </dl>

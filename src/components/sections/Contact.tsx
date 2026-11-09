@@ -34,7 +34,7 @@ export function Contact() {
                 <Words text={t.contact.heading} />
               </h2>
               <p className="lede mt-5 max-w-[30rem]">{t.contact.lede}</p>
-              <p className="mt-6 text-[1rem] text-ink-2">
+              <p className="mt-6 text-body text-ink-2">
                 {t.siteCheck.eyebrow}{' '}
                 <button type="button" onClick={startSiteCheck} className="text-link">
                   {t.siteCheck.button}
@@ -50,11 +50,11 @@ export function Contact() {
             </div>
 
             <div className="lg:col-span-5 lg:row-start-2">
-              <p className="text-[0.9375rem] text-ink-3">{t.contact.preferEmail}</p>
+              <p className="text-callout text-ink-3">{t.contact.preferEmail}</p>
               <a
                 href={mailtoHref}
                 dir="ltr"
-                className="mt-1 inline-flex items-center gap-2 text-[1.0625rem] font-semibold [overflow-wrap:anywhere] text-ink hover:text-accent"
+                className="mt-1 inline-flex items-center gap-2 text-body font-semibold [overflow-wrap:anywhere] text-ink hover:text-accent"
               >
                 <Mail aria-hidden="true" size={17} className="shrink-0 text-cobalt" />
                 {site.contact.email}
@@ -64,8 +64,8 @@ export function Contact() {
               </div>
 
               <div id="privacy" className="anchor-target mt-8 max-w-[28rem]">
-                <h3 className="text-sm font-semibold">{t.contact.privacyTitle}</h3>
-                <p className="mt-1 text-sm leading-relaxed text-ink-3">
+                <h3 className="text-footnote font-semibold">{t.contact.privacyTitle}</h3>
+                <p className="mt-1 text-footnote leading-relaxed text-ink-3">
                   {formEndpoint ? t.contact.privacyForm : t.contact.privacyMailto} {t.contact.privacyDelete}
                 </p>
               </div>

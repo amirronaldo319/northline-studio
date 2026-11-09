@@ -41,7 +41,7 @@ export function CasePage({ project }: { project: Project }) {
               <ArrowUpRight aria-hidden="true" size={17} className="card-arrow" />
             </a>
           ) : (
-            <p className="inline-flex items-center justify-center gap-2 text-[1rem] text-ink-3">
+            <p className="inline-flex items-center justify-center gap-2 text-body text-ink-3">
               <Lock aria-hidden="true" size={16} />
               {t.work.noPublicLink}
             </p>
@@ -76,17 +76,17 @@ export function CasePage({ project }: { project: Project }) {
             <p className="lede mt-5">{text.contribution}</p>
           </div>
           <div className="reveal lg:col-span-7">
-            <h3 className="text-[1.375rem] font-semibold">{t.casePage.decisions}</h3>
+            <h3 className="text-title3">{t.casePage.decisions}</h3>
             <ul className="mt-4 space-y-3">
               {text.decisions.map((decision) => (
-                <li key={decision} className="flex gap-3 text-[1.0625rem] leading-relaxed text-ink-2">
+                <li key={decision} className="flex gap-3 text-body leading-relaxed text-ink-2">
                   <span aria-hidden="true" className="mt-2.5 size-1.5 shrink-0 rounded-full bg-cobalt" />
                   {decision}
                 </li>
               ))}
             </ul>
             {text.note && (
-              <p className="tile-paper mt-8 !p-5 text-[0.9375rem] leading-relaxed text-ink-2">
+              <p className="tile-paper mt-8 !p-5 text-callout leading-relaxed text-ink-2">
                 <strong className="font-semibold text-ink">{t.casePage.worthKnowing}</strong> {text.note}
               </p>
             )}
@@ -97,7 +97,7 @@ export function CasePage({ project }: { project: Project }) {
       <section aria-labelledby="case-more" className="section-pad bg-paper">
         <div className="container-page">
           <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
-            <h2 id="case-more" className="text-[1.75rem] font-bold tracking-[-0.03em]">
+            <h2 id="case-more" className="text-title1">
               {t.casePage.more}
             </h2>
             <a href={homeAnchor('work')} className="chevron-link">
@@ -121,11 +121,11 @@ export function CasePage({ project }: { project: Project }) {
                     />
                   </span>
                   <span className="project-card-body block">
-                    <span className="block text-[0.875rem] font-semibold text-accent">{statusLabel(t.work, other.status)}</span>
-                    <span className="mt-2 block text-[1.125rem] font-semibold">
+                    <span className="block text-footnote font-semibold text-accent">{statusLabel(t.work, other.status)}</span>
+                    <span className="mt-2 block text-lead font-semibold">
                       <bdi>{other.name}</bdi>
                     </span>
-                    <span className="mt-1 block text-sm text-ink-2">{t.projects[other.id].type}</span>
+                    <span className="mt-1 block text-footnote text-ink-2">{t.projects[other.id].type}</span>
                   </span>
                 </a>
               </li>

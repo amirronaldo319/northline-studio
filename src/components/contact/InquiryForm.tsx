@@ -142,7 +142,7 @@ export function InquiryForm() {
     return (
       <div ref={resultRef} tabIndex={-1} role="status" className="form-card fx-in focus:outline-none">
         <SuccessCheck />
-        <h3 className="mt-4 text-2xl font-semibold">{t.form.successTitle(firstName)}</h3>
+        <h3 className="mt-4 text-title2">{t.form.successTitle(firstName)}</h3>
         <p className="mt-3 leading-relaxed text-ink-2">{t.form.successBody(values.email.trim())}</p>
         <button type="button" onClick={resetForm} className="text-link mt-6">
           {t.form.sendAnother}
@@ -249,7 +249,7 @@ export function InquiryForm() {
               </div>
 
               <fieldset>
-                <legend className="mb-2.5 text-[0.9375rem] font-semibold">{t.form.helpTitle}</legend>
+                <legend className="mb-2.5 text-callout font-semibold">{t.form.helpTitle}</legend>
                 <div className="flex flex-wrap gap-2">
                   {t.form.needs.map((option) => (
                     <label key={option.value} className="cursor-pointer">
@@ -280,14 +280,14 @@ export function InquiryForm() {
       </div>
 
       {hasAttempted && errorCount > 0 && (
-        <p role="alert" className="fx-in mt-5 flex items-center gap-2 rounded-lg bg-danger/8 px-4 py-3 text-sm font-medium text-danger">
+        <p role="alert" className="fx-in mt-5 flex items-center gap-2 rounded-lg bg-danger/8 px-4 py-3 text-footnote font-medium text-danger">
           <AlertCircle aria-hidden="true" size={18} className="shrink-0" />
           {t.form.checkFields(errorCount)}
         </p>
       )}
 
       {status === 'error' && (
-        <div ref={resultRef} tabIndex={-1} role="alert" className="fx-in mt-5 rounded-lg border border-danger/25 bg-danger/5 p-4 text-[0.9375rem] focus:outline-none">
+        <div ref={resultRef} tabIndex={-1} role="alert" className="fx-in mt-5 rounded-lg border border-danger/25 bg-danger/5 p-4 text-callout focus:outline-none">
           <p className="font-semibold text-danger">{t.form.errorTitle}</p>
           <p className="mt-1 text-ink-2">
             {t.form.errorBefore}
@@ -300,7 +300,7 @@ export function InquiryForm() {
       )}
 
       {status === 'email-opened' && (
-        <div ref={resultRef} tabIndex={-1} role="status" className="fx-in mt-5 rounded-lg border border-cobalt/25 bg-cobalt-soft/60 p-4 text-[0.9375rem] focus:outline-none">
+        <div ref={resultRef} tabIndex={-1} role="status" className="fx-in mt-5 rounded-lg border border-cobalt/25 bg-cobalt-soft/60 p-4 text-callout focus:outline-none">
           <p className="font-semibold">{t.form.emailOpenedTitle}</p>
           <p className="mt-1 text-ink-2">
             {t.form.emailOpenedBefore}
@@ -326,9 +326,9 @@ export function InquiryForm() {
           {isSubmitting && <Loader2 aria-hidden="true" size={18} className="animate-spin motion-reduce:animate-none" />}
           {isSubmitting ? t.form.sending : t.common.requestQuote}
         </button>
-        <p className="text-[0.9375rem] leading-snug text-ink-2">{t.contact.reassurance}</p>
+        <p className="text-callout leading-snug text-ink-2">{t.contact.reassurance}</p>
       </div>
-      <p className="mt-3 text-sm text-ink-3">{isConnected ? t.form.sentDirect : t.form.mailtoNote}</p>
+      <p className="mt-3 text-footnote text-ink-3">{isConnected ? t.form.sentDirect : t.form.mailtoNote}</p>
       <p className="sr-only" role="status" aria-live="polite">
         {isSubmitting ? t.form.sending : ''}
       </p>

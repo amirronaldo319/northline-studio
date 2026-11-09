@@ -157,6 +157,24 @@ The component files are the registry's content byte for byte, licence headers in
 for the whole site (`vite-security-plugin.ts`, checked in `tests/security.test.ts`). To update a component, take the
 files from `https://reactdrops.dev/r/<id>.json` rather than running `npx shadcn add` (see the Bubble UI section).
 
+## Typography
+
+- **Family.** Apple devices (Mac, iPhone, iPad) use their own San Francisco; everything else uses Inter, the open face
+  closest to SF Pro (variable, with the optical-size axis, so headlines use its tighter Display cut). SF Pro cannot be
+  served by a website under Apple's licence, so it is never downloaded; Inter is self-hosted
+  (`src/assets/fonts/inter/`, SIL OFL in `OFL.txt`), 71 KB for Latin, and downloaded only on non-Apple devices.
+  The `<head>` script in `index.html` adds `apple` to `<html>` before the first paint; CSS alone cannot tell, because
+  Chrome and Edge map `-apple-system` and `BlinkMacSystemFont` to the system font on every platform. Until Inter
+  arrives, a metric-matched Arial (`Inter Fallback`) holds its place, so nothing shifts. Persian and Chinese keep their
+  system fonts; Latin words inside them use the same Latin face.
+- **Scale.** Text inside components uses Apple-named styles defined once in `@theme` in `index.css`: `text-caption`
+  (13px), `text-footnote` (14), `text-callout` (15), `text-body` (17), `text-lead` (19), and the semibold
+  `text-title3` (21), `text-title2` (24), `text-title1` (28). Each sets size, leading and tracking together. Large
+  headings use `--type-hero`, `--type-large-title`, `--type-headline`, `--type-subheadline` and `--type-intro`, which
+  grow with the screen. Use these rather than `text-[…]` sizes, `font-bold` or ad hoc `tracking-[…]`.
+- **Rules.** Headings and prices are semibold (600), never bold; tracking tightens as size grows; form fields stay at
+  17px so iOS does not zoom (checked in `tests/glass.test.ts`); step numbers use tabular figures.
+
 ## Homepage effects (hero contours and the glass word)
 
 Three ReactDrops components are used on the real homepage as well as on their study pages. Each is decoration added on
@@ -176,7 +194,7 @@ top of plain HTML and CSS that already works, so the page is complete if any of 
   assistive technology, with its own `role` and `aria-label` removed, so the headline is read once. The contour layer
   is `aria-hidden` and `pointer-events: none`. With reduced motion the contours and the glass word draw once and stop;
   forced-colors mode shows plain text and no decoration.
-- **Lettering.** The glass word is set in the headline's own system font (San Francisco on Apple devices) in its heaviest
+- **Lettering.** The glass word is set in the headline's own font (San Francisco on Apple devices, Inter elsewhere; read from `--font-display`) in its heaviest
   weight, so it is one typeface with the words around it and as tall as their capitals. Refracted Text stretches any
   font to fill a box 394 units wide per letter, which would pull a narrower face out sideways, so `HeroAccent` measures
   the word on the device and gives the box the shape that keeps the letters as the font drew them (`glassAspect.ts`,

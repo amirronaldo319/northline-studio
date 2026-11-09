@@ -254,11 +254,11 @@ export function ProjectViewerProvider({ children }: { children: ReactNode }) {
             <div className="viewer-content">
               <div className="mb-3 flex items-start justify-between gap-4 text-white">
                 <div className="min-w-0">
-                  <p className="text-[0.875rem] font-semibold text-white/75">
+                  <p className="text-footnote font-semibold text-white/75">
                     {statusLabel(t.work, project.status)} <span aria-hidden="true">·</span>{' '}
                     {t.projects[project.id].type}
                   </p>
-                  <h2 id="project-viewer-title" className="mt-1 text-xl font-semibold sm:text-2xl">
+                  <h2 id="project-viewer-title" className="mt-1 text-title3 sm:text-title2">
                     <bdi>{project.name}</bdi>
                   </h2>
                 </div>
@@ -325,7 +325,7 @@ export function ProjectViewerProvider({ children }: { children: ReactNode }) {
               </div>
 
               <div ref={panelRef} className="mt-3 rounded-xl bg-card p-4 text-ink sm:p-5">
-                <p className="max-w-[46rem] text-[0.9375rem] leading-relaxed text-ink-2">{t.projects[project.id].summary}</p>
+                <p className="max-w-[46rem] text-callout leading-relaxed text-ink-2">{t.projects[project.id].summary}</p>
                 <div className="mt-4 flex flex-wrap items-center gap-3">
                   {project.liveUrl ? (
                     <a
@@ -339,7 +339,7 @@ export function ProjectViewerProvider({ children }: { children: ReactNode }) {
                       <ArrowUpRight aria-hidden="true" size={17} className="card-arrow" />
                     </a>
                   ) : (
-                    <p className="inline-flex items-center gap-2 text-[0.9375rem] text-ink-3">
+                    <p className="inline-flex items-center gap-2 text-callout text-ink-3">
                       <Lock aria-hidden="true" size={15} />
                       {t.work.noPublicLink}
                     </p>

@@ -9,6 +9,55 @@
 @import 'glisse/styles.css';
 
 /*
+ * Type family. Apple devices use their own San Francisco (SF Pro), which Apple's licence does not let a website serve,
+ * so it comes from the system and costs nothing. Every other device gets Inter, the closest open face to SF Pro (SIL
+ * Open Font License, src/assets/fonts/inter/OFL.txt), instead of Segoe UI or Roboto, so the site looks like one product
+ * everywhere. The file is the variable version with the optical-size axis: below about 20px it draws the open Text cut,
+ * at headline sizes the tighter Display cut, as SF does. Latin is 71 KB; the extended Latin file loads only for letters
+ * such as ō.
+ *
+ * Which device is which is decided by the small script in index.html's <head>, before the first paint: it adds
+ * `apple` to <html> on a Mac, iPhone or iPad. CSS cannot do this alone, because Chrome and Edge treat the Apple font
+ * names (-apple-system, BlinkMacSystemFont) as "the system font" on every platform, so a stack that starts with them
+ * gives Windows Segoe UI and never reaches Inter. A browser downloads Inter only when the text uses it, so Apple
+ * devices never download it.
+ */
+
+/*
+ * Until Inter arrives the page shows Arial scaled to Inter's size and line height, so text does not jump when it
+ * swaps in (the usual Inter-on-Arial metric overrides).
+ */
+
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial'), local('ArialMT'), local('Liberation Sans');
+  size-adjust: 107.06%;
+  ascent-override: 90.49%;
+  descent-override: 22.56%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Inter Variable';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('./assets/fonts/inter/inter-latin-opsz-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Inter Variable';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('./assets/fonts/inter/inter-latin-ext-opsz-normal.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF,
+    U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/*
  * Design tokens — change the brand palette and type here.
  * Every component uses these names (bg-paper, text-ink, bg-cobalt, …).
  */
@@ -45,11 +94,55 @@
   --color-success: #20683f;
 
   /*
-   * Type: the device's own system font (San Francisco on Apple devices, Segoe UI on Windows, Roboto on Android), with
-   * nothing to download. Headings and text share the family; size and weight set them apart.
+   * Type: San Francisco on Apple devices, Inter everywhere else (see the @font-face rules above). Headings and text
+   * share the family; size, weight and spacing set them apart.
    */
-  --font-display: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-display: 'Inter Variable', 'Inter Fallback', 'Segoe UI', system-ui, sans-serif;
+  --font-sans: 'Inter Variable', 'Inter Fallback', 'Segoe UI', system-ui, sans-serif;
+
+  /*
+   * The type scale for text inside components, named as Apple names its text styles. Each step sets size, leading
+   * and tracking together (and weight for the titles), so a class such as `text-title2` is the whole style. Tracking
+   * tightens as the size grows; leading opens up for small text and closes for titles.
+   *
+   *   caption   13px   footer, chips, small labels
+   *   footnote  14px   hints, notes, secondary lines
+   *   callout   15px   supporting text in cards and lists
+   *   body      17px   reading text (the page default)
+   *   lead      19px   long-form reading text, FAQ questions (with semibold)
+   *   title3    21px   semibold: step and feature titles
+   *   title2    24px   semibold: card titles
+   *   title1    28px   semibold: headings inside a page
+   *
+   * Larger headings (section, page and hero titles) are the classes below, with sizes that follow the screen.
+   */
+  --text-caption: 0.8125rem;
+  --text-caption--line-height: 1.385;
+  --text-caption--letter-spacing: -0.006em;
+  --text-footnote: 0.875rem;
+  --text-footnote--line-height: 1.43;
+  --text-footnote--letter-spacing: -0.012em;
+  --text-callout: 0.9375rem;
+  --text-callout--line-height: 1.467;
+  --text-callout--letter-spacing: -0.016em;
+  --text-body: 1.0625rem;
+  --text-body--line-height: 1.47;
+  --text-body--letter-spacing: -0.022em;
+  --text-lead: 1.1875rem;
+  --text-lead--line-height: 1.42;
+  --text-lead--letter-spacing: -0.017em;
+  --text-title3: 1.3125rem;
+  --text-title3--line-height: 1.238;
+  --text-title3--letter-spacing: -0.016em;
+  --text-title3--font-weight: 600;
+  --text-title2: 1.5rem;
+  --text-title2--line-height: 1.167;
+  --text-title2--letter-spacing: -0.017em;
+  --text-title2--font-weight: 600;
+  --text-title1: 1.75rem;
+  --text-title1--line-height: 1.143;
+  --text-title1--letter-spacing: -0.018em;
+  --text-title1--font-weight: 600;
 
   --shadow-soft: 0 1px 2px rgb(19 26 43 / 0.04), 0 8px 24px -12px rgb(19 26 43 / 0.12);
   --shadow-lift: 0 2px 4px rgb(19 26 43 / 0.05), 0 24px 48px -24px rgb(19 26 43 / 0.28);
@@ -57,6 +150,25 @@
   --shadow-device: 0 0 0 1px rgb(0 0 0 / 0.06), 0 12px 32px -20px rgb(0 0 0 / 0.22);
 
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/*
+ * Display sizes: the large headings grow with the screen between a phone size and a desktop size, and each keeps the
+ * leading and tracking set in its class. One step apart each, so a page never has two headings competing.
+ *
+ *   hero            44 -> 80px   the home page headline
+ *   large-title     40 -> 72px   page titles, the featured project's name
+ *   headline        32 -> 56px   section headings
+ *   subheadline     28 -> 44px   headings inside a section
+ *   intro           19 -> 24px   the line under a heading
+ */
+
+:root {
+  --type-hero: clamp(2.75rem, 1.55rem + 4.7vw, 5rem);
+  --type-large-title: clamp(2.5rem, 1.6rem + 3.7vw, 4.5rem);
+  --type-headline: clamp(2rem, 1.3rem + 2.9vw, 3.5rem);
+  --type-subheadline: clamp(1.75rem, 1.25rem + 2vw, 2.75rem);
+  --type-intro: clamp(1.1875rem, 1.06rem + 0.5vw, 1.5rem);
 }
 
 /*
@@ -101,11 +213,24 @@
     background: var(--color-card);
     color: var(--color-ink);
     font-family: var(--font-sans);
-    font-size: 1.0625rem;
+    font-size: var(--text-body);
     line-height: 1.47059;
     letter-spacing: -0.022em;
+    font-kerning: normal;
+    font-optical-sizing: auto;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+  }
+
+  /* Form controls do not inherit the page's type by default; they should read as part of the page. */
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+    letter-spacing: inherit;
   }
 
   h1,
@@ -172,7 +297,7 @@
   /* Section headings: 32px on phones to 56px on wide screens, set tight. */
 
   .h-section {
-    font-size: clamp(2rem, 1.3rem + 2.9vw, 3.5rem);
+    font-size: var(--type-headline);
     font-weight: 600;
     letter-spacing: -0.005em;
     line-height: 1.0714;
@@ -181,7 +306,7 @@
   /* A heading inside a section, one step below .h-section. */
 
   .h-subsection {
-    font-size: clamp(1.75rem, 1.25rem + 2vw, 2.75rem);
+    font-size: var(--type-subheadline);
     font-weight: 600;
     letter-spacing: -0.003em;
     line-height: 1.0834;
@@ -190,10 +315,10 @@
   /* Introductory text: 19px on phones to 24px on wide screens. */
 
   .lede {
-    font-size: clamp(1.1875rem, 1.06rem + 0.5vw, 1.5rem);
+    font-size: var(--type-intro);
     color: var(--color-ink-2);
-    line-height: 1.4167;
-    letter-spacing: 0.009em;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
   }
 
   /* Section rhythm: generous space above and below every section. */
@@ -675,16 +800,14 @@ dialog.viewer[data-closing]::backdrop {
 /* The preview fades out at its foot, as Apple crops a long page: it reads as continuing, not cut off. */
 
 .hero-title {
-  /* 44px on small phones, about 88px on wide screens. */
-  font-size: clamp(2.75rem, 1.55rem + 4.7vw, 5rem);
+  font-size: var(--type-hero);
   font-weight: 600;
   line-height: 1.05;
   letter-spacing: -0.015em;
 }
 
 .hero-lede {
-  /* 19px on phones to 24px on wide screens. */
-  font-size: clamp(1.1875rem, 1.05rem + 0.55vw, 1.5rem);
+  font-size: var(--type-intro);
   line-height: 1.4;
   letter-spacing: -0.01em;
   color: var(--color-ink-2);
@@ -828,23 +951,48 @@ dialog.viewer[data-closing]::backdrop {
 
 /*
  * Languages. The page's language and direction are set on <html> (see index.html and the prerender step).
- * Scripts that are not Latin get system fonts that cover them, with no downloads, and lose the tight letter
- * spacing the Latin type relies on: negative tracking breaks Arabic-script joining and crowds Chinese characters.
+ * Scripts that are not Latin get system fonts that cover them, with no downloads (Latin words inside them, such as
+ * project names, still use the site's Latin face), and lose the tight letter spacing the Latin type relies on:
+ * negative tracking breaks Arabic-script joining and crowds Chinese characters.
  */
 
 :root:lang(fa) {
-  --font-display: -apple-system, BlinkMacSystemFont, Tahoma, 'Segoe UI', 'Geeza Pro', system-ui, sans-serif;
-  --font-sans: -apple-system, BlinkMacSystemFont, Tahoma, 'Segoe UI', 'Geeza Pro', system-ui, sans-serif;
+  --font-display: 'Inter Variable', 'Inter Fallback', Tahoma, 'Segoe UI', 'Geeza Pro', system-ui, sans-serif;
+  --font-sans: 'Inter Variable', 'Inter Fallback', Tahoma, 'Segoe UI', 'Geeza Pro', system-ui, sans-serif;
+}
+
+/* On Apple devices: San Francisco for the whole page (and Geeza Pro for Persian, chosen by the system). */
+
+:root.apple {
+  --font-display: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+}
+
+:root.apple:lang(fa) {
+  --font-display: -apple-system, BlinkMacSystemFont, 'Geeza Pro', system-ui, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Geeza Pro', system-ui, sans-serif;
 }
 
 :root:lang(zh-Hans) {
-  --font-display: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', 'Noto Sans CJK SC', system-ui, sans-serif;
-  --font-sans: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', 'Noto Sans CJK SC', system-ui, sans-serif;
+  --font-display: 'PingFang SC', 'Inter Variable', 'Inter Fallback', 'Microsoft YaHei', 'Noto Sans SC', 'Noto Sans CJK SC', system-ui, sans-serif;
+  --font-sans: 'PingFang SC', 'Inter Variable', 'Inter Fallback', 'Microsoft YaHei', 'Noto Sans SC', 'Noto Sans CJK SC', system-ui, sans-serif;
 }
 
 :root:lang(zh-Hant) {
-  --font-display: 'PingFang TC', 'Microsoft JhengHei', 'Noto Sans TC', 'Noto Sans CJK TC', system-ui, sans-serif;
-  --font-sans: 'PingFang TC', 'Microsoft JhengHei', 'Noto Sans TC', 'Noto Sans CJK TC', system-ui, sans-serif;
+  --font-display: 'PingFang TC', 'Inter Variable', 'Inter Fallback', 'Microsoft JhengHei', 'Noto Sans TC', 'Noto Sans CJK TC', system-ui, sans-serif;
+  --font-sans: 'PingFang TC', 'Inter Variable', 'Inter Fallback', 'Microsoft JhengHei', 'Noto Sans TC', 'Noto Sans CJK TC', system-ui, sans-serif;
+}
+
+/* Apple devices have PingFang, which sets Latin words as well, so Chinese pages there never need Inter. */
+
+:root.apple:lang(zh-Hans) {
+  --font-display: 'PingFang SC', -apple-system, system-ui, sans-serif;
+  --font-sans: 'PingFang SC', -apple-system, system-ui, sans-serif;
+}
+
+:root.apple:lang(zh-Hant) {
+  --font-display: 'PingFang TC', -apple-system, system-ui, sans-serif;
+  --font-sans: 'PingFang TC', -apple-system, system-ui, sans-serif;
 }
 
 :root:lang(fa) *,
@@ -1191,7 +1339,7 @@ dialog.viewer[data-closing]::backdrop {
   white-space: nowrap;
   border-radius: 9999px;
   padding-inline: 1.125rem;
-  font-size: 0.9375rem;
+  font-size: var(--text-callout);
   font-weight: 600;
 }
 
@@ -1265,7 +1413,7 @@ dialog.viewer[data-closing]::backdrop {
 }
 
 .glass-segmented :is(.lg-tab, .lg-tab-copy) {
-  font-size: 0.875rem;
+  font-size: var(--text-footnote);
 }
 
 /* In the project viewer the toggle floats over the screenshot it switches. */
@@ -1310,14 +1458,14 @@ dialog.viewer[data-closing]::backdrop {
 .field-textarea {
   min-height: 9rem;
   padding-top: 1.75rem !important;
-  font-size: 1.0625rem !important;
+  font-size: 1.0625rem /* at least 16px, so iOS does not zoom into a focused field */ !important;
 }
 
 /* The light footer's language buttons are compact. */
 
 .site-footer [role='group'] a {
   min-height: 2.25rem;
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
 }
 
 /*
@@ -1411,7 +1559,7 @@ dialog.viewer[data-closing]::backdrop {
   gap: 0.75rem;
   padding-top: 1.25rem;
   border-top: 1px solid var(--color-line);
-  font-size: 1.0625rem;
+  font-size: var(--text-body);
   font-weight: 600;
   color: var(--color-ink);
 }
@@ -1419,14 +1567,14 @@ dialog.viewer[data-closing]::backdrop {
 .compare-cell {
   min-width: 0;
   padding: 0.75rem 0 1.5rem;
-  font-size: 0.9375rem;
+  font-size: var(--text-callout);
   line-height: 1.5;
   color: var(--color-ink-2);
 }
 
 @media (min-width: 640px) {
   .compare-cell {
-    font-size: 1.0625rem;
+    font-size: var(--text-body);
   }
 }
 
@@ -1564,7 +1712,7 @@ dialog.viewer[data-closing]::backdrop {
   width: var(--tab-width);
   height: var(--tab-height);
   border-radius: 9999px;
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   letter-spacing: -0.01em;
   white-space: nowrap;
   color: rgb(29 29 31 / 0.88);
@@ -1873,7 +2021,7 @@ dialog.viewer[data-closing]::backdrop {
 }
 
 .project-label {
-  font-size: 0.9375rem;
+  font-size: var(--text-callout);
   color: var(--color-ink-3);
 }
 
@@ -2089,14 +2237,6 @@ dialog.viewer[data-closing]::backdrop {
   margin-top: clamp(3rem, 2rem + 4vw, 5rem);
 }
 
-.hero-caption {
-  margin-top: 1.25rem;
-  text-align: center;
-  font-size: 0.9375rem;
-  line-height: 1.5;
-  color: var(--color-ink-2);
-}
-
 /*
  * A website as a product shot: the desktop capture large and centred, the phone capture standing in front of its
  * lower corner. The column for the phone is reserved, so nothing shifts as the pictures load. On phones only the
@@ -2140,7 +2280,7 @@ dialog.viewer[data-closing]::backdrop {
 /* ---- Work ----------------------------------------------------------------------------------------------- */
 
 .feature-name {
-  font-size: clamp(2.5rem, 1.6rem + 3.8vw, 4.5rem);
+  font-size: var(--type-large-title);
   font-weight: 600;
   line-height: 1.05;
   letter-spacing: -0.015em;
@@ -2148,8 +2288,9 @@ dialog.viewer[data-closing]::backdrop {
 
 .feature-line {
   max-width: 34rem;
-  font-size: clamp(1.1875rem, 1.05rem + 0.55vw, 1.5rem);
+  font-size: var(--type-intro);
   line-height: 1.4;
+  letter-spacing: -0.01em;
   color: var(--color-ink-2);
 }
 
@@ -2207,13 +2348,24 @@ html:not(.js) .project-fan-slot {
 
 .page-title {
   max-width: 18ch;
-  font-size: clamp(2.5rem, 1.6rem + 3.6vw, 4.5rem);
+  font-size: var(--type-large-title);
   font-weight: 600;
   line-height: 1.05;
   letter-spacing: -0.015em;
 }
 
 /* ---- Pricing -------------------------------------------------------------------------------------------- */
+
+/* A plan's price: large, semibold and set a little tight, as Apple sets its prices; never heavier than the headings. */
+
+.plan-price {
+  font-family: var(--font-display);
+  font-size: clamp(1.625rem, 0.9rem + 3.6vw, 3.5rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.022em;
+  font-variant-numeric: lining-nums;
+}
 
 .terms {
   text-align: center;
@@ -2282,7 +2434,7 @@ html:not(.js) .project-fan-slot {
 .field-label {
   display: block;
   margin-bottom: 0.4rem;
-  font-size: 0.9375rem;
+  font-size: var(--text-callout);
   font-weight: 600;
   color: var(--color-ink);
 }
@@ -2298,7 +2450,7 @@ html:not(.js) .project-fan-slot {
   border-radius: 0.75rem;
   background: #ffffff;
   color: var(--color-ink);
-  font-size: 1.0625rem;
+  font-size: 1.0625rem /* at least 16px, so iOS does not zoom into a focused field */;
   line-height: 1.4;
   transition:
     border-color var(--motion-dur-hover) ease,
@@ -2399,7 +2551,7 @@ html:not(.js) .project-fan-slot {
   min-height: 2.75rem;
   padding-inline: 1.125rem 0.875rem;
   border-radius: 9999px;
-  font-size: 0.9375rem;
+  font-size: var(--text-callout);
   pointer-events: auto;
   white-space: nowrap;
 }
@@ -2435,7 +2587,8 @@ html:not(.js) .project-fan-slot {
 .hero-caption {
   margin-top: 1.25rem;
   text-align: center;
-  font-size: 0.9375rem;
+  font-size: var(--text-callout);
+  line-height: 1.5;
   color: var(--color-ink-3);
 }
 
@@ -2459,7 +2612,7 @@ html:not(.js) .project-fan-slot {
   min-height: 1.875rem;
   padding-inline: 0.75rem;
   border-radius: 9999px;
-  font-size: 0.8125rem;
+  font-size: var(--text-caption);
   font-weight: 600;
   color: var(--color-ink);
 }
@@ -2483,7 +2636,7 @@ html:not(.js) .project-fan-slot {
   column-gap: var(--compare-gap);
   padding: 0.625rem 1rem;
   border-radius: 1rem;
-  font-size: 0.9375rem;
+  font-size: var(--text-callout);
   opacity: 0;
   transform: translateY(-6px);
   transition:
@@ -2530,7 +2683,7 @@ html:not(.js) .project-fan-slot {
 
 .quote-bar-text {
   min-width: 0;
-  font-size: 0.875rem;
+  font-size: var(--text-footnote);
   color: var(--color-ink-2);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2786,21 +2939,21 @@ html:not(.js) .project-fan-slot {
   .button-sm {
     min-height: 2rem;
     padding: 0.25rem 0.875rem;
-    font-size: 0.8125rem;
+    font-size: var(--text-caption);
     letter-spacing: -0.01em;
   }
 
   .button-md {
     min-height: 2.75rem;
     padding: 0.5rem 1.125rem;
-    font-size: 1.0625rem;
+    font-size: var(--text-body);
     line-height: 1.25;
   }
 
   .button-lg {
     min-height: 3rem;
     padding: 0.6875rem 1.375rem;
-    font-size: 1.0625rem;
+    font-size: var(--text-body);
     line-height: 1.25;
   }
 }
@@ -3077,7 +3230,7 @@ html:not(.js) .project-fan-slot {
 }
 
 .step-index {
-  font-size: 0.875rem;
+  font-size: var(--text-footnote);
   font-weight: 600;
   color: var(--color-ink-3);
   font-variant-numeric: tabular-nums;
@@ -3128,7 +3281,7 @@ html:not(.js) .project-fan-slot {
   padding-inline: 1rem;
   border: 1px solid #86868b;
   border-radius: 9999px;
-  font-size: 0.9375rem;
+  font-size: var(--text-callout);
   color: var(--color-ink);
 }
 

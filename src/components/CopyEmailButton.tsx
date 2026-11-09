@@ -33,11 +33,11 @@ export function CopyEmailButton() {
 
   return (
     <span className="inline-flex flex-wrap items-center gap-x-3 gap-y-1">
-      <button type="button" onClick={copy} className="text-link min-h-9 text-[0.9375rem]">
+      <button type="button" onClick={copy} className="text-link min-h-9 text-callout">
         {state === 'copied' ? <Check aria-hidden="true" size={15} className="text-success" /> : <Copy aria-hidden="true" size={15} />}
         {state === 'copied' ? t.contact.copied : t.contact.copyEmail}
       </button>
-      <span role="status" aria-live="polite" className="text-sm text-ink-3">
+      <span role="status" aria-live="polite" className="text-footnote text-ink-3">
         {state === 'copied' ? t.contact.copiedNote(site.contact.email) : null}
         {state === 'failed' ? t.contact.copyFailed : null}
       </span>

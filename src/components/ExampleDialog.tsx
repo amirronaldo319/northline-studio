@@ -124,11 +124,11 @@ export function ExampleDialog({ example, onClose, onRequestQuote }: Props) {
         <div className="flex h-full flex-col">
           <div className="flex items-start justify-between gap-4 border-b border-line bg-card px-4 py-3 sm:items-center sm:px-6">
             <div className="min-w-0">
-              <p className="text-[0.875rem] font-semibold text-accent">{t.dialogs.conceptDemo}</p>
-              <h2 id="example-dialog-title" className="mt-0.5 text-lg font-semibold sm:text-xl">
+              <p className="text-footnote font-semibold text-accent">{t.dialogs.conceptDemo}</p>
+              <h2 id="example-dialog-title" className="mt-0.5 text-title3 sm:text-title2">
                 {example.name}
               </h2>
-              <p className="mt-0.5 text-sm text-ink-3">
+              <p className="mt-0.5 text-footnote text-ink-3">
                 {t.dialogs.fictional(t.examples[example.id].businessType)}
               </p>
             </div>
@@ -166,7 +166,7 @@ export function ExampleDialog({ example, onClose, onRequestQuote }: Props) {
 
           <div role="status" aria-live="polite" className="empty:hidden">
             {notice && (
-              <p className="flex items-center gap-2 border-b border-cobalt/20 bg-cobalt-soft px-4 py-2.5 text-sm font-medium text-ink sm:px-6">
+              <p className="flex items-center gap-2 border-b border-cobalt/20 bg-cobalt-soft px-4 py-2.5 text-footnote font-medium text-ink sm:px-6">
                 <Info aria-hidden="true" size={16} className="shrink-0 text-cobalt" />
                 {notice}
               </p>
@@ -182,7 +182,7 @@ export function ExampleDialog({ example, onClose, onRequestQuote }: Props) {
               // Floats over the phone as it scrolls: try the layout at any phone width.
               <div className="phone-width-bar">
                 <Glass className="glass-capsule glass-lift phone-width-capsule">
-                  <label htmlFor="phone-width" className="text-sm font-semibold whitespace-nowrap text-ink">
+                  <label htmlFor="phone-width" className="text-footnote font-semibold whitespace-nowrap text-ink">
                     {t.dialogs.previewWidth}
                   </label>
                   <Slider
@@ -195,7 +195,7 @@ export function ExampleDialog({ example, onClose, onRequestQuote }: Props) {
                     onValueChange={setPhoneWidth}
                     aria-valuetext={`${phoneWidth} px`}
                   />
-                  <span aria-hidden="true" className="w-14 text-end text-sm font-semibold tabular-nums text-ink-2" dir="ltr">
+                  <span aria-hidden="true" className="w-14 text-end text-footnote font-semibold tabular-nums text-ink-2" dir="ltr">
                     {phoneWidth} px
                   </span>
                 </Glass>
@@ -209,7 +209,7 @@ export function ExampleDialog({ example, onClose, onRequestQuote }: Props) {
               }
               style={device === 'phone' ? { width: phoneWidth, maxWidth: '100%' } : undefined}
             >
-              <Suspense fallback={<div className="grid h-64 place-items-center text-sm text-ink-3">{t.dialogs.loading}</div>}>
+              <Suspense fallback={<div className="grid h-64 place-items-center text-footnote text-ink-3">{t.dialogs.loading}</div>}>
                 <Demo
                   onDemoAction={() =>
                     setNotice(t.dialogs.demoNotice)
@@ -220,7 +220,7 @@ export function ExampleDialog({ example, onClose, onRequestQuote }: Props) {
           </div>
 
           <div className="flex flex-col gap-3 border-t border-line bg-card px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-            <p className="text-sm text-ink-2">
+            <p className="text-footnote text-ink-2">
               {t.dialogs.wantSite}
             </p>
             <Button variant="filled" onClick={requestQuote} className="glass-btn shrink-0">

@@ -21,12 +21,13 @@ class GlassBoundary extends Component<{ onFail: () => void; children: ReactNode 
   }
 }
 
-/** Resolves once the display face is usable and the glass has had time to draw its first frame. */
-function firstFrame(text: string, signal: { cancelled: boolean }): Promise<void> {
-  const { fontWeight, fontFamily } = HERO_ACCENT
-  const face = document.fonts
-    ? document.fonts.load(`${fontWeight} 342px ${fontFamily}`, text).then(() => document.fonts.ready)
-    : Promise.resolve()
+/**
+ * Resolves once the page's fonts are in and the glass has had time to draw its first frame. It waits for the fonts
+ * the page is already using rather than asking for the glass's family by name: asking would download Inter on Apple
+ * devices too, where the word is drawn in San Francisco and Inter is never used.
+ */
+function firstFrame(signal: { cancelled: boolean }): Promise<void> {
+  const face = document.fonts ? document.fonts.ready.then(() => undefined) : Promise.resolve()
   return face
     .catch(() => undefined)
     .then(
@@ -57,6 +58,7 @@ export function HeroAccent({ text }: { text: string }) {
   const reducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
   const [Glass, setGlass] = useState<Glass | null>(null)
   const [aspect, setAspect] = useState<number | null>(null)
+  const [fontFamily, setFontFamily] = useState<string>(HERO_ACCENT_TYPE.fontFamily)
   const [state, setState] = useState<'plain' | 'glass' | 'failed'>('plain')
   const layer = useRef<HTMLSpanElement>(null)
 
@@ -65,11 +67,16 @@ export function HeroAccent({ text }: { text: string }) {
     let cancelled = false
     const load = () => {
       installPremultipliedGlass()
-      import('@/components/refracted-text')
-        .then((module) => {
+      // Measure in the font the page actually shows: on devices that download Inter, wait until it has arrived.
+      Promise.all([import('@/components/refracted-text'), document.fonts ? document.fonts.ready : null])
+        .then(([module]) => {
           if (cancelled) return
           // The box takes the shape the font's own proportions need, before the glass draws into it (see glassAspect.ts).
-          setAspect(measureGlassAspect(text.toUpperCase(), HERO_ACCENT_TYPE))
+          // The word is drawn in the headline's own family: San Francisco on Apple devices, Inter elsewhere.
+          const family =
+            getComputedStyle(document.documentElement).getPropertyValue('--font-display').trim() || HERO_ACCENT_TYPE.fontFamily
+          setFontFamily(family)
+          setAspect(measureGlassAspect(text.toUpperCase(), { ...HERO_ACCENT_TYPE, fontFamily: family }))
           setGlass(() => module.RefractedText)
         })
         .catch(() => {
@@ -107,7 +114,7 @@ export function HeroAccent({ text }: { text: string }) {
       if (host.querySelector('.refracted-text__fallback')) setState('failed')
     })
     watch.observe(host, { childList: true, subtree: true })
-    void firstFrame(text, signal).then(() => {
+    void firstFrame(signal).then(() => {
       if (signal.cancelled) return
       setState((current) => (current === 'failed' || host.querySelector('.refracted-text__fallback') ? 'failed' : 'glass'))
     })
@@ -123,7 +130,7 @@ export function HeroAccent({ text }: { text: string }) {
       {Glass && state !== 'failed' && (
         <span className="hero-accent-layer" ref={layer}>
           <GlassBoundary onFail={() => setState('failed')}>
-            <Glass {...HERO_ACCENT} text={text.toUpperCase()} paused={reducedMotion} />
+            <Glass {...HERO_ACCENT} fontFamily={fontFamily} text={text.toUpperCase()} paused={reducedMotion} />
           </GlassBoundary>
         </span>
       )}
