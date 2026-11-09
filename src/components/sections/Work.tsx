@@ -122,10 +122,16 @@ export function Work() {
           </Gallery>
         </div>
 
-        {/* Every project at once, in the ReactDrops Fan Gallery. */}
+      </div>
+
+      {/*
+        The section ends on black, as Apple's Pro pages switch to black for their showcase: every project at once in
+        the ReactDrops Fan Gallery, then the way to all of them.
+      */}
+      <div className="showcase-dark section-pad">
         <ProjectFanSlot />
 
-        <p className="reveal container-page mt-14 text-center sm:mt-16">
+        <p className="reveal container-page mt-12 text-center sm:mt-14">
           <a href={localHref('work/')} className="text-link text-body">
             {t.work.allProjects}
             <ChevronRight aria-hidden="true" size={18} className="rtl:-scale-x-100" />

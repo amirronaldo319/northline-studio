@@ -24,7 +24,7 @@ class FanBoundary extends Component<{ children: ReactNode }, { failed: boolean }
 export function ProjectFanSlot() {
   const t = useCopy()
   return (
-    <div className="project-fan-slot mt-20 lg:mt-28">
+    <div className="project-fan-slot">
       <FanBoundary>
         <div className="container-page">
           <div className="section-intro reveal">
