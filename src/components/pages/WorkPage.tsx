@@ -2,6 +2,7 @@ import { EXAMPLES } from '@/content/examples'
 import { APP_PROJECTS, WEBSITE_PROJECTS } from '@/content/projects'
 import { useCopy } from '@/i18n/context'
 import { Contact } from '../sections/Contact'
+import { ProjectChapterNav } from '../work/ProjectChapterNav'
 import { AppCard, DemoCard, WebsiteCard } from '../work/ProjectCards'
 import { PageHero } from './PageHero'
 
@@ -17,6 +18,11 @@ export function WorkPage() {
         intro={t.workPage.lede}
         showWorkLink={false}
       />
+
+      {/* Every project in one row under the title, as Apple's product pages begin. */}
+      <div className="container-page -mt-6 pb-12 sm:-mt-10 sm:pb-16">
+        <ProjectChapterNav />
+      </div>
 
       <section aria-labelledby="sites-title" className="section-pad bg-paper">
         <div className="container-page">

@@ -1,6 +1,6 @@
 /**
  * The picture each project shows as a card in the homepage fan: the top of its phone capture, cropped to the fan's 4:5
- * card and sized for it (made by scripts/generate-fan-thumbnails.py). Every project has one; projectFan.test.ts checks.
+ * card and sized for it (made by scripts/generate-fan-thumbnails.py). Every project has one; ProjectFan.test.tsx checks.
  */
 
 import farshAquatics from '@/assets/projects/fan/farsh-aquatics.webp'

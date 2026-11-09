@@ -321,10 +321,10 @@
     letter-spacing: -0.01em;
   }
 
-  /* Section rhythm: generous space above and below every section. */
+  /* Section rhythm: generous space above and below every section, up to Apple's 144px on wide screens. */
 
   .section-pad {
-    padding-block: clamp(4.5rem, 2.75rem + 5.5vw, 8rem);
+    padding-block: clamp(4.5rem, 2.5rem + 6.5vw, 9rem);
   }
 
   /* A centred section intro: label, headline and lede, then the content below. */
@@ -2335,6 +2335,78 @@ html:not(.js) .project-fan-slot {
 /* ---- Inner pages ---------------------------------------------------------------------------------------- */
 
 /*
+ * The Work page's row of projects, after Apple's row of models at the top of a product page: small pictures over
+ * 12px names, centred, and on a narrow screen a row that scrolls sideways within itself (with soft edges), never the
+ * page. Each picture has a hairline, since some captures are white at the top.
+ */
+
+.chapter-nav {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  mask-image: linear-gradient(90deg, transparent, #000 1rem, #000 calc(100% - 1rem), transparent);
+}
+
+.chapter-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.chapter-nav-list {
+  display: flex;
+  justify-content: safe center;
+  gap: 0.25rem;
+  width: max-content;
+  min-width: 100%;
+  padding-inline: 1rem;
+}
+
+.chapter-nav-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 5.5rem;
+  padding: 0.5rem 0.25rem;
+  border-radius: 0.75rem;
+  text-align: center;
+  color: var(--color-ink);
+}
+
+.chapter-nav-icon {
+  width: 3.5rem;
+  height: 4.375rem;
+  border-radius: 0.625rem;
+  object-fit: cover;
+  box-shadow:
+    0 0 0 1px rgb(0 0 0 / 0.08),
+    0 6px 14px -10px rgb(0 0 0 / 0.5);
+  transition: transform var(--motion-dur-hover) var(--motion-ease-out);
+}
+
+.chapter-nav-label {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1.333;
+  letter-spacing: -0.01em;
+}
+
+.chapter-nav-link:hover .chapter-nav-label {
+  color: var(--color-accent);
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .chapter-nav-link:hover .chapter-nav-icon {
+    transform: translateY(-2px);
+  }
+}
+
+:root:lang(fa) .chapter-nav-label,
+:root:lang(zh-Hans) .chapter-nav-label,
+:root:lang(zh-Hant) .chapter-nav-label {
+  letter-spacing: 0;
+}
+
+
+/*
  * The trail at the foot of an inner page, as Apple places it: on the footer's top hairline, with the footer's own
  * hairline below it.
  */
@@ -3015,11 +3087,13 @@ html:not(.js) .project-fan-slot {
     line-height: 1.25;
   }
 
+  /* Apple's large pill: 17px text, 11px by 21px of padding, 44px tall. */
+
   .button-lg {
-    min-height: 3rem;
-    padding: 0.6875rem 1.375rem;
+    min-height: 2.75rem;
+    padding: 0.6875rem 1.3125rem;
     font-size: var(--text-body);
-    line-height: 1.25;
+    line-height: 1.1765;
   }
 }
 
