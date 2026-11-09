@@ -176,6 +176,12 @@ top of plain HTML and CSS that already works, so the page is complete if any of 
   assistive technology, with its own `role` and `aria-label` removed, so the headline is read once. The contour layer
   is `aria-hidden` and `pointer-events: none`. With reduced motion the contours and the glass word draw once and stop;
   forced-colors mode shows plain text and no decoration.
+- **Lettering.** The glass word is set in the headline's own system font (San Francisco on Apple devices) in its heaviest
+  weight, so it is one typeface with the words around it and as tall as their capitals. Refracted Text stretches any
+  font to fill a box 394 units wide per letter, which would pull a narrower face out sideways, so `HeroAccent` measures
+  the word on the device and gives the box the shape that keeps the letters as the font drew them (`glassAspect.ts`,
+  `--accent-aspect`). The plain word that shows before the glass, and when it cannot run, is set the same way. The
+  component's wide display faces (Librestile, Square Display) are still bundled for the study page.
 - **Contrast.** The contour layer is masked clear behind the text and kept faint. Measured across the animation, text
   contrast stays at the page's own (the check is repeatable with a headless browser sampling the text's pixels behind each frame).
 - **Cost.** The contours are a fragment shader over the hero, so cost follows pixel count. The canvas is drawn at 0.5

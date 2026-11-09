@@ -2010,44 +2010,36 @@ dialog.viewer[data-closing]::backdrop {
 .hero-accent {
   position: relative;
   display: inline-block;
-  /* The glass's own width: its letters at 1.28em each, in the glass's 0.62em type (see heroAccent.ts). */
-  min-width: calc(var(--accent-letters) * 1.28 * 0.62em);
   text-align: center;
-  /* The plain word is set as tracked capitals to fill the glass's slot, so the line looks the same before the glass
-     arrives and nothing shifts when it does. */
+  /* The plain word is set in the glass's own typeface (the headline's system font, in its heaviest weight and slightly
+     tight capitals; see heroAccent.ts), so it reads the same before the glass arrives and nothing shifts when it does. */
   text-transform: uppercase;
-  letter-spacing: 0.15em;
-  /* Draws the full stop a little in toward the word, which the glass lettering leaves room beside. */
-  margin-inline-end: -0.03em;
+  font-weight: 900;
+  letter-spacing: -0.015em;
 }
 
 /*
  * On a narrow screen the word wraps onto a line of its own, so it can be larger: it is the one thing on that line.
- * (Above this width it shares the line with "Beautifully" and stays smaller; see the wrap check in the README.)
+ * (Above this width it shares the line with "Beautifully" and sits at the headline's own size, so the glass capitals
+ * are as tall as the headline's.)
  */
 @media (max-width: 599px) {
   .hero-accent {
-    /* A quarter larger, but never wider than the screen's text column: the slot is 0.7936em per letter (see above). */
-    font-size: min(1.25em, calc((100vw - 3rem) / (var(--accent-letters) * 0.7936 + 0.3)));
+    /* A third larger, but never wider than the screen's text column: about 0.66em a letter (the system font's heavy capitals). */
+    font-size: min(1.3em, calc((100vw - 3rem) / (var(--accent-letters) * 0.66 + 0.3)));
     line-height: 1;
   }
 }
 
 .hero-accent-text {
-  /* Balances the space the last letter's tracking leaves, so the word sits centred in its slot. */
-  padding-inline-start: 0.15em;
   transition: color 500ms var(--motion-ease-out);
 }
 
 /* If the glass cannot load or draw, the word is just the headline's own word again, at its natural width. */
 .hero-accent[data-state='failed'] {
-  min-width: 0;
   text-transform: none;
+  font-weight: inherit;
   letter-spacing: inherit;
-}
-
-.hero-accent[data-state='failed'] .hero-accent-text {
-  padding-inline-start: 0;
 }
 
 .hero-accent[data-state='glass'] .hero-accent-text {
@@ -2066,6 +2058,19 @@ dialog.viewer[data-closing]::backdrop {
 
 .hero-accent[data-state='glass'] .hero-accent-layer {
   opacity: 1;
+}
+
+/*
+ * The glass fills the word's own box instead of the component's fixed slot (letters x 1.28em), and takes the box shape
+ * that keeps the font's letters undistorted: HeroAccent measures it (glassAspect.ts) and sets --accent-aspect. The
+ * component sets its aspect ratio inline, so only an important rule can replace it. Before the measurement, or if
+ * it cannot be made, the box falls back to the component's own shape.
+ */
+.hero-accent-layer .refracted-text {
+  width: 100%;
+  max-width: none;
+  height: auto;
+  aspect-ratio: var(--accent-aspect, calc(var(--accent-letters) * 394 / 318)) !important;
 }
 
 @media (prefers-reduced-motion: reduce) {

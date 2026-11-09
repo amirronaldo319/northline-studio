@@ -1,7 +1,8 @@
 import { Component, useEffect, useLayoutEffect, useRef, useState, type ComponentType, type CSSProperties, type ReactNode } from 'react'
 import type { RefractedTextProps } from '@/components/refracted-text'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
-import { HERO_ACCENT } from './heroAccent'
+import { measureGlassAspect } from './glassAspect'
+import { HERO_ACCENT, HERO_ACCENT_TYPE } from './heroAccent'
 import { installPremultipliedGlass } from './premultipliedGlass'
 
 type Glass = ComponentType<RefractedTextProps>
@@ -55,6 +56,7 @@ function firstFrame(text: string, signal: { cancelled: boolean }): Promise<void>
 export function HeroAccent({ text }: { text: string }) {
   const reducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
   const [Glass, setGlass] = useState<Glass | null>(null)
+  const [aspect, setAspect] = useState<number | null>(null)
   const [state, setState] = useState<'plain' | 'glass' | 'failed'>('plain')
   const layer = useRef<HTMLSpanElement>(null)
 
@@ -65,7 +67,10 @@ export function HeroAccent({ text }: { text: string }) {
       installPremultipliedGlass()
       import('@/components/refracted-text')
         .then((module) => {
-          if (!cancelled) setGlass(() => module.RefractedText)
+          if (cancelled) return
+          // The box takes the shape the font's own proportions need, before the glass draws into it (see glassAspect.ts).
+          setAspect(measureGlassAspect(text.toUpperCase(), HERO_ACCENT_TYPE))
+          setGlass(() => module.RefractedText)
         })
         .catch(() => {
           if (!cancelled) setState('failed')
@@ -83,7 +88,7 @@ export function HeroAccent({ text }: { text: string }) {
       cancelled = true
       window.clearTimeout(timer)
     }
-  }, [])
+  }, [text])
 
   // The component labels itself as an image named after its text. The plain text beside it already says the word.
   useLayoutEffect(() => {
@@ -113,7 +118,7 @@ export function HeroAccent({ text }: { text: string }) {
   }, [Glass, text])
 
   return (
-    <span className="hero-accent" data-state={state} style={{ '--accent-letters': Array.from(text).length } as CSSProperties}>
+    <span className="hero-accent" data-state={state} style={{ '--accent-letters': Array.from(text).length, '--accent-aspect': aspect ?? undefined } as CSSProperties}>
       <span className="hero-accent-text">{text}</span>
       {Glass && state !== 'failed' && (
         <span className="hero-accent-layer" ref={layer}>
