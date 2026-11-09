@@ -8,17 +8,14 @@ import { Faq } from '../sections/Faq'
 import { Words } from '../Words'
 import { PageHero } from './PageHero'
 import { ProjectLinkCard } from '../work/ProjectLinkCard'
-import { useHomeAnchor } from '../pageContext'
 
 /** A landing page for one kind of business: what its customers look for, and what a page for it would hold. */
 export function TradePage({ trade }: { trade: Trade }) {
-  const homeAnchor = useHomeAnchor()
   const t = useCopy()
 
   return (
     <>
       <PageHero
-        crumbs={[{ label: t.common.home, href: homeAnchor('top') }, { label: t.tradePage.crumb(trade.name) }]}
         eyebrow={t.tradePage.eyebrow(trade.name)}
         headline={trade.headline}
         intro={trade.intro}

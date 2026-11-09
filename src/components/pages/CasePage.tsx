@@ -25,11 +25,6 @@ export function CasePage({ project }: { project: Project }) {
   return (
     <>
       <PageHero
-        crumbs={[
-          { label: t.common.home, href: homeAnchor('top') },
-          { label: t.common.work, href: homeAnchor('work') },
-          { label: project.name },
-        ]}
         eyebrow={`${statusLabel(t.work, project.status)} · ${text.type}`}
         headline={project.name}
         intro={text.summary}

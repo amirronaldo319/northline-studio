@@ -2090,7 +2090,8 @@ dialog.viewer[data-closing]::backdrop {
   position: absolute;
   inset: 0;
   background: url('./assets/brand/hero-contours.svg') center / cover no-repeat;
-  opacity: 0.55;
+  /* Matches the animated lines' strength (heroTopography.ts), so the hand-over from still to moving is not seen. */
+  opacity: 0.36;
   transition: opacity 900ms var(--motion-ease-out) 250ms;
 }
 
@@ -2341,6 +2342,17 @@ html:not(.js) .project-fan-slot {
 
 /* ---- Inner pages ---------------------------------------------------------------------------------------- */
 
+/*
+ * The trail at the foot of an inner page, as Apple places it: on the footer's top hairline, with the footer's own
+ * hairline below it.
+ */
+
+.footer-crumbs {
+  padding-block: 1.125rem;
+  border-top: 1px solid var(--color-line);
+}
+
+
 .page-hero {
   padding-top: 1.5rem;
   padding-bottom: clamp(3.5rem, 2rem + 4vw, 6rem);
@@ -2590,31 +2602,6 @@ html:not(.js) .project-fan-slot {
   font-size: var(--text-callout);
   line-height: 1.5;
   color: var(--color-ink-3);
-}
-
-/* A small glass label in a screenshot's top corner. */
-
-.shot-chip {
-  position: absolute;
-  inset-inline-start: 0.875rem;
-  top: 0.875rem;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.chip-glass {
-  --lg-glass: rgb(255 255 255 / 0.66);
-  --lg-blur: 8px;
-  --lg-rim-shine: 0.6;
-  --glass-drop: 0 6px 18px -10px rgb(0 0 0 / 0.35);
-  display: inline-flex;
-  align-items: center;
-  min-height: 1.875rem;
-  padding-inline: 0.75rem;
-  border-radius: 9999px;
-  font-size: var(--text-caption);
-  font-weight: 600;
-  color: var(--color-ink);
 }
 
 /* Pricing on phones and tablets: the plan names follow the rows on a strip of glass. */
@@ -3024,11 +3011,6 @@ html:not(.js) .project-fan-slot {
 .project-card .app-stage {
   border-radius: 0;
   box-shadow: none;
-}
-
-.project-card .shot-chip {
-  inset-inline-start: 1rem;
-  top: 1rem;
 }
 
 .project-card-body {

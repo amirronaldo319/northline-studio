@@ -7,13 +7,19 @@ import { linkLabel, statusLabel } from '@/i18n/projectStatus'
 import { DemoPreview } from '../DemoPreview'
 import { useExampleDialog } from '../exampleDialogContext'
 import { ProjectTrigger } from '../ProjectTrigger'
-import { ShotChip } from '../ShotChip'
 
 /*
  * Project cards in the manner of the Apple Store's: white, rounded, a soft shadow that deepens under the pointer, the
  * picture across the top. Shared by the home page's swipeable galleries and the work page's grid. Each card fills the
- * height it is given, so a row or a gallery of cards lines up, with the links resting on the card's foot.
+ * height it is given, so a row or a gallery of cards lines up, with the links resting on the card's foot. Nothing sits
+ * on the picture: what kind of work it is (live website, concept, demo) is the first line under it, in the accent
+ * colour, as Apple marks a product "New" above its name.
  */
+
+/** The first line under a picture: what kind of work this is. */
+function StatusLine({ children }: { children: string }) {
+  return <p className="text-footnote font-semibold text-accent">{children}</p>
+}
 
 /** The words under a project's picture: what it is, its name, one line, and the ways in (case study and live site). */
 function CardText({ project }: { project: Project }) {
@@ -23,7 +29,8 @@ function CardText({ project }: { project: Project }) {
 
   return (
     <div className="project-card-body flex flex-1 flex-col">
-      <p className="project-label">{t.projects[project.id].type}</p>
+      <StatusLine>{statusLabel(t.work, project.status)}</StatusLine>
+      <p className="project-label mt-1">{t.projects[project.id].type}</p>
       <h3 id={titleId} className="mt-1.5 text-title2">
         <bdi>{project.name}</bdi>
       </h3>
@@ -53,12 +60,10 @@ function CardText({ project }: { project: Project }) {
 
 /** A website: its screenshot across the top of a card, with its status, name, one line and its links. */
 export function WebsiteCard({ project }: { project: Project }) {
-  const t = useCopy()
   return (
     <article aria-labelledby={`project-${project.id}-title`} className="project-card card flex h-full flex-col">
       <div className="shot-frame card-shot relative">
         <ProjectTrigger project={project} sizes="(min-width: 1216px) 540px, (min-width: 768px) 44vw, 90vw" />
-        <ShotChip>{statusLabel(t.work, project.status)}</ShotChip>
       </div>
       <CardText project={project} />
     </article>
@@ -67,11 +72,9 @@ export function WebsiteCard({ project }: { project: Project }) {
 
 /** An app: its phone capture standing on a soft stage tinted with the app's own colour. */
 export function AppCard({ project }: { project: Project }) {
-  const t = useCopy()
   return (
     <article aria-labelledby={`project-${project.id}-title`} className="project-card card flex h-full flex-col">
       <div className="app-stage" style={{ '--tint': project.tint } as CSSProperties}>
-        <ShotChip>{statusLabel(t.work, project.status)}</ShotChip>
         <div className="app-phone phone-device">
           <ProjectTrigger project={project} view="phone" className="phone-trigger" />
         </div>
@@ -92,12 +95,12 @@ export function DemoCard({ example }: { example: ExampleSite }) {
     <article aria-labelledby={titleId} className="project-card card flex h-full flex-col">
       <div className="shot-frame card-shot relative">
         <DemoPreview example={example} />
-        <ShotChip>{t.work.conceptDemo}</ShotChip>
         {/* Mouse-only convenience; the labelled button below is the accessible control. */}
         <button type="button" tabIndex={-1} aria-hidden="true" onClick={() => open(example)} className="absolute inset-0 cursor-pointer" />
       </div>
       <div className="project-card-body flex flex-1 flex-col">
-        <p className="project-label">{text.businessType}</p>
+        <StatusLine>{t.work.conceptDemo}</StatusLine>
+        <p className="project-label mt-1">{text.businessType}</p>
         <h3 id={titleId} className="mt-1.5 text-title2">
           {example.name}
         </h3>

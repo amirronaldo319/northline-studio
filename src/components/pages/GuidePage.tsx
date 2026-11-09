@@ -2,12 +2,10 @@ import type { Guide } from '@/content/guides'
 import { useCopy, useLocalHref } from '@/i18n/context'
 import { Contact } from '../sections/Contact'
 import { Words } from '../Words'
-import { useHomeAnchor } from '../pageContext'
 import { PageHero } from './PageHero'
 
 /** A short practical guide. Plain advice, with the contact form at the end. */
 export function GuidePage({ guide }: { guide: Guide }) {
-  const homeAnchor = useHomeAnchor()
   const localHref = useLocalHref()
   const t = useCopy()
   const next = t.guides.find((candidate) => candidate.slug !== guide.slug)
@@ -15,11 +13,6 @@ export function GuidePage({ guide }: { guide: Guide }) {
   return (
     <>
       <PageHero
-        crumbs={[
-          { label: t.common.home, href: homeAnchor('top') },
-          { label: t.common.guides },
-          { label: guide.headline.replace(/[.。]$/, '') },
-        ]}
         eyebrow={t.guidePage.eyebrow}
         headline={guide.headline}
         intro={guide.intro}

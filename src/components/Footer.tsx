@@ -4,6 +4,7 @@ import { MENU_LINKS } from '@/content/navigation'
 import { useCopy, useLocalHref } from '@/i18n/context'
 import { BrandMark } from './BrandMark'
 import { LanguageSwitcher } from './LanguageSwitcher'
+import { FooterCrumbs } from './FooterCrumbs'
 import { useHomeAnchor } from './pageContext'
 
 const CURRENT_YEAR = new Date().getFullYear()
@@ -11,8 +12,8 @@ const footerLink = 'inline-flex min-h-8 items-center text-ink-2 hover:text-ink h
 const columnTitle = 'text-caption font-semibold text-ink'
 
 /**
- * A compact footer in Apple's manner: small type, short columns of plain links (every section, all projects, the
- * industry pages and the guides), and a hairline above the fine print.
+ * A compact footer in Apple's manner: on inner pages the trail back up first, then small type, short columns of plain
+ * links (every section, all projects, the industry pages and the guides), and a hairline above the fine print.
  */
 export function Footer() {
   const homeAnchor = useHomeAnchor()
@@ -22,6 +23,7 @@ export function Footer() {
   return (
     <footer id="site-footer" className="site-footer bg-paper text-caption text-ink-3">
       <div className="container-page">
+        <FooterCrumbs />
         <div className="flex flex-col gap-8 border-t border-line pt-10 pb-8 md:flex-row md:items-start md:justify-between">
           <div className="max-w-xs">
             <BrandMark />

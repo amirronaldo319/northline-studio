@@ -116,7 +116,7 @@ Only Glisse's documented exports are used (`tests/glass.test.ts` checks this).
 | --- | --- |
 | The language menu | `Menu` (`LanguageMenu.tsx`) |
 | Phone quote bar (`QuoteBar.tsx`), pricing strip on phones | `Glass` (frosted: `.glass-frost`) |
-| Captions and labels over screenshots (hero caption, `ShotChip.tsx`) | `Glass` (refracting the picture beneath) |
+| The caption over the hero screenshot (card labels sit in the card text instead) | `Glass` (refracting the picture beneath) |
 | Concept-demo dialog and project viewer | `SegmentedControl`, `Slider`, `Button` |
 
 All `--lg-*` variables are set once for the light page (`:root, [data-theme='light']`) and per surface where needed.

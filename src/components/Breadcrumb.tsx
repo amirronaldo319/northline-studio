@@ -8,16 +8,16 @@ export interface Crumb {
   href?: string
 }
 
-/** A small trail above the page title: where this page sits, with a way back. */
+/** A small trail: where this page sits, with a way back. Shown at the foot of inner pages (see PageCrumbs.tsx). */
 export function Breadcrumb({ items }: { items: readonly Crumb[] }) {
   const t = useCopy()
 
   return (
-    <nav aria-label={t.common.breadcrumb} className="enter text-footnote text-ink-3" style={{ '--i': 0 } as React.CSSProperties}>
+    <nav aria-label={t.common.breadcrumb} className="text-caption text-ink-3">
       <ol className="flex flex-wrap items-center gap-1.5">
         {items.map((item, index) => (
           <Fragment key={item.label}>
-            {index > 0 && <ChevronRight aria-hidden="true" size={14} className="text-ink-3/70 rtl:-scale-x-100" />}
+            {index > 0 && <ChevronRight aria-hidden="true" size={12} className="text-ink-3/70 rtl:-scale-x-100" />}
             <li>
               {item.href ? (
                 <a href={item.href} className="underline-offset-4 hover:text-ink hover:underline">

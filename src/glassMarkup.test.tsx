@@ -70,9 +70,11 @@ describe('glass markup without JavaScript', async () => {
     expect(html.match(/<div class="gallery-dots" aria-hidden="true">/g)).toHaveLength(2)
   })
 
-  test('screenshots carry glass labels, and the hero screenshot a glass caption with a real link', () => {
+  test('the hero screenshot has a glass caption with a real link, and card screenshots carry nothing on top', () => {
     expect(html).toMatch(/class="lg-glass caption-glass[^"]*"[^]*?<a href="\/work\/farsh-aquatics\/"/)
-    expect(html.match(/class="lg-glass chip-glass/g)?.length).toBeGreaterThanOrEqual(2)
+    // What kind of work a card shows is the first line of its text, not a label over the picture.
+    expect(html).not.toContain('chip-glass')
+    expect(html).toMatch(/<p class="text-footnote font-semibold text-accent">Live website<\/p><p class="project-label mt-1">/)
   })
 
   test('Persian keeps a right-to-left nav it can read in order, with the same bubble row', async () => {

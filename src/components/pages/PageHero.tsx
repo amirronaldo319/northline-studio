@@ -2,13 +2,11 @@ import type { ReactNode } from 'react'
 import { CONTACT_SECTION_ID } from '@/content/navigation'
 import { useCopy } from '@/i18n/context'
 import { enterStep } from '@/lib/reveal'
-import { Breadcrumb, type Crumb } from '../Breadcrumb'
 import { useHomeAnchor } from '../pageContext'
 import { buttonClasses } from '../ui/button'
 import { Words } from '../Words'
 
 type Props = {
-  crumbs: readonly Crumb[]
   eyebrow: string
   headline: string
   intro: string
@@ -19,8 +17,8 @@ type Props = {
   showQuote?: boolean
 }
 
-/** The top of every inner page: breadcrumb, label, headline, intro, a blue button and an outline one. */
-export function PageHero({ crumbs, eyebrow, headline, intro, secondary, showWorkLink = true, showQuote = true }: Props) {
+/** The top of every inner page: label, headline, intro, a blue button and an outline one. The trail is at the foot. */
+export function PageHero({ eyebrow, headline, intro, secondary, showWorkLink = true, showQuote = true }: Props) {
   const homeAnchor = useHomeAnchor()
   const t = useCopy()
   const link =
@@ -34,8 +32,7 @@ export function PageHero({ crumbs, eyebrow, headline, intro, secondary, showWork
   return (
     <section aria-labelledby="page-title" className="page-hero">
       <div className="container-page">
-        <Breadcrumb items={crumbs} />
-        <div className="mx-auto mt-10 max-w-[52rem] text-center sm:mt-14">
+        <div className="mx-auto max-w-[52rem] pt-12 text-center sm:pt-16">
           <p className="hero-eyebrow enter" style={enterStep(0)}>
             {eyebrow}
           </p>

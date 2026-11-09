@@ -1,7 +1,6 @@
 import { EXAMPLES } from '@/content/examples'
 import { APP_PROJECTS, WEBSITE_PROJECTS } from '@/content/projects'
 import { useCopy } from '@/i18n/context'
-import { useHomeAnchor } from '../pageContext'
 import { Contact } from '../sections/Contact'
 import { AppCard, DemoCard, WebsiteCard } from '../work/ProjectCards'
 import { PageHero } from './PageHero'
@@ -9,12 +8,10 @@ import { PageHero } from './PageHero'
 /** Every project in one place: websites, then my own apps and tools, then the design demos. No carousels. */
 export function WorkPage() {
   const t = useCopy()
-  const homeAnchor = useHomeAnchor()
 
   return (
     <>
       <PageHero
-        crumbs={[{ label: t.common.home, href: homeAnchor('top') }, { label: t.common.work }]}
         eyebrow={t.workPage.eyebrow}
         headline={t.workPage.heading}
         intro={t.workPage.lede}
