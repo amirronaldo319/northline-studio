@@ -161,6 +161,8 @@ export function InquiryForm() {
     onChange: update(field),
     'aria-invalid': errors[field] ? true : undefined,
     'aria-describedby': describedBy(`inquiry-${field}`, errors[field], hasHint),
+    // An empty placeholder lets CSS tell an empty field from a filled one (:placeholder-shown), to float the label.
+    placeholder: ' ',
   })
 
   const inputProps = (field: InquiryField) => ({ ...fieldProps(field), className: fieldControlClasses })
@@ -187,10 +189,9 @@ export function InquiryForm() {
         label={t.form.message}
         error={errors.message}
         hint={t.form.messageHint}
-       
         className="mt-4"
       >
-        <textarea {...fieldProps('message', true)} rows={5} required className={`${fieldControlClasses} field-textarea resize-y`} />
+        <textarea {...fieldProps('message', true)} rows={5} required className={`${fieldControlClasses} field-textarea resize-none`} />
       </Field>
 
       <div className="mt-5 border-t border-line pt-4">

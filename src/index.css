@@ -1453,14 +1453,6 @@ dialog.viewer[data-closing]::backdrop {
   width: 9rem;
 }
 
-/* A placeholder (an example) only appears once the label has moved out of its way. */
-
-.field-textarea {
-  min-height: 9rem;
-  padding-top: 1.75rem !important;
-  font-size: 1.0625rem /* at least 16px, so iOS does not zoom into a focused field */ !important;
-}
-
 /* The light footer's language buttons are compact. */
 
 .site-footer [role='group'] a {
@@ -2493,6 +2485,92 @@ html:not(.js) .project-fan-slot {
 
 .field-textarea {
   min-height: 9rem;
+  /* Grows with what is typed (where supported) instead of showing a resize grip, as Apple's text areas do. */
+  field-sizing: content;
+  max-height: 22rem;
+}
+
+/*
+ * Apple's form fields: the label sits inside the box, in the place the text will go, and rises to the top edge, smaller,
+ * once the field is focused or holds text. A select always holds a value, so its label is always raised. An example
+ * placeholder (the website field's) shows only once the label is out of its way. Browsers without :has() keep the
+ * label above the box, as before.
+ */
+
+@supports selector(:has(*)) {
+  .field-float {
+    position: relative;
+  }
+
+  .field-float > .field-label {
+    position: absolute;
+    z-index: 1;
+    inset-inline: 1rem;
+    top: 1rem;
+    margin: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 1.0625rem;
+    line-height: 1.4;
+    font-weight: 400;
+    color: var(--color-ink-3);
+    pointer-events: none;
+    transition:
+      top var(--motion-dur-hover) var(--motion-ease-out),
+      font-size var(--motion-dur-hover) var(--motion-ease-out),
+      color var(--motion-dur-hover) ease;
+  }
+
+  .field-float .field {
+    min-height: 3.5rem;
+    padding-top: 1.5rem;
+    padding-bottom: 0.4375rem;
+  }
+
+  .field-float .field-textarea {
+    min-height: 9rem;
+    padding-top: 1.875rem;
+  }
+
+  .field-float:has(.field:focus) > .field-label,
+  .field-float:has(.field:not(:placeholder-shown)) > .field-label,
+  .field-float:has(.field:autofill) > .field-label {
+    top: 0.5rem;
+    font-size: 0.75rem;
+    line-height: 1.333;
+  }
+
+  /* Text scrolling up in a long message passes under the raised label, not through it. */
+
+  .field-float:has(textarea) > .field-label {
+    inset-inline-end: 1.5rem;
+    padding-bottom: 0.25rem;
+    background: #ffffff;
+  }
+
+  .field-float .field::placeholder {
+    color: transparent;
+  }
+
+  .field-float .field:focus::placeholder {
+    color: rgb(110 110 115 / 0.85);
+  }
+
+  [data-invalid] > .field-float > .field-label {
+    color: var(--color-danger);
+  }
+}
+
+.field-label-optional {
+  font-weight: 400;
+  color: var(--color-ink-3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .field-float > .field-label {
+    transition: none;
+  }
 }
 
 .disclosure-toggle {
