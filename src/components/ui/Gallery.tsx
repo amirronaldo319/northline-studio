@@ -89,7 +89,7 @@ export function Gallery({ label, children, size = 'wide' }: Props) {
             <span key={index} data-current={inView.includes(index) || undefined} />
           ))}
         </div>
-        <div className="flex gap-3">
+        <div className="gallery-paddles">
           <button
             type="button"
             className="gallery-paddle glass-control"

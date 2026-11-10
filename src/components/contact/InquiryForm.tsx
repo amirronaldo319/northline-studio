@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react'
+import { useCallback, useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react'
 import { AlertCircle, ChevronDown, Copy, Loader2 } from 'lucide-react'
 import { PACKAGE_EVENT } from '@/content/offers'
 import { formEndpoint } from '@/config/env'
@@ -42,6 +42,14 @@ export function InquiryForm() {
   const resultRef = useRef<HTMLDivElement>(null)
   const messageRef = useRef<HTMLTextAreaElement>(null)
   useAutoGrow(messageRef, values.message)
+
+  // Until this script runs, the form is a plain one: the browser checks the required fields and posts to the form
+  // service itself (see `action` below). Once it runs, it takes over both, with its own messages and no page change.
+  // The prerendered form therefore carries no `novalidate`; it is set here, when the script meets the form.
+  const attachForm = useCallback((form: HTMLFormElement | null) => {
+    formRef.current = form
+    if (form) form.noValidate = true
+  }, [])
 
   // The site-check band (or a #site-check link) asks for the form to be ready for a website review.
   useEffect(() => {
@@ -172,8 +180,12 @@ export function InquiryForm() {
 
   return (
     <form
-      ref={formRef}
-      noValidate
+      ref={attachForm}
+      // A real address to post to, so a message sent before the script has loaded (or where it never does) still
+      // arrives, instead of being dropped into this page's own address as a query string.
+      action={isConnected ? formEndpoint : undefined}
+      method="post"
+      acceptCharset="utf-8"
       onSubmit={handleSubmit}
       aria-labelledby="contact-title"
       className="form-card relative"
@@ -280,8 +292,10 @@ export function InquiryForm() {
       {/* Honeypot: hidden from people, often filled in by bots. The form service discards those. */}
       <div aria-hidden="true" className="absolute -start-[9999px] h-px w-px overflow-hidden">
         <label htmlFor="inquiry-gotcha">Leave this field empty</label>
-        <input id="inquiry-gotcha" type="text" tabIndex={-1} autoComplete="off" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} />
+        <input id="inquiry-gotcha" name="_gotcha" type="text" tabIndex={-1} autoComplete="off" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} />
       </div>
+      {/* Read by the form service when the form is posted as a plain form; the scripted send names the business instead. */}
+      <input type="hidden" name="_subject" value="Website inquiry" />
 
       {hasAttempted && errorCount > 0 && (
         <p role="alert" className="fx-in mt-5 flex items-center gap-2 rounded-lg bg-danger/8 px-4 py-3 text-footnote font-medium text-danger">

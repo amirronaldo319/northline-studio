@@ -10,7 +10,7 @@ export const zhHant: Copy = {
 
   meta: {
     homeTitle: 'SitePilot | 加拿大本地商家的專屬網站',
-    homeDescription: '為加拿大各地的本地服務型商家制作專屬單頁網站。查看網站案例，並索取報價。',
+    homeDescription: '面向加拿大各地商家的單頁網站，CA$299 起。對比入門套餐與 CA$599 標準套餐，另有 CA$29/月起的可選維護服務。',
     caseTitle: (name, status) => `${name}：${{ live: '我製作的在線網站', concept: '概念項目', personal: '個人項目' }[status]} | SitePilot`,
     workTitle: '全部項目：網站、概念與應用 | SitePilot',
     workDescription: 'Amir 設計並製作的在線網站、概念項目和個人應用，每一個都標明了它是什麼。打開任一項目查看詳情。',

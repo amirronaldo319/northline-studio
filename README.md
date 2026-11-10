@@ -373,6 +373,11 @@ use commercially. No stock photography is bundled.
   - *Fonts:* everywhere but on Apple devices the head script starts the Inter download with the page, so the first
     text is already in Inter (`fontPreloadPlugin` in `vite-seo-plugin.ts`). Apple devices use San Francisco and
     never fetch the file, which is why this is not a plain `<link rel="preload">`.
+  - *Contact form without its script:* the prerendered form is a working plain form (`method="post"`, `action` set
+    to the form service, required fields checked by the browser), so a message sent before the script has loaded, or
+    where it never loads, still arrives instead of landing in the page's own address as a query string. Once the
+    script runs it sets `novalidate` and takes over with its own messages and no page change. The content security
+    policy's `form-action` allows the form service's origin for this (`vite-security-plugin.ts`).
   - `public/404.html` answers in the language of the missing address (`/fr/…`, `/fa/…`, `/zh/…`, `/zh-hant/…`)
     and links to that language's home page and work.
   - Canonical, `og:url`, absolute image addresses, the sitemap and the `robots.txt` Sitemap line switch on with

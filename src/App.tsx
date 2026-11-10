@@ -67,9 +67,10 @@ export default function App({ page = ENGLISH_HOME, copy }: { page?: PageRef; cop
       <PageContext.Provider value={{ isHome: page.kind === 'home', page }}>
         <ExampleDialogProvider>
           <ProjectViewerProvider>
+            {/* Above the header (z-index 50): on a narrow screen the header's capsule spans the corner this appears in. */}
             <a
               href="#main"
-              className="sr-only z-50 rounded-full bg-ink px-4 py-2 font-semibold text-white focus:not-sr-only focus:fixed focus:top-3 focus:start-3"
+              className="sr-only z-60 rounded-full bg-ink px-4 py-2 font-semibold text-white focus:not-sr-only focus:fixed focus:top-3 focus:start-3"
             >
               {copy.common.skipToContent}
             </a>

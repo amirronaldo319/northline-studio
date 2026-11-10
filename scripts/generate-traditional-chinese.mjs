@@ -21,6 +21,9 @@ const FIXES = [
   ['寫明瞭', '寫明了'],
   ['信息併發送', '信息並發送'],
   ['併發送', '並發送'],
+  // A reviewer's wording for Traditional readers in the hosting question (網域 and 信箱 rather than 域名 and 郵箱).
+  ['域名註冊和續費、郵箱及付費工具', '網域註冊和續費、信箱及付費工具'],
+  ['不含上述費用。域名歸您所有', '不含上述費用。網域歸您所有'],
 ]
 for (const [from, to] of FIXES) out = out.split(from).join(to)
 fs.writeFileSync(new URL('../src/i18n/zhHant.ts', import.meta.url), out)

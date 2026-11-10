@@ -2611,6 +2611,8 @@ html:not(.js) .showcase-dark {
 @supports selector(:has(*)) {
   .field-float {
     position: relative;
+    /* The label below sizes itself against this box, so a long one still fits a narrow field. */
+    container-type: inline-size;
   }
 
   .field-float > .field-label {
@@ -2623,6 +2625,11 @@ html:not(.js) .showcase-dark {
     white-space: nowrap;
     text-overflow: ellipsis;
     font-size: 1.0625rem;
+    /*
+     * In a narrow field (a 320px phone, or a phone zoomed in) the longest labels ran out of room and lost their last
+     * word to an ellipsis. Below about 270px of field the label steps down with the box instead of being cut off.
+     */
+    font-size: min(1.0625rem, 6.3cqi);
     line-height: 1.4;
     font-weight: 400;
     color: var(--color-ink-3);
@@ -3320,10 +3327,18 @@ html:not(.js) .showcase-dark {
   position: relative;
   z-index: 1;
   display: flex;
+  /* With very large text the dots and the two buttons no longer fit one line; the buttons then take the next one. */
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
   margin-top: 1.25rem;
+}
+
+.gallery-paddles {
+  display: flex;
+  gap: 0.75rem;
+  margin-inline-start: auto;
 }
 
 /* Where the row is: the cards in view light up their dots, on a pill of glass. */
@@ -3332,6 +3347,8 @@ html:not(.js) .showcase-dark {
   display: inline-flex;
   align-items: center;
   gap: 0.625rem;
+  /* Never wider than its row: with very large text the dots squeeze together rather than push the page sideways. */
+  max-width: 100%;
   height: 2.25rem;
   padding-inline: 1rem;
   border-radius: 9999px;

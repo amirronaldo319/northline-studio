@@ -18,6 +18,12 @@ describe('buildCsp', () => {
     expect(csp).not.toMatch(/connect-src[^;]*https:(?!\/\/)/)
   })
 
+  test('a form may post to the form service, so the contact form sends even as a plain form', () => {
+    expect(buildCsp({ scriptHashes: [], connectOrigins: [] })).toContain("form-action 'self';")
+    const csp = buildCsp({ scriptHashes: [], connectOrigins: ['https://formspree.io'], formOrigins: ['https://formspree.io'] })
+    expect(csp).toContain("form-action 'self' https://formspree.io;")
+  })
+
   test('fonts come from the page itself or from data URIs, never from another origin', () => {
     const csp = buildCsp({ scriptHashes: [], connectOrigins: [] })
     expect(csp).toContain("font-src 'self' data:")
