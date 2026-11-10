@@ -7,6 +7,7 @@ import { securityPlugin } from './vite-security-plugin.ts'
 import { site } from './src/config/site.ts'
 import { seo } from './src/config/seo.ts'
 import { FAQ } from './src/content/faq.ts'
+import { offers } from './src/content/offers.ts'
 import { allPages } from './src/content/pageMeta.ts'
 
 // https://vite.dev/config/
@@ -26,7 +27,9 @@ export default defineConfig(({ mode }) => {
         email: site.contact.email,
         description: seo.description,
         areaServed: site.serviceArea.primary,
-        ogImagePath: '/og-canada.png',
+        ogImagePath: '/share/home-en.jpg',
+        logoPath: '/apple-touch-icon.png',
+        priceRange: `${offers.en.plans[0].price}–${offers.en.plans[offers.en.plans.length - 1].price}`,
         faq: FAQ,
         paths: allPages().map((page) => page.path),
         analyticsToken: (env.VITE_CF_ANALYTICS_TOKEN ?? '').trim(),

@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { pageMeta } from '../content/pageMeta'
+import { allPages, pageMeta } from '../content/pageMeta'
 import { TRADES } from '../content/trades'
 import { applyPageHead } from './pageHead'
 
@@ -68,15 +68,27 @@ describe('applyPageHead', () => {
     expect(none).not.toContain('hreflang')
   })
 
-  test('uses the Canada-wide share card in every language', () => {
-    const page = `${TEMPLATE.replace('</head>', '<meta property="og:image" content="https://example.ca/og-image.png"><meta name="twitter:image" content="https://example.ca/og-image.png"></head>')}`
-    const english = applyPageHead(page, pageMeta({ kind: 'home', locale: 'en' }), { siteUrl: 'https://example.ca' })
-    expect(english).toContain('content="https://example.ca/og-canada.png"')
-    const persian = applyPageHead(page, pageMeta({ kind: 'home', locale: 'fa' }), { siteUrl: 'https://example.ca' })
-    expect(persian).toContain('content="https://example.ca/og-canada.png"')
-    expect(persian).not.toContain('/og-image.png')
-    expect((persian.match(/og-canada\.png/g) ?? []).length).toBe(2)
+  test('each language has its own share card, and a project page shows that project', () => {
+    const page = `${TEMPLATE.replace('</head>', '<meta property="og:image" content="https://example.ca/share/home-en.jpg"><meta name="twitter:image" content="https://example.ca/share/home-en.jpg"></head>')}`
+    const share = (ref: Parameters<typeof pageMeta>[0]) => {
+      const out = applyPageHead(page, pageMeta(ref), { siteUrl: 'https://example.ca' })
+      const og = /property="og:image" content="([^"]*)"/.exec(out)?.[1]
+      const twitter = /name="twitter:image" content="([^"]*)"/.exec(out)?.[1]
+      expect(twitter).toBe(og)
+      return og
+    }
+    expect(share({ kind: 'home', locale: 'en' })).toBe('https://example.ca/share/home-en.jpg')
+    expect(share({ kind: 'home', locale: 'fa' })).toBe('https://example.ca/share/home-fa.jpg')
+    expect(share({ kind: 'trade', locale: 'zh-hant', slug: TRADES[0].slug })).toBe('https://example.ca/share/home-zh-hant.jpg')
+    expect(share({ kind: 'work', locale: 'fr' })).toBe('https://example.ca/share/home-fr.jpg')
+    // The project's own card, whatever the language of the page.
+    expect(share({ kind: 'case', locale: 'fa', id: '604kars' })).toBe('https://example.ca/share/work-604kars.jpg')
   })
+
+  const crumbsOf = (html: string) => {
+    const json = /<script type="application\/ld\+json">(\{"@context":"https:\/\/schema\.org","@type":"BreadcrumbList".*?)<\/script>/.exec(html)?.[1]
+    return json ? (JSON.parse(json).itemListElement as { position: number; name: string; item: string }[]) : null
+  }
 
   test('adds breadcrumb data below the home page only, and only with a site URL', () => {
     const trade = pageMeta({ kind: 'trade', locale: 'en', slug: TRADES[0].slug })
@@ -86,5 +98,50 @@ describe('applyPageHead', () => {
     expect(applyPageHead(TEMPLATE, trade, { siteUrl: '' })).not.toContain('BreadcrumbList')
     const home = applyPageHead(TEMPLATE, pageMeta({ kind: 'home', locale: 'en' }), { siteUrl: 'https://example.ca' })
     expect(home).not.toContain('BreadcrumbList')
+  })
+
+  test('the published trail is the one the page shows: Home, Work for a project, then the page by its short name', () => {
+    const project = applyPageHead(TEMPLATE, pageMeta({ kind: 'case', locale: 'en', id: '604kars' }), { siteUrl: 'https://example.ca' })
+    expect(crumbsOf(project)).toEqual([
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://example.ca/' },
+      { '@type': 'ListItem', position: 2, name: 'Work', item: 'https://example.ca/work/' },
+      { '@type': 'ListItem', position: 3, name: '604 Kars', item: 'https://example.ca/work/604kars/' },
+    ])
+    // In another language the trail stays inside that language, in its words.
+    const persian = crumbsOf(applyPageHead(TEMPLATE, pageMeta({ kind: 'case', locale: 'fa', id: '604kars' }), { siteUrl: 'https://example.ca' }))!
+    expect(persian.map((crumb) => crumb.item)).toEqual(['https://example.ca/fa/', 'https://example.ca/fa/work/', 'https://example.ca/fa/work/604kars/'])
+    expect(persian[0].name).not.toBe('Home')
+  })
+
+  test('every trail on the site starts at a home page, ends at the page itself, and names real pages only', () => {
+    const paths = new Set(allPages().map((page) => page.path))
+    for (const page of allPages()) {
+      if (page.relativePath === '') {
+        expect(page.crumbs).toEqual([])
+        continue
+      }
+      expect(page.crumbs.length).toBeGreaterThan(1)
+      expect(page.crumbs.at(-1)?.path).toBe(page.path)
+      for (const crumb of page.crumbs) {
+        expect(paths.has(crumb.path), `${page.path} → ${crumb.path}`).toBe(true)
+        expect(crumb.name).not.toMatch(/\||SitePilot|[.。]$/u)
+      }
+    }
+  })
+
+  test('the business data is described in the page’s language, and the site name is declared on the root page only', () => {
+    const template = TEMPLATE.replace(
+      '<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage"',
+      '<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"X","url":"https://example.ca/"}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage"',
+    )
+    const english = applyPageHead(template, pageMeta({ kind: 'home', locale: 'en' }), { siteUrl: 'https://example.ca' })
+    const french = applyPageHead(template, pageMeta({ kind: 'home', locale: 'fr' }), { siteUrl: 'https://example.ca' })
+    const business = (html: string) =>
+      JSON.parse(/<script type="application\/ld\+json">(\{"@context":"https:\/\/schema\.org","@type":"ProfessionalService".*?)<\/script>/.exec(html)![1])
+    expect(business(english)).toEqual({ '@context': 'https://schema.org', '@type': 'ProfessionalService', name: 'X', description: pageMeta({ kind: 'home', locale: 'en' }).description })
+    expect(business(french).description).toBe(pageMeta({ kind: 'home', locale: 'fr' }).description)
+    expect(english).toContain('"@type":"WebSite"')
+    expect(french).not.toContain('"@type":"WebSite"')
+    expect(applyPageHead(template, pageMeta({ kind: 'work', locale: 'en' }), { siteUrl: 'https://example.ca' })).not.toContain('"@type":"WebSite"')
   })
 })

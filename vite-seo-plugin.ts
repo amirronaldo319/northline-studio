@@ -12,6 +12,10 @@ interface SeoOptions {
   description: string
   areaServed: readonly string[]
   ogImagePath: string
+  /** Square logo below the site root, for the business data. */
+  logoPath?: string
+  /** The published package prices, lowest to highest (for example "CA$299–CA$599"). */
+  priceRange?: string
   /** Published as FAQPage structured data, so the answers can appear in search results. */
   faq?: readonly FaqEntry[]
   /** Cloudflare Web Analytics token. Empty means no analytics script is added. */
@@ -44,8 +48,13 @@ export function seoPlugin(options: SeoOptions): Plugin {
         areaServed: options.areaServed.map((name) => ({ '@type': 'Country', name })),
       }
 
+      if (options.priceRange) structuredData.priceRange = options.priceRange
+
       if (hasUrl) {
+        structuredData['@id'] = `${siteUrl}/#business`
         structuredData.url = `${siteUrl}/`
+        structuredData.image = `${siteUrl}${options.ogImagePath}`
+        if (options.logoPath) structuredData.logo = `${siteUrl}${options.logoPath}`
         tags.push(
           { tag: 'link', attrs: { rel: 'canonical', href: `${siteUrl}/` }, injectTo: 'head' },
           { tag: 'meta', attrs: { property: 'og:url', content: `${siteUrl}/` }, injectTo: 'head' },
@@ -72,6 +81,22 @@ export function seoPlugin(options: SeoOptions): Plugin {
         children: JSON.stringify(structuredData),
         injectTo: 'head',
       })
+
+      // The site's name for search results. Search engines read it from the home page at the root of the domain; the
+      // prerender removes it from every other page (see pageHead.ts).
+      if (hasUrl) {
+        tags.push({
+          tag: 'script',
+          attrs: { type: 'application/ld+json' },
+          children: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebSite',
+            name: options.businessName,
+            url: `${siteUrl}/`,
+          }),
+          injectTo: 'head',
+        })
+      }
 
       if (options.faq && options.faq.length > 0) {
         tags.push({
@@ -111,9 +136,26 @@ export function seoPlugin(options: SeoOptions): Plugin {
   }
 }
 
+/** The line in index.html's head script that marks Apple devices, which set the page in their own San Francisco. */
+export const APPLE_CHECK = "if (/Mac|iPhone|iPad|iPod/.test(navigator.platform)) document.documentElement.classList.add('apple')"
+
+/** Starts the download of a font file from script, exactly as a `<link rel="preload" as="font">` in the page would. */
+export function preloadFontStatement(href: string): string {
+  return `else { var font = document.createElement('link'); font.rel = 'preload'; font.as = 'font'; font.type = 'font/woff2'; font.crossOrigin = 'anonymous'; font.href = ${JSON.stringify(href)}; document.head.appendChild(font) }`
+}
+
+/** Adds the font preload to the head script, as the other branch of its Apple check. Unchanged if there is no check. */
+export function withFontPreload(html: string, href: string): string {
+  return html.includes(APPLE_CHECK) ? html.replace(APPLE_CHECK, `${APPLE_CHECK}\n      ${preloadFontStatement(href)}`) : html
+}
+
 /**
- * Preloads the two Latin variable fonts the first screen needs, so text does not wait for the stylesheet to
- * discover them. Only runs in a build (in dev the font URLs are not hashed files).
+ * Everywhere but on Apple devices the page is set in Inter, a file the browser otherwise only discovers once the
+ * stylesheet has arrived and been applied. This starts that download with the page, so the first text is already in
+ * Inter instead of swapping to it. Apple devices never use the file, so a plain `<link rel="preload">` would make
+ * every iPhone download a font for nothing; the preload is added from the head script's platform check instead.
+ * (The content security policy is built from the finished page, so the changed script is covered: see
+ * vite-security-plugin.ts.) Only runs in a build: in dev the font URL is not a hashed file.
  */
 export function fontPreloadPlugin(): Plugin {
   let base = '/'
@@ -124,15 +166,10 @@ export function fontPreloadPlugin(): Plugin {
     },
     transformIndexHtml: {
       order: 'post',
-      handler(_html, ctx) {
-        if (!ctx.bundle) return []
-        return Object.keys(ctx.bundle)
-          .filter((file) => /(inter|bricolage-grotesque)-latin-wght-normal-[\w-]+\.woff2$/.test(file))
-          .map<HtmlTagDescriptor>((file) => ({
-            tag: 'link',
-            attrs: { rel: 'preload', as: 'font', type: 'font/woff2', crossorigin: '', href: `${base}${file}` },
-            injectTo: 'head',
-          }))
+      handler(html, ctx) {
+        if (!ctx.bundle) return html
+        const font = Object.keys(ctx.bundle).find((file) => /inter-latin-opsz-normal-[\w-]+\.woff2$/.test(file))
+        return font ? withFontPreload(html, `${base}${font}`) : html
       },
     },
   }

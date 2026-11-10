@@ -12,7 +12,7 @@ npm run lint       # oxlint
 npm test           # form logic and public-copy rules (no price, no unverifiable claims)
 npm run build      # production build into dist/
 npm run preview    # serve dist/ locally
-npm run og-image   # re-render public/og-image.png (needs Google Chrome)
+npm run share-cards  # re-render the link-preview pictures in public/share/ (needs Chrome and Playwright for Python)
 ```
 
 ## Page structure
@@ -358,9 +358,25 @@ use commercially. No stock photography is bundled.
   the headline paints before any script runs. `src/entry-server.test.tsx` guards the output. Anything that reads
   `window` during render must go through `useSyncExternalStore` (see `useMediaQuery`) so the server and the
   browser agree on the first render.
-- **Search and sharing:** the build adds FAQPage structured data from `src/content/faq.ts`, preloads the Latin
-  Inter font (Apple devices use their own system font and never need it), and ships a branded `404.html`. Canonical, `og:url`, absolute social image, sitemap and `robots.txt`
-  Sitemap line still switch on with `VITE_SITE_URL` (see the deploy section).
+- **Search and sharing:** every prerendered page gets its own title, description, canonical address, language
+  alternates and structured data (`src/lib/pageHead.ts`, from `src/content/pageMeta.ts`):
+  - *Business data* (`ProfessionalService`) on every page, described in the page's language, with the published
+    price range, logo and picture. *Site name* (`WebSite`) on the root page only, which is where search engines
+    read it. *FAQPage* from the questions a page shows. *BreadcrumbList* below the home pages: the same trail the
+    foot of the page shows (Home, then Work for a project, then the page by its short name), using only steps that
+    are pages of their own.
+  - *Share cards* (`public/share/`, 1200 × 630 JPEG): `home-<language>.jpg` is the hero headline over a fan of
+    project screens, one per language; `work-<project>.jpg` is a project's name beside its desktop and phone
+    captures, used by that project's page in every language. `npm run share-cards` re-renders them from
+    `scripts/share-card.html` with the site's own copy, type and screenshots; run it after changing the hero
+    headline, the project list or a capture. `tests/seo.test.ts` checks every page's card exists at the right size.
+  - *Fonts:* everywhere but on Apple devices the head script starts the Inter download with the page, so the first
+    text is already in Inter (`fontPreloadPlugin` in `vite-seo-plugin.ts`). Apple devices use San Francisco and
+    never fetch the file, which is why this is not a plain `<link rel="preload">`.
+  - `public/404.html` answers in the language of the missing address (`/fr/…`, `/fa/…`, `/zh/…`, `/zh-hant/…`)
+    and links to that language's home page and work.
+  - Canonical, `og:url`, absolute image addresses, the sitemap and the `robots.txt` Sitemap line switch on with
+    `VITE_SITE_URL` (see the deploy section). Build with it set when checking any of this locally.
 - **Motion:** CSS only, no libraries. All timings, distances, and curves are tokens at the top of `src/index.css`
   (`--motion-*`); change one there to retune the whole site. Everything sits inside
   `prefers-reduced-motion: no-preference` (enforced by `tests/motion.test.ts`), hover effects only run on devices

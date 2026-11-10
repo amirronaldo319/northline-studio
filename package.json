@@ -10,7 +10,7 @@
     "lint": "oxlint",
     "test": "vitest run",
     "preview": "vite preview",
-    "og-image": "node scripts/render-og-image.mjs"
+    "share-cards": "python3 scripts/generate-share-cards.py"
   },
   "dependencies": {
     "glisse": "0.5.0",

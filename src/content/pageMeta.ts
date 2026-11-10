@@ -22,32 +22,57 @@ export interface PageMeta {
   faq: readonly FaqItem[]
   lang: string
   dir: 'ltr' | 'rtl'
+  /**
+   * The way down to this page from its language's home page, as the breadcrumb at the foot of the page shows it
+   * (see pageCrumbs.ts). Only steps that are pages of their own, so each has an address. Empty on a home page.
+   */
+  crumbs: readonly PageCrumb[]
+  /** The picture a shared link shows, below the site root (rendered by scripts/generate-share-cards.py). */
+  shareImage: string
+  /** What the business does, in this page's language, for the business data every page carries. */
+  businessDescription: string
 }
+
+export interface PageCrumb {
+  name: string
+  /** Path below the site root, with a trailing slash. Empty for the English home page. */
+  path: string
+}
+
+/** Headlines end with a full stop on the page; a breadcrumb is a label, so it goes without. */
+const asLabel = (headline: string) => headline.replace(/[.。]$/u, '')
 
 export function pageMeta(ref: PageRef): PageMeta {
   const copy = getCopy(ref.locale)
   const info = LOCALES[ref.locale]
+  const path = pagePath(ref)
   const base = {
     ref,
     locale: ref.locale,
-    path: pagePath(ref),
+    path,
     relativePath: relativePath(ref),
     lang: info.htmlLang,
     dir: info.dir,
+    shareImage: `share/home-${ref.locale}.jpg`,
+    businessDescription: copy.meta.homeDescription,
   }
-  const home: PageMeta = { ...base, ref: { kind: 'home', locale: ref.locale }, path: info.prefix, relativePath: '', title: copy.meta.homeTitle, description: copy.meta.homeDescription, faq: copy.faq.items }
+  const homeCrumb: PageCrumb = { name: copy.common.home, path: info.prefix }
+  const home: PageMeta = { ...base, ref: { kind: 'home', locale: ref.locale }, path: info.prefix, relativePath: '', title: copy.meta.homeTitle, description: copy.meta.homeDescription, faq: copy.faq.items, crumbs: [] }
 
   switch (ref.kind) {
     case 'trade': {
       const trade = copy.trades.find((candidate) => candidate.slug === ref.slug)
-      return trade ? { ...base, title: trade.title, description: trade.description, faq: trade.faq } : home
+      if (!trade) return home
+      return { ...base, title: trade.title, description: trade.description, faq: trade.faq, crumbs: [homeCrumb, { name: copy.tradePage.crumb(trade.name), path }] }
     }
     case 'guide': {
       const guide = copy.guides.find((candidate) => candidate.slug === ref.slug)
-      return guide ? { ...base, title: guide.title, description: guide.description, faq: [] } : home
+      if (!guide) return home
+      // "Guides" is a label in the visible trail, not a page, so the published trail goes straight to the guide.
+      return { ...base, title: guide.title, description: guide.description, faq: [], crumbs: [homeCrumb, { name: asLabel(guide.headline), path }] }
     }
     case 'work':
-      return { ...base, title: copy.meta.workTitle, description: copy.meta.workDescription, faq: [] }
+      return { ...base, title: copy.meta.workTitle, description: copy.meta.workDescription, faq: [], crumbs: [homeCrumb, { name: copy.common.work, path }] }
     case 'case': {
       const project = PROJECT_DATA.find((candidate) => candidate.id === ref.id)
       if (!project) return home
@@ -56,6 +81,9 @@ export function pageMeta(ref: PageRef): PageMeta {
         title: copy.meta.caseTitle(project.name, project.status),
         description: copy.projects[project.id]?.summary ?? project.summary,
         faq: [],
+        crumbs: [homeCrumb, { name: copy.common.work, path: pagePath({ kind: 'work', locale: ref.locale }) }, { name: project.name, path }],
+        // A project page shows the project itself: its name beside its desktop and phone captures.
+        shareImage: `share/work-${project.id}.jpg`,
       }
     }
     default:

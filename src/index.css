@@ -2391,7 +2391,8 @@ html:not(.js) .showcase-dark {
 
 .chapter-nav-list {
   display: flex;
-  justify-content: safe center;
+  /* The list is never narrower than its items (max-content), so plain centring cannot push the first one out of reach. */
+  justify-content: center;
   gap: 0.25rem;
   width: max-content;
   min-width: 100%;

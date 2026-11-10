@@ -1,0 +1,224 @@
+<!doctype html>
+<!--
+  The picture a link to the site shows when it is shared (iMessage, WhatsApp, LinkedIn…), 1200 × 630.
+  Rendered by scripts/generate-share-cards.py, which passes the card's content as JSON after the "#".
+  Two layouts: "home" (the headline over a fan of project screens) and "project" (one project's name beside
+  its desktop and phone captures). It uses the site's own colours, type and screenshots.
+-->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      @font-face {
+        font-family: 'Inter Variable';
+        font-weight: 100 900;
+        src: url('../src/assets/fonts/inter/inter-latin-opsz-normal.woff2') format('woff2');
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1200px;
+        height: 630px;
+      }
+      body {
+        position: relative;
+        overflow: hidden;
+        background: #f5f5f7;
+        color: #1d1d1f;
+        font-family: 'Inter Variable', 'Helvetica Neue', Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      /* A soft light behind the pictures, so they sit on the page rather than on a flat colour. */
+      .glow {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(60% 90% at var(--glow-x, 78%) 62%, #fff 0%, rgb(255 255 255 / 0) 70%);
+      }
+      .text {
+        position: absolute;
+        inset-block: 64px;
+        inset-inline-start: 72px;
+        width: 560px;
+        display: flex;
+        flex-direction: column;
+      }
+      .logo {
+        display: block;
+        height: 46px;
+        width: auto;
+        align-self: flex-start;
+      }
+      .words {
+        margin-top: auto;
+        margin-bottom: auto;
+        padding-bottom: 8px;
+      }
+      h1 {
+        margin: 0;
+        font-weight: 600;
+        font-size: var(--h-size, 78px);
+        line-height: var(--h-line, 1.05);
+        letter-spacing: var(--h-track, -0.035em);
+      }
+      h1 span {
+        display: block;
+        white-space: nowrap;
+      }
+      h1 span + span {
+        color: #86868b;
+      }
+      .domain {
+        font-size: 24px;
+        letter-spacing: -0.015em;
+        color: #6e6e73;
+        direction: ltr;
+        align-self: flex-start;
+      }
+
+      /* Home: the headline centred over a fan of project screens rising from the bottom edge, as in the Work section. */
+      .home .text {
+        inset-block: 46px auto;
+        inset-inline: 72px;
+        width: auto;
+        align-items: center;
+        text-align: center;
+      }
+      .home .logo {
+        align-self: center;
+        height: 42px;
+      }
+      .home .words {
+        margin-top: 40px;
+        padding: 0;
+      }
+      .fan {
+        position: absolute;
+        top: 338px;
+        left: 600px;
+        width: 0;
+        height: 0;
+      }
+      .fan img {
+        position: absolute;
+        left: -105px;
+        top: 0;
+        width: 210px;
+        height: 262px;
+        border-radius: 22px;
+        object-fit: cover;
+        transform-origin: 50% 900px;
+        box-shadow:
+          0 0 0 1px rgb(0 0 0 / 0.06),
+          0 26px 44px -22px rgb(0 0 0 / 0.4);
+      }
+
+      /* Project: the desktop capture as a window running off the corner, the phone capture in front of it. */
+      .desktop {
+        position: absolute;
+        top: 96px;
+        inset-inline-start: 560px;
+        width: 760px;
+        border-radius: 18px;
+        box-shadow:
+          0 0 0 1px rgb(0 0 0 / 0.08),
+          0 40px 70px -30px rgb(0 0 0 / 0.4);
+      }
+      .phone {
+        position: absolute;
+        top: 222px;
+        inset-inline-start: 478px;
+        width: 204px;
+        border-radius: 30px;
+        border: 6px solid #1d1d1f;
+        box-shadow: 0 34px 60px -26px rgb(0 0 0 / 0.5);
+      }
+      /* The name keeps clear of the phone; a name of two words takes two lines rather than a smaller size. */
+      .project .text {
+        width: 380px;
+      }
+      .project h1 {
+        font-size: var(--h-size, 68px);
+        text-wrap: balance;
+      }
+      .project h1 span {
+        white-space: normal;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="glow"></div>
+    <div id="card"></div>
+    <script>
+      var card = JSON.parse(decodeURIComponent(location.hash.slice(1)))
+      var root = document.getElementById('card')
+      var el = function (tag, className, text) {
+        var node = document.createElement(tag)
+        if (className) node.className = className
+        if (text) node.textContent = text
+        return node
+      }
+      document.documentElement.lang = card.lang || 'en'
+      document.body.dir = card.dir || 'ltr'
+      Object.keys(card.style || {}).forEach(function (name) {
+        document.body.style.setProperty(name, card.style[name])
+      })
+      if (card.font) document.body.style.fontFamily = card.font
+      if (card.fontFile) {
+        var face = document.createElement('style')
+        face.textContent = "@font-face{font-family:'Card Script';font-weight:100 900;src:url('" + card.fontFile + "') format('woff2')}"
+        document.head.appendChild(face)
+      }
+
+      var text = el('div', 'text')
+      var logo = el('img', 'logo')
+      logo.src = '../src/assets/brand/logo.svg'
+      logo.alt = ''
+      text.appendChild(logo)
+      var words = el('div', 'words')
+      var heading = el('h1')
+      card.headline.forEach(function (line) {
+        heading.appendChild(el('span', '', line))
+      })
+      words.appendChild(heading)
+      text.appendChild(words)
+      if (card.domain) text.appendChild(el('div', 'domain', card.domain))
+      root.appendChild(text)
+
+      // Long headlines (French, a long project name) step down in size until they fit the column.
+      var fit = function () {
+        var size = parseFloat(getComputedStyle(heading).fontSize)
+        while (heading.scrollWidth > text.clientWidth && size > 36) {
+          size -= 2
+          heading.style.fontSize = size + 'px'
+        }
+        document.body.dataset.ready = 'true'
+      }
+      document.fonts.ready.then(fit)
+
+      if (card.kind === 'home') {
+        document.body.className = 'home'
+        document.body.style.setProperty('--glow-x', '50%')
+        var fan = el('div', 'fan')
+        var count = card.screens.length
+        card.screens.forEach(function (src, index) {
+          var img = el('img')
+          img.src = src
+          // Cards turn about a point far below them, so they spread along an arc; the middle one stands upright.
+          img.style.transform = 'rotate(' + (index - (count - 1) / 2) * 9 + 'deg)'
+          img.style.zIndex = String(index)
+          fan.appendChild(img)
+        })
+        root.appendChild(fan)
+      } else {
+        document.body.className = 'project'
+        document.body.style.setProperty('--glow-x', card.dir === 'rtl' ? '22%' : '78%')
+        var desktop = el('img', 'desktop')
+        desktop.src = card.desktop
+        var phone = el('img', 'phone')
+        phone.src = card.phone
+        root.appendChild(desktop)
+        root.appendChild(phone)
+      }
+    </script>
+  </body>
+</html>

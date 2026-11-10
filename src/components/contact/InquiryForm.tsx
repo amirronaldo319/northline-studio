@@ -18,6 +18,7 @@ import { SITE_CHECK_EVENT, siteCheckPreset } from '@/lib/siteCheck'
 import { useCopy } from '@/i18n/context'
 import { Field } from './fields'
 import { describedBy, fieldControlClasses } from './fieldStyles'
+import { useAutoGrow } from './useAutoGrow'
 import { SuccessCheck } from '../ui/SuccessCheck'
 import { buttonClasses } from '../ui/button'
 
@@ -39,6 +40,8 @@ export function InquiryForm() {
   const isSubmittingRef = useRef(false)
   const formRef = useRef<HTMLFormElement>(null)
   const resultRef = useRef<HTMLDivElement>(null)
+  const messageRef = useRef<HTMLTextAreaElement>(null)
+  useAutoGrow(messageRef, values.message)
 
   // The site-check band (or a #site-check link) asks for the form to be ready for a website review.
   useEffect(() => {
@@ -191,7 +194,7 @@ export function InquiryForm() {
         hint={t.form.messageHint}
         className="mt-4"
       >
-        <textarea {...fieldProps('message', true)} rows={5} required className={`${fieldControlClasses} field-textarea resize-none`} />
+        <textarea ref={messageRef} {...fieldProps('message', true)} rows={5} required className={`${fieldControlClasses} field-textarea resize-none`} />
       </Field>
 
       <div className="mt-5 border-t border-line pt-4">

@@ -1,4 +1,5 @@
-import type { Locale } from '@/i18n/types'
+// A relative path, as in the other content files the build reads (vite.config.ts takes the price range from here).
+import type { Locale } from '../i18n/types.ts'
 
 type OfferCopy = {
   intro: string; compare: string; heading: string; once: string; choose: string
