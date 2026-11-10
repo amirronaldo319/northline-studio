@@ -48,7 +48,6 @@ export const fa: Copy = {
     priceLine: 'بسته‌های یک‌صفحه‌ای از CA$299.',
     explore: 'دیدن بسته‌ها',
     seeWork: 'دیدن نمونه‌کارها',
-    visualCaption: (name, caption) => `${name}، ${caption}.`,
     conceptCaption: (name, businessType) =>
       `نمونه‌ی مفهومی: ${name}، طرحی برای یک کسب‌وکار فرضی ${businessType}.`,
     viewExample: 'دیدن نمونه',

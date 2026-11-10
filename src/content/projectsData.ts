@@ -19,7 +19,7 @@ export interface ProjectData {
   kind: ProjectKind
   /** Short type line, shown beside the status label. */
   type: string
-  /** One-line description used under the hero image. Starts after the project name. */
+  /** One-line description shown with the project's picture in the portfolio. Starts after the project name. */
   caption: string
   /** What it is and who it is for. */
   summary: string

@@ -65,7 +65,6 @@ export const en: Copy = {
     priceLine: 'One-page packages from CA$299.',
     explore: 'Explore packages',
     seeWork: 'See the work',
-    visualCaption: (name, caption) => `${name}, ${caption}.`,
     conceptCaption: (name, businessType) =>
       `Concept demo: ${name}, a design for a fictional ${businessType.toLowerCase()} business.`,
     viewExample: 'View example',

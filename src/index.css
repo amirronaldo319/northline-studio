@@ -2055,6 +2055,18 @@ dialog.viewer[data-closing]::backdrop {
 }
 
 /*
+ * The hero shows no picture: it is the headline over the contour lines. From tablet width up it takes most of the
+ * first view, so the lines have room to run beneath the buttons before the work begins. On a phone the words already
+ * fill the screen, and the hero is as tall as they are.
+ */
+
+@media (min-width: 640px) {
+  .hero {
+    min-height: clamp(30rem, 74svh, 42rem);
+  }
+}
+
+/*
  * Topographic contours behind the hero. A still contour map (an SVG drawn once, see scripts/generate-hero-contours.py)
  * is part of the first paint; the animated Topographic Flow is drawn over it once the page is idle, and the still map
  * then fades away. Both are faint, are masked clear behind the eyebrow, headline, lede, price and buttons (measured: text
@@ -2068,13 +2080,14 @@ dialog.viewer[data-closing]::backdrop {
   z-index: -1;
   overflow: hidden;
   pointer-events: none;
+  /* The lines stay at full strength beneath the buttons and fade over the last fifth, so the hero has no hard foot. */
   -webkit-mask-image:
     radial-gradient(ellipse 560px 340px at 50% 330px, transparent 0%, transparent 72%, #000 100%),
-    linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
+    linear-gradient(to bottom, #000 0%, #000 80%, transparent 100%);
   -webkit-mask-composite: source-in;
   mask-image:
     radial-gradient(ellipse 560px 340px at 50% 330px, transparent 0%, transparent 72%, #000 100%),
-    linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
+    linear-gradient(to bottom, #000 0%, #000 80%, transparent 100%);
   mask-composite: intersect;
 }
 
@@ -2111,10 +2124,10 @@ dialog.viewer[data-closing]::backdrop {
   .hero-topo {
     -webkit-mask-image:
       radial-gradient(ellipse 300px 300px at 50% 295px, transparent 0%, transparent 72%, #000 100%),
-      linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
+      linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
     mask-image:
       radial-gradient(ellipse 300px 300px at 50% 295px, transparent 0%, transparent 72%, #000 100%),
-      linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
+      linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
   }
 }
 
@@ -2226,14 +2239,10 @@ dialog.viewer[data-closing]::backdrop {
   color: var(--color-ink-3);
 }
 
-.hero-visual {
-  margin-top: clamp(3rem, 2rem + 4vw, 5rem);
-}
-
 /*
- * A website as a product shot: the desktop capture large and centred, the phone capture standing in front of its
- * lower corner. The column for the phone is reserved, so nothing shifts as the pictures load. On phones only the
- * crisp phone-sized capture is shown.
+ * A website as a product shot (the featured project in the Work section): the desktop capture large and centred, the
+ * phone capture standing in front of its lower corner. The column for the phone is reserved, so nothing shifts as the
+ * pictures load. On phones only the crisp phone-sized capture is shown.
  */
 
 .showcase {
@@ -2713,91 +2722,12 @@ html:not(.js) .showcase-dark {
   position: relative;
 }
 
-/*
- * The caption capsule straddles the picture's lower edge: half on the website, half on the page. It still has colour
- * to bend, and it no longer covers the website's own words and badges. The stage has no clipping, so it can hang out;
- * the rounded clip belongs to .showcase-desktop.
- */
-
-.showcase-stage {
-  position: relative;
-}
-
-.showcase-caption {
-  position: absolute;
-  inset-inline: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  padding-inline: 0.75rem;
-  transform: translateY(50%);
-  pointer-events: none;
-}
-
-/* On phones nothing sits below the picture, so the caption line steps down by the capsule's overhang. */
+/* On phones the featured picture keeps a little room beneath it before its text. */
 
 @media (max-width: 639px) {
   .showcase {
     padding-bottom: 1.75rem;
   }
-
-  /* The phone-sized capture ends just under its tagline, so the capsule hangs lower to keep clear of it. */
-
-  .showcase-caption {
-    transform: translateY(62%);
-  }
-}
-
-.caption-glass {
-  --lg-glass: rgb(255 255 255 / 0.62);
-  --lg-blur: 10px;
-  --lg-rim-shine: 0.6;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  max-width: 100%;
-  min-height: 2.75rem;
-  padding-inline: 1.125rem 0.875rem;
-  border-radius: 9999px;
-  font-size: var(--text-callout);
-  pointer-events: auto;
-  white-space: nowrap;
-}
-
-.caption-status {
-  color: var(--color-ink-2);
-}
-
-.caption-name {
-  font-weight: 600;
-  color: var(--color-ink);
-}
-
-.caption-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.15rem;
-  color: var(--color-accent);
-}
-
-.caption-link:hover {
-  text-decoration: underline;
-}
-
-/* On small phones the status steps aside, so the capsule keeps to one line. */
-
-@media (max-width: 419px) {
-  .caption-status {
-    display: none;
-  }
-}
-
-.hero-caption {
-  margin-top: 1.25rem;
-  text-align: center;
-  font-size: var(--text-callout);
-  line-height: 1.5;
-  color: var(--color-ink-3);
 }
 
 /* Pricing on phones and tablets: the plan names follow the rows on a strip of glass. */

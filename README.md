@@ -24,7 +24,7 @@ language): websites, apps and tools, and the design demos.
 
 | Section | File |
 | --- | --- |
-| Hero (headline, price line, a blue glass button and a clear glass one, a real website shown large) | `src/components/sections/Hero.tsx` |
+| Hero (headline, price line, a blue glass button and a clear glass one, over the contour lines; no website is shown here, the work starts in the next section) | `src/components/sections/Hero.tsx` |
 | Selected work | `src/components/sections/Work.tsx`; projects in `src/content/projects.ts` (`HERO_PROJECT`, `FEATURED_PROJECT`, `GALLERY_WEBSITES`, `APP_PROJECTS`) |
 | Swipeable galleries | `src/components/ui/Gallery.tsx` (native snap scrolling, glass paddles, position dots on a glass pill), mouse dragging in `src/hooks/useDragScroll.ts`, edge and resting rules in `src/lib/gallery.ts`; the cards are shared with the work page (`src/components/work/ProjectCards.tsx`) |
 | All projects | `src/components/pages/WorkPage.tsx`; design demos in `src/content/examples.ts` |
@@ -116,7 +116,6 @@ Only Glisse's documented exports are used (`tests/glass.test.ts` checks this).
 | --- | --- |
 | The language menu | `Menu` (`LanguageMenu.tsx`) |
 | Phone quote bar (`QuoteBar.tsx`), pricing strip on phones | `Glass` (frosted: `.glass-frost`) |
-| The caption over the hero screenshot (card labels sit in the card text instead) | `Glass` (refracting the picture beneath) |
 | Concept-demo dialog and project viewer | `SegmentedControl`, `Slider`, `Button` |
 
 All `--lg-*` variables are set once for the light page (`:root, [data-theme='light']`) and per surface where needed.

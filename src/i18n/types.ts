@@ -100,8 +100,6 @@ export interface Copy {
     priceLine: string
     explore: string
     seeWork: string
-    /** Identifies the website under the hero: its name and its caption (which reads after the name). */
-    visualCaption: (name: string, caption: string) => string
     conceptCaption: (name: string, businessType: string) => string
     viewExample: string
   }

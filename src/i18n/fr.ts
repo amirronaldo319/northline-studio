@@ -23,7 +23,6 @@ export const fr: Copy = {
     priceLine: 'Forfaits d’une page dès 299 $ CA.',
     explore: 'Voir les forfaits',
     seeWork: 'Voir les réalisations',
-    visualCaption: (name, caption) => `${name}, ${caption}.`,
     conceptCaption: (name, businessType) => `Démo conceptuelle : ${name}, un concept pour une entreprise fictive (${businessType.toLowerCase()}).`,
     viewExample: 'Voir un exemple',
   },

@@ -1,5 +1,6 @@
 import { describe, expect, test } from 'vitest'
 import { render } from './entry-server'
+import { PROJECT_DATA as PROJECTS } from './content/projectsData'
 
 /** The prerendered HTML (what crawlers and visitors without JavaScript get) keeps working glass controls. */
 describe('glass markup without JavaScript', async () => {
@@ -70,8 +71,16 @@ describe('glass markup without JavaScript', async () => {
     expect(html.match(/<div class="gallery-dots" aria-hidden="true">/g)).toHaveLength(2)
   })
 
-  test('the hero screenshot has a glass caption with a real link, and card screenshots carry nothing on top', () => {
-    expect(html).toMatch(/class="lg-glass caption-glass[^"]*"[^]*?<a href="\/work\/farsh-aquatics\/"/)
+  test('the hero shows no website: the headline, the price and two buttons, and nothing from the portfolio', () => {
+    const hero = html.slice(html.indexOf('class="hero"'), html.indexOf('id="work"'))
+    expect(hero).toContain('id="hero-title"')
+    expect(hero.match(/<a href="#(?:package|work)"/g)).toHaveLength(2)
+    expect(hero).not.toContain('<img')
+    expect(hero).not.toMatch(/\/work\/[a-z0-9-]+\//)
+    for (const project of PROJECTS) expect(hero, project.id).not.toContain(project.name)
+  })
+
+  test('card screenshots carry nothing on top', () => {
     // What kind of work a card shows is the first line of its text, not a label over the picture.
     expect(html).not.toContain('chip-glass')
     expect(html).toMatch(/<p class="text-footnote font-semibold text-accent">Live website<\/p><p class="project-label mt-1">/)

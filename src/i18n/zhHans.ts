@@ -47,7 +47,6 @@ export const zhHans: Copy = {
     priceLine: '单页套餐 CA$299 起。',
     explore: '查看套餐',
     seeWork: '查看作品',
-    visualCaption: (name, caption) => `${name}：${caption}。`,
     conceptCaption: (name, businessType) => `概念演示：${name}，为一家虚构的${businessType}商家所做的设计。`,
     viewExample: '查看示例',
   },
